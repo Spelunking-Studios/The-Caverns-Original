@@ -1,0 +1,1 @@
+pyinstaller main.py --noconsole --noconfirm --icon="logo.ico" --onefile
