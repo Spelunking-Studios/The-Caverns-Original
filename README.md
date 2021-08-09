@@ -1,7 +1,9 @@
 python 3.9.1
 
-# Pygame Game Framework 2
+# Codename: Project 0     
+## A Pygame Game
 
-Pygame Game Dev framework for writing games.
+Use Tiled to design levels
+https://www.mapeditor.org/
 
-## Uses Tiled level design 
+
