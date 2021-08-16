@@ -20,7 +20,7 @@ class player(pygame.sprite.Sprite):
     lastHit = 0
     roomBound = True
     imgSheet = {'active': False, 'tileWidth': 64, 'r': False, 'l': False, 'idleR': False, 'flyR': False, 'flyL': False}
-    width, height = 28, 24
+    width, height = 32, 32
     health = 50
     maxHp = 50
     attempts = 0
@@ -42,8 +42,8 @@ class player(pygame.sprite.Sprite):
         self.angle = 0
         self.lightImg = pygame.image.load(asset('objects/light2.png'))
         self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
-        self.lightScale.scale_to_length(600)
-        self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y)))
+        self.lightScale.scale_to_length(1000)
+        self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
         #self.particleFx = fx.particles(self.game, self, size = 15,)
         #self.particleFx.setParticleKwargs(color=colors.yellow, speed=5, shrink=0.6)
 
@@ -51,6 +51,7 @@ class player(pygame.sprite.Sprite):
             self.__dict__[k] = v
         
         self.loadAnimations()
+        #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
 
     def loadAnimations(self):
         pass
@@ -145,6 +146,10 @@ class player(pygame.sprite.Sprite):
         r2 = rect2
         return self.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.moveRect.x,r2.y-self.moveRect.y))
     
-    def setPos(self, tup):
-        self.moveRect.topleft = tup
+    def setPos(self, tup, center=False):
+        self.vel = Vector2(0, 0)
+        if center:
+            self.moveRect.center = tup
+        else:
+            self.moveRect.topleft = tup
         self.rect = self.moveRect.copy()

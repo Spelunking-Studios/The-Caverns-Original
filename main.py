@@ -34,6 +34,7 @@ class game:
         self.layer1 = pygame.sprite.Group()
         self.layer2 = pygame.sprite.Group()
         self.fxLayer = pygame.sprite.Group()
+        self.hudLayer = pygame.sprite.Group()
         self.overlayer = pygame.sprite.Group()
         self.rendLayers = [self.layer1, self.layer2]
         self.mixer = gameMixer()
@@ -53,7 +54,6 @@ class game:
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
-        self.noCont = False
         self.points = 0
         self.gravity = 1.6
         self.currentFps = 0
@@ -85,6 +85,7 @@ class game:
         self.attempts = 0
         self.pause = False
         self.pauseScreen = pauseOverlay(self)
+        self.mapScreen = mapOverlay(self)
         self.time = 0
         self.updateT = pygame.time.get_ticks()
         self.cam = cam(self, winWidth, winHeight)
@@ -102,7 +103,6 @@ class game:
 
     #### Controls how the levels will load ####
     def loadLevel(self, levelNum, *args):  
-        self.noCont = False 
 
         try:
             for obj in self.level.sprites:
@@ -137,11 +137,10 @@ class game:
         self.getPause()
         if self.pause:
             self.pSprites.update()
-            self.pauseScreen.update()
         else:
             self.sprites.update()
             self.checkHits()
-
+        self.overlayer.update()
         self.cam.update()
         
         self.render()
@@ -164,16 +163,20 @@ class game:
         
         self.renderDarkness()
 
-        for sprite in self.overlayer:
+        for sprite in self.hudLayer:
             self.win.blit(sprite.image, sprite.rect)
-        
-        
+
+        for sprite in self.overlayer:
+            try:
+                if sprite.active:
+                    self.win.blit(sprite.image, sprite.rect)
+            except AttributeError:
+                self.win.blit(sprite.image, sprite.rect)
         
         if self.showFps:
             fpsText = fonts['6'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
         
-
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
@@ -199,13 +202,6 @@ class game:
         pygame.sprite.groupcollide(self.colliders, self.eBullets, False, True)
 
         items = pygame.sprite.spritecollide(self.player, self.items, True)
-        # for item in items:
-        #     pass
-
-        # tpCols = pygame.sprite.spritecollide(self.player, self.level.teleporters, False)
-        # for tp in tpCols:
-        #     fadeOut(self, speed = 20, alpha = 120, fadeBack = True)
-        #     self.player.rect.topleft = tp.target
 
         # r2 = self.level.door.rect ## This section checks door collision with player mask
         # if self.player.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.player.rect.x,r2.y-self.player.rect.y)):
@@ -221,7 +217,6 @@ class game:
     def unPause(self):
         self.pause = False
         self.pauseScreen.deactivate()
-        self.overlayer.remove(self.pauseScreen)
 
     def endgame(self):
         self.unPause()
@@ -235,24 +230,11 @@ class game:
         self.new()
         self.run()
 
-    def cont(self):
-        if not self.noCont:
-            self.cam.target = self.player
-            self.pause = False
-            self.enemies.empty()
-            self.loadLevel(self.getLvlNum())
-            self.player.reset()
-            self.fxLayer.empty()
-            for s in self.pSprites:
-                s.kill()
-            for b in self.eBullets:
-                b.kill()
-
-    def died(self):
-        button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=self.cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
-        def end():
-            self.end = True
-        button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+    # def died(self):
+        # button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=self.cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+        # def end():
+        #     self.end = True
+        # button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
     
     def getLvlNum(self, offSet=0):
         return self.levels.index(self.level) + 1 + offSet
@@ -340,11 +322,10 @@ class game:
                     self.unPause()
                 else:
                     self.pause = True
-                    self.overlayer.add(self.pauseScreen)
                     self.pauseScreen.activate()
 
                 self.lastPause = pygame.time.get_ticks()
-
+                
     def getSprBylID(self, lID):
         for sprite in self.sprites:
             try:

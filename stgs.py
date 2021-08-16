@@ -36,27 +36,30 @@ iconPath = 'assets/logo.png'
 aalias = True
 
 #### Defines what key binding is set for each action ####
-keySet = {'start': pygame.K_s,'retry':[pygame.K_r], 'toggleCam': pygame.K_c,'pRight': [pygame.K_RIGHT, pygame.K_d], 'pLeft': [pygame.K_LEFT, pygame.K_a], 'pUp': [pygame.K_UP, pygame.K_w], 'pDown':[pygame.K_DOWN, pygame.K_s],'fullScreen': pygame.K_f, 'pause': pygame.K_p}
+keySet = {'start': pygame.K_s,'retry':[pygame.K_r], 'toggleCam': pygame.K_c, 'map': pygame.K_m, 'pRight': [pygame.K_RIGHT, pygame.K_d], 'pLeft': [pygame.K_LEFT, pygame.K_a], 'pUp': [pygame.K_UP, pygame.K_w], 'pDown':[pygame.K_DOWN, pygame.K_s],'fullScreen': pygame.K_f, 'pause': pygame.K_p}
 
 #### Changes movement from flying to platforming ####
 platformer = True
 
 def checkKey(move):
-    returnVal = False
     keys = pygame.key.get_pressed()
     if isinstance(move, str):
-        for k in keySet[move]:
-            if keys[k]:
-                returnVal = True
+        try:
+            for k in keySet[move]:
+                if keys[k]:
+                    return True
+        except TypeError:
+            if keys[keySet[move]]:
+                return True
     else:
         try:
             for k in move:
                 if keys[k]:
-                    returnVal = True
+                    return True
         except TypeError:
             if keys[move]:
-                returnVal = True
-    return returnVal
+                return True
+    return False
 
 class Spritesheet:
     # utility class for loading and parsing spritesheets

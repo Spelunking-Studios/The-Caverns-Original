@@ -89,6 +89,12 @@ class level:
                     objT.text, self.game.antialiasing, (255, 255, 255))
                 self.image.blit(text, (objT.x, objT.y))
 
+    def getObjById(self, id):
+        for obj in self.tmxdata.objects:
+            if obj.id == id:
+                return obj
+        return False
+
 # Remember to include tileset image and tsx file with the tmx file of the map
 level1 = level(
     mapDir=asset('Tiled/cave1.tmx')#/level1/level1.tmx')

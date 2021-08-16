@@ -41,3 +41,35 @@ class entrance(pygame.sprite.Sprite):
 
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
         #self.image.fill(self.color)
+
+class teleporter(pygame.sprite.Sprite):
+    color = (255, 255, 255)
+
+    def __init__(self, game, objT, **kwargs):
+        self.groups = game.sprites, game.layer1
+        pygame.sprite.Sprite.__init__(self, self.groups)
+        self.game = game
+        self.lID = objT.id
+        self.target = 0
+        self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
+
+        for k, v in kwargs.items():
+            self.__dict__[k] = v
+        
+        for k, v in objT.properties.items():
+            self.__dict__[k] = v
+
+        for obj in self.game.level.tmxdata.objects:
+            if obj.id == self.target:
+                self.targetPos = pygame.Vector2(obj.x, obj.y)
+
+    def update(self):
+        if self.game.player.moveRect.colliderect(self.rect):
+            self.game.pause = True
+            def func():
+                self.game.unPause()
+                self.game.player.setPos((self.targetPos.x*self.game.level.scale, self.targetPos.y*self.game.level.scale), True)
+
+            fx.fadeOut(self.game, onEnd=func)
+        #self.image = pygame.Surface((self.rect.width, self.rect.height))
+        #self.image.fill(self.color)
