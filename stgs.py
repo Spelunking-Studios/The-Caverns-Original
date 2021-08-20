@@ -3,7 +3,7 @@ import pygame
 import colors
 import math
 
-TITLE = "Project 0"
+TITLE = "The Caverns"
 
 #### Establishes file paths ####
 PATH = os.getcwd()

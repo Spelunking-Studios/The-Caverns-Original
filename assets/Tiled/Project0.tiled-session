@@ -493,14 +493,14 @@
         },
         "Project0-tileset1.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
+            "scaleInEditor": 3
         },
         "cave1.tmx": {
             "scale": 0.75,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1628,
-                "y": 1598.6666666666665
+                "x": 220,
+                "y": 1151.3333333333335
             }
         },
         "level1/level1.tmx": {
@@ -508,7 +508,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 288,
-                "y": 352
+                "y": 351.66666666666663
             }
         },
         "swordcon-basic.tsx": {
