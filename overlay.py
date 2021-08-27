@@ -1,5 +1,5 @@
 import pygame
-import colors
+import colors as cols
 from stgs import *
 from menu import *
 
@@ -68,10 +68,10 @@ class pauseOverlay(pygame.sprite.Sprite):
         button(self.game, (350, 550), groups = [self.components], text = "Return to menu", onClick=self.game.endgame, center = True, colors = (colors.yellow, colors.white))
     
         self.text = [
-            text('5', 'Paused', colors.orangeRed, self.game.antialiasing, (self.rect.width/2.4, 10)),
-            text('1', 'Audio Control', colors.orangeRed, self.game.antialiasing, (75, 250)),
-            text('6', 'Music Volume', colors.orangeRed, self.game.antialiasing, (75, 325)),
-            text('6', 'Fx Volume', colors.orangeRed, self.game.antialiasing, (75, 475))
+            text('5', 'Paused', cols.orangeRed, self.game.antialiasing, (self.rect.width/2.4, 10)),
+            text('1', 'Audio Control', cols.orangeRed, self.game.antialiasing, (75, 250)),
+            text('6', 'Music Volume', cols.orangeRed, self.game.antialiasing, (75, 325)),
+            text('6', 'Fx Volume', cols.orangeRed, self.game.antialiasing, (75, 475))
         ]
 
         self.audioSlider1.setRatio(self.game.mixer.musicVolume)

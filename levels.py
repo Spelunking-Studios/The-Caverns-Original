@@ -9,7 +9,7 @@ class level:
 
     def __init__(self, **kwargs):
         self.sprites = pygame.sprite.Group()
-        self.scale = 2
+        self.scale = 3
         self.rendType = 1
         self.colliders = []
         self.width = winWidth

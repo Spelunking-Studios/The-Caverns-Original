@@ -1,3 +1,6 @@
 __pycache__
 pyLdtk
 tests
+build
+dist
+main.spec

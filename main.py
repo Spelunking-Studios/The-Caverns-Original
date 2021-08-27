@@ -5,6 +5,7 @@ import os
 import random
 import sys
 
+from stgs import *
 from camera import *
 from fx import *
 from levels import *
@@ -13,7 +14,6 @@ from objects import *
 from overlay import *
 from player import *
 from sfx import *
-from stgs import *
 import menus
 
 loadSave(saveFile)
@@ -46,11 +46,11 @@ class game:
         self.win = pygame.display.set_mode((winWidth, winHeight))
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
-        self.font1 = pygame.font.Font(os.path.join('fonts', 'PixelLove.ttf'), 48)
-        self.font2 = pygame.font.Font(os.path.join('fonts', 'PixelLove.ttf'), 23)
-        self.menuFont = pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 15)
-        self.gameOverFont = pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 60)
-        self.victoryFont = pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 72)
+        self.font1 = pygame.font.Font(fAsset('PixelLove.ttf'), 48)
+        self.font2 = pygame.font.Font(fAsset('PixelLove.ttf'), 23)
+        self.menuFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
+        self.gameOverFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60)
+        self.victoryFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72)
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()

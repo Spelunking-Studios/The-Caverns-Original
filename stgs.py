@@ -1,4 +1,4 @@
-import os
+import os, sys
 import pygame
 import colors
 import math
@@ -6,11 +6,24 @@ import math
 TITLE = "The Caverns"
 
 #### Establishes file paths ####
-PATH = os.getcwd()
+try:
+    PATH = sys._MEIPASS
+except AttributeError:
+    PATH = os.getcwd()
+
 ASSETSPATH = os.path.join(PATH, 'assets')
 
-#### File for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
-saveFile = 'save.p'
+#### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
+if PATH == os.getcwd(): #Checks if game is running from local path or has gamedata stored in appdata
+    saveFile = os.path.join(PATH, 'save.p')
+else:
+    saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'save.p') # Gets save file from appdata
+    try:
+        with open(saveFile, 'r') as b:
+            b.close()       # Just Checks if the file exists
+    except FileNotFoundError:
+        os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
+print(saveFile)
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
 CAMLIMIT = True
@@ -29,9 +42,19 @@ def asset(assetName):
 
     return os.path.join(ASSETSPATH, assetName)
 
+def sAsset(assetName):
+    global ASSETSPATH
+
+    return os.path.join(ASSETSPATH, 'sounds', assetName)
+
+def fAsset(assetName):
+    global ASSETSPATH
+
+    return os.path.join(PATH, 'fonts', assetName)
+
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
-iconPath = 'assets/logo.png'
+iconPath = asset('logo.png')
 #### Anti-Aliasing on text ####
 aalias = True
 
@@ -84,18 +107,14 @@ class Spritesheet:
         return img
 
 if not __name__ == '__main__':
-    fonts = {'1': pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 40),
+    fonts = {'1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
             '2': pygame.font.SysFont('Comic Sans MS', 23),
-            '3': pygame.font.Font(os.path.join('fonts', 'PottaOne-Regular.ttf'), 32),
-            '4': pygame.font.Font(os.path.join('fonts', 'PottaOne-Regular.ttf'), 24),
-            '5': pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 60),
-            '6': pygame.font.Font(os.path.join('fonts', 'YuseiMagic-Regular.ttf'), 24),
+            '3': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 32),
+            '4': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
+            '5': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
+            '6': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
             }
 
-def sAsset(assetName):
-    global ASSETSPATH
-
-    return os.path.join(ASSETSPATH, 'sounds', assetName)
     
 DEBUG = True ## Not much use right now. Can be used to control try/except statement flows.
 
@@ -112,7 +131,7 @@ def loadSave(file):
             data = pickle.load(f)
             for k, v in data.items():
                 globals()[k] = v
-    except:
+    except FileNotFoundError:
         print("No Save File")
 
 def saveData(file, game):
