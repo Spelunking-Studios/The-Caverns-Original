@@ -39,7 +39,7 @@ def compendiumMenu(game):
             break
         
         text1 = fonts['1'].render("Project 0", game.antialiasing, colors.yellow)
-        text2 = text('4', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
+        text2 = Text('4', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
         game.win.blit(text1, (30,winHeight - 70))
         game.win.blit(text2.image, text2.pos)
 
@@ -57,10 +57,10 @@ def settingsMenu(game):
     fpsButton = button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = lambda:game.toggleFps() ,groups = [comps], center = True)
     aaliasButton = button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:game.toggleAalias() ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     texts = [
-        text('5', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
-        text('1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
-        text('6', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
-        text('6', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
+        Text('5', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
+        Text('1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
+        Text('6', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
+        Text('6', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
     ]
     def applyComps():
         game.mixer.setMusicVolume(audioSlider1.get_ratio())

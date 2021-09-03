@@ -134,11 +134,36 @@ class particles(pygame.sprite.Sprite):
             p.kill()
         super().kill()
 
+class playerParticles(particles):
+    def __init__(self, game, entity):
+        self.entity = entity
+        super().__init__(game, entity, size = 15, dirRange=(160, 200), tickSpeed=80)
+        self.setParticleKwargs(color=colors.grey, speed=1.5, size=(15,15), shrink=1.2, life=320)
+        self.step = 90
+
+    def update(self):
+        self.entityRect = self.entity.rect
+        super().update()
+  
+    def addParticles(self):
+        if len(self.particles) < self.size and pygame.time.get_ticks() - self.lastParticle >= self.tickSpeed:
+            try:
+                dir = self.entity.vel.normalize()
+                pos = pygame.Vector2(self.entityRect.center)
+                pos += dir.rotate(self.step) * 10
+                self.step*=-1
+                dir.rotate_ip(random.randint(self.dirRange[0], self.dirRange[1]))
+                self.particles.add(particle(self.game, dir, pos, self.particleKwargs))
+                self.lastParticle = pygame.time.get_ticks()
+            except:
+              pass
+ 
+
 class particle(pygame.sprite.Sprite):
     def __init__(self, game, dir, pos, kwargs):
         self.game = game
         self.groups = game.layer1
-        self.alpha = 255
+        #self.alpha = 255
         self.speed = 2.5
         self.shrink = 0.2
         self.life = 600
@@ -167,6 +192,7 @@ class particle(pygame.sprite.Sprite):
         self.render()
         if pygame.time.get_ticks() - self.init >= self.life:
             self.kill()
+        
 
 
 ### This is pretty pointless but eyy

@@ -20,7 +20,7 @@ class player(pygame.sprite.Sprite):
     lastHit = 0
     roomBound = True
     imgSheet = {'active': False, 'tileWidth': 64, 'r': False, 'l': False, 'idleR': False, 'flyR': False, 'flyL': False}
-    width, height = 32, 32
+    width, height = 48, 48
     health = 50
     maxHp = 50
     attempts = 0
@@ -44,8 +44,7 @@ class player(pygame.sprite.Sprite):
         self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
         self.lightScale.scale_to_length(1000)
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
-        #self.particleFx = fx.particles(self.game, self, size = 15,)
-        #self.particleFx.setParticleKwargs(color=colors.yellow, speed=5, shrink=0.6)
+        self.particleFx = fx.playerParticles(self.game, self)
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -125,8 +124,11 @@ class player(pygame.sprite.Sprite):
                 else: 
                     self.moveRect.top = collide.bottom
                 self.vel.y = 0
+
+            self.particleFx.hide = False
         else:
             self.vel = Vector2(0, 0)
+            self.particleFx.hide = True
 
         self.rect.center = self.moveRect.center
         self.vel = self.vel*self.drag

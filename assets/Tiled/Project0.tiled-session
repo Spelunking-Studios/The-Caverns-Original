@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 0.75,
+            "scale": 11,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 220,
-                "y": 1151.3333333333335
+                "x": 1600,
+                "y": 1599.909090909091
             }
         },
         "level1/level1.tmx": {
@@ -508,7 +508,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 288,
-                "y": 351.66666666666663
+                "y": 352
             }
         },
         "swordcon-basic.tsx": {
@@ -531,7 +531,7 @@
         "level1/level1.tmx"
     ],
     "project": "Project0.tiled-project",
-    "property.type": "object",
+    "property.type": "string",
     "recentFiles": [
         "level1/level1.tmx",
         "Project0-tileset1.tsx",

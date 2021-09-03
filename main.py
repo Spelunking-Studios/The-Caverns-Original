@@ -73,6 +73,7 @@ class game:
         self.pBullets = pygame.sprite.Group()
         self.eBullets = pygame.sprite.Group()
         self.items = pygame.sprite.Group()
+        self.lightSources = pygame.sprite.Group()
         self.levels = gameLevels
         self.player = player(self, asset('player/samplePlayer.png'), 'Cyber Man', imgSheet = 
             {'active': True, ## Will become deprecated but is usefulin current development. Allows use of sample image.
@@ -86,6 +87,7 @@ class game:
         self.pause = False
         self.pauseScreen = pauseOverlay(self)
         self.mapScreen = mapOverlay(self)
+        self.dialogueScreen = dialogueOverlay(self)
         self.time = 0
         self.updateT = pygame.time.get_ticks()
         self.cam = cam(self, winWidth, winHeight)
@@ -155,7 +157,7 @@ class game:
             for sprite in layer:
                 try:
                     self.win.blit(sprite.image, self.cam.apply(sprite))
-                except:
+                except AttributeError:
                     pass
         
         for fx in self.fxLayer:
@@ -182,6 +184,8 @@ class game:
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
         lightRect.center = self.cam.applyRect(self.player.moveRect).move(20, 20).topleft
         darkness.blit(self.player.lightSource, lightRect)
+        for sprite in self.lightSources:
+            darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
 
