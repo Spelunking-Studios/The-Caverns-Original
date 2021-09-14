@@ -7,25 +7,27 @@ from pygame import Vector2
 from animations import *
 from objects import *
 from stgs import *
+from overlay import transparentRect
 import fx
 
 
 #### Player object ####
 class player(pygame.sprite.Sprite):
-    x = 71
-    y = 71
-    yModMin = -0.12
-    yModMax = 0.25
-    hitCooldown = 500
-    lastHit = 0
-    roomBound = True
-    imgSheet = {'active': False, 'tileWidth': 64, 'r': False, 'l': False, 'idleR': False, 'flyR': False, 'flyL': False}
-    width, height = 48, 48
-    health = 50
-    maxHp = 50
-    attempts = 0
+    
     #### Player Initializations ####
-    def __init__(self, game, image, name, **kwargs):
+    def __init__(self, game, image, **kwargs):
+        # Modifiers
+        self.hitCooldown = 500
+        self.vel = Vector2(0, 0)
+        self.speed = 1
+        self.drag = 0.80
+        self.damage = 10
+        self.roomBound = True
+        self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png')}
+        self.width, self.height = 42, 42
+        self.health = 50
+        
+
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
 
@@ -34,10 +36,7 @@ class player(pygame.sprite.Sprite):
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
-        self.vel = Vector2(0, 0)
-        self.speed = 1
-        self.drag = 0.80
-        self.damage = 10
+        self.lastHit = 0
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
         self.lightImg = pygame.image.load(asset('objects/light2.png'))
@@ -53,22 +52,34 @@ class player(pygame.sprite.Sprite):
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
 
     def loadAnimations(self):
-        pass
-        #self.animations = animation(self)
-        #self.animations.scale(2, 3)
-        #self.animations.rotation = True
+        self.animations = playerAnimation(self)
+        self.animations.delay = 30
 
     #### Updates player ####
     def update(self):
         self.move()
         self.setAngle()
-        #self.animations.update()
+        self.checkActions()
+        self.animations.update()
+
+    def checkActions(self):
+        if checkKey("hit1"):
+            self.animations.setMode("hit")
+            self.attackDelay
+        
+        # for e in self.game.enemies:
+        #     try:
+        #         if pygame.sprite.collide_mask(self, e):
+        #             print("hit")
+        #     except:
+        #         pass
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
             self.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
+            self.animations.fx(hurtFx())
     
     def setAngle(self):
         mPos = pygame.Vector2(pygame.mouse.get_pos())  ## Gets mouse position and stores it in vector. This will be translated into the vector that moves the bullet
@@ -80,12 +91,12 @@ class player(pygame.sprite.Sprite):
         except ValueError:
             self.angle = 0
         self.angle -= 90
-        self.rotCenter()
+        # self.rotCenter()
 
     def rotCenter(self, angle=False):
         if not angle:
             angle = self.angle
-        self.image = pygame.transform.rotate(self.imgSrc, angle)
+        self.image = pygame.transform.rotate(self.image, angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
         self.mask = pygame.mask.from_surface(self.image, True)
     
@@ -137,11 +148,13 @@ class player(pygame.sprite.Sprite):
     def collideCheck(self):
         returnVal = False
         for obj in self.game.colliders:
-            #if isinstance(obj, rebound):
-                    #if self.maskCollide(obj.rect):
-            if self.moveRect.colliderect(obj.rect):
-                returnVal = obj.rect  
-            
+            if isinstance(obj, wall):
+                if self.moveRect.colliderect(obj.rect):
+                    returnVal = obj.rect  
+            else:
+                if pygame.sprite.collide_circle(self, obj):
+                    return obj.getCollider()
+
         return returnVal
     
     def maskCollide(self, rect2):
@@ -155,3 +168,11 @@ class player(pygame.sprite.Sprite):
         else:
             self.moveRect.topleft = tup
         self.rect = self.moveRect.copy()
+    
+    def getAttackMask(self):
+        img2 = self.image.copy()
+        img2.set_colorkey((0, 0, 0))
+        cutHole = transparentRect((50, 50), 0)
+        img2.blit(cutHole, cutHole.get_rect(center=self.image.get_rect().center), special_flags=pygame.BLEND_MULT)
+        self.mask = pygame.mask.from_surface(img2)
+        return img2

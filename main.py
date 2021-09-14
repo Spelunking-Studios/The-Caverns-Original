@@ -75,11 +75,7 @@ class game:
         self.items = pygame.sprite.Group()
         self.lightSources = pygame.sprite.Group()
         self.levels = gameLevels
-        self.player = player(self, asset('player/samplePlayer.png'), 'Cyber Man', imgSheet = 
-            {'active': True, ## Will become deprecated but is usefulin current development. Allows use of sample image.
-            'tileWidth': 64, 
-            'r': asset('player//samplePlayer.png'), 
-            })
+        self.player = player(self, asset('player/samplePlayer.png'))
             
         self.player.gravity = self.gravity
         self.end = False
@@ -104,7 +100,7 @@ class game:
             self.gameOver()
 
     #### Controls how the levels will load ####
-    def loadLevel(self, levelNum, *args):  
+    def loadLevel(self, levelNum, *args):
 
         try:
             for obj in self.level.sprites:
@@ -147,7 +143,6 @@ class game:
         
         self.render()
 
-        
         pygame.display.update()
 
     def render(self):
@@ -157,6 +152,7 @@ class game:
             for sprite in layer:
                 try:
                     self.win.blit(sprite.image, self.cam.apply(sprite))
+                    pygame.draw.rect(self.win, (200, 0, 0), sprite.rect)
                 except AttributeError:
                     pass
         
@@ -178,6 +174,8 @@ class game:
         if self.showFps:
             fpsText = fonts['6'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
+        
+        self.win.blit(self.player.getAttackMask(), (0, 0))
         
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))

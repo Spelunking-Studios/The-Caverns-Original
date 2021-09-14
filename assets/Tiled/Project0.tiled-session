@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 11,
+            "scale": 5.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1600,
-                "y": 1599.909090909091
+                "x": 183.09090909090912,
+                "y": 568.4545454545455
             }
         },
         "level1/level1.tmx": {

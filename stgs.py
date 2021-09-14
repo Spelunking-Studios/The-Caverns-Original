@@ -59,7 +59,7 @@ iconPath = asset('logo.png')
 aalias = True
 
 #### Defines what key binding is set for each action ####
-keySet = {'start': pygame.K_s,'retry':[pygame.K_r], 'toggleCam': pygame.K_c, 'map': pygame.K_m, 'interact':pygame.K_SPACE, 'pRight': [pygame.K_RIGHT, pygame.K_d], 'pLeft': [pygame.K_LEFT, pygame.K_a], 'pUp': [pygame.K_UP, pygame.K_w], 'pDown':[pygame.K_DOWN, pygame.K_s],'fullScreen': pygame.K_f, 'pause': pygame.K_p}
+keySet = {'start': pygame.K_s,'retry':[pygame.K_r], 'toggleCam': pygame.K_o, 'map': pygame.K_m, 'interact':pygame.K_c, 'hit1':pygame.K_SPACE, 'pRight': [pygame.K_RIGHT, pygame.K_d], 'pLeft': [pygame.K_LEFT, pygame.K_a], 'pUp': [pygame.K_UP, pygame.K_w], 'pDown':[pygame.K_DOWN, pygame.K_s],'fullScreen': pygame.K_f, 'pause': pygame.K_p}
 
 #### Changes movement from flying to platforming ####
 platformer = True
@@ -86,14 +86,11 @@ def checkKey(move):
 
 class Spritesheet:
     # utility class for loading and parsing spritesheets
-    def __init__(self, filePath, *args):
-        if len(args) > 0:
-            if args[0]:
-                self.image = filePath
-            else:
-                self.image = pygame.image.load(filePath)
-        else:
+    def __init__(self, filePath):
+        try:
             self.image = pygame.image.load(filePath)
+        except TypeError:
+            self.image = filePath.copy()
         
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -149,3 +146,6 @@ def tGet(objT, strValue, default=False):
         return objT.properties[strValue]
     except KeyError:
         return default
+
+def now():
+    return pygame.time.get_ticks()

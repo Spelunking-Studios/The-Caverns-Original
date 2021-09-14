@@ -1,6 +1,98 @@
 import pygame
 from stgs import *
 
+
+class rotAnimation:
+    #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
+    def __init__(self, sprite, imgSheet):
+        self.sprite = sprite
+        self.framex = 0
+        self.delay = 120
+        self.scalex, self.scaley = 1,1
+        self.imgSheet = Spritesheet(imgSheet)
+        self.tileSize = self.imgSheet.height
+        self.tileWidth, self.tileHeight = self.tileSize, self.tileSize
+        self.lastTick = pygame.time.get_ticks()
+        self.imageEffects = pygame.sprite.Group()
+
+    def update(self):
+        if pygame.time.get_ticks() - self.lastTick >= self.delay:
+            self.framex += self.tileWidth
+            self.lastTick = pygame.time.get_ticks()
+            if self.framex > int(self.imgSheet.width - self.tileWidth):
+                self.framex = 0
+        self.sprite.image = self.imgSheet.get_image(self.framex, 0, self.tileWidth, self.tileHeight)
+        if not self.scalex == 1 or not self.scaley == 1:
+            self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileWidth*self.scalex, self.tileHeight*self.scaley))
+        self.sprite.rotCenter()
+        self.applyFx()
+
+
+    def scale(self, x, y=None):
+        if y==None:
+            self.scalex, self.scaley = x,x
+        else:
+            self.scalex, self.scaley = x,y
+    
+        
+    def applyFx(self):
+        for fx in self.imageEffects:
+            fx.update(self.sprite.image)
+    
+    def fx(self, fx):
+        self.imageEffects.add(fx)
+
+class playerAnimation:
+    #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
+    def __init__(self, sprite):
+        self.sprite = sprite
+        self.framex = 0
+        self.delay = 120
+        self.scalex, self.scaley = 1,1
+        self.imgSheet = sprite.imgSheet
+        self.mode = "default"
+        self.lastTick = pygame.time.get_ticks()
+        self.imageEffects = pygame.sprite.Group()
+        
+        for k, v in self.imgSheet.items():
+            self.imgSheet[k] = Spritesheet(v)
+
+        self.tileSize = self.imgSheet[self.mode].height
+
+    def update(self):
+        if pygame.time.get_ticks() - self.lastTick >= self.delay:
+            self.framex += self.tileSize
+            self.lastTick = pygame.time.get_ticks()
+            if self.framex > int(self.imgSheet[self.mode].width - self.tileSize):
+                self.framex = 0
+                if self.mode != "default":
+                    self.setMode()
+        self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
+        if not self.scalex == 1 or not self.scaley == 1:
+            self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))
+        self.sprite.rotCenter()
+        self.applyFx()
+
+    def scale(self, x, y=None):
+        if y==None:
+            self.scalex, self.scaley = x,x
+        else:
+            self.scalex, self.scaley = x,y
+        
+    def applyFx(self):
+        for fx in self.imageEffects:
+            fx.update(self.sprite.image)
+    
+    def fx(self, fx):
+        self.imageEffects.add(fx)
+    
+    def setMode(self, mode="default"):
+        if mode in self.imgSheet:
+            self.mode = mode
+        else:
+            print(f"mode {mode} does not exist for this sprite")
+        self.tileSize = self.imgSheet[self.mode].height
+
 class animation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     ## Full image sheet can contain: 'active', 'tileWidth', 'tileHeight', 'r', 'l', 'idleR', 'idleL','flyR', 'flyL'
@@ -129,13 +221,15 @@ class animation:
             self.scalex, self.scaley = x,y
 
 class hurtFx(pygame.sprite.Sprite):
-    def __init__(self, duration = 100):
+    def __init__(self, duration = 300):
+        pygame.sprite.Sprite.__init__(self)
         self.start = pygame.time.get_ticks()
         self.duration = duration
 
     def update(self, image):
-        if pygame.time.get_ticks() - self.start < duration:
-            darkness = min(255, max(0, round(255 * (lastHit/duration))))
+        time = pygame.time.get_ticks() - self.start
+        if time < self.duration:
+            darkness = min(255, max(0, round(255 * (time/self.duration))))
             image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
         else:
             self.kill()

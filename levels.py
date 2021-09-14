@@ -68,7 +68,7 @@ class level:
 
             except KeyError:
                 try:
-                    enemy = enemies.__dict__[objT.name]
+                    enemy = enemies.Enemy
                     if not objT.type == None:
                         try:
                             for cl in enemy.__subclasses__():

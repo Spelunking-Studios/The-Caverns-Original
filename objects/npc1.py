@@ -43,6 +43,11 @@ class npc1(pygame.sprite.Sprite):
     def setAngle(self):
         self.rotCenter()
 
+    def getCollider(self):
+        collideRect = pygame.Rect(0, 0, 20, 20)
+        collideRect.center = self.rect.center
+        return collideRect
+
     def rotCenter(self, angle=False):
         if not angle:
             angle = self.angle

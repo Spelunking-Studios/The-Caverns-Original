@@ -1,6 +1,6 @@
 from .eBullet import *
 from .enemy import *
-from .goblin import *
+from .zombie import *
 from .tormentor import *
 
 
