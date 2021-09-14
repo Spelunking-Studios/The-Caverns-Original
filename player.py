@@ -65,7 +65,7 @@ class player(pygame.sprite.Sprite):
     def checkActions(self):
         if checkKey("hit1"):
             self.animations.setMode("hit")
-            self.attackDelay
+            #self.attackDelay
         
         # for e in self.game.enemies:
         #     try:
