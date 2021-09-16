@@ -1,7 +1,3 @@
-import depend
-
-depend.loadDependancies()
-
 import pygame
 
 pygame.init()

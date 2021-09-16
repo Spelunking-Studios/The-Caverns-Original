@@ -9,6 +9,7 @@ from objects import *
 from stgs import *
 from overlay import transparentRect
 import fx
+import stats
 
 
 #### Player object ####
@@ -26,7 +27,6 @@ class player(pygame.sprite.Sprite):
         self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
-        
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -36,6 +36,7 @@ class player(pygame.sprite.Sprite):
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
+        self.stats = stats.PlayerStats
         self.lastHit = 0
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
