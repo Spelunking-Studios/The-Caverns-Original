@@ -26,6 +26,8 @@ class Enemy(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
     def update(self):
+        if self.health <= 0:
+            self.kill()
         self.move()
 
     ## Vertical or horizontal movement

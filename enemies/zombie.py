@@ -80,7 +80,7 @@ class zombie(enemy.Enemy):
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
 
     def takeDamage(self, damage):
-        if pygame.time.get_ticks() - self.lastHit >= 200:
+        if pygame.time.get_ticks() - self.lastHit >= 260:
             self.health -= damage
             self.animations.fx(hurtFx())
             self.lastHit = pygame.time.get_ticks()

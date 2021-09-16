@@ -91,6 +91,7 @@ class game:
     ####  Determines how the run will function ####
     def run(self):
         self.menuLoop()
+        print("yay")
         #self.mixer.playMusic(asset('sounds/track 1.wav'))
         self.mainLoop()
         self.mixer.stop()
@@ -175,7 +176,7 @@ class game:
             fpsText = fonts['6'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
         
-        self.win.blit(self.player.getAttackMask(), (0, 0))
+        # self.win.blit(self.player.getAttackMask(), (0, 0))
         
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))

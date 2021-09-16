@@ -36,8 +36,9 @@ class player(pygame.sprite.Sprite):
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
-        self.stats = stats.PlayerStats
+        self.stats = stats.PlayerStats()
         self.lastHit = 0
+        self.lastAttack = 0
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
         self.lightImg = pygame.image.load(asset('objects/light2.png'))
@@ -62,18 +63,21 @@ class player(pygame.sprite.Sprite):
         self.setAngle()
         self.checkActions()
         self.animations.update()
+        self.weaponCollisions()
 
     def checkActions(self):
-        if checkKey("hit1"):
+        now = pygame.time.get_ticks()
+        if now - self.lastAttack >= self.stats.atkSpeed and pygame.mouse.get_pressed()[0]:
             self.animations.setMode("hit")
-            #self.attackDelay
-        
-        # for e in self.game.enemies:
-        #     try:
-        #         if pygame.sprite.collide_mask(self, e):
-        #             print("hit")
-        #     except:
-        #         pass
+            self.lastAttack = now
+            
+    def weaponCollisions(self):
+        if self.animations.mode == "hit":
+            for e in self.game.enemies:
+                if hasattr(e, 'image'):
+                    if pygame.sprite.collide_mask(self, e):
+                        e.takeDamage(self.stats.atkDamage)
+                        print(e.health)
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:

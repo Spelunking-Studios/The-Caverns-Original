@@ -30,7 +30,7 @@ class PlayerStats(Stats):
 			speed=15,
 			atkDamage=10,
 			atkVariance=2,
-			atkSpeed=200, # This is a delay in milliseconds
+			atkSpeed=300, # This is a delay in milliseconds
 		)
 
 # zomb = Stats(atkDamage=3)

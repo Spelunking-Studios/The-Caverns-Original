@@ -9,7 +9,7 @@ fx = {
     'launch1': [asset('sounds/random5.wav'), 0],
     'hit1': [sAsset('random3.wav'), 0],
     'hit2': [sAsset('random2.wav'), 0],
-    'pHit': [asset('sounds/Hit_02.mp3'), 0.2],
+    'pHit': [sAsset('sounds/Hit_02.mp3'), 0.2],
     'menu1':[sAsset('switch10.wav'), 0],
     'menu2': [sAsset('mouseclick1.wav'), 0],
     'menu3': [sAsset('misc_menu_3.wav'), 0.1],
