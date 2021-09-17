@@ -137,8 +137,8 @@ class particles(pygame.sprite.Sprite):
 class playerParticles(particles):
     def __init__(self, game, entity):
         self.entity = entity
-        super().__init__(game, entity, size = 15, dirRange=(160, 200), tickSpeed=80)
-        self.setParticleKwargs(color=colors.grey, speed=1.5, size=(15,15), shrink=1.2, life=320)
+        super().__init__(game, entity, size = 6, dirRange=(140, 220), tickSpeed=80)
+        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=-0.2, size=(15,15), shrink=0.5, life=200)
         self.step = 90
 
     def update(self):

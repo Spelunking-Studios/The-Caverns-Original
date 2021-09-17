@@ -8,8 +8,8 @@ pygame.mixer.pre_init(44100, -16, 2, 2048)
 fx = {
     'launch1': [asset('sounds/random5.wav'), 0],
     'hit1': [sAsset('random3.wav'), 0],
-    'hit2': [sAsset('random2.wav'), 0],
-    'pHit': [sAsset('sounds/Hit_02.mp3'), 0.2],
+    'hit2': [sAsset('random2.wav'), 0.2],
+    'pHit': [asset('sounds/Hit_02.mp3'), 0.2],
     'menu1':[sAsset('switch10.wav'), 0],
     'menu2': [sAsset('mouseclick1.wav'), 0],
     'menu3': [sAsset('misc_menu_3.wav'), 0.1],
@@ -47,15 +47,16 @@ class gameMixer:
         sound.play()
 
     def playFx(self, key):
-        try:
-            sound = pygame.mixer.Sound(self.fx[key][0])
-            if self.fx[key][1] > 0:
-                sound.set_volume(min(self.fxVolume + self.fx[key][1], 1))
-            else:
-                sound.set_volume(max(self.fxVolume + self.fx[key][1], 0))
-            sound.play()
-        except KeyError:
-            print("Sound not registered. Maybe you meant playFxFile(*file)")
+        if not self.fxVolume == 0:
+            try:
+                sound = pygame.mixer.Sound(self.fx[key][0])
+                if self.fx[key][1] > 0:
+                    sound.set_volume(min(self.fxVolume + self.fx[key][1], 1))
+                else:
+                    sound.set_volume(max(self.fxVolume + self.fx[key][1], 0))
+                sound.play()
+            except KeyError:
+                print("Sound not registered. Maybe you meant playFxFile(*file)")
 
     def playMusic(self, sfile):
         sound = pygame.mixer.Sound(sfile)

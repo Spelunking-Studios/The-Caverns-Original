@@ -80,13 +80,13 @@ class zombie(enemy.Enemy):
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
 
     def takeDamage(self, damage):
-        if pygame.time.get_ticks() - self.lastHit >= 260:
-            self.health -= damage
-            self.animations.fx(hurtFx())
-            self.lastHit = pygame.time.get_ticks()
+        self.health -= damage
+        self.animations.fx(hurtFx())
+        self.game.mixer.playFx('hit1')
+        self.lastHit = pygame.time.get_ticks()
 
-    def deathSound(self):
-        self.game.mixer.playFx('hit2')
+    # def deathSound(self):
+    #     self.game.mixer.playFx('hit2')
         
     def kill(self):
         fx.particles(self.game, self.rect, lifeSpan = 400, tickSpeed=2, size = 14).setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.red)

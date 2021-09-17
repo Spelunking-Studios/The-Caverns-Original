@@ -67,17 +67,20 @@ class player(pygame.sprite.Sprite):
 
     def checkActions(self):
         now = pygame.time.get_ticks()
-        if now - self.lastAttack >= self.stats.atkSpeed and pygame.mouse.get_pressed()[0]:
-            self.animations.setMode("hit")
-            self.lastAttack = now
+        if pygame.mouse.get_pressed()[0]:
+            self.stats.inventory.getSlot(1).action(self)
+        elif pygame.mouse.get_pressed()[2]:
+            self.stats.inventory.getSlot(2).action(self)
+            
             
     def weaponCollisions(self):
         if self.animations.mode == "hit":
             for e in self.game.enemies:
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
-                        e.takeDamage(self.stats.atkDamage)
-                        print(e.health)
+                        if pygame.time.get_ticks() - e.lastHit >= 260:
+                            e.takeDamage(self.stats.attack())
+                        #print(e.health)
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:

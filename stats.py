@@ -1,5 +1,6 @@
 import pygame
 from random import randint
+import objects
 
 class Stats:
 	def __init__(self, **kwargs):
@@ -28,10 +29,24 @@ class PlayerStats(Stats):
 			health=40,
 			strength=0,
 			speed=15,
-			atkDamage=10,
-			atkVariance=2,
-			atkSpeed=300, # This is a delay in milliseconds
+			atkDamage=0,
+			atkVariance=1,
+			atkSpeed=340, # This is a delay in milliseconds
+			crit=10, # This is a percent out of 100 (make sure its an integer)
+			critBonus = 150, # This is a percent
 		)
+		self.inventory = Inventory(objects.sword1(), objects.sword1())
+	
+	def attack(self): # The index here just means which hotbar number the action is
+		dmg = self.inventory.getCurrent().damage + self.strength/5
+		atkVar = self.atkVariance + self.inventory.getCurrent().atkVariance
+		if randint(0, 100) <= self.crit:
+			damage = randint(max(0, int((dmg-atkVar)*(self.critBonus/100))), int((dmg+atkVar)*(self.critBonus/100)))
+			print("DAMN YOU HIT A CRITICAL")
+		else:
+			damage = randint(max(0, dmg-atkVar), dmg+atkVar)
+		print(damage)
+		return damage
 
 # zomb = Stats(atkDamage=3)
 # print(zomb.attack())
@@ -40,6 +55,7 @@ class Inventory:
 	def __init__(self, *args, **kwargs):#sprite, *args, **kwargs):
 		self.slotMax = 5
 		self.slots = {}
+		self.slotFocus = 1
 		#self.sprite = sprite
 		for k, v in kwargs.items():
 			self.__dict__[k] = v
@@ -49,22 +65,25 @@ class Inventory:
 				self.slots[x] = args[x-1]
 			except:
 				self.slots[x] = None
-		
-		print(self.slots)
 
 	def setSlot(self, index, item=None):
 		if not index > self.slotMax:
 			self.slots[index] = item
+		self.slotFocus = index
 
 	def getSlot(self, index):
 		if not index > self.slotMax:
 			return self.slots[index]
+		self.slotFocus = index
 	
 	def getIndex(self, item):
 		for k,v in self.slots.items():
 			if v == item:
 				return k
 		return None
+	
+	def getCurrent(self):
+		return self.slots[self.slotFocus]
 	
 	def expand(self, increase, *args):
 		for x in range(self.slotMax, self.slotMax+increase):
