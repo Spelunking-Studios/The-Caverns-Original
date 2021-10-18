@@ -1,5 +1,5 @@
 from stgs import *
-from animations import animation
+#from animations import animation
 import colors
 import random
 
@@ -96,6 +96,7 @@ class particles(pygame.sprite.Sprite):
         self.lifeSpan = False
         self.hide = False
         self.particleKwargs = {}
+        self.particleType = particle
         self.dirRange = (0, 360)
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -118,7 +119,7 @@ class particles(pygame.sprite.Sprite):
 
     def addParticles(self):
         if len(self.particles) < self.size and pygame.time.get_ticks() - self.lastParticle >= self.tickSpeed:
-            self.particles.add(particle(self.game, pygame.Vector2(1, 0).rotate(random.randint(self.dirRange[0], self.dirRange[1])), pygame.Vector2(self.entityRect.center), self.particleKwargs))
+            self.particles.add(self.particleType(self.game, pygame.Vector2(1, 0).rotate(random.randint(self.dirRange[0], self.dirRange[1])), pygame.Vector2(self.entityRect.center), self.particleKwargs))
             self.lastParticle = pygame.time.get_ticks()
 
     def setParticleKwargs(self, **kwargs):
@@ -138,7 +139,7 @@ class playerParticles(particles):
     def __init__(self, game, entity):
         self.entity = entity
         super().__init__(game, entity, size = 6, dirRange=(140, 220), tickSpeed=80)
-        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=-0.2, size=(15,15), shrink=0.5, life=200)
+        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=entity.vel.length()/-1.1, size=(15,15), shrink=0.5, life=200)
         self.step = 90
 
     def update(self):
@@ -153,11 +154,32 @@ class playerParticles(particles):
                 pos += dir.rotate(self.step) * 10
                 self.step*=-1
                 dir.rotate_ip(random.randint(self.dirRange[0], self.dirRange[1]))
-                self.particles.add(particle(self.game, dir, pos, self.particleKwargs))
+                self.particles.add(self.particleType(self.game, dir, pos, self.particleKwargs))
                 self.lastParticle = pygame.time.get_ticks()
             except:
               pass
  
+class combatParticles(particles):
+    def __init__(self, game, entity):
+        self.entity = entity
+        super().__init__(game, entity, dirRange=(140, 220), tickSpeed=80, particleType=numParticle)
+        print(self.particles)
+        self.partColor = colors.rgba(colors.white, 120)
+        self.critColor = colors.yellow
+        self.setParticleKwargs(color=self.partColor, speed=2, size=(40,40), shrink=0.5, life=600, groups = game.layer2)
+        self.particleType = numParticle
+        self.step = 90
+
+    def update(self):
+        self.entityRect = self.entity.rect
+        self.particles.update()
+
+    def particle(self, pos, num=0, crit=False):
+        partKwargs = self.particleKwargs.copy()
+        partKwargs['num'] = num
+        partKwargs['color'] = self.critColor if crit else self.partColor
+        self.particles.add(self.particleType(self.game, pygame.Vector2(1, 0).rotate(random.randint(self.dirRange[0], self.dirRange[1])), pos, partKwargs))
+
 
 class particle(pygame.sprite.Sprite):
     def __init__(self, game, dir, pos, kwargs):
@@ -165,15 +187,17 @@ class particle(pygame.sprite.Sprite):
         self.groups = game.layer1
         #self.alpha = 255
         self.speed = 2.5
+        self.drag = 1
         self.shrink = 0.2
         self.life = 600
         self.color = colors.red
         self.size = (10, 10)
         self.dir = dir
         self.pos = pos
-        pygame.sprite.Sprite.__init__(self, self.groups)
+
         for k, v in kwargs.items():
             self.__dict__[k] = v
+        pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.init = pygame.time.get_ticks()
         self.rect = pygame.Rect(0, 0, self.size[0], self.size[1])
@@ -187,13 +211,32 @@ class particle(pygame.sprite.Sprite):
 
     def update(self):
         self.pos += self.dir*self.speed
+        self.speed *= self.drag
         self.rect.center = self.pos.x, self.pos.y
         self.w -= self.shrink
         self.render()
         if pygame.time.get_ticks() - self.init >= self.life:
             self.kill()
-        
 
+class numParticle(particle):
+    def __init__(self, game, dir, pos, kwargs):
+        self.num = 0
+        self.font = fonts['7']
+        super().__init__(game, dir, pos, kwargs)
+        self.drag = 0.90
+        self.shrink = 0
+
+    def render(self):
+        self.image = pygame.surface.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
+        self.image.blit(self.font.render(str(self.num), self.game.antialiasing, self.color), (0, 0))
+    
+    def update(self):
+        self.pos += self.dir*self.speed
+        self.speed *= self.drag
+        self.rect.center = self.pos.x, self.pos.y
+        self.render()
+        if pygame.time.get_ticks() - self.init >= self.life:
+            self.kill()
 
 ### This is pretty pointless but eyy
 class highlight(pygame.sprite.Sprite):

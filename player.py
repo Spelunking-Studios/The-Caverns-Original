@@ -20,7 +20,7 @@ class player(pygame.sprite.Sprite):
         # Modifiers
         self.hitCooldown = 500
         self.vel = Vector2(0, 0)
-        self.speed = 1
+        self.speed = 1*deltaConst
         self.drag = 0.80
         self.damage = 10
         self.roomBound = True
@@ -46,6 +46,10 @@ class player(pygame.sprite.Sprite):
         self.lightScale.scale_to_length(1000)
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
         self.particleFx = fx.playerParticles(self.game, self)
+        self.combatParts = fx.combatParticles(game, self)
+
+        if joystickEnabled:
+            self.cursor = cursor()
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -64,33 +68,43 @@ class player(pygame.sprite.Sprite):
         self.checkActions()
         self.animations.update()
         self.weaponCollisions()
+        if joystickEnabled:
+            self.cursor.update()
 
     def checkActions(self):
         now = pygame.time.get_ticks()
-        if pygame.mouse.get_pressed()[0]:
+        action1 = getJoy1().get_axis(5) > 0 if joystickEnabled else pygame.mouse.get_pressed()[0] and self.stats.inventory.getSlot(1) != None
+        action2 = getJoy1().get_axis(4) > 0 if joystickEnabled else pygame.mouse.get_pressed()[0] and self.stats.inventory.getSlot(2) != None
+
+        if action1:
             self.stats.inventory.getSlot(1).action(self)
-        elif pygame.mouse.get_pressed()[2]:
+        elif action2:
             self.stats.inventory.getSlot(2).action(self)
             
             
     def weaponCollisions(self):
         if self.animations.mode == "hit":
-            for e in self.game.enemies:
+            for e in self.game.enemyInProximity(300):
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
-                            e.takeDamage(self.stats.attack())
+                            dmg = self.stats.attack()
+                            e.takeDamage(dmg[0])
+                            self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
                         #print(e.health)
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
-            self.health -= damage
+            self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
             self.animations.fx(hurtFx())
     
     def setAngle(self):
-        mPos = pygame.Vector2(pygame.mouse.get_pos())  ## Gets mouse position and stores it in vector. This will be translated into the vector that moves the bullet
+        if joystickEnabled:
+            mPos = Vector2(self.cursor.pos)
+        else:
+            mPos = pygame.Vector2(pygame.mouse.get_pos())  ## Gets mouse position and stores it in vector. This will be translated into the vector that moves the bullet
         pPos = self.game.cam.apply(self)  ## Gets actual position of player on screen
         mPos.x -= pPos.centerx ## Finds the x and y relativity between the mouse and player and then calculates the offset
         mPos.y -= pPos.centery
@@ -113,14 +127,18 @@ class player(pygame.sprite.Sprite):
 
     #### Move Physics ####
     def move(self):
-        if checkKey('pRight'):
-            self.vel.x += self.speed
-        if checkKey('pLeft'):
-            self.vel.x -= self.speed
-        if checkKey('pUp'):
-            self.vel.y -= self.speed
-        if checkKey('pDown'):
-            self.vel.y += self.speed
+        if joystickEnabled:
+            self.vel.x += self.speed*getJoy1().get_axis(0)
+            self.vel.y += self.speed*getJoy1().get_axis(1)
+        else:
+            if checkKey('pRight'):
+                self.vel.x += self.speed
+            if checkKey('pLeft'):
+                self.vel.x -= self.speed
+            if checkKey('pUp'):
+                self.vel.y -= self.speed
+            if checkKey('pDown'):
+                self.vel.y += self.speed
 
         lim = 8
         if self.vel.length() > 0.1: # We can't limit a 0 vector 
@@ -159,9 +177,9 @@ class player(pygame.sprite.Sprite):
             if isinstance(obj, wall):
                 if self.moveRect.colliderect(obj.rect):
                     returnVal = obj.rect  
-            else:
-                if pygame.sprite.collide_circle(self, obj):
-                    return obj.getCollider()
+            # else:
+            #     if pygame.sprite.collide_circle(self, obj):
+            #         return obj.getCollider()
 
         return returnVal
     
@@ -183,4 +201,19 @@ class player(pygame.sprite.Sprite):
         cutHole = transparentRect((50, 50), 0)
         img2.blit(cutHole, cutHole.get_rect(center=self.image.get_rect().center), special_flags=pygame.BLEND_MULT)
         self.mask = pygame.mask.from_surface(img2)
-        return img2
+        #return img2
+
+class cursor:
+    def __init__(self, xy=(500, 1)):
+        self.pos = Vector2(xy)
+        self.speed = 25
+        self.size = Vector2(6, 6)
+    
+    def update(self):
+        movex = self.speed*getJoy1().get_axis(2)
+        movey = self.speed*getJoy1().get_axis(3)
+        self.pos.x += movex if abs(getJoy1().get_axis(2)) > 0.5 else 0
+        self.pos.y += movey if abs(getJoy1().get_axis(3)) > 0.5 else 0
+        
+        self.pos.x = max(0, min(self.pos.x, winWidth-self.size.x))
+        self.pos.y = max(0, min(self.pos.y, winHeight-self.size.y))

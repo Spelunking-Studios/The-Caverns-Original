@@ -1,6 +1,5 @@
-import math
 import random
-
+# Not all of these are required but are handy
 import fx
 import pygame
 from animations import *
@@ -9,23 +8,23 @@ from player import *
 from stgs import *
 
 from . import enemy
-from .eBullet import enemyBullet
 
-class zombie(enemy.Enemy):
+class ankheg(enemy.Enemy):
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
 
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.vel = pygame.Vector2(0, 0)
-        self.rect = pygame.Rect(0, 0, 32, 32)
+        self.rect = pygame.Rect(0, 0, 153, 180)
         self.speed = 2*deltaConst
         self.health = 20
+        self.lastHit = 0
         self.lastShoot = now()
         self.lastAttack = now()
         self.attackDelay = 360
         self.shootRate = random.randrange(2500, 5000, 50)
-        self.animations = rotAnimation(self, asset('enemies/zombie1.png'))
+        self.animations = rotAnimation(self, asset('enemies/ankheg.png'))
         self.animations.delay = 60
         self.angle = 0
     
@@ -63,7 +62,7 @@ class zombie(enemy.Enemy):
                 except ValueError:
                     self.angle = 0
                     self.vel = pygame.Vector2(0, 0)
-                self.angle -= 90
+                self.angle += 90
             else:
                 self.vel = pygame.Vector2(0, 0)
                 if now()-self.lastAttack >= self.attackDelay:
@@ -84,12 +83,6 @@ class zombie(enemy.Enemy):
         self.image = pygame.transform.rotate(self.image, angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
 
-    def takeDamage(self, damage):
-        self.health -= damage
-        self.animations.fx(hurtFx())
-        self.game.mixer.playFx('hit1')
-        self.lastHit = pygame.time.get_ticks()
-
     # def deathSound(self):
     #     self.game.mixer.playFx('hit2')
         
@@ -100,4 +93,3 @@ class zombie(enemy.Enemy):
     def update(self):
         super().update()
         self.animations.update()
-        

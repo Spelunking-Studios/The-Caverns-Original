@@ -18,7 +18,13 @@ class Text:
             for line in words:
                 for word in line:
                     if word  != '':
-                        word_surface = font.render(word, aalias, color)
+                        if word[0:3] == "RGB":
+                            wordsplit = word[4:].split(')')
+                            word_color = tuple([int(x) for x in wordsplit[0].split(',')])
+                            word = wordsplit[1]
+                        else:
+                            word_color = color
+                        word_surface = font.render(word, aalias, word_color)
                         word_width, word_height = word_surface.get_size()
                         if x + word_width >= max_width:
                             x = 0  # Reset the x.
@@ -41,7 +47,7 @@ class Text:
 def transparentRect(size, alpha, color=(0, 0, 0)):
     surf = pygame.Surface(size, pygame.SRCALPHA)
     surf.fill((color[0], color[1], color[2], alpha))
-    return surf 
+    return surf.convert_alpha() 
 
 class pauseOverlay(pygame.sprite.Sprite):
     def __init__(self, game):

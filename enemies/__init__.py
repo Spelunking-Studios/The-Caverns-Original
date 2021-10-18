@@ -1,3 +1,4 @@
+from .ankheg import *
 from .eBullet import *
 from .enemy import *
 from .zombie import *

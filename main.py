@@ -6,6 +6,8 @@ import random
 import sys
 
 from stgs import *
+loadSave(saveFile)
+from stgs import *
 from camera import *
 from fx import *
 from levels import *
@@ -15,9 +17,7 @@ from overlay import *
 from player import *
 from sfx import *
 import menus
-
-loadSave(saveFile)
-from stgs import *
+import hud
 
 
 #### Game object ####
@@ -43,7 +43,7 @@ class game:
         self.antialiasing = aalias
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
-        self.win = pygame.display.set_mode((winWidth, winHeight))
+        self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
         self.font1 = pygame.font.Font(fAsset('PixelLove.ttf'), 48)
@@ -58,6 +58,7 @@ class game:
         self.gravity = 1.6
         self.currentFps = 0
         self.showFps = SHOWFPS
+        self.joystickDisabled = joystickDisabled
         self.fullScreen = False
         self.clock = pygame.time.Clock()
         self.new()
@@ -84,6 +85,7 @@ class game:
         self.pauseScreen = pauseOverlay(self)
         self.mapScreen = mapOverlay(self)
         self.dialogueScreen = dialogueOverlay(self)
+        self.statsInfo = hud.statHud(self)
         self.time = 0
         self.updateT = pygame.time.get_ticks()
         self.cam = cam(self, winWidth, winHeight)
@@ -119,6 +121,13 @@ class game:
         #    print("No player Pos")
 
         self.time = 0
+
+    def enemyInProximity(self, proximity=300): # This function is necessary for framerate saving when attacking with a weapon meshw 
+        returnList = []
+        for e in self.enemies:
+            if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(self.player.rect.center)) <= proximity:
+                returnList.append(e)
+        return returnList
 
     #### Main game loop ####
     def mainLoop(self):
@@ -164,7 +173,7 @@ class game:
 
         for sprite in self.hudLayer:
             self.win.blit(sprite.image, sprite.rect)
-
+        
         for sprite in self.overlayer:
             try:
                 if sprite.active:
@@ -175,6 +184,11 @@ class game:
         if self.showFps:
             fpsText = fonts['6'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
+        
+        if joystickEnabled:
+            pos = self.player.cursor.pos
+            size = self.player.cursor.size
+            pygame.draw.rect(self.win, (200, 0, 0), (pos.x, pos.y, size.x, size.y))
         
         # self.win.blit(self.player.getAttackMask(), (0, 0))
         
@@ -279,6 +293,7 @@ class game:
                         pygame.display.set_icon(pygame.image.load(iconPath))
                     else:
                         self.quit()
+
         self.getFullScreen()
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
@@ -296,6 +311,9 @@ class game:
             self.showFps = False
         else:
             self.showFps = True
+    
+    def disableJoystick(self):
+        self.joystickDisabled = False if self.joystickDisabled else True
 
     def toggleAalias(self):
         if self.antialiasing:
@@ -309,10 +327,10 @@ class game:
         keys = pygame.key.get_pressed()
         if keys[keySet['fullScreen']]:
             if self.fullScreen:
-                self.win = pygame.display.set_mode((winWidth, winHeight))
+                self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False
             else:
-                self.win = pygame.display.set_mode((winWidth, winHeight), pygame.FULLSCREEN)
+                self.win = pygame.display.set_mode((winWidth, winHeight), winFlags | pygame.FULLSCREEN)
                 self.fullScreen = True
             pygame.display.set_icon(pygame.image.load(iconPath))
             #pygame.display.toggle_fullscreen()

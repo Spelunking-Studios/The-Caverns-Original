@@ -31,6 +31,8 @@ SHOWFPS = True
 
 #### FPS BOIS ####
 FPS = 60
+delta = 1/FPS
+deltaConst = delta/(1/60)
 
 #### Volumes ####
 musicVolume = 1
@@ -54,7 +56,10 @@ def fAsset(assetName):
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
+winFlags = pygame.SCALED | pygame.HWSURFACE
+
 iconPath = asset('logo.png')
+
 #### Anti-Aliasing on text ####
 aalias = True
 
@@ -72,6 +77,18 @@ keySet = {'start': pygame.K_s,
 'fullScreen': pygame.K_f, 
 'pause': pygame.K_p}
 
+joystickDisabled = True
+pygame.joystick.init()
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())] 
+joystickConnected = True if len(joysticks) > 0 else False
+joystickEnabled = True if joystickConnected and not joystickDisabled else False
+def checkJoysticks():
+    global joystickEnabled
+    joystickEnabled = True if joystickConnected and not joystickDisabled else False
+
+
+def getJoy1():
+    return joysticks[0] if len(joysticks) > 0 else False
 #### Changes movement from flying to platforming ####
 platformer = True
 
@@ -99,9 +116,9 @@ class Spritesheet:
     # utility class for loading and parsing spritesheets
     def __init__(self, filePath):
         try:
-            self.image = pygame.image.load(filePath)
+            self.image = pygame.image.load(filePath).convert_alpha()
         except TypeError:
-            self.image = filePath.copy()
+            self.image = filePath.copy().convert_alpha()
         
         self.width = self.image.get_width()
         self.height = self.image.get_height()
@@ -112,7 +129,7 @@ class Spritesheet:
         img.fill((0, 0, 0, 0))
         img.blit(self.image, (0, 0), (x, y, width, height))
         img = pygame.transform.scale(img, (width, height))
-        return img
+        return img.convert_alpha()
 
 if not __name__ == '__main__':
     fonts = {'1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
@@ -121,6 +138,7 @@ if not __name__ == '__main__':
             '4': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
             '5': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
             '6': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
+            '7': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
             }
 
     
@@ -139,15 +157,19 @@ def loadSave(file):
             data = pickle.load(f)
             for k, v in data.items():
                 globals()[k] = v
+        checkJoysticks()
     except FileNotFoundError:
         print("No Save File")
 
+
 def saveData(file, game):
+    print(game.joystickDisabled)
     saveDict = {    # Each value must corresponde to a global variable in this file
         'musicVolume': game.mixer.musicVolume,
         'fxVolume': game.mixer.fxVolume,
         'aalias': game.antialiasing,
         'SHOWFPS': game.showFps,
+        'joystickDisabled': game.joystickDisabled,
     }
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)

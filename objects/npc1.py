@@ -15,17 +15,26 @@ class npc1(pygame.sprite.Sprite):
         self.rect.center = objT.x, objT.y
         self.pos = pygame.Vector2((self.rect.x, self.rect.y))
         self.player = self.game.player
-        self.angle = 90
+        self.angle = -40
         self.text = 'LMFAO'
-
+        self.setAngle()
         for k, v in kwargs.items():
             self.__dict__[k] = v
         for k, v in objT.properties.items():
             self.__dict__[k] = v
     
     def update(self):
-        self.setAngle()
+        # self.setAngle()
         self.checkInteract()
+        self.move()
+    
+    def move(self):
+        self.pos.update(self.rect.x, self.rect.y)
+        # pDir = pygame.Vector2(self.game.player.rect.center)
+        # diff = pygame.Vector2(pDir.x-self.pos.x, pDir.y-self.pos.y).normalize()
+        # if not self.angle == pDir:
+        #     self.angle = math.degrees(math.atan2(-diff.y, diff.x))
+        #     self.setAngle()
 
     def checkInteract(self):
         if checkKey('interact') and pygame.time.get_ticks()-self.game.dialogueScreen.lastInteract > 240:

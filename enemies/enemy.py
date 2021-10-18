@@ -18,6 +18,8 @@ class Enemy(pygame.sprite.Sprite):
         self.lID = objT.id
         self.game = game
         self.rect = pygame.Rect(0, 0, 64, 64)
+        self.w, h = 64, 64
+        self.lastHit = 0 
         for k, v in kwargs.items():
             self.__dict__[k] = v
         for k, v in objT.properties.items():
@@ -52,6 +54,12 @@ class Enemy(pygame.sprite.Sprite):
         
         return False
     
+    def takeDamage(self, damage):
+        self.health -= damage
+        self.animations.fx(hurtFx())
+        self.game.mixer.playFx('hit1')
+        self.lastHit = pygame.time.get_ticks()
+
     def deathSound(self):
         pass
     

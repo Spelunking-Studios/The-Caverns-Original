@@ -5,7 +5,7 @@ class sword1:
         self.lastAttack = 0
         self.attackDelay = 20
         self.damage = 10
-        self.atkVariance = 2
+        self.atkVariance = 1
 
     def action(self, player):
         self.player = player

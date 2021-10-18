@@ -32,21 +32,23 @@ class PlayerStats(Stats):
 			atkDamage=0,
 			atkVariance=1,
 			atkSpeed=340, # This is a delay in milliseconds
-			crit=10, # This is a percent out of 100 (make sure its an integer)
-			critBonus = 150, # This is a percent
+			crit=7, # This is a percent out of 100 (make sure its an integer)
+			critBonus = 200, # This is a percent
 		)
-		self.inventory = Inventory(objects.sword1(), objects.sword1())
+		self.inventory = Inventory(objects.sword1())
 	
 	def attack(self): # The index here just means which hotbar number the action is
 		dmg = self.inventory.getCurrent().damage + self.strength/5
 		atkVar = self.atkVariance + self.inventory.getCurrent().atkVariance
 		if randint(0, 100) <= self.crit:
+			crit = True
 			damage = randint(max(0, int((dmg-atkVar)*(self.critBonus/100))), int((dmg+atkVar)*(self.critBonus/100)))
 			print("DAMN YOU HIT A CRITICAL")
 		else:
+			crit = False
 			damage = randint(max(0, dmg-atkVar), dmg+atkVar)
-		print(damage)
-		return damage
+		
+		return damage, crit
 
 # zomb = Stats(atkDamage=3)
 # print(zomb.attack())

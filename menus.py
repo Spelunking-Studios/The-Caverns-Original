@@ -38,7 +38,7 @@ def compendiumMenu(game):
             game.loadLevel(1)
             break
         
-        text1 = fonts['1'].render("Project 0", game.antialiasing, colors.yellow)
+        text1 = fonts['1'].render(TITLE, game.antialiasing, colors.yellow)
         text2 = Text('4', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
         game.win.blit(text1, (30,winHeight - 70))
         game.win.blit(text2.image, text2.pos)
@@ -56,6 +56,7 @@ def settingsMenu(game):
     audioSlider2.image.set_colorkey((0,0,0))
     fpsButton = button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = lambda:game.toggleFps() ,groups = [comps], center = True)
     aaliasButton = button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:game.toggleAalias() ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
+    joystickButton = button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     texts = [
         Text('5', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
         Text('1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
@@ -126,7 +127,7 @@ def main(game):
             compendButton.reset()
         
         text1 = game.font2.render('Press S to Start', game.antialiasing, colors.orangeRed)
-        text2 = game.font1.render("Project 0", game.antialiasing, colors.orangeRed)
+        text2 = game.font1.render(TITLE, game.antialiasing, colors.orangeRed)
         text3 = game.font1.render('Created by GameLAB', game.antialiasing, colors.orangeRed)
         
         game.win.blit(text1, (30,30))
