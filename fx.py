@@ -7,7 +7,7 @@ import random
 #  Duration should be handled by the fx object.
 #  Fx initiation into the fx layer will record its instance
 #  
-class fadeOut(pygame.sprite.Sprite):
+class FadeOut(pygame.sprite.Sprite):
     alpha = 0
     speed = 4 
     fadeBack = False
@@ -51,7 +51,7 @@ class fadeOut(pygame.sprite.Sprite):
         if not self.noKill:
             self.kill()
 
-class fadeIn(pygame.sprite.Sprite):
+class FadeIn(pygame.sprite.Sprite):
     alpha = 255
     speed = 5 
 
@@ -86,7 +86,7 @@ class fadeIn(pygame.sprite.Sprite):
 #class timer(pygame.sprite):
 #    def __init__(self, game, duration=600):
 
-class particles(pygame.sprite.Sprite):
+class Particles(pygame.sprite.Sprite):
     def __init__(self, game, entity, **kwargs):
         self.game = game
         self.groups = game.sprites
@@ -96,7 +96,7 @@ class particles(pygame.sprite.Sprite):
         self.lifeSpan = False
         self.hide = False
         self.particleKwargs = {}
-        self.particleType = particle
+        self.particleType = Particle
         self.dirRange = (0, 360)
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -135,7 +135,7 @@ class particles(pygame.sprite.Sprite):
             p.kill()
         super().kill()
 
-class playerParticles(particles):
+class PlayerParticles(Particles):
     def __init__(self, game, entity):
         self.entity = entity
         super().__init__(game, entity, size = 6, dirRange=(140, 220), tickSpeed=80)
@@ -159,15 +159,14 @@ class playerParticles(particles):
             except:
               pass
  
-class combatParticles(particles):
+class CombatParticles(Particles):
     def __init__(self, game, entity):
         self.entity = entity
-        super().__init__(game, entity, dirRange=(140, 220), tickSpeed=80, particleType=numParticle)
-        print(self.particles)
+        super().__init__(game, entity, dirRange=(140, 220), tickSpeed=80, particleType=NumParticle)
         self.partColor = colors.rgba(colors.white, 120)
         self.critColor = colors.yellow
         self.setParticleKwargs(color=self.partColor, speed=2, size=(40,40), shrink=0.5, life=600, groups = game.layer2)
-        self.particleType = numParticle
+        self.particleType = NumParticle
         self.step = 90
 
     def update(self):
@@ -181,7 +180,7 @@ class combatParticles(particles):
         self.particles.add(self.particleType(self.game, pygame.Vector2(1, 0).rotate(random.randint(self.dirRange[0], self.dirRange[1])), pos, partKwargs))
 
 
-class particle(pygame.sprite.Sprite):
+class Particle(pygame.sprite.Sprite):
     def __init__(self, game, dir, pos, kwargs):
         self.game = game
         self.groups = game.layer1
@@ -218,7 +217,7 @@ class particle(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.init >= self.life:
             self.kill()
 
-class numParticle(particle):
+class NumParticle(Particle):
     def __init__(self, game, dir, pos, kwargs):
         self.num = 0
         self.font = fonts['7']
@@ -239,26 +238,26 @@ class numParticle(particle):
             self.kill()
 
 ### This is pretty pointless but eyy
-class highlight(pygame.sprite.Sprite):
-    def __init__(self, game, entity, **kwargs):
-        self.game = game
-        self.groups = game.sprites, game.layer1
-        pygame.sprite.Sprite.__init__(self, self.groups)
+# class highlight(pygame.sprite.Sprite):
+#     def __init__(self, game, entity, **kwargs):
+#         self.game = game
+#         self.groups = game.sprites, game.layer1
+#         pygame.sprite.Sprite.__init__(self, self.groups)
         
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        self.entity = entity
-        self.entImgRect = pygame.Rect(entity.rect.x, entity.rect.y, self.entity.image.get_width(), self.entity.image.get_height())
-        self.rect = pygame.Rect(self.entImgRect)
-        self.render()
+#         for k, v in kwargs.items():
+#             self.__dict__[k] = v
+#         self.entity = entity
+#         self.entImgRect = pygame.Rect(entity.rect.x, entity.rect.y, self.entity.image.get_width(), self.entity.image.get_height())
+#         self.rect = pygame.Rect(self.entImgRect)
+#         self.render()
 
-    def render(self):
-        self.rect.w = self.entImgRect.w*1.2
-        self.rect.h = self.entImgRect.h*1.2
-        self.image = pygame.transform.scale(self.entity.image, (self.rect.w, self.rect.h))
-        self.image.fill((255, 255, 255), special_flags = pygame.BLEND_MAX)
+#     def render(self):
+#         self.rect.w = self.entImgRect.w*1.2
+#         self.rect.h = self.entImgRect.h*1.2
+#         self.image = pygame.transform.scale(self.entity.image, (self.rect.w, self.rect.h))
+#         self.image.fill((255, 255, 255), special_flags = pygame.BLEND_MAX)
     
-    def update(self):
-        self.entImgRect = pygame.Rect(self.entity.rect.x, self.entity.rect.y, self.entity.image.get_width(), self.entity.image.get_height())
-        self.render()
-        self.rect.center = self.entImgRect.center
+#     def update(self):
+#         self.entImgRect = pygame.Rect(self.entity.rect.x, self.entity.rect.y, self.entity.image.get_width(), self.entity.image.get_height())
+#         self.render()
+#         self.rect.center = self.entImgRect.center

@@ -1,6 +1,6 @@
 import pygame
 
-class sword1:
+class Sword1:
     def __init__(self):
         self.lastAttack = 0
         self.attackDelay = 20

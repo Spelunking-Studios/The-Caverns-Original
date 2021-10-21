@@ -5,7 +5,7 @@ import enemies
 import objects as objs
 
 
-class level:
+class Level:
 
     def __init__(self, **kwargs):
         self.sprites = pygame.sprite.Group()
@@ -96,7 +96,7 @@ class level:
         return False
 
 # Remember to include tileset image and tsx file with the tmx file of the map
-level1 = level(
+level1 = Level(
     mapDir=asset('Tiled/cave1.tmx')#/level1/level1.tmx')
 )
 

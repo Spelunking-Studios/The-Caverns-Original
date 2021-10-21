@@ -1,4 +1,5 @@
 import random
+from math import sqrt
 # Not all of these are required but are handy
 import fx
 import pygame
@@ -9,7 +10,7 @@ from stgs import *
 
 from . import enemy
 
-class ankheg(enemy.Enemy):
+class Ankheg(enemy.Enemy):
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
@@ -24,7 +25,7 @@ class ankheg(enemy.Enemy):
         self.lastAttack = now()
         self.attackDelay = 360
         self.shootRate = random.randrange(2500, 5000, 50)
-        self.animations = rotAnimation(self, asset('enemies/ankheg.png'))
+        self.animations = RotAnimation(self, asset('enemies/ankheg.png'))
         self.animations.delay = 60
         self.angle = 0
     
@@ -54,7 +55,7 @@ class ankheg(enemy.Enemy):
 
         else:
             self.animations.freeze = False
-            if mPos.length() > 20: 
+            if mPos.length() > 80: 
                 try:
                     mPos.normalize_ip()
                     self.angle = math.degrees(math.atan2(-mPos.y, mPos.x))

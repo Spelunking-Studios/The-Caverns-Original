@@ -6,7 +6,7 @@ from animations import *
 from stgs import *
 
 
-class healthBar(pygame.sprite.Sprite):
+class HealthBar(pygame.sprite.Sprite):
     x = winWidth/3
     y = 3
     width = 100
@@ -36,7 +36,7 @@ class healthBar(pygame.sprite.Sprite):
     # def renderBar(self):
     #     pygame.draw.rect(self.image, self.hpColor, (1, 1, (self.barRect.width)*(self.player.health/self.player.maxHp), self.barRect.height))
 
-class healthBar2(healthBar):
+class HealthBar2(HealthBar):
     x = 5
     y = winHeight/3
     width = 30

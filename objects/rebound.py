@@ -5,7 +5,7 @@ import pygame
 from animations import *
 from stgs import *
 
-class rebound(pygame.sprite.Sprite):
+class Rebound(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):

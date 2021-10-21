@@ -1,7 +1,7 @@
 import pygame
 import colors
 
-class button(pygame.sprite.Sprite):
+class Button(pygame.sprite.Sprite):
     def __init__(self, game, pos,**kwargs):
         self.game = game
         
@@ -60,7 +60,7 @@ class button(pygame.sprite.Sprite):
     def reset(self):
         self.clicked = False
 
-class settingSlider(pygame.sprite.Sprite):
+class SettingSlider(pygame.sprite.Sprite):
     
     def __init__(self, game, pos,**kwargs):
         self.game = game
@@ -124,7 +124,7 @@ class settingSlider(pygame.sprite.Sprite):
             if mouseRect.colliderect(self.rect):
                 self.clicked = True
 
-class menuItem(pygame.sprite.Sprite):
+class MenuItem(pygame.sprite.Sprite):
     def __init__(self, game, pos, image, **kwargs):
         self.game = game
         self.rect = (0, 0, 180, 210)

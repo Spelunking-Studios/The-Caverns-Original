@@ -6,7 +6,7 @@ from animations import *
 from stgs import *
 
 
-class wall(pygame.sprite.Sprite):
+class Wall(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
@@ -20,7 +20,7 @@ class wall(pygame.sprite.Sprite):
         self.image = pygame.Surface((self.rect.width, self.rect.height))
         self.image.fill(self.color)
 
-class platWall(pygame.sprite.Sprite):
+class PlatformWall(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):

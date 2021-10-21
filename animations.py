@@ -2,7 +2,7 @@ import pygame
 from stgs import *
 
 
-class rotAnimation:
+class RotAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     def __init__(self, sprite, imgSheet):
         self.sprite = sprite
@@ -45,7 +45,7 @@ class rotAnimation:
     def fx(self, fx):
         self.imageEffects.add(fx)
 
-class playerAnimation:
+class PlayerAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     def __init__(self, sprite):
         self.sprite = sprite
@@ -96,7 +96,7 @@ class playerAnimation:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
 
-class hurtFx(pygame.sprite.Sprite):
+class HurtFx(pygame.sprite.Sprite):
     def __init__(self, duration = 300):
         pygame.sprite.Sprite.__init__(self)
         self.start = pygame.time.get_ticks()

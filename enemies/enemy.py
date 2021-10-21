@@ -8,6 +8,7 @@ from objects import *
 from player import *
 from stgs import *
 
+# Base Enemy class - should be inherited by all enemies
 class Enemy(pygame.sprite.Sprite):
     
     def __init__(self, game, objT, **kwargs):
@@ -56,7 +57,7 @@ class Enemy(pygame.sprite.Sprite):
     
     def takeDamage(self, damage):
         self.health -= damage
-        self.animations.fx(hurtFx())
+        self.animations.fx(HurtFx())
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
 

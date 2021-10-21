@@ -5,7 +5,7 @@ import pygame
 from animations import *
 from stgs import *
 
-class coinMeter(pygame.sprite.Sprite):
+class CoinMeter(pygame.sprite.Sprite):
 
     def __init__(self, game, player, **kwargs):
         self.groups = game.sprites, game.overlayer

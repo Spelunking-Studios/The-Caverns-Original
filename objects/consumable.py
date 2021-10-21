@@ -5,7 +5,7 @@ import pygame
 from animations import *
 from stgs import *
 
-class consumable(pygame.sprite.Sprite):
+class Consumable(pygame.sprite.Sprite):
     imgSheet = {'active': False, 'static': True,'tileWidth': 32}
     image = pygame.Surface((imgSheet['tileWidth'], imgSheet['tileWidth']))
 
@@ -18,7 +18,7 @@ class consumable(pygame.sprite.Sprite):
             self.__dict__[k] = v
 
         if self.imgSheet['active']:
-            self.animations = animation(self)
+            self.animations = Animation(self)
 
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.rect = pygame.Rect(0, 0, self.imgSheet['tileWidth'], self.imgSheet['tileWidth'])

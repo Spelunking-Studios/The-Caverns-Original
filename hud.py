@@ -29,7 +29,7 @@ def createFrame(width, height, tileSize = 32, bPal = pygame.image.load(asset('ob
 
     return baseImage.convert_alpha()
 
-class statHud(pygame.sprite.Sprite):
+class StatHud(pygame.sprite.Sprite):
     def __init__(self, game, **kwargs):
         self.groups = game.sprites, game.hudLayer
         self.game = game
@@ -45,7 +45,7 @@ class statHud(pygame.sprite.Sprite):
 
     def render(self):
         s = self.game.player.stats
-        hp = "RGB(120,20,0)"+ str(s.health) if s.health < 20 else s.health
+        hp = "RGB(120,20,0)"+ str(s.health) if s.health < s.healthMax/2.5 else s.health
         newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {s.inventory.getCurrent().damage}\nCritical = {s.crit}%"
         if not newText == self.text:
             self.text = newText
@@ -57,7 +57,7 @@ class statHud(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
-class inventoryHud(pygame.sprite.Sprite):
+class InventoryHud(pygame.sprite.Sprite):
     def __init__(self, game, **kwargs):
         self.groups = game.sprites, game.hudLayer
         self.game = game

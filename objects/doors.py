@@ -5,7 +5,7 @@ import pygame
 from animations import *
 from stgs import *
    
-class door(pygame.sprite.Sprite):
+class Door(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
@@ -26,7 +26,7 @@ class door(pygame.sprite.Sprite):
         #self.parts.kill()
         super().kill()
 
-class entrance(pygame.sprite.Sprite):
+class Entrance(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
@@ -42,7 +42,7 @@ class entrance(pygame.sprite.Sprite):
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
         #self.image.fill(self.color)
 
-class teleporter(pygame.sprite.Sprite):
+class Teleporter(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
@@ -70,6 +70,6 @@ class teleporter(pygame.sprite.Sprite):
                 self.game.unPause()
                 self.game.player.setPos((self.targetPos.x*self.game.level.scale, self.targetPos.y*self.game.level.scale), True)
 
-            fx.fadeOut(self.game, onEnd=func)
+            fx.FadeOut(self.game, onEnd=func)
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
         #self.image.fill(self.color)

@@ -49,7 +49,7 @@ def transparentRect(size, alpha, color=(0, 0, 0)):
     surf.fill((color[0], color[1], color[2], alpha))
     return surf.convert_alpha() 
 
-class pauseOverlay(pygame.sprite.Sprite):
+class PauseOverlay(pygame.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pygame.sprite.Sprite.__init__(self, game.overlayer)
@@ -65,13 +65,13 @@ class pauseOverlay(pygame.sprite.Sprite):
         for comp in self.components:
             comp.kill()
             
-        self.audioSlider1 = settingSlider(self.game, (100, 350), addGroups = [self.components])
-        self.audioSlider2 = settingSlider(self.game, (100, 500), addGroups = [self.components])
+        self.audioSlider1 = SettingSlider(self.game, (100, 350), addGroups = [self.components])
+        self.audioSlider2 = SettingSlider(self.game, (100, 500), addGroups = [self.components])
         self.audioSlider1.image.set_colorkey((0,0,0))
         self.audioSlider2.image.set_colorkey((0,0,0))
-        self.fpsButton = button(self.game, (800, 250), text = 'Toggle FPS', onClick = lambda:self.game.toggleFps() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
-        self.aaliasButton = button(self.game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:self.game.toggleAalias() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
-        button(self.game, (350, 550), groups = [self.components], text = "Return to menu", onClick=self.game.endgame, center = True, colors = (colors.yellow, colors.white))
+        self.fpsButton = Button(self.game, (800, 250), text = 'Toggle FPS', onClick = lambda:self.game.toggleFps() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
+        self.aaliasButton = Button(self.game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:self.game.toggleAalias() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
+        Button(self.game, (350, 550), groups = [self.components], text = "Return to menu", onClick=self.game.endgame, center = True, colors = (colors.yellow, colors.white))
     
         self.text = [
             Text('5', 'Paused', cols.orangeRed, self.game.antialiasing, (self.rect.width/2.4, 10)),
@@ -108,7 +108,7 @@ class pauseOverlay(pygame.sprite.Sprite):
         for text in self.text:
             self.image.blit(text.image, text.pos)
 
-class mapOverlay(pygame.sprite.Sprite):
+class MapOverlay(pygame.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pygame.sprite.Sprite.__init__(self, game.overlayer)
@@ -156,7 +156,7 @@ class mapOverlay(pygame.sprite.Sprite):
         # for text in self.text:
         #     self.image.blit(text.image, text.pos)      
 
-class dialogueOverlay(pygame.sprite.Sprite):
+class DialogueOverlay(pygame.sprite.Sprite):
     def __init__(self, game):
         self.game = game
         pygame.sprite.Sprite.__init__(self, game.overlayer)

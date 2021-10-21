@@ -2,21 +2,15 @@ from .ankheg import *
 from .eBullet import *
 from .enemy import *
 from .zombie import *
-from .tormentor import *
 
 
 # import os
-# import importlib
 
-# dir_path = os.path.join(os.getcwd(), 'sprites', '__init__.py')
+# dir_path = os.path.join(os.path.dirname(__file__))
 # print(dir_path)
 
-# __all__ = []
 # for file in os.listdir(dir_path):
 #     if file.endswith(".py") and file != "__init__.py":
-#         __all__.append(file[:-3])
-#         if __name__ == "__main__":
-#             print(f'Loaded: {file[:-3]}')
-#             importlib.import_module(file[:-3])
-#         else:
-#             importlib.import_module(f"{os.path.basename(os.path.split(__file__)[0])}.{file[:-3]}")
+#         x = __import__('enemies.'+file[:-3], globals(), locals(), [], 0)
+#         for k, v in x.__dict__.items():
+#             print(k)

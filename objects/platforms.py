@@ -6,7 +6,7 @@ from animations import *
 from stgs import *
 
 
-class mPlatform(pygame.sprite.Sprite):
+class MovingPlatform(pygame.sprite.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.groups = game.colliders, game.sprites, game.layer2
         pygame.sprite.Sprite.__init__(self, self.groups)

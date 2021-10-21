@@ -9,7 +9,8 @@ from stgs import *
 
 from . import enemy
 
-class enemyBullet(pygame.sprite.Sprite):
+# Base for enemy bullet/projectile
+class EnemyBullet(pygame.sprite.Sprite):
     pos = pygame.Vector2((0,0))
     image = pygame.image.load(asset('objects/bullet2.png'))
     vel = 4

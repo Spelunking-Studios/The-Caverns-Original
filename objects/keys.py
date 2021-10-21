@@ -6,7 +6,7 @@ from animations import *
 from stgs import *
 
 
-class key(pygame.sprite.Sprite):
+class Key(pygame.sprite.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, image, **kwargs):
@@ -21,6 +21,6 @@ class key(pygame.sprite.Sprite):
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
 
-class key1(key):
+class Key1(Key):
     def __init__(self, game, objT):
         super().__init__(game, objT, asset('objects/decryptor.png'))

@@ -9,23 +9,23 @@ from player import *
 from stgs import *
 
 from . import enemy
-from .eBullet import enemyBullet
+from .eBullet import EnemyBullet
 
-class zombie(enemy.Enemy):
+class Zombie(enemy.Enemy):
 
     def __init__(self, game, objT):
-        super().__init__(game, objT)
+        super().__init__(game, objT, )#groups = [game.sprites, game.enemies, game.layer2, game.colliders])
 
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.vel = pygame.Vector2(0, 0)
         self.rect = pygame.Rect(0, 0, 32, 32)
         self.speed = 2*deltaConst
-        self.health = 20
+        self.health = 15
         self.lastShoot = now()
         self.lastAttack = now()
         self.attackDelay = 360
         self.shootRate = random.randrange(2500, 5000, 50)
-        self.animations = rotAnimation(self, asset('enemies/zombie1.png'))
+        self.animations = RotAnimation(self, asset('enemies/zombie1.png'))
         self.animations.delay = 60
         self.angle = 0
     
@@ -58,7 +58,7 @@ class zombie(enemy.Enemy):
             if mPos.length() > 20: 
                 try:
                     mPos.normalize_ip()
-                    self.angle = math.degrees(math.atan2(-mPos.y, mPos.x))
+                    self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
                     self.vel = mPos
                 except ValueError:
                     self.angle = 0
@@ -73,7 +73,7 @@ class zombie(enemy.Enemy):
         testRect = pygame.Rect(0, 0, 32, 32)
         testRect.center = vector
         for obj in self.game.colliders:
-            if testRect.colliderect(obj.rect):
+            if testRect.colliderect(obj.rect) and not obj == self:
                 return True
         
         return False
@@ -86,7 +86,7 @@ class zombie(enemy.Enemy):
 
     def takeDamage(self, damage):
         self.health -= damage
-        self.animations.fx(hurtFx())
+        self.animations.fx(HurtFx())
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
 

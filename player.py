@@ -13,7 +13,7 @@ import stats
 
 
 #### Player object ####
-class player(pygame.sprite.Sprite):
+class Player(pygame.sprite.Sprite):
     
     #### Player Initializations ####
     def __init__(self, game, image, **kwargs):
@@ -45,11 +45,11 @@ class player(pygame.sprite.Sprite):
         self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
         self.lightScale.scale_to_length(1000)
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
-        self.particleFx = fx.playerParticles(self.game, self)
-        self.combatParts = fx.combatParticles(game, self)
+        self.particleFx = fx.PlayerParticles(self.game, self)
+        self.combatParts = fx.CombatParticles(game, self)
 
         if joystickEnabled:
-            self.cursor = cursor()
+            self.cursor = Cursor()
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -58,7 +58,7 @@ class player(pygame.sprite.Sprite):
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
 
     def loadAnimations(self):
-        self.animations = playerAnimation(self)
+        self.animations = PlayerAnimation(self)
         self.animations.delay = 30
 
     #### Updates player ####
@@ -98,7 +98,7 @@ class player(pygame.sprite.Sprite):
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
-            self.animations.fx(hurtFx())
+            self.animations.fx(HurtFx())
     
     def setAngle(self):
         if joystickEnabled:
@@ -174,7 +174,7 @@ class player(pygame.sprite.Sprite):
     def collideCheck(self):
         returnVal = False
         for obj in self.game.colliders:
-            if isinstance(obj, wall):
+            if isinstance(obj, Wall):
                 if self.moveRect.colliderect(obj.rect):
                     returnVal = obj.rect  
             # else:
@@ -203,7 +203,7 @@ class player(pygame.sprite.Sprite):
         self.mask = pygame.mask.from_surface(img2)
         #return img2
 
-class cursor:
+class Cursor:
     def __init__(self, xy=(500, 1)):
         self.pos = Vector2(xy)
         self.speed = 25

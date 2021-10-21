@@ -21,7 +21,7 @@ import hud
 
 
 #### Game object ####
-class game:
+class Game:
 
     #### Initialize game object ####
     #
@@ -37,7 +37,7 @@ class game:
         self.hudLayer = pygame.sprite.Group()
         self.overlayer = pygame.sprite.Group()
         self.rendLayers = [self.layer1, self.layer2]
-        self.mixer = gameMixer()
+        self.mixer = GameMixer()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
         self.mixer.setFxVolume(fxVolume)
         self.antialiasing = aalias
@@ -76,19 +76,19 @@ class game:
         self.items = pygame.sprite.Group()
         self.lightSources = pygame.sprite.Group()
         self.levels = gameLevels
-        self.player = player(self, asset('player/samplePlayer.png'))
+        self.player = Player(self, asset('player/samplePlayer.png'))
             
         self.player.gravity = self.gravity
         self.end = False
         self.attempts = 0
         self.pause = False
-        self.pauseScreen = pauseOverlay(self)
-        self.mapScreen = mapOverlay(self)
-        self.dialogueScreen = dialogueOverlay(self)
-        self.statsInfo = hud.statHud(self)
+        self.pauseScreen = PauseOverlay(self)
+        self.mapScreen = MapOverlay(self)
+        self.dialogueScreen = DialogueOverlay(self)
+        self.statsInfo = hud.StatHud(self)
         self.time = 0
         self.updateT = pygame.time.get_ticks()
-        self.cam = cam(self, winWidth, winHeight)
+        self.cam = Cam(self, winWidth, winHeight)
 
     ####  Determines how the run will function ####
     def run(self):
@@ -131,7 +131,6 @@ class game:
 
     #### Main game loop ####
     def mainLoop(self):
-        
         while not self.end:
             self.clock.tick(FPS)
             self.refresh()#asset('objects/shocking.jpg'))
@@ -182,7 +181,7 @@ class game:
                 self.win.blit(sprite.image, sprite.rect)
         
         if self.showFps:
-            fpsText = fonts['6'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
+            fpsText = fonts['6'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
         
         if joystickEnabled:
@@ -199,37 +198,41 @@ class game:
         darkness.blit(self.player.lightSource, lightRect)
         for sprite in self.lightSources:
             darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
+
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
 
     def checkHits(self):
-        
-        # for e in self.enemies:
-        #     if self.player.maskCollide(e.rect):
-        #         try:
-        #             e.takeDamage(self.player.damage)
-        #         except:
-        #             e.health -= self.player.damage
-        #         if e.health <= 0:
-        #             e.deathSound()
-        #             self.level.points += e.points
-        #             self.level.enemyCnt -= 1
-
-        pygame.sprite.groupcollide(self.colliders, self.pBullets, False, True)
-        pygame.sprite.groupcollide(self.colliders, self.eBullets, False, True)
-
         items = pygame.sprite.spritecollide(self.player, self.items, True)
 
         # r2 = self.level.door.rect ## This section checks door collision with player mask
         # if self.player.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.player.rect.x,r2.y-self.player.rect.y)):
         #     self.pause = True
         #     self.mixer.playFx('menu3')
-        #     fadeOut(self, speed = 5, alpha = 40, onEnd = lambda:self.nextLevel())
+        #     FadeOut(self, speed = 5, alpha = 40, onEnd = lambda:self.nextLevel())
 
-        # if player dies:
-        #     self.mixer.playFx('pHit')
-        #     self.pause = True
-        #     fadeOut(self, speed = 2.5, alpha = 40, color = colors.dark(colors.red, 60), startDelay = 540, noKill = True, onEnd = self.died)
+        if self.player.stats.isDead():
+            self.mixer.playFx('pHit')
+            self.pause = True
+            def cont():
+                if True:
+                    self.cam.target = self.player
+                    self.pause = False
+                    self.enemies.empty()
+                    self.loadLevel(self.getLvlNum())
+                    #self.player.reset()
+                    self.fxLayer.empty()
+                    for s in self.pSprites:
+                        s.kill()
+                    for b in self.eBullets:
+                        b.kill()
+            def died():
+                Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+                def end():
+                    self.end = True
+                Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+
+            FadeOut(self, speed = 2.5, alpha = 40, color = colors.dark(colors.red, 60), startDelay = 540, noKill = True, onEnd = died)
 
     def unPause(self):
         self.pause = False
@@ -248,10 +251,10 @@ class game:
         self.run()
 
     # def died(self):
-        # button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=self.cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+        # Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=self.cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
         # def end():
         #     self.end = True
-        # button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+        # Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
     
     def getLvlNum(self, offSet=0):
         return self.levels.index(self.level) + 1 + offSet
@@ -261,14 +264,14 @@ class game:
         if DEBUG:
             try:
                 self.loadLevel(self.levels.index(self.level) + 2)
-                fadeIn(self, speed = 20, onEnd = lambda:self.unPause())
+                FadeIn(self, speed = 20, onEnd = lambda:self.unPause())
             except IndexError:
                 self.end = True
                 self.won = True
         else:
             try:
                 self.loadLevel(self.levels.index(self.level) + 2)
-                fadeIn(self, onEnd = lambda:self.unPause())
+                FadeIn(self, onEnd = lambda:self.unPause())
             except:
                 self.end = True
                 self.won = True
@@ -373,6 +376,6 @@ class game:
             self.win.fill((0, 0, 0))
 
 #### Creates and runs game ####
-game1 = game()
+game1 = Game()
 while __name__ == '__main__':
     game1.run()

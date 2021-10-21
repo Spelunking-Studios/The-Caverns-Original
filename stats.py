@@ -22,20 +22,27 @@ class Stats:
 	def attack(self):
 		damage = randint(max(0, self.atkDamage-self.atkVariance), self.atkDamage+self.atkVariance)
 		return damage
+	
+	def isDead(self):
+		if self.health <= 0:
+			return True
+		else:
+			return False
 
 class PlayerStats(Stats):
 	def __init__(self):
 		super().__init__(
 			health=40,
+			healthMax=40,
 			strength=0,
 			speed=15,
 			atkDamage=0,
 			atkVariance=1,
-			atkSpeed=340, # This is a delay in milliseconds
-			crit=7, # This is a percent out of 100 (make sure its an integer)
+			atkSpeed=400, # This is a delay in milliseconds
+			crit=9, # This is a percent out of 100 (make sure its an integer)
 			critBonus = 200, # This is a percent
 		)
-		self.inventory = Inventory(objects.sword1())
+		self.inventory = Inventory(objects.Sword1())
 	
 	def attack(self): # The index here just means which hotbar number the action is
 		dmg = self.inventory.getCurrent().damage + self.strength/5

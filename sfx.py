@@ -17,7 +17,7 @@ fx = {
     'swing':[sAsset('swing.wav'), 0],
 }
 
-class gameMixer:
+class GameMixer:
     def __init__(self):
         global fx
         self.fx = fx
