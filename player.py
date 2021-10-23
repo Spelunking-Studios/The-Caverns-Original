@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
             
     def weaponCollisions(self):
         if self.animations.mode == "hit":
-            for e in self.game.enemyInProximity(300):
+            for e in self.game.groups.getProximitySprites(self):
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
@@ -173,7 +173,7 @@ class Player(pygame.sprite.Sprite):
     #### Collide checker for player ####
     def collideCheck(self):
         returnVal = False
-        for obj in self.game.colliders:
+        for obj in self.game.groups.colliders:
             if isinstance(obj, Wall):
                 if self.moveRect.colliderect(obj.rect):
                     returnVal = obj.rect  

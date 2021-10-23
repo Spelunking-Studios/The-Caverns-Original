@@ -21,7 +21,7 @@
   <object id="9" name="door" x="63" y="456" width="32" height="56"/>
   <object id="10" name="Wall" x="235" y="659" width="157" height="21"/>
   <object id="11" name="Wall" x="211" y="680" width="24" height="8"/>
-  <object id="12" name="Entrance" x="216" y="635" width="16" height="8"/>
+  <object id="12" name="Entrance" x="214" y="639" width="16" height="8"/>
   <object id="13" name="Teleporter" x="368" y="270" width="32" height="8">
    <properties>
     <property name="target" type="object" value="83"/>
@@ -92,7 +92,7 @@
   <object id="83" x="576" y="1713">
    <point/>
   </object>
-  <object id="84" x="401" y="224">
+  <object id="84" x="384" y="308">
    <point/>
   </object>
   <object id="85" name="Wall" x="565.5" y="1398.5" width="240.75" height="48"/>
@@ -102,7 +102,7 @@
    </properties>
    <point/>
   </object>
-  <object id="93" name="wall" x="136" y="488" width="15" height="15"/>
+  <object id="93" name="Wall" x="138" y="491" width="11" height="10"/>
   <object id="94" name="wall" x="42" y="635" width="3" height="23"/>
   <object id="95" name="Wall" x="45" y="649" width="4" height="9"/>
   <object id="96" name="LightSource" x="381" y="337">

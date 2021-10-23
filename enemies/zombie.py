@@ -14,7 +14,7 @@ from .eBullet import EnemyBullet
 class Zombie(enemy.Enemy):
 
     def __init__(self, game, objT):
-        super().__init__(game, objT, )#groups = [game.sprites, game.enemies, game.layer2, game.colliders])
+        super().__init__(game, objT, )#groups = [game.sprites, game.enemies, game.layer2, game.groups.colliders])
 
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.vel = pygame.Vector2(0, 0)
@@ -72,7 +72,7 @@ class Zombie(enemy.Enemy):
     def collideCheck(self, vector):
         testRect = pygame.Rect(0, 0, 32, 32)
         testRect.center = vector
-        for obj in self.game.colliders:
+        for obj in self.game.groups.colliders:
             if testRect.colliderect(obj.rect) and not obj == self:
                 return True
         

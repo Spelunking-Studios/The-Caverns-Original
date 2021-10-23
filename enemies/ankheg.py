@@ -18,8 +18,8 @@ class Ankheg(enemy.Enemy):
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.vel = pygame.Vector2(0, 0)
         self.rect = pygame.Rect(0, 0, 153, 180)
-        self.speed = 2*deltaConst
-        self.health = 20
+        self.speed = 4*deltaConst
+        self.health = 40
         self.lastHit = 0
         self.lastShoot = now()
         self.lastAttack = now()
@@ -70,9 +70,9 @@ class Ankheg(enemy.Enemy):
                     self.game.player.takeDamage(5)
         
     def collideCheck(self, vector):
-        testRect = pygame.Rect(0, 0, 32, 32)
+        testRect = pygame.Rect(0, 0, 128, 128)
         testRect.center = vector
-        for obj in self.game.colliders:
+        for obj in self.game.groups.colliders:
             if testRect.colliderect(obj.rect):
                 return True
         

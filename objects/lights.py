@@ -8,7 +8,7 @@ from stgs import *
 
 class LightSource(pygame.sprite.Sprite):
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.lightSources
+        self.groups = game.sprites, game.groups.lightSources
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)

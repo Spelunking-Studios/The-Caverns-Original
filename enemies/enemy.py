@@ -12,7 +12,7 @@ from stgs import *
 class Enemy(pygame.sprite.Sprite):
     
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.enemies, game.layer2
+        self.groups = game.sprites, game.groups.enemies, game.layer2
         self.health = 5
         self.damage = 5
         self.points = 5
@@ -49,7 +49,7 @@ class Enemy(pygame.sprite.Sprite):
     def collideCheck(self, vector):
         testRect = pygame.Rect(0, 0, self.rect.width, self.rect.height)
         testRect.center = vector
-        for obj in self.game.colliders:
+        for obj in self.game.groups.colliders:
             if testRect.colliderect(obj.rect):
                 return True
         

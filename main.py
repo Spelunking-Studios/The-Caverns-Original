@@ -1,4 +1,5 @@
 import pygame
+from pygame.sprite import Group
 
 pygame.init()
 import os
@@ -19,6 +20,30 @@ from sfx import *
 import menus
 import hud
 
+class Grouper:
+    def __init__(self):
+        # This class contains helpful groups for organizing different types of sprites
+        # Create sprite groups here
+        self.enemies = Group()
+        self.lightSources = Group()
+        self.colliders = Group()
+
+    def getProximitySprites(self, sprite, proximity=300, group='enemies'): # This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
+        if isinstance(group, str):
+            group = self.__dict__[group]
+
+        returnList = []
+        for e in group:
+            if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(sprite.rect.center)) <= proximity:
+                returnList.append(e)
+        return returnList
+    
+    def clearAll(self):
+        for g in allGroups():
+            g.empty()
+
+    def allGroups(self):
+        return [g for g in self.__dict__ if isinstance(g, Group)]
 
 #### Game object ####
 class Game:
@@ -66,18 +91,11 @@ class Game:
     def new(self):
         self.won = False
         self.points = 0
-        self.enemies = pygame.sprite.Group()
+        self.groups = Grouper()
         self.sprites = pygame.sprite.Group()
         self.pSprites = pygame.sprite.Group()
-        self.colliders = pygame.sprite.Group()
-        self.dmgRects = pygame.sprite.Group()
-        self.pBullets = pygame.sprite.Group()
-        self.eBullets = pygame.sprite.Group()
-        self.items = pygame.sprite.Group()
-        self.lightSources = pygame.sprite.Group()
         self.levels = gameLevels
         self.player = Player(self, asset('player/samplePlayer.png'))
-            
         self.player.gravity = self.gravity
         self.end = False
         self.attempts = 0
@@ -121,13 +139,6 @@ class Game:
         #    print("No player Pos")
 
         self.time = 0
-
-    def enemyInProximity(self, proximity=300): # This function is necessary for framerate saving when attacking with a weapon meshw 
-        returnList = []
-        for e in self.enemies:
-            if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(self.player.rect.center)) <= proximity:
-                returnList.append(e)
-        return returnList
 
     #### Main game loop ####
     def mainLoop(self):
@@ -196,15 +207,13 @@ class Game:
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
         lightRect.center = self.cam.applyRect(self.player.moveRect).move(20, 20).topleft
         darkness.blit(self.player.lightSource, lightRect)
-        for sprite in self.lightSources:
+        for sprite in self.groups.lightSources:
             darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
 
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
 
     def checkHits(self):
-        items = pygame.sprite.spritecollide(self.player, self.items, True)
-
         # r2 = self.level.door.rect ## This section checks door collision with player mask
         # if self.player.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.player.rect.x,r2.y-self.player.rect.y)):
         #     self.pause = True
@@ -218,14 +227,12 @@ class Game:
                 if True:
                     self.cam.target = self.player
                     self.pause = False
-                    self.enemies.empty()
+                    self.groups.enemies.empty()
                     self.loadLevel(self.getLvlNum())
                     #self.player.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:
                         s.kill()
-                    for b in self.eBullets:
-                        b.kill()
             def died():
                 Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
                 def end():

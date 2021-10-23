@@ -142,8 +142,7 @@ if not __name__ == '__main__':
             }
 
     
-DEBUG = True ## Not much use right now. Can be used to control try/except statement flows.
-
+DEBUG = False
 def dist(vec1, vec2):
     dist1 = (vec1.x-vec2.x)**2
     dist2 = (vec1.y-vec2.y)**2
