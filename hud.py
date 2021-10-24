@@ -50,7 +50,7 @@ class StatHud(pygame.sprite.Sprite):
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
-            text = overlay.Text('6', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
+            text = overlay.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
             self.image.blit(text.image, text.pos)
             self.image.set_alpha(128)
         
@@ -79,7 +79,7 @@ class InventoryHud(pygame.sprite.Sprite):
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
-            text = overlay.Text('6', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
+            text = overlay.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
             self.image.blit(text.image, text.pos)
             self.image.set_alpha(128)
         

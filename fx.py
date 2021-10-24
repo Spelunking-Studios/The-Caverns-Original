@@ -220,7 +220,7 @@ class Particle(pygame.sprite.Sprite):
 class NumParticle(Particle):
     def __init__(self, game, dir, pos, kwargs):
         self.num = 0
-        self.font = fonts['7']
+        self.font = fonts['effect1']
         super().__init__(game, dir, pos, kwargs)
         self.drag = 0.90
         self.shrink = 0

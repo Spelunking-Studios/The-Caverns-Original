@@ -35,11 +35,11 @@ def compendiumMenu(game):
             break
 
         if checkKey(keySet['start']):
-            game.loadLevel(1)
+            game.map.loadLevel()
             break
         
-        text1 = fonts['1'].render(TITLE, game.antialiasing, colors.yellow)
-        text2 = Text('4', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
+        text1 = fonts['title1'].render(TITLE, game.antialiasing, colors.yellow)
+        text2 = Text('description1', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
         game.win.blit(text1, (30,winHeight - 70))
         game.win.blit(text2.image, text2.pos)
 
@@ -58,10 +58,10 @@ def settingsMenu(game):
     aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:game.toggleAalias() ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     texts = [
-        Text('5', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
-        Text('1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
-        Text('6', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
-        Text('6', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
+        Text('title2', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
+        Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
+        Text('caption1', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
+        Text('caption1', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
     ]
     def applyComps():
         game.mixer.setMusicVolume(audioSlider1.get_ratio())
@@ -88,10 +88,10 @@ def settingsMenu(game):
             break
 
         if checkKey(keySet['start']):
-            game.loadLevel(1)
+            game.map.loadLevel()
             break
         
-        text2 = fonts['1'].render(TITLE, game.antialiasing, colors.orangeRed)
+        text2 = fonts['title1'].render(TITLE, game.antialiasing, colors.orangeRed)
         game.win.blit(text2, (30,30))
 
         keys = pygame.key.get_pressed()
@@ -115,7 +115,7 @@ def main(game):
             game.win.blit(comp.image, comp.rect)
 
         if startButton.clicked:
-            game.loadLevel(1)
+            game.map.loadLevel()
             break
         
         if stgsButton.clicked:
@@ -139,7 +139,7 @@ def main(game):
         keys = pygame.key.get_pressed()
 
         if keys[keySet['start']]:
-            game.loadLevel(1)
+            game.map.loadLevel()
             break
         
         pygame.display.update()
@@ -163,7 +163,7 @@ def gameOver(game):
         
         
         text1 = game.gameOverFont.render('Game Over', game.antialiasing, colors.dark(colors.red, 20))
-        text2 = fonts['1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
+        text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.win.blit(text1, (50,50))
         game.win.blit(text2, (800, 70))
@@ -189,7 +189,7 @@ def victoryLoop(game):
             break
         
         text1 = game.victoryFont.render('Victory', game.antialiasing, colors.yellow, 20)
-        text2 = fonts['1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
+        text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.win.blit(text2, (800, 70))
         game.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))

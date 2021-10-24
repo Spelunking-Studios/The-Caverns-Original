@@ -24,7 +24,7 @@ class Cam:
             self.target = self.game.player
         
     def update(self):
-
+        self.width, self.height = self.game.map.level.rect.width, self.game.map.level.rect.height
         x = -self.target.rect.centerx + int(winWidth / 2)
         y = -self.target.rect.centery + int(winHeight / 2)
 

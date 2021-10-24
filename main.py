@@ -39,11 +39,11 @@ class Grouper:
         return returnList
     
     def clearAll(self):
-        for g in allGroups():
+        for g in self.allGroups():
             g.empty()
 
     def allGroups(self):
-        return [g for g in self.__dict__ if isinstance(g, Group)]
+        return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 
 #### Game object ####
 class Game:
@@ -94,7 +94,7 @@ class Game:
         self.groups = Grouper()
         self.sprites = pygame.sprite.Group()
         self.pSprites = pygame.sprite.Group()
-        self.levels = gameLevels
+        self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
         self.player.gravity = self.gravity
         self.end = False
@@ -104,7 +104,6 @@ class Game:
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self)
-        self.time = 0
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
 
@@ -119,26 +118,6 @@ class Game:
             self.victoryLoop()
         else:
             self.gameOver()
-
-    #### Controls how the levels will load ####
-    def loadLevel(self, levelNum, *args):
-
-        try:
-            for obj in self.level.sprites:
-                obj.kill()
-        except:
-            pass
-        self.level = self.levels[levelNum-1] 
-        self.level.load(self)
-        
-        self.cam.width, self.cam.height = self.level.rect.width, self.level.rect.height
-        
-        #try:
-        self.player.setPos(self.level.entrance.rect.center)
-        #except:
-        #    print("No player Pos")
-
-        self.time = 0
 
     #### Main game loop ####
     def mainLoop(self):
@@ -166,13 +145,13 @@ class Game:
         pygame.display.update()
 
     def render(self):
-        self.win.blit(self.level.image, self.cam.apply(self.level))
+        self.win.blit(self.map.level.image, self.cam.apply(self.map.level))
 
         for layer in self.rendLayers:
             for sprite in layer:
                 try:
                     self.win.blit(sprite.image, self.cam.apply(sprite))
-                    pygame.draw.rect(self.win, (200, 0, 0), sprite.rect)
+                    #spygame.draw.rect(self.win, (200, 0, 0), sprite.rect)
                 except AttributeError:
                     pass
         
@@ -192,7 +171,7 @@ class Game:
                 self.win.blit(sprite.image, sprite.rect)
         
         if self.showFps:
-            fpsText = fonts['6'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
+            fpsText = fonts['caption1'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
         
         if joystickEnabled:
@@ -214,12 +193,6 @@ class Game:
 
 
     def checkHits(self):
-        # r2 = self.level.door.rect ## This section checks door collision with player mask
-        # if self.player.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.player.rect.x,r2.y-self.player.rect.y)):
-        #     self.pause = True
-        #     self.mixer.playFx('menu3')
-        #     FadeOut(self, speed = 5, alpha = 40, onEnd = lambda:self.nextLevel())
-
         if self.player.stats.isDead():
             self.mixer.playFx('pHit')
             self.pause = True
@@ -262,26 +235,6 @@ class Game:
         # def end():
         #     self.end = True
         # Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
-    
-    def getLvlNum(self, offSet=0):
-        return self.levels.index(self.level) + 1 + offSet
-
-    def nextLevel(self):
-        self.cam.target = self.player
-        if DEBUG:
-            try:
-                self.loadLevel(self.levels.index(self.level) + 2)
-                FadeIn(self, speed = 20, onEnd = lambda:self.unPause())
-            except IndexError:
-                self.end = True
-                self.won = True
-        else:
-            try:
-                self.loadLevel(self.levels.index(self.level) + 2)
-                FadeIn(self, onEnd = lambda:self.unPause())
-            except:
-                self.end = True
-                self.won = True
 
     def quit(self):
         saveData(saveFile, self)

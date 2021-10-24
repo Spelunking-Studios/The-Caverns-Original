@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "cave1.tmx",
+    "activeFile": "cave2.tmx",
     "expandedProjectPaths": [
     ],
     "exportAsImage.drawTileGrid": false,
@@ -496,11 +496,19 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 11,
+            "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 159.63636363636363,
-                "y": 490.68181818181824
+                "x": 496,
+                "y": 1019
+            }
+        },
+        "cave2.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 274,
+                "y": 177
             }
         },
         "level1/level1.tmx": {
@@ -517,7 +525,7 @@
     },
     "frame.defaultDuration": 201,
     "map.fixedSize": true,
-    "map.height": 22,
+    "map.height": 18,
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": null,
     "map.orientation": 1,
@@ -528,14 +536,16 @@
     "openFiles": [
         "cave1.tmx",
         "Project0-tileset1.tsx",
-        "level1/level1.tmx"
+        "level1/level1.tmx",
+        "cave2.tmx"
     ],
     "project": "Project0.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "level1/level1.tmx",
-        "Project0-tileset1.tsx",
         "cave1.tmx",
+        "Project0-tileset1.tsx",
+        "level1/level1.tmx",
+        "cave2.tmx",
         "C:/Users/LukeG/Downloads/invisboi.tsx",
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level1/level1.tmx",
         "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/level4.tmx",
@@ -543,8 +553,7 @@
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/arkanos.tsx",
         "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level5/level5.tmx",
         "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level6/level6.tmx",
-        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/level4/level4.tmx",
-        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/arkanos.tsx"
+        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/level4/level4.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

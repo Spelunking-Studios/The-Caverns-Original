@@ -74,10 +74,10 @@ class PauseOverlay(pygame.sprite.Sprite):
         Button(self.game, (350, 550), groups = [self.components], text = "Return to menu", onClick=self.game.endgame, center = True, colors = (colors.yellow, colors.white))
     
         self.text = [
-            Text('5', 'Paused', cols.orangeRed, self.game.antialiasing, (self.rect.width/2.4, 10)),
-            Text('1', 'Audio Control', cols.orangeRed, self.game.antialiasing, (75, 250)),
-            Text('6', 'Music Volume', cols.orangeRed, self.game.antialiasing, (75, 325)),
-            Text('6', 'Fx Volume', cols.orangeRed, self.game.antialiasing, (75, 475))
+            Text('title2', 'Paused', cols.orangeRed, self.game.antialiasing, (self.rect.width/2.4, 10)),
+            Text('title1', 'Audio Control', cols.orangeRed, self.game.antialiasing, (75, 250)),
+            Text('caption1', 'Music Volume', cols.orangeRed, self.game.antialiasing, (75, 325)),
+            Text('caption1', 'Fx Volume', cols.orangeRed, self.game.antialiasing, (75, 475))
         ]
 
         self.audioSlider1.setRatio(self.game.mixer.musicVolume)
@@ -253,7 +253,7 @@ class Dialogue(pygame.sprite.Sprite):
         self.baseImage.blit(self.borderPalette, (0, self.baseImage.get_height()-self.tileSize), (0, self.tileSize*2, self.tileSize, self.tileSize))
         self.baseImage.blit(self.borderPalette, (self.baseImage.get_width()-self.tileSize, self.baseImage.get_height()-self.tileSize), (self.tileSize*2, self.tileSize*2, self.tileSize, self.tileSize))
 
-        self.rendText = dText('1', self.text, colors.white, True, (self.tileSize, self.tileSize), (int(self.image.get_width()-self.tileSize*2), int(self.image.get_height()-self.tileSize*2)))
+        self.rendText = dText('title1', self.text, colors.white, True, (self.tileSize, self.tileSize), (int(self.image.get_width()-self.tileSize*2), int(self.image.get_height()-self.tileSize*2)))
         self.baseImage.convert_alpha()
         self.image.blit(self.baseImage, (0, 0))
         self.renderText()

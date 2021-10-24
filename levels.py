@@ -3,31 +3,57 @@ import pytmx
 from stgs import *
 import enemies
 import objects as objs
+import os
 
+class GameMap:
+    def __init__(self, game):
+        self.game = game
+        self.levels = [
+            Level(asset('Tiled/cave1.tmx')),
+            Level(asset('Tiled/cave2.tmx'))
+        ]
+        self.level = self.levels[0]
+    
+    def switchLevel(self, name, start="entrance"):
+        for l in self.levels:
+            if l.name == name:
+                self.loadLevel(l, start)
+        
+    def loadLevel(self, level=None, start="entrance"):
+        self.level.clearSprites()
+        self.level = level if level else self.level
+        self.level.load(self.game, start)
 
 class Level:
 
-    def __init__(self, **kwargs):
+    def __init__(self, mapDir, **kwargs):
+        self.mapDir = mapDir
         self.sprites = pygame.sprite.Group()
+        self.startSprite = None
         self.scale = 3
-        self.rendType = 1
-        self.colliders = []
         self.width = winWidth
         self.height = winHeight
         self.levelSize = (self.width, self.height)
         self.rect = pygame.Rect(0, 0, self.width, self.height)
-        self.mapDir = ''
+        self.loaded = False
+        self.name = os.path.splitext(os.path.basename(mapDir))[0]
+        
         for k, v in kwargs.items():
             self.__dict__[k] = v
 
-    def load(self, game):
-        self.game = game
-        for s in self.sprites:
-            s.kill()
-        self.points = 0
-        self.loadTiled()
+    def load(self, game, start="entrance"):
+        if not self.loaded:
+            self.game = game
+            for s in self.sprites:
+                s.kill()
+            self.points = 0
+            self.loadTiled(start)
+        if self.startSprite:
+            self.game.player.setPos(self.startSprite.rect.center, True)
+        else:
+            self.game.player.setPos(self.width/2, self.height/2)
 
-    def loadTiled(self):  # Map needs to be specified
+    def loadTiled(self, start="entrance"):  # Map needs to be specified
         self.enemyCnt = 0
         self.tmxdata = pytmx.load_pygame(self.mapDir, pixelalpha=True)
         self.width = self.tmxdata.width * self.tmxdata.tilewidth * self.scale
@@ -55,10 +81,13 @@ class Level:
             try:  # This is the auto registering system that allows the level to detect the name and type of Tiled Objects and generates Sprites out of them.
                 obj = objs.__dict__[objT.name]
                 if not objT.type == None:
-                    try:
-                        for cl in obj.__subclasses__():
-                            if cl.__name__ == objT.type:
-                                obj = cl
+                    if objT.type == start: # This is basically how we are going to start the player on the map. It looks for an object type that matches the start key and then uses it to place the player
+                        self.startSprite = obj(self.game, objT)  
+                        self.sprites.add(self.startSprite)
+                    try:                                            # This code is quite complicated and slightly unecessary
+                        for cl in obj.__subclasses__():             # What it does is just look to see if the object you are loading has a subclass
+                            if cl.__name__ == objT.type:            # And then it sees if the subclass is the type of the tiled object 
+                                obj = cl                            # And then creates an object based on that
                         self.sprites.add(obj(self.game, objT))
                     except KeyError:
                         print(
@@ -88,17 +117,21 @@ class Level:
                 text = fonts['3'].render(
                     objT.text, self.game.antialiasing, (255, 255, 255))
                 self.image.blit(text, (objT.x, objT.y))
+            
+        self.loaded = True
 
     def getObjById(self, id):
         for obj in self.tmxdata.objects:
             if obj.id == id:
                 return obj
         return False
+    
+    def clearSprites(self):
+        for s in self.sprites:
+            s.kill()
 
 # Remember to include tileset image and tsx file with the tmx file of the map
-level1 = Level(
-    mapDir=asset('Tiled/cave1.tmx')#/level1/level1.tmx')
-)
+level1 = Level(asset('Tiled/cave1.tmx'))
 
 # All Game levels
 gameLevels = [level1]
