@@ -14,7 +14,7 @@ def compendiumMenu(game):
         MenuItem(game, (x+stepX, y), asset('objects/redPole.png'), zoomMax = 1.5, desc="This game uses the mouse to direct yourgame (The sword if you haven't gotten that) and upon a click you will be launched in the direction of its pointer. To advance to each level, the player must reach the stone pole bearing the red magic AFTER DEFEATING ALL THE MONSTERS! Press C to toggle the camera between the end post view and the player view. Also press R to restart an attempt on a level and P to pause. Good luck on your journey!", text='Know ur 101s'),
         MenuItem(game, (x+stepX*2, y), asset('objects/greenPole.png'), zoomMax = 1.5, desc='This rebounder pole shows up with a green magical aura. This represents your only means of changing direction in this game. Make sure you you aim yourself well ;)', text='Rebounder pole'),
     ]
-    comps = pygame.sprite.Group(itemCompendium, returnButton)
+    comps = pygame.sprite.Group(returnButton,) #itemCompendium)
     descText = ''
     while True:
         descText = ''
@@ -27,9 +27,9 @@ def compendiumMenu(game):
         for comp in comps:
             game.win.blit(comp.image, comp.rect)
 
-        for i in itemCompendium:
-            if i.hover:
-                descText = i.desc
+        # for i in itemCompendium:
+        #     if i.hover:
+        #         descText = i.desc
 
         if returnButton.clicked:
             break

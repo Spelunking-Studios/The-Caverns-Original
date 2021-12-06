@@ -42,12 +42,11 @@ class Level:
             self.__dict__[k] = v
 
     def load(self, game, start="entrance"):
-        if not self.loaded:
-            self.game = game
-            for s in self.sprites:
-                s.kill()
-            self.points = 0
-            self.loadTiled(start)
+        #if not self.loaded:
+        self.game = game
+        self.clearSprites()
+        self.points = 0
+        self.loadTiled(start)
         if self.startSprite:
             self.game.player.setPos(self.startSprite.rect.center, True)
         else:

@@ -55,7 +55,7 @@ class Ankheg(enemy.Enemy):
 
         else:
             self.animations.freeze = False
-            if mPos.length() > 80: 
+            if mPos.length() > self.rect.width/2.35: 
                 try:
                     mPos.normalize_ip()
                     self.angle = math.degrees(math.atan2(-mPos.y, mPos.x))

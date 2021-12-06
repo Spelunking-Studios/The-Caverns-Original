@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="19" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="30">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="19" height="20" tilewidth="32" tileheight="32" infinite="0" nextlayerid="4" nextobjectid="31">
  <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="19" height="20">
   <data encoding="base64">
@@ -13,7 +13,7 @@
  </layer>
  <objectgroup id="3" name="objects">
   <object id="1" name="Entrance" type="entrance" x="147" y="541" width="27" height="14"/>
-  <object id="4" name="Wall" x="36" y="564" width="113" height="11"/>
+  <object id="4" name="Wall" x="36" y="564" width="113" height="18"/>
   <object id="5" name="Wall" x="28" y="25" width="14" height="537"/>
   <object id="6" name="Wall" x="43" y="32" width="206" height="10"/>
   <object id="8" name="Wall" x="115" y="43" width="28" height="127"/>
@@ -29,7 +29,7 @@
   <object id="18" name="Wall" x="302" y="107" width="3.67568" height="11.9459"/>
   <object id="19" name="Wall" x="336" y="129" width="58" height="11"/>
   <object id="20" name="Wall" x="382" y="60" width="14" height="69"/>
-  <object id="22" name="Wall" x="174" y="564" width="135" height="11"/>
+  <object id="22" name="Wall" x="174" y="564" width="135" height="17"/>
   <object id="23" name="Wall" x="311" y="341" width="84" height="236"/>
   <object id="24" name="Wall" x="395" y="499" width="158" height="22"/>
   <object id="25" name="Wall" x="532" y="470" width="52" height="20"/>
@@ -37,5 +37,11 @@
   <object id="27" name="Wall" x="397" y="53" width="125" height="22"/>
   <object id="28" name="Wall" x="497" y="74" width="60" height="30"/>
   <object id="29" name="Wall" x="530" y="105" width="58" height="32"/>
+  <object id="30" name="Door" x="150" y="581" width="21" height="7">
+   <properties>
+    <property name="targetId" value="entrance2"/>
+    <property name="targetLevel" value="cave1"/>
+   </properties>
+  </object>
  </objectgroup>
 </map>

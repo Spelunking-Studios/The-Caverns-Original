@@ -15,7 +15,6 @@ class LightSource(pygame.sprite.Sprite):
         self.pos = pygame.Vector2((self.rect.x, self.rect.y))
         self.sourceImg = pygame.image.load(asset('objects/light2.png')).convert_alpha()
         self.rect = self.sourceImg.get_rect(center=self.rect.center)
-        print(self.rect)
         for k, v in kwargs.items():
             self.__dict__[k] = v
 

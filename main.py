@@ -110,7 +110,6 @@ class Game:
     ####  Determines how the run will function ####
     def run(self):
         self.menuLoop()
-        print("yay")
         #self.mixer.playMusic(asset('sounds/track 1.wav'))
         self.mainLoop()
         self.mixer.stop()
@@ -201,7 +200,7 @@ class Game:
                     self.cam.target = self.player
                     self.pause = False
                     self.groups.enemies.empty()
-                    self.loadLevel(self.getLvlNum())
+                    self.map.switchLevel('cave1')
                     #self.player.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="210">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="211">
  <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="39" height="60">
   <data encoding="base64">
@@ -21,7 +21,7 @@
   <object id="9" name="door" x="63" y="456" width="32" height="56"/>
   <object id="10" name="Wall" x="235" y="659" width="157" height="21"/>
   <object id="11" name="Wall" x="211" y="680" width="24" height="8"/>
-  <object id="12" name="Entrance" type="entrance" x="214" y="639" width="16" height="8"/>
+  <object id="12" name="Entrance" type="entrance" x="216" y="636" width="16" height="8"/>
   <object id="13" name="Teleporter" x="368" y="270" width="32" height="8">
    <properties>
     <property name="target" type="object" value="83"/>
@@ -115,7 +115,7 @@
   <object id="169" name="Enemy" type="Zombie" x="349" y="337">
    <point/>
   </object>
-  <object id="192" name="Enemy" type="Zombie" x="412" y="332">
+  <object id="192" name="Enemy" type="Zombie" x="413" y="337">
    <point/>
   </object>
   <object id="193" name="Enemy" type="Zombie" x="352" y="423">
@@ -167,5 +167,6 @@
   <object id="209" name="Enemy" type="Zombie" x="483" y="1338">
    <point/>
   </object>
+  <object id="210" name="Entrance" type="entrance2" x="824" y="1612" width="16" height="8"/>
  </objectgroup>
 </map>
