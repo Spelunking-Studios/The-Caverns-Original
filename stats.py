@@ -42,7 +42,7 @@ class PlayerStats(Stats):
 			crit=9, # This is a percent out of 100 (make sure its an integer)
 			critBonus = 200, # This is a percent
 		)
-		self.inventory = Inventory(objects.Sword1())
+		self.inventory = Inventory(objects.Sword1(),  objects.Sword1())
 	
 	def attack(self): # The index here just means which hotbar number the action is
 		dmg = self.inventory.getCurrent().damage + self.strength/5

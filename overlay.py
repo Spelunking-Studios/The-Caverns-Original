@@ -4,45 +4,6 @@ from stgs import *
 from menu import *
 
 pygame.font.init()
-class Text:
-    def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0)):
-        if multiline:
-            ## This code is thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame 
-            self.image = pygame.Surface(size, pygame.SRCALPHA)
-            self.image.fill(bgColor)
-            font = fonts[fNum]
-            words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
-            space = font.size(' ')[0]  # The width of a space.
-            max_width, max_height = size
-            x, y = 0, 0
-            for line in words:
-                for word in line:
-                    if word  != '':
-                        if word[0:3] == "RGB":
-                            wordsplit = word[4:].split(')')
-                            word_color = tuple([int(x) for x in wordsplit[0].split(',')])
-                            word = wordsplit[1]
-                        else:
-                            word_color = color
-                        word_surface = font.render(word, aalias, word_color)
-                        word_width, word_height = word_surface.get_size()
-                        if x + word_width >= max_width:
-                            x = 0  # Reset the x.
-                            y += word_height  # Start on new row.
-                        self.image.blit(word_surface, (x, y))
-                        x += word_width + space
-                x = 0 # Reset the x.
-                y += word_height  # Start on new row.
-            
-        else: 
-            self.image = fonts[fNum].render(text, aalias, color)
-        self.pos = pygame.Vector2(pos)
-        
-        self.rect = (self.pos.x, self.pos.y, size[0], size[1])
-        self.image = self.image.convert_alpha()
-    
-    def __str__(self):
-        return self.rend
 
 def transparentRect(size, alpha, color=(0, 0, 0)):
     surf = pygame.Surface(size, pygame.SRCALPHA)
@@ -230,29 +191,7 @@ class Dialogue(pygame.sprite.Sprite):
 
     def render(self):
         self.image = pygame.Surface((winWidth, self.height*self.tileSize), pygame.SRCALPHA)
-        self.baseImage = pygame.Surface((winWidth, self.height*self.tileSize), pygame.SRCALPHA)
-        #rendText = Text(1, self.text, self.textColor, self.aalias, (self.tileSize, self.tileSize), True)
-        #self.baseImage.blit(rendText.image, rendText.pos)
-        self.tWidth = int(self.baseImage.get_width()/self.tileSize)
-        self.tHeight = int(self.baseImage.get_height()/self.tileSize)
-
-        for x in range(0, self.tWidth-1):
-            for y in range(0, self.tHeight-1):
-                self.baseImage.blit(self.borderPalette, (x*self.tileSize, y*self.tileSize), (self.tileSize, self.tileSize, self.tileSize, self.tileSize))
-
-        for x in range(1, self.tWidth-1): # Renders top, bottom tiles
-            self.baseImage.blit(self.borderPalette, (x*self.tileSize, 0), (self.tileSize, 0, self.tileSize, self.tileSize))
-            self.baseImage.blit(self.borderPalette, (x*self.tileSize, self.baseImage.get_height()-self.tileSize), (self.tileSize, self.tileSize*2, self.tileSize, self.tileSize))
-        
-        for y in range(1, self.tHeight-1): # Renders left, right tiles
-            self.baseImage.blit(self.borderPalette, (0, y*self.tileSize), (0, self.tileSize, self.tileSize, self.tileSize))
-            self.baseImage.blit(self.borderPalette, (self.baseImage.get_width()-self.tileSize, y*self.tileSize), (self.tileSize*2, self.tileSize, self.tileSize, self.tileSize))
-                    
-        self.baseImage.blit(self.borderPalette, (0, 0), (0, 0, self.tileSize, self.tileSize))
-        self.baseImage.blit(self.borderPalette, (self.baseImage.get_width()-self.tileSize, 0), (self.tileSize*2, 0, self.tileSize, self.tileSize))
-        self.baseImage.blit(self.borderPalette, (0, self.baseImage.get_height()-self.tileSize), (0, self.tileSize*2, self.tileSize, self.tileSize))
-        self.baseImage.blit(self.borderPalette, (self.baseImage.get_width()-self.tileSize, self.baseImage.get_height()-self.tileSize), (self.tileSize*2, self.tileSize*2, self.tileSize, self.tileSize))
-
+        self.baseImage = createFrame(winWidth/self.tileSize, self.height)
         self.rendText = dText('title1', self.text, colors.white, True, (self.tileSize, self.tileSize), (int(self.image.get_width()-self.tileSize*2), int(self.image.get_height()-self.tileSize*2)))
         self.baseImage.convert_alpha()
         self.image.blit(self.baseImage, (0, 0))

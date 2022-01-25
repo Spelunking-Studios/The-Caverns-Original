@@ -38,7 +38,7 @@ def compendiumMenu(game):
             game.map.loadLevel()
             break
         
-        text1 = fonts['title1'].render(TITLE, game.antialiasing, colors.yellow)
+        text1 = fonts['main-title1'].render(TITLE, game.antialiasing, colors.yellow)
         text2 = Text('description1', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
         game.win.blit(text1, (30,winHeight - 70))
         game.win.blit(text2.image, text2.pos)
@@ -58,7 +58,6 @@ def settingsMenu(game):
     aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:game.toggleAalias() ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     texts = [
-        Text('title2', 'Paused', colors.orangeRed, game.antialiasing, (winWidth/2.4, 10)),
         Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
         Text('caption1', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
         Text('caption1', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
@@ -91,7 +90,7 @@ def settingsMenu(game):
             game.map.loadLevel()
             break
         
-        text2 = fonts['title1'].render(TITLE, game.antialiasing, colors.orangeRed)
+        text2 = fonts['main-title1'].render(TITLE, game.antialiasing, colors.orangeRed)
         game.win.blit(text2, (30,30))
 
         keys = pygame.key.get_pressed()
@@ -99,11 +98,20 @@ def settingsMenu(game):
         pygame.display.update()
 
 def main(game):
-    startButton = Button(game, (winWidth/2 + 140, 140), text="Start", center = True, colors = (colors.yellow, colors.white))
-    stgsButton = Button(game, (winWidth/2 + 140, 380), text="Settings", center=True, colors = (colors.yellow, colors.white))
-    compendButton = Button(game, (winWidth/2 + 140, 260), text="Game Instructions", center=True, colors = (colors.yellow, colors.white))
+    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
+    stgsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
+    compendButton = Button(game, (0, 460), text="Game Instructions", center=True, colors = (colors.yellow, colors.white))
     comps = pygame.sprite.Group(startButton, stgsButton, compendButton) # Stands for components fyi
-    swordImg = pygame.image.load(asset('player/sw1.png'))
+    for c in comps:
+        c.rect.centerx = winWidth/2
+    swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
+    swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
+    swordRect.centerx = winWidth/2
+    text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30)) #game.font2.render('Press S to Start', game.antialiasing, colors.orangeRed)
+    text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))#game.font1.render(TITLE, game.antialiasing, colors.orangeRed)
+    text2.rect.centerx = winWidth/2
+    text3 = Text('title2', 'Created by LGgameLAB', colors.orangeRed, game.antialiasing, (0, 110))#game.font2.render('Created by GameLAB', game.antialiasing, colors.orangeRed)
+    text3.rect.centerx = winWidth/2
     while True:
         pygame.time.delay(50)
         
@@ -126,15 +134,10 @@ def main(game):
             compendiumMenu(game)
             compendButton.reset()
         
-        text1 = game.font2.render('Press S to Start', game.antialiasing, colors.orangeRed)
-        text2 = game.font1.render(TITLE, game.antialiasing, colors.orangeRed)
-        text3 = game.font1.render('Created by GameLAB', game.antialiasing, colors.orangeRed)
-        
-        game.win.blit(text1, (30,30))
-        game.win.blit(text2, (100, 200))
-        game.win.blit(text3, (100, 300))
-
-        game.win.blit(pygame.transform.scale(swordImg, (320, 320)), (100, 300))
+        game.win.blit(text1.image, text1)
+        game.win.blit(text2.image, text2)
+        game.win.blit(text3.image, text3)
+        game.win.blit(swordImg, swordRect)
 
         keys = pygame.key.get_pressed()
 

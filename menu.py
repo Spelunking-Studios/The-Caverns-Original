@@ -1,13 +1,26 @@
 import pygame
 import colors
+from stgs import *
 
 class Button(pygame.sprite.Sprite):
+    '''
+    A menu object that that stores a clicked value when hovered over
+
+    Arguments
+    |    Button.text [str] - stores optional text value
+    |    Button.colors [tup] - Stores colors 
+    |    Button.center [bool] - Stores whether text is centered or not
+
+    Values
+    |    Button.clicked [bool] - stores whether it has been clicked or ot since initiation
+    |    Button.
+    '''
     def __init__(self, game, pos,**kwargs):
         self.game = game
         
         self.onClick = False
         self.groups = []
-        self.rect = (0, 0, 200, 60)
+        self.wh = (200, 60)
         #          Normal           Selected
         self.colors = (colors.yellow, (255, 255, 255))
         self.spriteInit = False
@@ -21,7 +34,8 @@ class Button(pygame.sprite.Sprite):
 
         pygame.sprite.Sprite.__init__(self, self.groups)
 
-        self.rect = pygame.Rect(self.rect)
+        self.rect = pygame.Rect(0, 0, 20, 20)
+        self.rect.size = self.wh
         self.rect.x, self.rect.y = pos
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
 
@@ -60,7 +74,51 @@ class Button(pygame.sprite.Sprite):
     def reset(self):
         self.clicked = False
 
+class Text:
+    '''
+    Basic Text object
+    '''
+    def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), ):
+        self.font = fonts[fNum]
+        if multiline:
+            ## This code is thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame 
+            self.image = pygame.Surface(size, pygame.SRCALPHA)
+            self.image.fill(bgColor)
+            words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
+            space = self.font.size(' ')[0]  # The width of a space.
+            max_width, max_height = size
+            x, y = 0, 0
+            for line in words:
+                for word in line:
+                    if word  != '':
+                        if word[0:3] == "RGB":
+                            wordsplit = word[4:].split(')')
+                            word_color = tuple([int(x) for x in wordsplit[0].split(',')])
+                            word = wordsplit[1]
+                        else:
+                            word_color = color
+                        word_surface = self.font.render(word, aalias, word_color)
+                        word_width, word_height = word_surface.get_size()
+                        if x + word_width >= max_width:
+                            x = 0  # Reset the x.
+                            y += word_height  # Start on new row.
+                        self.image.blit(word_surface, (x, y))
+                        x += word_width + space
+                x = 0 # Reset the x.
+                y += word_height  # Start on new row.
+            
+        else: 
+            self.image = fonts[fNum].render(text, aalias, color)
+        self.pos = pygame.Vector2(pos)
+        
+        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
+        self.image = self.image.convert_alpha()
+
 class SettingSlider(pygame.sprite.Sprite):
+    '''
+    A menu object that acts as a basic slider that stores it's value as a percentage ( use SettingSlider.getRatio() )
+    It renders itself using pygame draw methods and color values given as SettingSlider.color
+    '''
     
     def __init__(self, game, pos,**kwargs):
         self.game = game
@@ -125,6 +183,11 @@ class SettingSlider(pygame.sprite.Sprite):
                 self.clicked = True
 
 class MenuItem(pygame.sprite.Sprite):
+    '''
+    A menu object that zooms in and out when hovered over. Requires a position and surface.
+    
+    Does not currently store whether it has been clicked or not, only serves as a basic object. 
+    '''
     def __init__(self, game, pos, image, **kwargs):
         self.game = game
         self.rect = (0, 0, 180, 210)
@@ -170,3 +233,32 @@ class MenuItem(pygame.sprite.Sprite):
             self.zoom = max(self.zoomMin, self.zoom - self.zoomSpeed)
         
         self.render()
+
+def createFrame(width, height, tileSize = 32, bPal = pygame.image.load(asset('objects/dPallette2.png'))):
+    '''
+    Create a GUI frame from a 3x3 tile pallet provided a given width and height.
+    NOTE: The height and width are refering to # in tiles
+    '''
+    baseImage = pygame.Surface((width*tileSize, height*tileSize), pygame.SRCALPHA)
+    borderPalette = bPal.convert_alpha()
+    tWidth = int(baseImage.get_width()/tileSize)
+    tHeight = int(baseImage.get_height()/tileSize)
+
+    for x in range(0, tWidth-1):
+        for y in range(0, tHeight-1):
+            baseImage.blit(borderPalette, (x*tileSize, y*tileSize), (tileSize, tileSize, tileSize, tileSize))
+
+    for x in range(1, tWidth-1): # Renders top, bottom tiles
+        baseImage.blit(borderPalette, (x*tileSize, 0), (tileSize, 0, tileSize, tileSize))
+        baseImage.blit(borderPalette, (x*tileSize, baseImage.get_height()-tileSize), (tileSize, tileSize*2, tileSize, tileSize))
+    
+    for y in range(1, tHeight-1): # Renders left, right tiles
+        baseImage.blit(borderPalette, (0, y*tileSize), (0, tileSize, tileSize, tileSize))
+        baseImage.blit(borderPalette, (baseImage.get_width()-tileSize, y*tileSize), (tileSize*2, tileSize, tileSize, tileSize))
+                
+    baseImage.blit(borderPalette, (0, 0), (0, 0, tileSize, tileSize))
+    baseImage.blit(borderPalette, (baseImage.get_width()-tileSize, 0), (tileSize*2, 0, tileSize, tileSize))
+    baseImage.blit(borderPalette, (0, baseImage.get_height()-tileSize), (0, tileSize*2, tileSize, tileSize))
+    baseImage.blit(borderPalette, (baseImage.get_width()-tileSize, baseImage.get_height()-tileSize), (tileSize*2, tileSize*2, tileSize, tileSize))
+
+    return baseImage.convert_alpha()

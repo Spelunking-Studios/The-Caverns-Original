@@ -74,7 +74,7 @@ class Player(pygame.sprite.Sprite):
     def checkActions(self):
         now = pygame.time.get_ticks()
         action1 = getJoy1().get_axis(5) > 0 if joystickEnabled else pygame.mouse.get_pressed()[0] and self.stats.inventory.getSlot(1) != None
-        action2 = getJoy1().get_axis(4) > 0 if joystickEnabled else pygame.mouse.get_pressed()[0] and self.stats.inventory.getSlot(2) != None
+        action2 = getJoy1().get_axis(4) > 0 if joystickEnabled else pygame.mouse.get_pressed()[2] and self.stats.inventory.getSlot(2) != None
 
         if action1:
             self.stats.inventory.getSlot(1).action(self)

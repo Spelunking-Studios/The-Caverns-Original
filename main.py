@@ -71,7 +71,7 @@ class Game:
         self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
-        self.font1 = pygame.font.Font(fAsset('PixelLove.ttf'), 48)
+        self.font1 = pygame.font.Font(fAsset('PixelLove.ttf'), 64)
         self.font2 = pygame.font.Font(fAsset('PixelLove.ttf'), 23)
         self.menuFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
         self.gameOverFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60)
