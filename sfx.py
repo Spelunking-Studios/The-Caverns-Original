@@ -47,17 +47,18 @@ class GameMixer:
         sound.play()
 
     def playFx(self, key):
-        if not self.fxVolume == 0:
-            try:
-                sound = pygame.mixer.Sound(self.fx[key][0])
-                if self.fx[key][1] > 0:
-                    sound.set_volume(min(self.fxVolume + self.fx[key][1], 1))
-                else:
-                    sound.set_volume(max(self.fxVolume + self.fx[key][1], 0))
-                sound.play()
-            except KeyError:
-                print("Sound not registered. Maybe you meant playFxFile(*file)")
-
+        # if not self.fxVolume == 0:
+        #     try:
+        #         sound = pygame.mixer.Sound(self.fx[key][0])
+        #         if self.fx[key][1] > 0:
+        #             sound.set_volume(min(self.fxVolume + self.fx[key][1], 1))
+        #         else:
+        #             sound.set_volume(max(self.fxVolume + self.fx[key][1], 0))
+        #         sound.play()
+        #     except KeyError:
+        #         print("Sound not registered. Maybe you meant playFxFile(*file)")
+        pass 
+        
     def playMusic(self, sfile):
         sound = pygame.mixer.Sound(sfile)
         self.musicChannel.play(sound, -1)

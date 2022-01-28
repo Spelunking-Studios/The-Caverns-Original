@@ -1,0 +1,18 @@
+[[package]]
+name = "pytmx"
+version = "3.31"
+description = "Loads tiled tmx maps"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[metadata]
+lock-version = "1.1"
+python-versions = "^3.8"
+content-hash = "437ebe655c6e9676410cd627e1e0562dcf082d7e847018bbbdb06f9eaa57d32c"
+
+[metadata.files]
+pytmx = [
+    {file = "PyTMX-3.31-py3-none-any.whl", hash = "sha256:8d572fa8889236879e19351f99f425a0df905105f8503d77470746c386befd05"},
+    {file = "PyTMX-3.31.tar.gz", hash = "sha256:ead258771640c82029c6fef53661464163e791e729b7e63def53e1bd85e4efe8"},
+]
