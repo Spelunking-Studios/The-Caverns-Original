@@ -24,10 +24,7 @@ class Stats:
 		return damage
 	
 	def isDead(self):
-		if self.health <= 0:
-			return True
-		else:
-			return False
+		return bool(self.health <= 0)
 
 class PlayerStats(Stats):
 	def __init__(self):
@@ -72,7 +69,7 @@ class Inventory:
 		for x in range(1, self.slotMax+1):
 			try:
 				self.slots[x] = args[x-1]
-			except:
+			except IndexError:
 				self.slots[x] = None
 
 	def setSlot(self, index, item=None):
@@ -98,7 +95,7 @@ class Inventory:
 		for x in range(self.slotMax, self.slotMax+increase):
 			try:
 				self.slots[x] = args[x-self.slotMax]
-			except:
+			except IndexError:
 				self.slots[x] = None
 		self.slotMax += increase
 
