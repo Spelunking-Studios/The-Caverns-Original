@@ -24,7 +24,7 @@ class RotAnimation:
                 if self.framex > int(self.imgSheet.width - self.tileWidth):
                     self.framex = 0
             self.sprite.image = self.imgSheet.get_image(self.framex, 0, self.tileWidth, self.tileHeight)
-            if not self.scalex == 1 or not self.scaley == 1:
+            if self.scalex != 1 or self.scaley != 1:
                 self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileWidth*self.scalex, self.tileHeight*self.scaley))
             
             self.sprite.rotCenter()
@@ -71,7 +71,7 @@ class PlayerAnimation:
                 if self.mode != "default":
                     self.setMode()
         self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
-        if not self.scalex == 1 or not self.scaley == 1:
+        if self.scalex != 1 or self.scaley != 1:
             self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))
         self.sprite.rotCenter()
         self.applyFx()

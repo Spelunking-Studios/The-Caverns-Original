@@ -88,7 +88,7 @@ class MovingPlatform(pygame.sprite.Sprite):
         
             testRect = pygame.Rect(round(vector.x), round(vector.y), self.rect.width, self.rect.height)
             for obj in self.game.colliders:
-                if not obj == self:
+                if obj != self:
                     if testRect.colliderect(obj.rect):
                         returnVal = True
 
@@ -101,7 +101,4 @@ class MovingPlatform(pygame.sprite.Sprite):
 
     def checkPlayerAbove(self, testRect):
         upRect = testRect.move(0, -1)
-        if upRect.colliderect(self.player.rect):
-            return True
-        else:
-            return False
+        return bool(upRect.colliderect(self.player.rect))
