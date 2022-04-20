@@ -141,6 +141,9 @@ if not __name__ == '__main__':
             'title2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
             'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
             'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
+            'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
+            'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
+            'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
             }
 
     

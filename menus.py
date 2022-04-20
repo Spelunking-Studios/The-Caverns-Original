@@ -107,10 +107,10 @@ def main(game):
     swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
     swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
     swordRect.centerx = winWidth/2
-    text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30)) #game.font2.render('Press S to Start', game.antialiasing, colors.orangeRed)
-    text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))#game.font1.render(TITLE, game.antialiasing, colors.orangeRed)
+    text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
+    text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     text2.rect.centerx = winWidth/2
-    text3 = Text('title2', 'Created by LGgameLAB', colors.orangeRed, game.antialiasing, (0, 110))#game.font2.render('Created by GameLAB', game.antialiasing, colors.orangeRed)
+    text3 = Text('title2', 'Created by LGgameLAB', colors.orangeRed, game.antialiasing, (0, 110))
     text3.rect.centerx = winWidth/2
     while True:
         pygame.time.delay(50)
@@ -165,7 +165,7 @@ def gameOver(game):
             break
         
         
-        text1 = game.gameOverFont.render('Game Over', game.antialiasing, colors.dark(colors.red, 20))
+        text1 = fonts['gameover'].render('Game Over', game.antialiasing, colors.dark(colors.red, 20))
         text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.win.blit(text1, (50,50))
@@ -191,7 +191,7 @@ def victoryLoop(game):
             game.reset()
             break
         
-        text1 = game.victoryFont.render('Victory', game.antialiasing, colors.yellow, 20)
+        text1 = fonts['victory'].render('Victory', game.antialiasing, colors.yellow, 20)
         text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.win.blit(text2, (800, 70))

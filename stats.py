@@ -39,10 +39,10 @@ class PlayerStats(Stats):
 			atkDamage=0,
 			atkVariance=1,
 			atkSpeed=400, # This is a delay in milliseconds
-			crit=9, # This is a percent out of 100 (make sure its an integer)
+			crit=5, # This is a percent out of 100 (make sure its an integer)
 			critBonus = 200, # This is a percent
 		)
-		self.inventory = Inventory(objects.Sword1(),  objects.Sword1())
+		self.inventory = Inventory(objects.Sword1(),  objects.MagicWand())
 	
 	def attack(self): # The index here just means which hotbar number the action is
 		dmg = self.inventory.getCurrent().damage + self.strength/5
@@ -81,9 +81,10 @@ class Inventory:
 		self.slotFocus = index
 
 	def getSlot(self, index):
+		self.slotFocus = index
 		if not index > self.slotMax:
 			return self.slots[index]
-		self.slotFocus = index
+		
 	
 	def getIndex(self, item):
 		for k,v in self.slots.items():

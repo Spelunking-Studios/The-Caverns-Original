@@ -24,7 +24,7 @@ class Player(pygame.sprite.Sprite):
         self.drag = 0.80
         self.damage = 10
         self.roomBound = True
-        self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png')}
+        self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png'), 'wand':asset('player/playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
 
@@ -84,7 +84,7 @@ class Player(pygame.sprite.Sprite):
             
     def weaponCollisions(self):
         if self.animations.mode == "hit":
-            for e in self.game.groups.getProximitySprites(self):
+            for e in self.game.groups.getProximitySprites(self, 600):
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
                         if pygame.time.get_ticks() - e.lastHit >= 260:

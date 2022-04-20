@@ -96,6 +96,58 @@ class PlayerAnimation:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
 
+class BasicAnimation:
+    #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
+    def __init__(self, sprite):
+        self.sprite = sprite
+        self.framex = 0
+        self.delay = 120
+        self.scalex, self.scaley = 1,1
+        self.imgSheet = sprite.imgSheet
+        self.mode = 'main'
+        self.lastTick = pygame.time.get_ticks()
+        self.imageEffects = pygame.sprite.Group()
+        
+        for k, v in self.imgSheet.items():
+            self.imgSheet[k] = Spritesheet(v)
+
+        self.tileSize = self.imgSheet[self.mode].height
+
+    def getFirstFrame(self):
+        return self.imgSheet[self.mode].get_image(0, 0, self.tileSize, self.tileSize)
+
+    def update(self):
+        if pygame.time.get_ticks() - self.lastTick >= self.delay:
+            self.framex += self.tileSize
+            self.lastTick = pygame.time.get_ticks()
+            if self.framex > int(self.imgSheet[self.mode].width - self.tileSize):
+                self.framex = 0
+        print(self.framex)
+        self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
+        if not self.scalex == 1 or not self.scaley == 1:
+            self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))
+        self.applyFx()
+
+    def scale(self, x, y=None):
+        if y==None:
+            self.scalex, self.scaley = x,x
+        else:
+            self.scalex, self.scaley = x,y
+        
+    def applyFx(self):
+        for fx in self.imageEffects:
+            fx.update(self.sprite.image)
+    
+    def fx(self, fx):
+        self.imageEffects.add(fx)
+    
+    def setMode(self, mode="default"):
+        if mode in self.imgSheet:
+            self.mode = mode
+        else:
+            print(f"mode {mode} does not exist for this sprite")
+        self.tileSize = self.imgSheet[self.mode].height
+
 class HurtFx(pygame.sprite.Sprite):
     def __init__(self, duration = 300):
         pygame.sprite.Sprite.__init__(self)

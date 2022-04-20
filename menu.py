@@ -39,7 +39,7 @@ class Button(pygame.sprite.Sprite):
         self.rect.x, self.rect.y = pos
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
 
-        self.rendText = self.game.menuFont.render(self.text, self.game.antialiasing, (0, 0, 0))
+        self.rendText = fonts['menu1'].render(self.text, self.game.antialiasing, (0, 0, 0))
         self.textRect = self.rendText.get_rect()
         if self.center:
             self.textRect.center = pygame.Rect(0, 0, self.rect.width, self.rect.height).center

@@ -27,15 +27,17 @@ class Grouper:
         self.enemies = Group()
         self.lightSources = Group()
         self.colliders = Group()
+        self.pProjectiles = Group() # Player Projectiles
+        self.eProjectiles = Group() # Enemy Projectiles
 
-    def getProximitySprites(self, sprite, proximity=300, group='enemies'): # This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
-        if isinstance(group, str):
-            group = self.__dict__[group]
+    def getProximitySprites(self, sprite, proximity=300, *args): # This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
 
+        groups = args if len(args) > 1 else [self.enemies]
         returnList = []
-        for e in group:
-            if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(sprite.rect.center)) <= proximity:
-                returnList.append(e)
+        for g in groups:
+            for e in g:
+                if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(sprite.rect.center)) <= proximity:
+                    returnList.append(e)
         return returnList
     
     def clearAll(self):
@@ -56,11 +58,11 @@ class Game:
     # Loads data for the game levels and the player
 
     def __init__(self):
-        self.layer1 = pygame.sprite.Group()
-        self.layer2 = pygame.sprite.Group()
-        self.fxLayer = pygame.sprite.Group()
-        self.hudLayer = pygame.sprite.Group()
-        self.overlayer = pygame.sprite.Group()
+        self.layer1 = Group()
+        self.layer2 = Group()
+        self.fxLayer = Group()
+        self.hudLayer = Group()
+        self.overlayer = Group()
         self.rendLayers = [self.layer1, self.layer2]
         self.mixer = GameMixer()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
@@ -71,11 +73,6 @@ class Game:
         self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
-        self.font1 = pygame.font.Font(fAsset('PixelLove.ttf'), 64)
-        self.font2 = pygame.font.Font(fAsset('PixelLove.ttf'), 23)
-        self.menuFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
-        self.gameOverFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60)
-        self.victoryFont = pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72)
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
@@ -92,13 +89,12 @@ class Game:
         self.won = False
         self.points = 0
         self.groups = Grouper()
-        self.sprites = pygame.sprite.Group()
-        self.pSprites = pygame.sprite.Group()
+        self.sprites = Group()
+        self.pSprites = Group()
         self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
         self.player.gravity = self.gravity
         self.end = False
-        self.attempts = 0
         self.pause = False
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)
@@ -150,7 +146,7 @@ class Game:
             for sprite in layer:
                 try:
                     self.win.blit(sprite.image, self.cam.apply(sprite))
-                    #spygame.draw.rect(self.win, (200, 0, 0), sprite.rect)
+                    pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
                 except AttributeError:
                     pass
         
@@ -192,6 +188,11 @@ class Game:
 
 
     def checkHits(self):
+        pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
+        # for e, projs in pygame.sprite.groupcollide(self.groups.enemies, self.groups.pProjectiles, False, False).items():
+        #     for p in projs:
+        #         p.hit(e)
+
         if self.player.stats.isDead():
             self.mixer.playFx('pHit')
             self.pause = True

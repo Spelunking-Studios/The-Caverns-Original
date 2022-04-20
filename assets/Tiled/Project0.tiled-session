@@ -499,16 +499,16 @@
             "scale": 5.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 369.6363636363636,
-                "y": 342.27272727272725
+                "x": 373.6363636363636,
+                "y": 285
             }
         },
         "cave2.tmx": {
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 376,
-                "y": 794
+                "x": 304,
+                "y": 320
             }
         },
         "level1/level1.tmx": {
@@ -534,16 +534,15 @@
     "map.tileWidth": 32,
     "map.width": 18,
     "openFiles": [
-        "Project0-tileset1.tsx",
         "cave1.tmx",
         "cave2.tmx"
     ],
     "project": "Project0.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Project0-tileset1.tsx",
         "cave2.tmx",
         "cave1.tmx",
+        "Project0-tileset1.tsx",
         "level1/level1.tmx",
         "C:/Users/LukeG/Downloads/invisboi.tsx",
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level1/level1.tmx",
