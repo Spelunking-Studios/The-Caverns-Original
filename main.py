@@ -19,6 +19,8 @@ from player import *
 from sfx import *
 import menus
 import hud
+from PygameShader.shader import shader_sobel24_fast_inplace 
+
 
 class Grouper:
     def __init__(self):
@@ -102,6 +104,7 @@ class Game:
         self.statsInfo = hud.StatHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
+        
 
     ####  Determines how the run will function ####
     def run(self):
