@@ -131,7 +131,7 @@ class Spritesheet:
         img = pygame.transform.scale(img, (width, height))
         return img.convert_alpha()
 
-if not __name__ == '__main__':
+if __name__ != '__main__':
     fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
             'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
             'subtitle1': pygame.font.Font(fAsset('PixelLove.ttf'), 23),

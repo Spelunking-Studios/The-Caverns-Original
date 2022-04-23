@@ -54,8 +54,8 @@ def settingsMenu(game):
     audioSlider2 = SettingSlider(game, (100, 500), addGroups = [comps])
     audioSlider1.image.set_colorkey((0,0,0))
     audioSlider2.image.set_colorkey((0,0,0))
-    fpsButton = Button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = lambda:game.toggleFps() ,groups = [comps], center = True)
-    aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:game.toggleAalias() ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
+    fpsButton = Button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = game.toggleFps ,groups = [comps], center = True)
+    aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = game.toggleAalias ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
     texts = [
         Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),

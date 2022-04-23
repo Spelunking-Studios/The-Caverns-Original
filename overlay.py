@@ -30,8 +30,8 @@ class PauseOverlay(pygame.sprite.Sprite):
         self.audioSlider2 = SettingSlider(self.game, (100, 500), addGroups = [self.components])
         self.audioSlider1.image.set_colorkey((0,0,0))
         self.audioSlider2.image.set_colorkey((0,0,0))
-        self.fpsButton = Button(self.game, (800, 250), text = 'Toggle FPS', onClick = lambda:self.game.toggleFps() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
-        self.aaliasButton = Button(self.game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = lambda:self.game.toggleAalias() ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
+        self.fpsButton = Button(self.game, (800, 250), text = 'Toggle FPS', onClick = self.game.toggleFps ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
+        self.aaliasButton = Button(self.game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = self.game.toggleAalias ,groups = [self.components], center = True, colors=(colors.yellow, colors.white))
         Button(self.game, (350, 550), groups = [self.components], text = "Return to menu", onClick=self.game.endgame, center = True, colors = (colors.yellow, colors.white))
     
         self.text = [
