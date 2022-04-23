@@ -3,6 +3,7 @@ import colors
 import math
 import fx
 from stgs import asset
+from .lights import LightSource
 from animations import BasicAnimation
 
 class Projectile(pygame.sprite.Sprite):
@@ -24,7 +25,7 @@ class Projectile(pygame.sprite.Sprite):
         self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
         self.rect.center = self.pos
         ## If you were thinking this should be on the then well . . . I did it here to be more precise
-        fx.Particles(self.game, self.rect, lifeSpan = 100, tickSpeed=20, size = 8).setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
+        # fx.Particles(self.game, self.rect, lifeSpan = 100, tickSpeed=20, size = 8).setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
 
     
     def update(self):
@@ -49,14 +50,20 @@ class Fireball(Projectile):
         super().__init__(game, game.player.rect.center, mPos, groups=(game.sprites, game.layer2, game.groups.pProjectiles))
         self.imgSheet = {'main': pygame.image.load(asset('player/fireball.png'))}
         self.animations = BasicAnimation(self)
+        self.animations.delay = 30
         self.image = self.animations.getFirstFrame()
         self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
+        self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size = 8)
+        self.particles.setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
+        self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
     
     def update(self):
         super().update()
+        self.light.rect.center = self.rect.center
         self.animations.update()
     
     def kill(self):
-        fx.Particles(self.game, self.rect, lifeSpan = 300, tickSpeed=2, size = 5).setParticleKwargs(speed=1.5, shrink=0.6, life=140, color=colors.orangeRed)
+        self.particles.setLife(220)
+        self.light.kill()
         super().kill()
         

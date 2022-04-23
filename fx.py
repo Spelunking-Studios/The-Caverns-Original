@@ -116,6 +116,10 @@ class Particles(pygame.sprite.Sprite):
         if self.lifeSpan:
             if pygame.time.get_ticks() - self.init >= self.lifeSpan:
                 self.end()
+    
+    def setLife(self, time):
+        self.lifeSpan = time
+        self.init = pygame.time.get_ticks()
 
     def addParticles(self):
         if len(self.particles) < self.size and pygame.time.get_ticks() - self.lastParticle >= self.tickSpeed:

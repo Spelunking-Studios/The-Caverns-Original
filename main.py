@@ -149,7 +149,7 @@ class Game:
             for sprite in layer:
                 try:
                     self.win.blit(sprite.image, self.cam.apply(sprite))
-                    pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
+                    # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
                 except AttributeError:
                     pass
         
