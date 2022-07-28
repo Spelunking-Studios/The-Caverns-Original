@@ -193,6 +193,7 @@ class Particle(pygame.sprite.Sprite):
         self.drag = 1
         self.shrink = 0.2
         self.life = 600
+        self.colorVariation = 100
         self.color = colors.red
         self.size = (10, 10)
         self.dir = dir
@@ -210,7 +211,7 @@ class Particle(pygame.sprite.Sprite):
 
     def render(self):
         self.image = pygame.surface.Surface((self.rect.width, self.rect.height), pygame.SRCALPHA)
-        pygame.draw.circle(self.image, self.color, (self.rect.width/2, self.rect.height/2), self.w/2)
+        pygame.draw.circle(self.image, colors.dark(self.color, random.randint(0, self.colorVariation)), (self.rect.width/2, self.rect.height/2), self.w/2)
 
     def update(self):
         self.pos += self.dir*self.speed

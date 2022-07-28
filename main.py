@@ -19,7 +19,8 @@ from player import *
 from sfx import *
 import menus
 import hud
-from PygameShader.shader import shader_sobel24_fast_inplace 
+from PygameShader.shader import shader_sobel24_fast_inplace, shader_bloom_effect_array24
+from PygameShader.gaussianBlur5x5 import blur5x5_array24_inplace_c
 
 
 class Grouper:
@@ -176,6 +177,8 @@ class Game:
             pos = self.player.cursor.pos
             size = self.player.cursor.size
             pygame.draw.rect(self.win, (200, 0, 0), (pos.x, pos.y, size.x, size.y))
+        
+        # shader_bloom_effect_array24(self.win, 0, fast_=True)
         
         # self.win.blit(self.player.getAttackMask(), (0, 0))
         

@@ -22,3 +22,15 @@ class LightSource(pygame.sprite.Sprite):
         if not isinstance(objT, pygame.Rect):
             for k, v in objT.properties.items():
                 self.__dict__[k] = v
+
+class LightEffect(LightSource):
+    def __init__(self, game, rect, **kwargs):
+        self.life = 200
+        self.init = now()
+        super().__init__(game, rect, img=asset("objects/light1.png"))
+    
+    def update(self):
+        if now()-self.init >= self.life:
+            self.kill()
+
+
