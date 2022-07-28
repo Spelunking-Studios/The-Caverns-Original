@@ -24,7 +24,7 @@ import hud
 
 class Grouper:
     def __init__(self):
-        # This class contains helpful groups for organizing different types of sprites
+        """Contains helpful groups for organizing different types of sprites"""
         # Create sprite groups here
         self.enemies = Group()
         self.lightSources = Group()
@@ -51,15 +51,15 @@ class Grouper:
 
 #### Game object ####
 class Game:
-
-    #### Initialize game object ####
-    #
-    # Groups each sprite type to perform targetted tasks
-    # All sprites go into the sprites group
-    # Sets up window, font, gravity, and cam
-    # Loads data for the game levels and the player
-
+    """Represents an instance of the game"""
     def __init__(self):
+        """Initializes the game object
+        
+        Groups each sprite type to perform targetted tasks
+        All sprites go into the sprites group
+        Sets up window, font, gravity, and cam
+        Loads data for the game levels and the player
+        """
         self.layer1 = Group()
         self.layer2 = Group()
         self.fxLayer = Group()
@@ -121,7 +121,7 @@ class Game:
     def mainLoop(self):
         while not self.end:
             self.clock.tick(FPS)
-            self.refresh()#asset('objects/shocking.jpg'))
+            self.updateBackground()#asset('objects/shocking.jpg'))
 
             ##Updates Game
             self.runEvents()
@@ -332,13 +332,20 @@ class Game:
     def gameOver(self):
         menus.gameOver(self)
 
-    def refresh(self, bg = False):
+    def updateBackground(self, bg = False):
+        """Updates the background
+        
+        Arguments:
+        -----
+        bg: boolean = False
+
+        If bg is True, the provided image is used, otherwise the solid color black is used
+        """
         if bg:
             self.win.blit(pygame.transform.scale(pygame.image.load(bg), (winWidth, winHeight)).convert(), (0, 0))
         else:
             self.win.fill((0, 0, 0))
 
-#### Creates and runs game ####
-game1 = Game()
 while __name__ == '__main__':
+    game1 = Game()
     game1.run()
