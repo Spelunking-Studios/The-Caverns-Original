@@ -19,7 +19,7 @@ from player import *
 from sfx import *
 import menus
 import hud
-from PygameShader.shader import shader_sobel24_fast_inplace 
+#from PygameShader.shader import shader_sobel24_fast_inplace 
 
 
 class Grouper:
