@@ -49,3 +49,7 @@ Classes should be named using CamelCase with a uppercase first character.
 ## Functions
 
 Functions should be named using camelCase with a lowercase first character.
+
+## String Literals
+
+String literals should use double quotes where possible.
