@@ -57,6 +57,7 @@ def fAsset(assetName):
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
 winFlags = pygame.HWSURFACE
+
 iconPath = asset('logo.png')
 
 #### Anti-Aliasing on text ####
@@ -78,7 +79,7 @@ keySet = {'start': pygame.K_s,
 
 joystickDisabled = True
 pygame.joystick.init()
-joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())]
+joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())] 
 joystickConnected = True if len(joysticks) > 0 else False
 joystickEnabled = True if joystickConnected and not joystickDisabled else False
 def checkJoysticks():
@@ -131,26 +132,27 @@ class Spritesheet:
         return img.convert_alpha()
 
 if __name__ != '__main__':
-    fonts = {
-        'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
-        'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
-        'subtitle1': pygame.font.Font(fAsset('PixelLove.ttf'), 23),
-        '2': pygame.font.Font(fAsset('ComicSansMS.ttf'), 23),
-        '3': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 32),
-        'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
-        'title2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
-        'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
-        'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
-        'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
-        'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
-        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
-    }
+    fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
+            'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
+            'subtitle1': pygame.font.Font(fAsset('PixelLove.ttf'), 23),
+            '2': pygame.font.SysFont('Comic Sans MS', 23),
+            '3': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 32),
+            'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
+            'title2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
+            'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
+            'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
+            'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
+            'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
+            'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
+            }
+
     
 DEBUG = False
 def dist(vec1, vec2):
     dist1 = (vec1.x-vec2.x)**2
     dist2 = (vec1.y-vec2.y)**2
     return math.sqrt(dist1+dist2)
+
 import pickle
 
 def loadSave(file):
