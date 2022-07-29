@@ -1,11 +1,9 @@
 import pygame
 from pygame.sprite import Group
-
 pygame.init()
 import os
 import random
 import sys
-
 from stgs import *
 loadSave(saveFile)
 from stgs import *
@@ -108,7 +106,8 @@ class Game:
 
     ####  Determines how the run will function ####
     def run(self):
-        self.menuLoop()
+        """Runs the game"""
+        #self.menuLoop()
         #self.mixer.playMusic(asset('sounds/track 1.wav'))
         self.mainLoop()
         self.mixer.stop()
@@ -127,7 +126,14 @@ class Game:
             self.runEvents()
             self.update()
 
-    def update(self): 
+    def update(self):
+        """Update the game
+        
+        Updates the FPS and checks if the game is paused.
+        If the game is paused: the pause sprites are updated,
+        otherwise the normal sprites are updated and the game checks for hits.
+        The overlayer and camera are updated, and the grame renders, and updates the screen.
+        """
         self.getFps()
         self.getPause()
         if self.pause:
@@ -143,6 +149,8 @@ class Game:
         pygame.display.update()
 
     def render(self):
+        if not self.map.level.load:
+            self.map.level.load(self)
         self.win.blit(self.map.level.image, self.cam.apply(self.map.level))
 
         for layer in self.rendLayers:
@@ -346,6 +354,6 @@ class Game:
         else:
             self.win.fill((0, 0, 0))
 
-while __name__ == '__main__':
+if __name__ == '__main__':
     game1 = Game()
     game1.run()
