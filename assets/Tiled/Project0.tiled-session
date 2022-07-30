@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 5.5,
-            "selectedLayer": 2,
+            "scale": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 373.6363636363636,
-                "y": 285
+                "x": 260,
+                "y": 1039.5
             }
         },
         "cave2.tmx": {
@@ -508,7 +508,7 @@
             "selectedLayer": 2,
             "viewCenter": {
                 "x": 304,
-                "y": 320
+                "y": 321
             }
         },
         "level1/level1.tmx": {
@@ -533,6 +533,7 @@
     "map.tileHeight": 32,
     "map.tileWidth": 32,
     "map.width": 18,
+    "mapScene.enableWorlds": false,
     "openFiles": [
         "cave1.tmx",
         "cave2.tmx"

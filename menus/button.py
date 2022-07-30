@@ -48,10 +48,7 @@ class Button(MenuItem):
         return textRect
     def draw(self):
         """Draw the button"""
-        pygame.draw.rect(self.menu.screen.surface, self.color, pygame.Rect(
-            self.x, self.y,
-            self.width, self.height
-        ))
+        pygame.draw.rect(self.menu.screen.surface, self.color, self.getRect())
         self.menu.screen.surface.blit(
             self.textSurface,
             self.textRect
@@ -63,7 +60,4 @@ class Button(MenuItem):
         -----
         handler: function
         """
-        self.handlers.append({
-            "eType": "click",
-            "handler": handler
-        })
+        self.addHandler(handler, "click")

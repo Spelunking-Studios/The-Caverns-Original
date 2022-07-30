@@ -34,3 +34,13 @@ class Screen:
     def setActiveMenu(self, index):
         """Set the active menu"""
         self.activeMenu = index
+    def clickAt(self, cpos):
+        """Responds to a click at cpos
+        
+        Arguments:
+        -----
+        cpos: tuple
+            The click position (x, y)
+        """
+        # Pass click to menu
+        self.menus[self.activeMenu].clickAt(cpos)

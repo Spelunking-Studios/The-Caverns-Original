@@ -1,0 +1,443 @@
+{
+    "levelNumber": 1,
+    "levelId": 0,
+    "map": {
+        "size": [10, 10],
+        "tileData": {
+            "tileTypes": {
+                "genericCavernFloor": "assets/tiles/genericCavernFloor.png",
+                "genericCavernFloor2": "assets/tiles/genericCavernFloor2.png",
+                "mossyCavernFloor": "assets/tiles/mossyCavernFloor.png"
+            },
+            "tileTypeMap": {
+                "0": "genericCavernFloor",
+                "1": "genericCavernFloor2",
+                "2": "mossyCavernFloor"
+            }
+        },
+        "tiles": {
+            "cols": [
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ],
+                [
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    },
+                    {
+                        "type": 0,
+                        "metadata": {}
+                    }
+                ]
+            ]
+        }
+    }
+}

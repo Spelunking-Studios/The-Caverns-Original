@@ -1,8 +1,9 @@
 import pygame, sys, os
 from settings import Settings
 from background import Background
-from screens import ScreenManager, Screen
+from screens import ScreenManager, Screen, GameScreen
 from menus import Menu, Button, Text
+from level import Level
 
 # Init pygame
 pygame.init()
@@ -33,15 +34,55 @@ class Game:
         self.clock = pygame.time.Clock()
         # FPS
         self.fps = 0
+        # Game Is Running ?
+        self.gameIsPlaying = False
+        # Level
+        self.level = Level(self)
         # Setup Screens
         self.screenManager = ScreenManager(self)
+        self.screensIndex = {
+            "mainScreen": 0,
+            "game": 1
+        }
+        # Main Screen
         self.screenManager.addScreen(Screen(self.screenManager))
-        self.screenManager.setScreen(0)
+        # Game Screen
+        self.screenManager.addScreen(GameScreen(self.screenManager))
+        self.screenManager.setScreen(self.screensIndex["mainScreen"])
         # Setup Menus
         # Main menu
         self.screenManager.activeScreen.addMenu(
             Menu(self.screenManager.activeScreen)
         )
+        # Buttons
+        self.playButton = Button(
+            self.screenManager.activeScreen.menus[0],
+            pos = (500, 350),
+            size = (200, 50),
+            text = "Play",
+            color = (255, 255, 0),
+            fontSize = 20
+        )
+        self.settingsButton = Button(
+            self.screenManager.activeScreen.menus[0],
+            pos = (500, 410),
+            size = (200, 50),
+            text = "Settings",
+            color = (150, 150, 0),
+            fontSize = 20
+        )
+        self.quitButton = Button(
+            self.screenManager.activeScreen.menus[0],
+            pos = (500, 470),
+            size = (200, 50),
+            text = "Quit",
+            color = (255, 255, 0),
+            fontSize = 20
+        )
+        # Button click handlers
+        self.playButton.addClickHandler(self.start)
+        self.quitButton.addClickHandler(self.quit)
+        # Actually Add stuff to the menu
         self.screenManager.activeScreen.setActiveMenu(0)
         self.screenManager.activeScreen.menus[0].addMenuItem(
             Text(
@@ -54,36 +95,9 @@ class Game:
                 centered = [True, False]
             )
         )
-        self.screenManager.activeScreen.menus[0].addMenuItem(
-            Button(
-                self.screenManager.activeScreen.menus[0],
-                pos = (500, 350),
-                size = (200, 50),
-                text = "Play",
-                color = (255, 255, 0),
-                fontSize = 20
-            )
-        )
-        self.screenManager.activeScreen.menus[0].addMenuItem(
-            Button(
-                self.screenManager.activeScreen.menus[0],
-                pos = (500, 410),
-                size = (200, 50),
-                text = "Settings",
-                color = (255, 255, 0),
-                fontSize = 20
-            )
-        )
-        self.screenManager.activeScreen.menus[0].addMenuItem(
-            Button(
-                self.screenManager.activeScreen.menus[0],
-                pos = (500, 470),
-                size = (200, 50),
-                text = "Quit",
-                color = (255, 255, 0),
-                fontSize = 20
-            )
-        )
+        self.screenManager.activeScreen.menus[0].addMenuItem(self.playButton)
+        self.screenManager.activeScreen.menus[0].addMenuItem(self.settingsButton)
+        self.screenManager.activeScreen.menus[0].addMenuItem(self.quitButton)
     def run(self):
         """Runs the game"""
         while True:
@@ -100,12 +114,21 @@ class Game:
                 if self.mouseClickCooldown <= 0:
                     mouseVals = pygame.mouse.get_pressed()
                     if mouseVals[0]:
-                        print(f"Click at {pygame.mouse.get_pos()}")
+                        cpos = pygame.mouse.get_pos()
+                        self.screenManager.activeScreen.clickAt(cpos)
                         self.mouseClickCooldown = self.settings.mouseClickCooldown
             # Draw background
             self.background.draw(self.window)
+            # Update game
+            if self.gameIsPlaying:
+                if not self.level.loaded:
+                    self.level.load()
+                self.level.update()
             # Update the active screen
             self.screenManager.activeScreen.update()
+            # Draw the map if game is running
+            if self.gameIsPlaying:
+                self.level.draw()
             # Draw the active screen
             self.window.blit(
                 self.screenManager.activeScreen.surface,
@@ -113,7 +136,17 @@ class Game:
             )
             # Update the display
             pygame.display.update()
-    def quit(self):
+    def start(self, edata = {}):
+        """Starts the actual game"""
+        self.gameIsPlaying = True
+        self.screenManager.setScreen(self.screensIndex["game"])
+        print("Starting game...")
+    def end(self, edata = {}):
+        """Ends the game"""
+        self.gameIsPlaying = False
+        self.screenManager.setScreen(self.screensIndex["mainScreen"])
+        print("Ending game...")
+    def quit(self, edata = {}):
         """Quits the game"""
         print("Quitting...")
         pygame.quit()
