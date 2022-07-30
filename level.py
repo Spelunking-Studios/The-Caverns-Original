@@ -27,7 +27,7 @@ class Level:
         self.loaded = True
     def update(self):
         """Updates the level"""
-        pass
+        self.map.update()
     def draw(self):
         """Draws the level"""
         self.map.draw()

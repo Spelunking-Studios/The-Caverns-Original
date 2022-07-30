@@ -22,11 +22,11 @@ class Tile:
         if self.tileType in self.map.tileTypes.keys():
             self.surface = self.map.preloadTileImages[self.tileType]
         else:
-            self.surface = pygame.Surface((56, 56))
+            self.surface = pygame.Surface((32, 32))
             self.surface.fill((255, 255, 255))
     def update(self):
         """Update the tile"""
         self.draw()
     def draw(self):
         """Draw the tile"""
-        self.map.surface.blit(self.surface, (self.x * 65, self.y * 65))
+        self.map.surface.blit(self.surface, (self.x * 32, self.y * 32))

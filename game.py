@@ -4,6 +4,7 @@ from background import Background
 from screens import ScreenManager, Screen, GameScreen
 from menus import Menu, Button, Text
 from level import Level
+from keyManager import KeyManager
 
 # Init pygame
 pygame.init()
@@ -34,6 +35,8 @@ class Game:
         self.clock = pygame.time.Clock()
         # FPS
         self.fps = 0
+        # Key Manager
+        self.keyManager = KeyManager(self)
         # Game Is Running ?
         self.gameIsPlaying = False
         # Level
@@ -98,6 +101,21 @@ class Game:
         self.screenManager.activeScreen.menus[0].addMenuItem(self.playButton)
         self.screenManager.activeScreen.menus[0].addMenuItem(self.settingsButton)
         self.screenManager.activeScreen.menus[0].addMenuItem(self.quitButton)
+        # Game Menu
+        self.screenManager.screens[1].addMenu(Menu(
+            self.screenManager.screens[1]
+        ))
+        self.screenManager.screens[1].menus[0].addMenuItem(
+            Text(
+                self.screenManager.screens[1].menus[0],
+                pos = (600, 150),
+                size = (200, 50),
+                text = self.settings.title,
+                color = (255, 255, 0),
+                fontSize = 60,
+                centered = [True, False]
+            )
+        )
     def run(self):
         """Runs the game"""
         while True:
@@ -107,8 +125,10 @@ class Game:
             self.addPygameEvents()
             # Handle Events
             for event in self.events:
+                # Window controls events
                 if event.type == pygame.QUIT:
                     self.quit()
+                # Mouse Events
                 if self.mouseClickCooldown > 0:
                     self.mouseClickCooldown -= self.clock.get_time()
                 if self.mouseClickCooldown <= 0:
@@ -117,6 +137,15 @@ class Game:
                         cpos = pygame.mouse.get_pos()
                         self.screenManager.activeScreen.clickAt(cpos)
                         self.mouseClickCooldown = self.settings.mouseClickCooldown
+                # Key events
+                if event.type == pygame.KEYDOWN:
+                    #if event.key == pygame.K_w:
+                    #    self.keyManager.setKey("w", True)
+                    self.keyManager.setKey(event.key, True)
+                if event.type == pygame.KEYUP:
+                    #if event.key == pygame.K_w:
+                    #    self.keyManager.setKey("w", False)
+                    self.keyManager.setKey(event.key, False)
             # Draw background
             self.background.draw(self.window)
             # Update game
@@ -140,6 +169,7 @@ class Game:
         """Starts the actual game"""
         self.gameIsPlaying = True
         self.screenManager.setScreen(self.screensIndex["game"])
+        self.screenManager.activeScreen.setActiveMenu(0)
         print("Starting game...")
     def end(self, edata = {}):
         """Ends the game"""
