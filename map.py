@@ -1,4 +1,4 @@
-import pygame, math
+import pygame
 from tile import Tile
 
 class Map:
@@ -19,6 +19,7 @@ class Map:
         self.focusedPoint = [5, 5]
         self.rendTiles = []
         self.rendUpdateCD = 60
+        self.scrollAmt = [0, 0]
     def loadFromJSON(self, jdata):
         """Load the map from JSON data
         
@@ -66,53 +67,29 @@ class Map:
                 )
                 tileIndex += 1
             colIndex += 1
-        self.updateRendTiles()
-    def updateRendTiles(self):
-        """Updates the rendTiles"""
-        if self.rendUpdateCD > 0:
-            self.rendUpdateCD -= 1
-        # Create list of renderable tiles
-        self.rendTilesHN = int(self.level.game.settings.windowSize[1] / 32) + 1
-        self.rendTilesWN = int(self.level.game.settings.windowSize[0] / 32) + 1
-        rendTilesList = []
-        rendXTilesList = []
-        rendYTilesList = []
-        # Get X list
-        # Left
-        rx = 0
-        remX = self.rendTilesWN / 2
-        while remX >= 0 and rx <= self.focusedPoint[0]:
-            rendXTilesList.append([rx, self.focusedPoint[1]])
-            rx += 1
-            remX -= 1
-        # Right
-        rx = self.focusedPoint[0] + 1
-        remX = self.rendTilesWN / 2
-        while remX >= 0 and rx <= self.size[0]:
-            rendXTilesList.append([rx, self.focusedPoint[1]])
-            rx += 1
-            remX -= 1
-        # Get Y list
-        # Top
-        ry = 0
-        remY = self.rendTilesHN / 2
-        while remY >= 0 and ry <= self.focusedPoint[1]:
-            rendYTilesList.append([self.focusedPoint[1], ry])
-            ry += 1
-            remY -= 1
-        # Bottom
-        ry = self.focusedPoint[1] + 1
-        remY = self.rendTilesHN / 2
-        while remY >=0 and ry <= self.size[1]:
-            rendYTilesList.append([self.focusedPoint[1], ry])
-            ry += 1
-            remY -= 1
-        # Actually get the list of tiles
-        for y in [u[1] for u in rendYTilesList]:
-            for x in [u[0] for u in rendXTilesList]:
-                rendTilesList.append([x, y])
-        self.rendTiles = rendTilesList
-        self.rendUpdateCD = 60
+        self.updateScroll()
+    def updateScroll(self):
+        """Updates the scroll"""
+        windowHeight = self.level.game.settings.windowSize[1]
+        windowWidth = self.level.game.settings.windowSize[0]
+        hMidline = windowHeight / 2
+        vMidline = windowWidth / 2
+        fp = [v * 32 for v in self.focusedPoint]
+        fp[0] += self.scrollAmt[0]
+        fp[1] += self.scrollAmt[1]
+        print(fp, [windowWidth, windowHeight])
+        # Above the horizontal midline
+        if fp[1] < hMidline:
+            # Find amount past the midline
+            amtPast = hMidline - fp[1]
+            # Scroll to the midline
+            self.scrollAmt[1] += amtPast
+        # Below the horizontal midline
+        if fp[1] > hMidline:
+            # Find amount past the midline
+            amtPast = fp[1] - hMidline
+            # Scroll to the midlone
+            self.scrollAmt[1] -= amtPast
     def update(self):
         """Updates the map"""
         # Check for focusedPoint change
@@ -130,21 +107,19 @@ class Map:
         # D
         if keyManager.getKey(pygame.K_d):
             self.focusedPoint[0] += mc
-        # Update rendTiles
-        self.updateRendTiles()
-        # Update all rendTiles
-        for tpos in self.rendTiles:
-            t = self.findTileByPos(tpos)
-            if t:
-                t.update()
+        # Update scroll
+        self.updateScroll()
+        # Update tiles
+        for col in self.tileMap:
+            for tile in col:
+                tile.update()
     def draw(self):
         """Draws the map"""
         if self.surface:
-            # Draw all the tiles that will end up on the screen
-            for tpos in self.rendTiles:
-                t = self.findTileByPos(tpos)
-                if t:
-                    t.draw()
+            # Draw tiles
+            for col in self.tileMap:
+                for tile in col:
+                    tile.draw()
             pygame.draw.rect(self.surface, (0, 255, 0),
                 (
                     self.focusedPoint[0] * 32,
@@ -178,6 +153,8 @@ class Map:
             # Center the map on the y axis
             if size[1] < activeScreenRect[3]:
                 mapInScreenPos[1] = ((activeScreenRect[3] / 2) - (size[1] / 2))
+            mapInScreenPos[0] += self.scrollAmt[0]
+            mapInScreenPos[1] += self.scrollAmt[1]
             # Blit it!!!
             activeScreen.surface.blit(self.surface, mapInScreenPos)
     def findTileByPos(self, pos):
