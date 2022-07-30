@@ -2,6 +2,10 @@
 
 This style guide outlines basic code styles that when followed will ensure the codebase has a single uniform style.
 
+## General
+
+All lines should not excede 80 characters (within reason).
+
 ## Comments
 
 Comments should be meaningfull, with a goal to provide understanding of tricky or easy to misunderstand code. Comments should also be used at the begining of funtions, classes (and class method definitions) to provide an understanding of what the code structure (function, class, class method) does.
