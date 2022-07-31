@@ -16,9 +16,7 @@ class Map:
         self.preloadTileImages = {}
         self.tileMap = []
         self.surface = None
-        self.focusedPoint = [5, 5]
-        self.rendTiles = []
-        self.rendUpdateCD = 60
+        self.focusedPoint = [20, 12]
         self.scrollAmt = [0, 0]
     def loadFromJSON(self, jdata):
         """Load the map from JSON data
@@ -70,26 +68,53 @@ class Map:
         self.updateScroll()
     def updateScroll(self):
         """Updates the scroll"""
+        # Window sizes
         windowHeight = self.level.game.settings.windowSize[1]
         windowWidth = self.level.game.settings.windowSize[0]
+        # Midlines
         hMidline = windowHeight / 2
         vMidline = windowWidth / 2
+        # Size of map when drawn
+        size = self.surface.get_rect()
+        size = [size[2], size[3]]
+        # Active Screen
+        activeScreen = self.level.game.screenManager.activeScreen
+        activeScreenRect = activeScreen.surface.get_rect()
+        # Focus point
         fp = [v * 32 for v in self.focusedPoint]
         fp[0] += self.scrollAmt[0]
         fp[1] += self.scrollAmt[1]
-        print(fp, [windowWidth, windowHeight])
-        # Above the horizontal midline
-        if fp[1] < hMidline:
-            # Find amount past the midline
-            amtPast = hMidline - fp[1]
-            # Scroll to the midline
-            self.scrollAmt[1] += amtPast
-        # Below the horizontal midline
-        if fp[1] > hMidline:
-            # Find amount past the midline
-            amtPast = fp[1] - hMidline
-            # Scroll to the midlone
-            self.scrollAmt[1] -= amtPast
+        # Only calculate scrollign if map is bigger than screen
+        if size[1] > activeScreenRect[3]:
+            # Above the horizontal midline
+            # And not at the top
+            if fp[1] < hMidline and self.getPos()[1] < (windowHeight * 0.1):
+                # Find amount past the midline
+                amtPast = hMidline - fp[1]
+                # Scroll to the midline
+                self.scrollAmt[1] += amtPast
+            # Below the horizontal midline
+            # And not at bottom
+            if fp[1] > hMidline and (self.getPos()[1] + size[1]) > (windowHeight - (windowHeight * 0.1)):
+                # Find amount past the midline
+                amtPast = fp[1] - hMidline
+                # Scroll to the midlone
+                self.scrollAmt[1] -= amtPast
+        if size[0] > activeScreenRect[2]:
+            # Left of vertical midline
+            # And not at the left
+            if fp[0] < vMidline and self.getPos()[0] < (windowWidth * 0.1):
+                # Find amount past the midline
+                amtPast = vMidline - fp[0]
+                # Scroll to the left
+                self.scrollAmt[0] += amtPast
+            # Right of the vertival midline
+            # And not at the right
+            if fp[0] > vMidline and (self.getPos()[0] + size[0]) > (windowWidth - (windowWidth * 0.1)):
+                # Find amount past the midline
+                amtPast = fp[0] - vMidline
+                # Scroll to the left
+                self.scrollAmt[0] -= amtPast
     def update(self):
         """Updates the map"""
         # Check for focusedPoint change
@@ -109,9 +134,18 @@ class Map:
             self.focusedPoint[0] += mc
         # Update scroll
         self.updateScroll()
+        # Window size in tiles
+        windowSizeTilesHor = int(self.level.game.settings.windowSize[0] / 32) + 1
+        windowSizeTilesVert = int(self.level.game.settings.windowSize[1] / 32) + 1
         # Update tiles
         for col in self.tileMap:
             for tile in col:
+                # Not in screen, don't update
+                if (tile.x < -1
+                    or tile.x > windowSizeTilesHor + 1
+                    or tile.y < -1
+                    or tile.y > windowSizeTilesVert + 1):
+                    continue
                 tile.update()
     def draw(self):
         """Draws the map"""
@@ -141,22 +175,27 @@ class Map:
             fpsPos = [0, 0, fpsSurf.get_rect()[2], fpsSurf.get_rect()[3]]
             self.surface.blit(fpsSurf, fpsPos)
             activeScreen = self.level.game.screenManager.activeScreen
-            mapInScreenPos = [0, 0]
-            # Size of map when drawn
-            size = self.surface.get_rect()
-            size = [size[2], size[3]]
-            # Size of the active screen
-            activeScreenRect = activeScreen.surface.get_rect()
-            # Center the map on the x axis
-            if size[0] < activeScreenRect[2]:
-                mapInScreenPos[0] = ((activeScreenRect[2] / 2) - (size[0] / 2))
-            # Center the map on the y axis
-            if size[1] < activeScreenRect[3]:
-                mapInScreenPos[1] = ((activeScreenRect[3] / 2) - (size[1] / 2))
-            mapInScreenPos[0] += self.scrollAmt[0]
-            mapInScreenPos[1] += self.scrollAmt[1]
+            mapInScreenPos = self.getPos()
             # Blit it!!!
             activeScreen.surface.blit(self.surface, mapInScreenPos)
+    def getPos(self):
+        """Get the position of the map"""
+        activeScreen = self.level.game.screenManager.activeScreen
+        mapInScreenPos = [0, 0]
+        # Size of map when drawn
+        size = self.surface.get_rect()
+        size = [size[2], size[3]]
+        # Size of the active screen
+        activeScreenRect = activeScreen.surface.get_rect()
+        # Center the map on the x axis
+        if size[0] < activeScreenRect[2]:
+            mapInScreenPos[0] = ((activeScreenRect[2] / 2) - (size[0] / 2))
+        # Center the map on the y axis
+        if size[1] < activeScreenRect[3]:
+            mapInScreenPos[1] = ((activeScreenRect[3] / 2) - (size[1] / 2))
+        mapInScreenPos[0] += self.scrollAmt[0]
+        mapInScreenPos[1] += self.scrollAmt[1]
+        return mapInScreenPos
     def findTileByPos(self, pos):
         """Finds the tile at the given position
         

@@ -40,7 +40,7 @@ class Game:
         # Game Is Running ?
         self.gameIsPlaying = False
         # Level
-        self.level = Level(self)
+        self.level = Level(self, 2)
         # Setup Screens
         self.screenManager = ScreenManager(self)
         self.screensIndex = {

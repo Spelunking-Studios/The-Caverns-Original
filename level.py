@@ -20,7 +20,7 @@ class Level:
         if self.loaded:
             return
         levelFile = open(self.game.asset(
-            os.path.join("levels", "level1.json")
+            os.path.join("levels", f"level{self.number}.json")
         ), "r")
         levelData = json.load(levelFile)
         self.map.loadFromJSON(levelData)
