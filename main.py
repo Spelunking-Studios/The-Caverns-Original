@@ -19,8 +19,8 @@ from player import *
 from sfx import *
 import menus
 import hud
-from PygameShader.shader import shader_sobel24_fast_inplace, shader_bloom_effect_array24
-from PygameShader.gaussianBlur5x5 import blur5x5_array24_inplace_c
+# from PygameShader.shader import shader_sobel24_fast_inplace, shader_bloom_effect_array24
+# from PygameShader.gaussianBlur5x5 import blur5x5_array24_inplace_c
 
 
 

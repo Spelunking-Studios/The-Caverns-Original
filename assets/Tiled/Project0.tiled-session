@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 5.5,
+            "scale": 0.33,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 373.6363636363636,
-                "y": 285
+                "x": -140.909090909091,
+                "y": -34.848484848484986
             }
         },
         "cave2.tmx": {
@@ -509,6 +509,14 @@
             "viewCenter": {
                 "x": 304,
                 "y": 320
+            }
+        },
+        "cave3.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 644.5,
+                "y": 382.5
             }
         },
         "level1/level1.tmx": {
@@ -525,21 +533,23 @@
     },
     "frame.defaultDuration": 201,
     "map.fixedSize": true,
-    "map.height": 18,
+    "map.height": 30,
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": null,
     "map.orientation": 1,
     "map.renderOrder": 0,
     "map.tileHeight": 32,
     "map.tileWidth": 32,
-    "map.width": 18,
+    "map.width": 30,
     "openFiles": [
         "cave1.tmx",
-        "cave2.tmx"
+        "cave2.tmx",
+        "cave3.tmx"
     ],
     "project": "Project0.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "cave3.tmx",
         "cave2.tmx",
         "cave1.tmx",
         "Project0-tileset1.tsx",
@@ -550,8 +560,7 @@
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level4/level4.tmx",
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/arkanos.tsx",
         "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level5/level5.tmx",
-        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level6/level6.tmx",
-        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/level4/level4.tmx"
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level6/level6.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
