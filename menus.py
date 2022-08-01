@@ -100,7 +100,7 @@ def settingsMenu(game):
 def main(game):
     startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
     stgsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
-    compendButton = Button(game, (0, 460), text="Game Instructions", center=True, colors = (colors.yellow, colors.white))
+    compendButton = Button(game, (0, 460), text="Game Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
     comps = pygame.sprite.Group(startButton, stgsButton, compendButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = winWidth/2

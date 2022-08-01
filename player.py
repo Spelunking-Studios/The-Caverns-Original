@@ -14,9 +14,10 @@ import stats
 
 #### Player object ####
 class Player(pygame.sprite.Sprite):
-    
+    '''The Player Object'''
     #### Player Initializations ####
     def __init__(self, game, image, **kwargs):
+        '''Loads most of the heavy data for the player here'''
         # Modifiers
         self.hitCooldown = 500
         self.vel = Vector2(0, 0)

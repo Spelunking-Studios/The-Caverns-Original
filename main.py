@@ -13,7 +13,7 @@ from camera import *
 from fx import *
 from levels import *
 from menu import *
-from objects import *
+# from objects import *
 from overlay import *
 from player import *
 from sfx import *
@@ -24,6 +24,7 @@ from PygameShader.gaussianBlur5x5 import blur5x5_array24_inplace_c
 
 
 class Grouper:
+    '''A class to control and manipulate multiple groups (pygame.group.Group) of game objects that is mainly designed for in code control'''
     def __init__(self):
         # This class contains helpful groups for organizing different types of sprites
         # Create sprite groups here
@@ -33,7 +34,9 @@ class Grouper:
         self.pProjectiles = Group() # Player Projectiles
         self.eProjectiles = Group() # Enemy Projectiles
 
-    def getProximitySprites(self, sprite, proximity=300, *args): # This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
+    def getProximitySprites(self, sprite, proximity=300, *args): 
+        '''This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
+        takes: sprite (pygame.sprite.Sprite), proximity (distance in pixels), *args (list of groups you wanna check from or enemies by default)'''
 
         groups = args if len(args) > 1 else [self.enemies]
         returnList = []
@@ -50,6 +53,7 @@ class Grouper:
     def allGroups(self):
         return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 
+Grouper()
 #### Game object ####
 class Game:
 
@@ -76,6 +80,7 @@ class Game:
         self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
+        self.win.convert(32, pygame.RLEACCEL) 
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
@@ -149,7 +154,8 @@ class Game:
         for layer in self.rendLayers:
             for sprite in layer:
                 try:
-                    self.win.blit(sprite.image, self.cam.apply(sprite))
+                    if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
+                        self.win.blit(sprite.image, self.cam.apply(sprite))
                     # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
                 except AttributeError:
                     pass

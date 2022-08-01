@@ -98,6 +98,7 @@ class PlayerAnimation:
 
 class BasicAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
+    cache = {}
     def __init__(self, sprite):
         self.sprite = sprite
         self.framex = 0
@@ -108,8 +109,13 @@ class BasicAnimation:
         self.lastTick = pygame.time.get_ticks()
         self.imageEffects = pygame.sprite.Group()
         
-        for k, v in self.imgSheet.items():
-            self.imgSheet[k] = Spritesheet(v)
+        if type(sprite) in self.cache:
+            self.imgSheet = self.cache[type(sprite)]
+        else:
+            print("caching")
+            for k, v in self.imgSheet.items():
+                self.imgSheet[k] = Spritesheet(v)
+            self.cache[type(sprite)] = self.imgSheet
 
         self.tileSize = self.imgSheet[self.mode].height
 
@@ -122,7 +128,6 @@ class BasicAnimation:
             self.lastTick = pygame.time.get_ticks()
             if self.framex > int(self.imgSheet[self.mode].width - self.tileSize):
                 self.framex = 0
-        print(self.framex)
         self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
         if not self.scalex == 1 or not self.scaley == 1:
             self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))

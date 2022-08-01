@@ -7,10 +7,11 @@ TITLE = "The Caverns"
 
 #### Establishes file paths ####
 try:
-    PATH = sys._MEIPASS
+    PATH = sys._MEIPASS     # Tries to see if the project is built
 except AttributeError:
     PATH = os.path.dirname(os.path.realpath(__file__))
 
+# Path to the asset folder
 ASSETSPATH = os.path.join(PATH, 'assets')
 
 #### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
@@ -40,23 +41,32 @@ fxVolume = 1
 
 #### Returns the asset's path ####
 def asset(assetName):
+    '''
+    Returns asset path given asset name
+    '''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, assetName)
 
 def sAsset(assetName):
+    '''
+    Returns sound path given sound name
+    '''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, 'sounds', assetName)
 
 def fAsset(assetName):
+    '''
+    Returns font path given font name
+    '''
     global ASSETSPATH
 
     return os.path.join(PATH, 'fonts', assetName)
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
-winFlags = pygame.HWSURFACE
+winFlags = 0#pygame.HWSURFACE
 
 iconPath = asset('logo.png')
 
@@ -82,17 +92,30 @@ pygame.joystick.init()
 joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_count())] 
 joystickConnected = True if len(joysticks) > 0 else False
 joystickEnabled = True if joystickConnected and not joystickDisabled else False
+
 def checkJoysticks():
+    '''
+    STILL IN BETA TESTING
+    '''
+
     global joystickEnabled
     joystickEnabled = True if joystickConnected and not joystickDisabled else False
 
-
 def getJoy1():
+    '''
+    STILL IN BETA TESTING
+    '''
     return joysticks[0] if len(joysticks) > 0 else False
 #### Changes movement from flying to platforming ####
 platformer = True
 
 def checkKey(move):
+    '''Handy Dandy class for checking the status of keys given a 
+    a) keyword for the built in mapped buttons
+    b) a list of pygame keys in which it returns true for any
+    c) or just a single pygame key
+
+    pygame key being pygame.K_a or pygame.K_UP'''
     keys = pygame.key.get_pressed()
     if isinstance(move, str):
         try:
@@ -113,8 +136,11 @@ def checkKey(move):
     return False
 
 class Spritesheet:
-    # utility class for loading and parsing spritesheets
+    '''utility class for loading and parsing spritesheets'''
+
     def __init__(self, filePath):
+        '''Takes a filepath or file'''
+
         try:
             self.image = pygame.image.load(filePath).convert_alpha()
         except TypeError:
@@ -124,13 +150,16 @@ class Spritesheet:
         self.height = self.image.get_height()
 
     def get_image(self, x, y, width, height):
-        # grab an image out of a larger spritesheet
+        ''' Grabs an image out of the spritesheet image
+
+        takes: x, y, width, height'''
         img = pygame.Surface((width, height), pygame.SRCALPHA)
-        img.fill((0, 0, 0, 0))
+        # img.fill((0, 0, 0, 0))
         img.blit(self.image, (0, 0), (x, y, width, height))
         img = pygame.transform.scale(img, (width, height))
         return img.convert_alpha()
 
+# Loads all fonts if program is run indirectly
 if __name__ != '__main__':
     fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
             'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
@@ -149,6 +178,7 @@ if __name__ != '__main__':
     
 DEBUG = False
 def dist(vec1, vec2):
+    '''Distance formula between two pygame Vectors'''
     dist1 = (vec1.x-vec2.x)**2
     dist2 = (vec1.y-vec2.y)**2
     return math.sqrt(dist1+dist2)
@@ -156,6 +186,9 @@ def dist(vec1, vec2):
 import pickle
 
 def loadSave(file):
+    '''
+    STILL IN BETA TESTING
+    '''
     try:
         with open(file, 'rb') as f:
             data = pickle.load(f)
@@ -167,6 +200,9 @@ def loadSave(file):
 
 
 def saveData(file, game):
+    '''
+    STILL IN BETA TESTING
+    '''
     print(game.joystickDisabled)
     saveDict = {    # Each value must corresponde to a global variable in this file
         'musicVolume': game.mixer.musicVolume,
@@ -179,10 +215,14 @@ def saveData(file, game):
         pickle.dump(saveDict, f)
 
 def tGet(objT, strValue, default=False):
+    '''Somewhat redundant function for forcing properties out of a Tiled object
+
+    Takes: objT (Tiled object), strValue (keyword), default=False (customize default value)'''
     try:
         return objT.properties[strValue]
     except KeyError:
         return default
 
 def now():
+    '''Returns number of cycles that pygame has been ticking'''
     return pygame.time.get_ticks()
