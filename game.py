@@ -5,6 +5,7 @@ from screens import ScreenManager, Screen, GameScreen
 from menus import Menu, Button, Text
 from level import Level
 from keyManager import KeyManager
+from player import Player
 
 # Init pygame
 pygame.init()
@@ -35,12 +36,21 @@ class Game:
         self.clock = pygame.time.Clock()
         # FPS
         self.fps = 0
+        # Note: Delta time is measured in seconds
+        self.deltaTime = 0
         # Key Manager
         self.keyManager = KeyManager(self)
         # Game Is Running ?
         self.gameIsPlaying = False
+        # Player
+        self.player = None
         # Level
         self.level = Level(self, 2)
+        # Set the player to an actual Player object
+        self.player = Player(self.level.map)
+        self.level.map.player = self.player
+        # Mouse
+        self.mousePos = (0, 0)
         # Setup Screens
         self.screenManager = ScreenManager(self)
         self.screensIndex = {
@@ -118,12 +128,14 @@ class Game:
         )
     def run(self):
         """Runs the game"""
-        print(self.settings.windowSize[0] / 32, self.settings.windowSize[1] / 32)
         while True:
             # Slows framespeed down to or below the ideal fps
             self.clock.tick(self.settings.idealFPS)
             self.updateFPS()
+            self.updateDeltaTime()
             self.addPygameEvents()
+            # Update mouse position
+            self.mousePos = pygame.mouse.get_pos()
             # Handle Events
             for event in self.events:
                 # Window controls events
@@ -135,8 +147,7 @@ class Game:
                 if self.mouseClickCooldown <= 0:
                     mouseVals = pygame.mouse.get_pressed()
                     if mouseVals[0]:
-                        cpos = pygame.mouse.get_pos()
-                        self.screenManager.activeScreen.clickAt(cpos)
+                        self.screenManager.activeScreen.clickAt(self.mousePos)
                         self.mouseClickCooldown = self.settings.mouseClickCooldown
                 # Key events
                 if event.type == pygame.KEYDOWN:
@@ -164,7 +175,7 @@ class Game:
                 self.screenManager.activeScreen.surface,
                 self.screenManager.activeScreen.surface.get_rect()
             )
-            if self.settings.showFPSOverlay:
+            if self.settings.showDebugOverlay:
                 # Draw the PFS overlay
                 fpsFont = pygame.font.Font(self.fasset("YuseiMagic-Regular.ttf"), 15)
                 fpsSurface = fpsFont.render(
@@ -176,6 +187,16 @@ class Game:
                 self.window.blit(
                     fpsSurface,
                     (0, 0, fpsSurface.get_rect()[2], fpsSurface.get_rect()[3])
+                )
+                deltaTimeSurface = fpsFont.render(
+                    "DT: " + str(self.deltaTime),
+                    False,
+                    (255, 255, 255),
+                    (0, 0, 0)
+                )
+                self.window.blit(
+                    deltaTimeSurface,
+                    (0, 20, deltaTimeSurface.get_rect()[2], deltaTimeSurface.get_rect()[3])
                 )
             # Update the display
             pygame.display.update()
@@ -202,6 +223,9 @@ class Game:
     def updateFPS(self):
         """Updates the FPS variable"""
         self.fps = self.clock.get_fps()
+    def updateDeltaTime(self):
+        """Updates the deltaTime variable"""
+        self.deltaTime = self.clock.get_time() / 1000
     # Asset Stuff - Just call root asset module functions
     def asset(self, fn):
         """Returns the path to a given asset"""

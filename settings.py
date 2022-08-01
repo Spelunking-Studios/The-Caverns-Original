@@ -10,4 +10,4 @@ class Settings:
         # Background
         self.backgroundColor = (0, 0, 0)
         # Debug
-        self.showFPSOverlay = True
+        self.showDebugOverlay = True

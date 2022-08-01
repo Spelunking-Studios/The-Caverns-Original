@@ -15,6 +15,7 @@ class Level:
         self.map = Map(self)
         self.number = number
         self.loaded = False
+        self.map.player = self.game.player
     def load(self):
         """Loads the level"""
         if self.loaded:

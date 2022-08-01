@@ -1,3 +1,4 @@
+from ftplib import parse257
 import pygame
 from tile import Tile
 
@@ -18,6 +19,10 @@ class Map:
         self.surface = None
         self.focusedPoint = [20, 12]
         self.scrollAmt = [0, 0]
+        # We can't use a pygame Group for the entities because we need the list
+        # to be ordered
+        self.entities = []
+        self.player = None
     def loadFromJSON(self, jdata):
         """Load the map from JSON data
         
@@ -88,14 +93,14 @@ class Map:
         if size[1] > activeScreenRect[3]:
             # Above the horizontal midline
             # And not at the top
-            if fp[1] < hMidline and self.getPos()[1] < (windowHeight * 0.1):
+            if fp[1] < hMidline:
                 # Find amount past the midline
                 amtPast = hMidline - fp[1]
                 # Scroll to the midline
                 self.scrollAmt[1] += amtPast
             # Below the horizontal midline
             # And not at bottom
-            if fp[1] > hMidline and (self.getPos()[1] + size[1]) > (windowHeight - (windowHeight * 0.1)):
+            if fp[1] > hMidline:
                 # Find amount past the midline
                 amtPast = fp[1] - hMidline
                 # Scroll to the midlone
@@ -103,14 +108,14 @@ class Map:
         if size[0] > activeScreenRect[2]:
             # Left of vertical midline
             # And not at the left
-            if fp[0] < vMidline and self.getPos()[0] < (windowWidth * 0.1):
+            if fp[0] < vMidline:
                 # Find amount past the midline
                 amtPast = vMidline - fp[0]
                 # Scroll to the left
                 self.scrollAmt[0] += amtPast
             # Right of the vertival midline
             # And not at the right
-            if fp[0] > vMidline and (self.getPos()[0] + size[0]) > (windowWidth - (windowWidth * 0.1)):
+            if fp[0] > vMidline:
                 # Find amount past the midline
                 amtPast = fp[0] - vMidline
                 # Scroll to the left
@@ -119,7 +124,7 @@ class Map:
         """Updates the map"""
         # Check for focusedPoint change
         keyManager = self.level.game.keyManager
-        mc = 5/23
+        mc = 1 * self.level.game.deltaTime
         # W
         if keyManager.getKey(pygame.K_w):
             self.focusedPoint[1] -= mc
@@ -144,12 +149,16 @@ class Map:
                 if not tile.isOnScreen():
                     continue
                 tile.update()
+        # Update entities
+        for entity in self.entities:
+            entity.update()
+        # Update the player
+        # Move the player to the focused point
+        self.player.setPos(self.focusedPoint)
+        self.player.update()
     def draw(self):
         """Draws the map"""
         if self.surface:
-            # Window size in tiles
-            windowSizeTilesHor = int(self.level.game.settings.windowSize[0] / 32) + 1
-            windowSizeTilesVert = int(self.level.game.settings.windowSize[1] / 32) + 1
             # Draw tiles
             for col in self.tileMap:
                 for tile in col:
@@ -157,12 +166,63 @@ class Map:
                     if not tile.isOnScreen():
                         continue
                     tile.draw()
-            pygame.draw.rect(self.surface, (0, 255, 0),
-                (
-                    self.focusedPoint[0] * 32,
-                    self.focusedPoint[1] * 32,
-                    32, 32
-                )
+            # Draw entities
+            for entity in self.entities:
+                entity.draw()
+            # Draw the player
+            self.player.draw()
+            #pygame.draw.rect(self.surface, (0, 255, 0),
+            #    (
+            #        self.focusedPoint[0] * 32,
+            #        self.focusedPoint[1] * 32,
+            #        32, 32
+            #    )
+            #)
+            fpx = self.focusedPoint[0] * 32
+            fpy = self.focusedPoint[1] * 32
+            pygame.draw.lines(
+                self.surface,
+                (0, 255, 0),
+                True,
+                [
+                    [fpx - (self.player.width / 2), fpy - (self.player.height / 2)],
+                    [fpx + (self.player.width / 2), fpy - (self.player.height / 2)],
+                    [fpx + (self.player.width / 2), fpy + (self.player.width / 2)],
+                    [fpx - (self.player.width / 2), fpy + (self.player.width / 2)]
+                ]
+            )
+            p1 = [
+                self.level.game.settings.windowSize[0] / 2 + (self.player.width / 2) + self.scrollAmt[0],
+                self.level.game.settings.windowSize[1] / 2 + (self.player.height / 2) + self.scrollAmt[1]
+            ]
+            p2 = self.level.game.mousePos
+            pygame.draw.line(
+                self.surface,
+                (0, 0, 255),
+                p1,
+                p2
+            )
+            pygame.draw.lines(
+                self.surface,
+                (0, 0, 255),
+                True,
+                [
+                    [p1[0] - (self.player.width / 2), p1[1] - (self.player.height / 2)],
+                    [p1[0] + (self.player.width / 2), p1[1] - (self.player.height / 2)],
+                    [p1[0] + (self.player.width / 2), p1[1] + (self.player.width / 2)],
+                    [p1[0] - (self.player.width / 2), p1[1] + (self.player.width / 2)]
+                ]
+            )
+            pygame.draw.lines(
+                self.surface,
+                (0, 0, 255),
+                True,
+                [
+                    [p2[0] - 16, p2[1] - 16],
+                    [p2[0] + 16, p2[1] - 16],
+                    [p2[0] + 16, p2[1] + 16],
+                    [p2[0] - 16, p2[1] + 16]
+                ]
             )
             activeScreen = self.level.game.screenManager.activeScreen
             mapInScreenPos = self.getPos()
