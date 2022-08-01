@@ -141,18 +141,21 @@ class Map:
         for col in self.tileMap:
             for tile in col:
                 # Not in screen, don't update
-                if (tile.x < -1
-                    or tile.x > windowSizeTilesHor + 1
-                    or tile.y < -1
-                    or tile.y > windowSizeTilesVert + 1):
+                if not tile.isOnScreen():
                     continue
                 tile.update()
     def draw(self):
         """Draws the map"""
         if self.surface:
+            # Window size in tiles
+            windowSizeTilesHor = int(self.level.game.settings.windowSize[0] / 32) + 1
+            windowSizeTilesVert = int(self.level.game.settings.windowSize[1] / 32) + 1
             # Draw tiles
             for col in self.tileMap:
                 for tile in col:
+                    # Not in screen, don't draw
+                    if not tile.isOnScreen():
+                        continue
                     tile.draw()
             pygame.draw.rect(self.surface, (0, 255, 0),
                 (
@@ -161,19 +164,6 @@ class Map:
                     32, 32
                 )
             )
-            # Draw FPS
-            fpsFont = pygame.font.Font(
-                self.level.game.fasset("YuseiMagic-Regular.ttf"),
-                15
-            )
-            fpsSurf = fpsFont.render(
-                "FPS: " + str(int(self.level.game.fps)),
-                False,
-                (255, 255, 255),
-                (0, 0, 0)
-            )
-            fpsPos = [0, 0, fpsSurf.get_rect()[2], fpsSurf.get_rect()[3]]
-            self.surface.blit(fpsSurf, fpsPos)
             activeScreen = self.level.game.screenManager.activeScreen
             mapInScreenPos = self.getPos()
             # Blit it!!!

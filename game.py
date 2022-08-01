@@ -118,6 +118,7 @@ class Game:
         )
     def run(self):
         """Runs the game"""
+        print(self.settings.windowSize[0] / 32, self.settings.windowSize[1] / 32)
         while True:
             # Slows framespeed down to or below the ideal fps
             self.clock.tick(self.settings.idealFPS)
@@ -163,6 +164,19 @@ class Game:
                 self.screenManager.activeScreen.surface,
                 self.screenManager.activeScreen.surface.get_rect()
             )
+            if self.settings.showFPSOverlay:
+                # Draw the PFS overlay
+                fpsFont = pygame.font.Font(self.fasset("YuseiMagic-Regular.ttf"), 15)
+                fpsSurface = fpsFont.render(
+                    "FPS: " + str(int(self.fps * 100) / 100),
+                    False,
+                    (255, 255, 255),
+                    (0, 0, 0)
+                )
+                self.window.blit(
+                    fpsSurface,
+                    (0, 0, fpsSurface.get_rect()[2], fpsSurface.get_rect()[3])
+                )
             # Update the display
             pygame.display.update()
     def start(self, edata = {}):

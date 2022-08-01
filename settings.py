@@ -9,3 +9,5 @@ class Settings:
         self.windowSize = (1200, 720)
         # Background
         self.backgroundColor = (0, 0, 0)
+        # Debug
+        self.showFPSOverlay = True
