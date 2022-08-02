@@ -334,7 +334,7 @@ class Game:
 
     #### First menu loop ####
     def menuLoop(self):
-        menus.main(self)
+        menus.main(self, SHOW_LOADING_SCREEN)
 
     def victoryLoop(self):
         menus.victoryLoop(self)
