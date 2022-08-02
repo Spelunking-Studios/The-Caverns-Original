@@ -342,13 +342,17 @@ class Game:
     def gameOver(self):
         menus.gameOver(self)
 
-    def refresh(self, bg = False):
+    def refresh(self, bg = False, isSurface = False):
         """Updates the background
 
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
         if bg:
-            self.win.blit(pygame.transform.scale(pygame.image.load(bg), (winWidth, winHeight)).convert(), (0, 0))
+            if not isSurface:
+                i = pygame.image.load(bg)
+            else:
+                i = bg
+            self.win.blit(pygame.transform.scale(i, (winWidth, winHeight)).convert(), (0, 0))
         else:
             self.win.fill((0, 0, 0))
 

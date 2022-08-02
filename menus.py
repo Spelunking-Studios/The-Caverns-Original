@@ -98,6 +98,25 @@ def settingsMenu(game):
         pygame.display.update()
 
 def main(game):
+    # Loading screen
+    isLoading = True
+    loadingCounter = 20000
+    loadingScreenBGSurface = pygame.image.load(asset("loading screen.jpeg"))
+    loadingText = []
+    tti = 0
+    ti = 1
+    for t in LOADING_TEXT:
+        loadingText.append(Text(
+            "subtitle1",
+            t,
+            colors.yellow,
+            game.antialiasing,
+            (10, 10 * ti)
+        ))
+        loadingText[tti].rect.centerx = winWidth / 2
+        ti += 5
+        tti += 1
+
     startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
     stgsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
     compendButton = Button(game, (0, 460), text="Game Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
@@ -110,40 +129,51 @@ def main(game):
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
     text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     text2.rect.centerx = winWidth/2
-    text3 = Text('title2', 'Created by LGgameLAB', colors.orangeRed, game.antialiasing, (0, 110))
+    text3 = Text('title2', 'Created by LGgameLAB (with help)', colors.orangeRed, game.antialiasing, (0, 110))
     text3.rect.centerx = winWidth/2
     while True:
-        pygame.time.delay(50)
-        
+        game.clock.tick(FPS)
+        #pygame.time.delay(50)
+
         game.runEvents()
-        game.refresh()
+        game.refresh(bg = loadingScreenBGSurface, isSurface = True)
 
+        if isLoading and loadingCounter > 0:
+            loadingCounter -= game.clock.get_time()
+            if loadingCounter <= 0:
+                isLoading = False
+        
         comps.update()
-        for comp in comps:
-            game.win.blit(comp.image, comp.rect)
 
-        if startButton.clicked:
-            game.map.loadLevel()
-            break
-        
-        if stgsButton.clicked:
-            settingsMenu(game)
-            stgsButton.reset()
-        
-        if compendButton.clicked:
-            compendiumMenu(game)
-            compendButton.reset()
-        
-        game.win.blit(text1.image, text1)
-        game.win.blit(text2.image, text2)
-        game.win.blit(text3.image, text3)
-        game.win.blit(swordImg, swordRect)
+        if not isLoading:
+            for comp in comps:
+                game.win.blit(comp.image, comp.rect)
 
-        keys = pygame.key.get_pressed()
+            if startButton.clicked:
+                game.map.loadLevel()
+                break
+            
+            if stgsButton.clicked:
+                settingsMenu(game)
+                stgsButton.reset()
+            
+            if compendButton.clicked:
+                compendiumMenu(game)
+                compendButton.reset()
+        
+            game.win.blit(text1.image, text1)
+            game.win.blit(text2.image, text2)
+            game.win.blit(text3.image, text3)
+            game.win.blit(swordImg, swordRect)
 
-        if keys[keySet['start']]:
-            game.map.loadLevel()
-            break
+            keys = pygame.key.get_pressed()
+
+            if keys[keySet['start']]:
+                game.map.loadLevel()
+                break
+        else:
+            for t in loadingText:
+                game.win.blit(t.image, t)
         
         pygame.display.update()
 

@@ -4,6 +4,15 @@ import colors
 import math
 
 TITLE = "The Caverns"
+LOADING_TEXT = [
+    "A darkness has fallen upon this once beautiful land.",
+    "What was once full of life is now permeated with the stench of death and decay",
+    "Lake crystal clear and sky pure blue turned red by the smoke that chokes the air.",
+    "Where the were once animals and people living in harmony,",
+    "There are now only creatures of darkness plotting their evil machinations.",
+    "Where ther was once a great kingdon of dwarves, their halls filled with splendor,",
+    "There is now only the remains of their dark and dusty halls..."
+]
 
 #### Establishes file paths ####
 try:
