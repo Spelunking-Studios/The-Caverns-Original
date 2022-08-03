@@ -5,6 +5,10 @@ __pycache__/
 # C extensions
 *.so
 
+#Luke's Folders
+Sprite Master/
+tests/
+
 # Distribution / packaging
 bin/
 build/

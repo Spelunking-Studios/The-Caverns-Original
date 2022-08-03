@@ -496,26 +496,26 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 0.75,
-            "selectedLayer": 3,
+            "scale": 0.125,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 578,
-                "y": 1353.3333333333333
+                "x": 424,
+                "y": 708
             }
         },
         "cave2.tmx": {
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 305,
+                "x": 304,
                 "y": 320
             }
         },
         "cave3.tmx": {
             "scale": 1,
-            "selectedLayer": -1,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 464.5,
+                "x": 464,
                 "y": 368
             }
         },
@@ -549,9 +549,9 @@
     "project": "Project0.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "cave1.tmx",
         "cave3.tmx",
         "cave2.tmx",
-        "cave1.tmx",
         "Project0-tileset1.tsx",
         "level1/level1.tmx",
         "C:/Users/LukeG/Downloads/invisboi.tsx",
