@@ -79,14 +79,23 @@ class Text:
     Basic Text object
     '''
     def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), ):
-        self.font = fonts[fNum]
+        if isinstance(fNum, str):
+            self.font = fonts[fNum]
+        else:
+            self.font = fNum
+        self.size = size
+        self.color = color
+        self.bgColor = bgColor
+        self.pos = pygame.Vector2(pos)
+        self.setText(text)
+    def setText(self, text, multiline = False):
         if multiline:
             ## This code is thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame 
-            self.image = pygame.Surface(size, pygame.SRCALPHA)
-            self.image.fill(bgColor)
+            self.image = pygame.Surface(self.size, pygame.SRCALPHA)
+            self.image.fill(self.bgColor)
             words = [word.split(' ') for word in text.splitlines()]  # 2D array where each row is a list of words.
             space = self.font.size(' ')[0]  # The width of a space.
-            max_width, max_height = size
+            max_width, max_height = self.size
             x, y = 0, 0
             for line in words:
                 for word in line:
@@ -96,7 +105,7 @@ class Text:
                             word_color = tuple([int(x) for x in wordsplit[0].split(',')])
                             word = wordsplit[1]
                         else:
-                            word_color = color
+                            word_color = self.color
                         word_surface = self.font.render(word, aalias, word_color)
                         word_width, word_height = word_surface.get_size()
                         if x + word_width >= max_width:
@@ -106,10 +115,8 @@ class Text:
                         x += word_width + space
                 x = 0 # Reset the x.
                 y += word_height  # Start on new row.
-            
         else: 
-            self.image = fonts[fNum].render(text, aalias, color)
-        self.pos = pygame.Vector2(pos)
+            self.image = self.font.render(text, aalias, self.color)
         
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
         self.image = self.image.convert_alpha()

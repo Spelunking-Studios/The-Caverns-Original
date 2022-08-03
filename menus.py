@@ -97,11 +97,43 @@ def settingsMenu(game):
         
         pygame.display.update()
 
-def main(game):
+def main(game, loadingScreenOn = False):
+    # Loading screen
+    toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+    toMainMenuButton.rect.centerx = winWidth / 2
+    loadingScreenBGSurface = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
+    loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
+    if loadingScreenOn:
+        loadingText = []
+        tti = 0
+        ti = 1
+        for t in LOADING_TEXT:
+            loadingText.append(Text(
+                "2",
+                t,
+                colors.orangeRed,
+                game.antialiasing,
+                (10, 10 * ti)
+            ))
+            loadingText[tti].rect.centerx = winWidth / 2
+            ti += 4
+            tti += 1
+        loadingLinesShowed = 1
+        loadingLinesTimings = [0.05, 0.1, 0.017, 0.015, 0.015, 0.015, 0.015]
+        toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton.rect.centerx = winWidth / 2
+    else:
+        toMainMenuButton.clicked = True
+
     startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
-    stgsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
-    compendButton = Button(game, (0, 460), text="Game Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
-    comps = pygame.sprite.Group(startButton, stgsButton, compendButton) # Stands for components fyi
+    settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
+    instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
+    creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
+
+    settingsButton.rect.centerx = (winWidth / 2) - (settingsButton.rect.width / 2) - 10
+    creditsButton.rect.centerx = (winWidth / 2) + (creditsButton.rect.width / 2) + 10
+
+    comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = winWidth/2
     swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
@@ -110,48 +142,98 @@ def main(game):
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
     text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     text2.rect.centerx = winWidth/2
-    text3 = Text('title2', 'Created by LGgameLAB', colors.orangeRed, game.antialiasing, (0, 110))
-    text3.rect.centerx = winWidth/2
+    #text3 = Text('title2', 'Created by LGgameLAB (with help)', colors.orangeRed, game.antialiasing, (0, 110))
+    #text3.rect.centerx = winWidth/2
+
+    #tv = 0
     while True:
-        pygame.time.delay(50)
-        
+        game.clock.tick(FPS)
+        #pygame.time.delay(50)
+
         game.runEvents()
-        game.refresh()
-
+        #tv += 255 / loadingCounter
+        #pygame.draw.rect(
+        #    loadingScreenBGSurface,
+        #    (0, 0, 0, tv),
+        #    (0, 0, winWidth, winHeight)
+        #)
+        game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        
         comps.update()
-        for comp in comps:
-            game.win.blit(comp.image, comp.rect)
+        creditsButton.update()
+        settingsButton.update()
 
-        if startButton.clicked:
-            game.map.loadLevel()
-            break
-        
-        if stgsButton.clicked:
-            settingsMenu(game)
-            stgsButton.reset()
-        
-        if compendButton.clicked:
-            compendiumMenu(game)
-            compendButton.reset()
-        
-        game.win.blit(text1.image, text1)
-        game.win.blit(text2.image, text2)
-        game.win.blit(text3.image, text3)
-        game.win.blit(swordImg, swordRect)
+        if toMainMenuButton.clicked:
+            for comp in comps:
+                game.win.blit(comp.image, comp.rect)
+            game.win.blit(creditsButton.image, creditsButton.rect)
+            game.win.blit(settingsButton.image, settingsButton.rect)
 
-        keys = pygame.key.get_pressed()
-
-        if keys[keySet['start']]:
-            game.map.loadLevel()
-            break
+            if startButton.clicked:
+                game.map.loadLevel()
+                break
+            
+            if settingsButton.clicked:
+                settingsMenu(game)
+                settingsButton.reset()
+            
+            if instructionsButton.clicked:
+                compendiumMenu(game)
+                instructionsButton.reset()
+            
+            if creditsButton.clicked:
+                creditsMenu(game)
+                creditsButton.reset()
         
+            game.win.blit(text1.image, text1)
+            game.win.blit(text2.image, text2)
+            game.win.blit(swordImg, swordRect)
+
+            keys = pygame.key.get_pressed()
+
+            if keys[keySet['start']]:
+                game.map.loadLevel()
+                break
+        else:
+            for i in range(int(loadingLinesShowed)):
+                game.win.blit(loadingText[i].image, loadingText[i])
+            if loadingLinesShowed <= len(loadingText):
+                loadingLinesShowed += loadingLinesTimings[int(loadingLinesShowed)] #0.05
+            toMainMenuButton.update()
+            if int(loadingLinesShowed) == len(loadingText):
+                game.win.blit(toMainMenuButton.image, toMainMenuButton.rect)
+            #for t in loadingText:
+            #    game.win.blit(t.image, t)
+        
+        pygame.display.update()
+
+def creditsMenu(game):
+    loadingScreenBGSurface = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
+    loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
+    title = Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50))
+    gfxTitle = Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150))
+    gfxName1 = Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225))
+    codeTitle = Text("subtitle1", "~~~ Code ~~~", colors.orangeRed, game.antialiasing, (0, 275))
+    codeName1 = Text("3", "Luke Gonsalves", colors.orangeRed, game.antialiasing, (0, 350))
+    codeName2 = Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
+    menuItems = [title, gfxTitle, gfxName1, codeTitle, codeName1, codeName2]
+    # Pre-calculate half of the windows width because division is slow
+    halfWinWidth = winWidth / 2
+    for item in menuItems:
+        item.rect.centerx = halfWinWidth
+    while True:
+        game.clock.tick(FPS)
+        game.runEvents()
+        game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        for item in menuItems:
+            game.win.blit(item.image, item.rect)
         pygame.display.update()
 
 def gameOver(game):
     restartButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
     buttons = pygame.sprite.Group(restartButton)
     while True:
-        pygame.time.delay(50)
+        game.clock.tick(FPS)
         
         game.runEvents()
         game.refresh()
@@ -178,7 +260,7 @@ def victoryLoop(game):
     buttons = pygame.sprite.Group(menuButton)
     game.mixer.playFx('yay')
     while True:
-        pygame.time.delay(50)
+        game.clock.tick(FPS)
         
         game.runEvents()
         game.refresh()

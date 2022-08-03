@@ -4,6 +4,16 @@ import colors
 import math
 
 TITLE = "The Caverns"
+LOADING_TEXT = [
+    "A darkness has fallen upon this once beautiful land.",
+    "What was once full of life is now permeated with the stench of death and decay",
+    "Lake crystal clear and sky pure blue turned red by the smoke that chokes the air.",
+    "Where there were once animals and people living in harmony,",
+    "There are now only creatures of darkness plotting their evil machinations.",
+    "Where there was once a great kingdon of dwarves, their halls filled with splendor,",
+    "There is now only the remains of their dark and dusty halls..."
+]
+SHOW_LOADING_SCREEN = False
 
 #### Establishes file paths ####
 try:
@@ -63,6 +73,16 @@ def fAsset(assetName):
     global ASSETSPATH
 
     return os.path.join(PATH, 'fonts', assetName)
+
+# Custom Generated fonts
+fgenedfs = {}
+
+def fgen(fn, s):
+    """Generate a custom font"""
+    rn = fn + "-" + s
+    if not fgenedfs[rn]:
+        fgenedfs[rn] = pygame.font.Font(fAsset(fn), s)
+    return fgenedfs[rn]
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
@@ -163,11 +183,11 @@ class Spritesheet:
 if __name__ != '__main__':
     fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
             'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
-            'subtitle1': pygame.font.Font(fAsset('PixelLove.ttf'), 23),
-            '2': pygame.font.SysFont('Comic Sans MS', 23),
-            '3': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 32),
+            'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
+            '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
+            '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
             'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
-            'title2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 40),
+            'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
             'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
             'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
             'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
@@ -186,12 +206,15 @@ def dist(vec1, vec2):
 import pickle
 
 def loadSave(file):
-    '''
+    '''Load save
+
     STILL IN BETA TESTING
     '''
     try:
         with open(file, 'rb') as f:
             data = pickle.load(f)
+            items = list(data.items())
+            print(items)
             for k, v in data.items():
                 globals()[k] = v
         checkJoysticks()
@@ -200,7 +223,8 @@ def loadSave(file):
 
 
 def saveData(file, game):
-    '''
+    '''Save game settings
+
     STILL IN BETA TESTING
     '''
     print(game.joystickDisabled)
@@ -210,6 +234,9 @@ def saveData(file, game):
         'aalias': game.antialiasing,
         'SHOWFPS': game.showFps,
         'joystickDisabled': game.joystickDisabled,
+        "loadingScreen": {
+            "show": SHOW_LOADING_SCREEN
+        }
     }
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)
