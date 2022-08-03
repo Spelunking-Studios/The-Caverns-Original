@@ -87,7 +87,7 @@ class Text:
         self.color = color
         self.bgColor = bgColor
         self.pos = pygame.Vector2(pos)
-        self.setText(text)
+        self.setText(text, multiline)
     def setText(self, text, multiline = False):
         if multiline:
             ## This code is thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame 
