@@ -181,19 +181,20 @@ class Spritesheet:
 
 # Loads all fonts if program is run indirectly
 if __name__ != '__main__':
-    fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
-            'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
-            'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
-            '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
-            '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
-            'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
-            'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
-            'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
-            'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
-            'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
-            'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
-            'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
-            }
+    fonts = {
+        'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
+        'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
+        'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
+        '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
+        '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
+        'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
+        'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
+        'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
+        'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
+        'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
+        'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
+        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
+    }
 
     
 DEBUG = False

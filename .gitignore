@@ -1,14 +1,3 @@
-#__pycache__
-#./object/__pycache__/**
-#./enemies/__pycache__/**
-#*.pyc
-#*.pyo
-#pyLdtk
-#tests
-#build
-#dist
-#main.spec
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
