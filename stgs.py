@@ -13,7 +13,7 @@ LOADING_TEXT = [
     "Where there was once a great kingdon of dwarves, their halls filled with splendor,",
     "There is now only the remains of their dark and dusty halls..."
 ]
-SHOW_LOADING_SCREEN = True
+SHOW_LOADING_SCREEN = False
 
 #### Establishes file paths ####
 try:
@@ -183,9 +183,9 @@ class Spritesheet:
 if __name__ != '__main__':
     fonts = {'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
             'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
-            'subtitle1': pygame.font.Font(fAsset('PixelLove.ttf'), 23),
-            '2': pygame.font.Font(fAsset('PixelLove.ttf'), 25),
-            '3': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 32),
+            'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
+            '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
+            '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
             'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
             'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
             'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),

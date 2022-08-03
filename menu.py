@@ -79,7 +79,10 @@ class Text:
     Basic Text object
     '''
     def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), ):
-        self.font = fonts[fNum]
+        if isinstance(fNum, str):
+            self.font = fonts[fNum]
+        else:
+            self.font = fNum
         self.size = size
         self.color = color
         self.bgColor = bgColor

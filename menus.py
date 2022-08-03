@@ -199,7 +199,6 @@ def main(game, loadingScreenOn = False):
                 game.win.blit(loadingText[i].image, loadingText[i])
             if loadingLinesShowed <= len(loadingText):
                 loadingLinesShowed += loadingLinesTimings[int(loadingLinesShowed)] #0.05
-                print(loadingLinesShowed)
             toMainMenuButton.update()
             if int(loadingLinesShowed) == len(loadingText):
                 game.win.blit(toMainMenuButton.image, toMainMenuButton.rect)
@@ -211,11 +210,23 @@ def main(game, loadingScreenOn = False):
 def creditsMenu(game):
     loadingScreenBGSurface = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
     loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
-    title = Text("title1", "Credits", colors.orangeRed, game.antialiasing, (winWidth / 2, 50))
+    title = Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50))
+    gfxTitle = Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150))
+    gfxName1 = Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225))
+    codeTitle = Text("subtitle1", "~~~ Code ~~~", colors.orangeRed, game.antialiasing, (0, 275))
+    codeName1 = Text("3", "Luke Gonsalves", colors.orangeRed, game.antialiasing, (0, 350))
+    codeName2 = Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
+    menuItems = [title, gfxTitle, gfxName1, codeTitle, codeName1, codeName2]
+    # Pre-calculate half of the windows width because division is slow
+    halfWinWidth = winWidth / 2
+    for item in menuItems:
+        item.rect.centerx = halfWinWidth
     while True:
         game.clock.tick(FPS)
         game.runEvents()
         game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        for item in menuItems:
+            game.win.blit(item.image, item.rect)
         pygame.display.update()
 
 def gameOver(game):
