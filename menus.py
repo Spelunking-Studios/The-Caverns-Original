@@ -98,6 +98,9 @@ def settingsMenu(game):
         pygame.display.update()
 
 def main(game, loadingScreenOn = False):
+    lssb = game.loadingScreenShownBefore
+    if loadingScreenOn:
+        game.loadingScreenShownBefore = True
     # Loading screen
     toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
     toMainMenuButton.rect.centerx = winWidth / 2
@@ -120,7 +123,10 @@ def main(game, loadingScreenOn = False):
             tti += 1
         loadingLinesShowed = 1
         loadingLinesTimings = [0.05, 0.1, 0.017, 0.015, 0.015, 0.015, 0.015]
-        toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+        tmmbt = "Skip"
+        if not lssb:
+            tmmbt = "Continue"
+        toMainMenuButton = Button(game, (0, winHeight - 100), text = tmmbt, center = True, colors = (colors.yellow, colors.white))
         toMainMenuButton.rect.centerx = winWidth / 2
     else:
         toMainMenuButton.clicked = True
@@ -163,6 +169,8 @@ def main(game, loadingScreenOn = False):
         creditsButton.update()
         settingsButton.update()
 
+        iloadingLinesEloadingTextLen = int(loadingLinesShowed) == len(loadingText)
+
         if toMainMenuButton.clicked:
             for comp in comps:
                 game.win.blit(comp.image, comp.rect)
@@ -200,7 +208,9 @@ def main(game, loadingScreenOn = False):
             if loadingLinesShowed <= len(loadingText):
                 loadingLinesShowed += loadingLinesTimings[int(loadingLinesShowed)] #0.05
             toMainMenuButton.update()
-            if int(loadingLinesShowed) == len(loadingText):
+            if iloadingLinesEloadingTextLen or lssb:
+                if toMainMenuButton.text != "Continue" and iloadingLinesEloadingTextLen:
+                    toMainMenuButton.setText("Continue")
                 game.win.blit(toMainMenuButton.image, toMainMenuButton.rect)
             #for t in loadingText:
             #    game.win.blit(t.image, t)
@@ -216,7 +226,11 @@ def creditsMenu(game):
     codeTitle = Text("subtitle1", "~~~ Code ~~~", colors.orangeRed, game.antialiasing, (0, 275))
     codeName1 = Text("3", "Luke Gonsalves", colors.orangeRed, game.antialiasing, (0, 350))
     codeName2 = Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
-    menuItems = [title, gfxTitle, gfxName1, codeTitle, codeName1, codeName2]
+    returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white))
+    menuItems = [
+        title, gfxTitle, gfxName1, codeTitle, codeName1, codeName2,
+        returnButton
+    ]
     # Pre-calculate half of the windows width because division is slow
     halfWinWidth = winWidth / 2
     for item in menuItems:
@@ -225,6 +239,9 @@ def creditsMenu(game):
         game.clock.tick(FPS)
         game.runEvents()
         game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        returnButton.update()
+        if returnButton.clicked:
+            break
         for item in menuItems:
             game.win.blit(item.image, item.rect)
         pygame.display.update()

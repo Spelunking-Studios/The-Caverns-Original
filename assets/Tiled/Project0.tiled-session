@@ -496,26 +496,26 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 0.33,
-            "selectedLayer": 2,
+            "scale": 0.75,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": -836.3636363636364,
-                "y": 493.93939393939394
+                "x": 578,
+                "y": 1353.3333333333333
             }
         },
         "cave2.tmx": {
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 304,
+                "x": 305,
                 "y": 320
             }
         },
         "cave3.tmx": {
             "scale": 1,
-            "selectedLayer": 0,
+            "selectedLayer": -1,
             "viewCenter": {
-                "x": 464,
+                "x": 464.5,
                 "y": 368
             }
         },

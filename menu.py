@@ -38,15 +38,31 @@ class Button(pygame.sprite.Sprite):
         self.rect.size = self.wh
         self.rect.x, self.rect.y = pos
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
-
-        self.rendText = fonts['menu1'].render(self.text, self.game.antialiasing, (0, 0, 0))
+        self.setText(self.text)
+    def setText(self, text):
+        """Sets the button's text
+        
+        Arguments:
+        -----
+        text: string
+        """
+        # Set the text
+        self.text = text
+        # Re-create the pygame surface with the text
+        self.rendText = fonts['menu1'].render(
+            self.text,
+            self.game.antialiasing,
+            (0, 0, 0)
+        )
         self.textRect = self.rendText.get_rect()
         if self.center:
-            self.textRect.center = pygame.Rect(0, 0, self.rect.width, self.rect.height).center
+            self.textRect.center = pygame.Rect(
+                0, 0,
+                self.rect.width, self.rect.height
+            ).center
         else:
             self.textRect.x += 2
             self.textRect.y += 2
-
     def update(self):
         self.image = pygame.Surface(self.rect.size)
         self.hover = False

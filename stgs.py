@@ -13,7 +13,7 @@ LOADING_TEXT = [
     "Where there was once a great kingdon of dwarves, their halls filled with splendor,",
     "There is now only the remains of their dark and dusty halls..."
 ]
-SHOW_LOADING_SCREEN = False
+LOADING_SCREEN_SHOWN_BEFORE = False
 
 #### Establishes file paths ####
 try:
@@ -214,29 +214,24 @@ def loadSave(file):
         with open(file, 'rb') as f:
             data = pickle.load(f)
             items = list(data.items())
-            print(items)
-            for k, v in data.items():
+            for k, v in items:
                 globals()[k] = v
         checkJoysticks()
     except FileNotFoundError:
         print("No Save File")
-
 
 def saveData(file, game):
     '''Save game settings
 
     STILL IN BETA TESTING
     '''
-    print(game.joystickDisabled)
     saveDict = {    # Each value must corresponde to a global variable in this file
         'musicVolume': game.mixer.musicVolume,
         'fxVolume': game.mixer.fxVolume,
         'aalias': game.antialiasing,
         'SHOWFPS': game.showFps,
         'joystickDisabled': game.joystickDisabled,
-        "loadingScreen": {
-            "show": SHOW_LOADING_SCREEN
-        }
+        "LOADING_SCREEN_SHOWN_BEFORE": game.loadingScreenShownBefore
     }
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)

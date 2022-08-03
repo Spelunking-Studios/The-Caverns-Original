@@ -6,7 +6,7 @@ import os
 import random
 import sys
 
-from stgs import *
+from stgs import loadSave, saveFile
 loadSave(saveFile)
 from stgs import *
 from camera import *
@@ -92,6 +92,7 @@ class Game:
         self.joystickDisabled = joystickDisabled
         self.fullScreen = False
         self.clock = pygame.time.Clock()
+        self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
 
     def new(self):
@@ -115,6 +116,7 @@ class Game:
 
     ####  Determines how the run will function ####
     def run(self):
+        loadSave("save.p")
         self.menuLoop()
         #self.mixer.playMusic(asset('sounds/track 1.wav'))
         self.mainLoop()
@@ -334,7 +336,7 @@ class Game:
 
     #### First menu loop ####
     def menuLoop(self):
-        menus.main(self, SHOW_LOADING_SCREEN)
+        menus.main(self, True)
 
     def victoryLoop(self):
         menus.victoryLoop(self)
