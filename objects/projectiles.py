@@ -39,7 +39,7 @@ class Projectile(pygame.sprite.Sprite):
     def hit(self, enemy=None):
         dmg = self.game.player.stats.attack()
         if enemy != None:
-            enemy.health -= dmg[0]
+            enemy.takeDamage(dmg[0])
             self.game.player.combatParts.particle(self.pos, dmg[0], dmg[1])
         
         self.kill()

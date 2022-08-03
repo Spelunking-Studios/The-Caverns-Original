@@ -70,6 +70,10 @@ class Level:
                         tileImage = pygame.transform.scale(tileImage, (self.tmxdata.tilewidth* self.scale, self.tmxdata.tilewidth * self.scale))
                         self.image.blit(
                             tileImage, (x * self.tmxdata.tilewidth * self.scale, y * self.tmxdata.tileheight * self.scale))
+            if isinstance(layer, pytmx.TiledImageLayer):
+                img = layer.image#pygame.image.load().image.convert_alpha()
+                print(vars(layer))
+                # self.image.blit(pygame.transform.scale(img, (img.get_width()*self.scale, img.get_height()*self.scale)), (627, 1875))#(layer.offsetx* self.scale, layer.offsety* self.scale))
 
         self.teleporters = pygame.sprite.Group()
 
