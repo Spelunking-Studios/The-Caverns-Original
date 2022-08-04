@@ -27,6 +27,45 @@ class GameMap:
         self.floor = floor if floor else self.floor
         self.floor.load()
 
+class Floor:
+    """Represents a floor"""
+    def __init__(self, game, num):
+        """Basic initialization of props"""
+        self.game = game
+        self.floorNum = num
+        self.mappingsFilePath = asset(f"floorMappings/floor{self.floorNum}.json")
+        self.rooms = []
+        self.room = None
+        self.loadMappings()
+        self.initRooms()
+
+    def load(self):
+        """Load the floor"""
+        self.enterRoom(0, 1)
+
+    def update(self):
+        """Update the floor"""
+        self.room.update()
+
+    def loadMappings(self):
+        with open(self.mappingsFilePath, "r") as f:
+            data = json.load(f)
+            self.roomCount = data["numberOfRooms"]
+
+    def initRooms(self):
+        for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
+            self.rooms.append(Room(
+                self,
+                asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
+            ))
+        self.room = self.rooms[0]
+        
+    def clear(self):
+        pass
+    def enterRoom(self, roomNumber, exitNumber):
+        self.room = self.rooms[roomNumber]
+        self.room.enter(exitNumber)
+
 class Room:
     """Represents a single room"""
     def __init__(self, floor, roomFilePath, **kwargs):
@@ -84,40 +123,6 @@ class Room:
         """Enter the room from an entrance"""
         self.entranceNum = number
         self.load()
-
-class Floor:
-    """Represents a floor"""
-    def __init__(self, game, num):
-        """Basic initialization of props"""
-        self.game = game
-        self.floorNum = num
-        self.mappingsFilePath = asset(f"floorMappings/floor{self.floorNum}.json")
-        self.rooms = []
-        self.room = None
-        self.loadMappings()
-        self.initRooms()
-    def load(self):
-        """Load the floor"""
-        self.enterRoom(0, 1)
-    def update(self):
-        """Update the floor"""
-        self.room.update()
-    def loadMappings(self):
-        with open(self.mappingsFilePath, "r") as f:
-            data = json.load(f)
-            self.roomCount = data["numberOfRooms"]
-    def initRooms(self):
-        for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
-            self.rooms.append(Room(
-                self,
-                asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
-            ))
-        self.room = self.rooms[0]
-    def clear(self):
-        pass
-    def enterRoom(self, roomNumber, exitNumber):
-        self.room = self.rooms[roomNumber]
-        self.room.enter(exitNumber)
 
 class Level:
     def __init__(self, mapDir, **kwargs):

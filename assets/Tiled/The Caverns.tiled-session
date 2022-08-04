@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 1.5,
-            "selectedLayer": 2,
+            "scale": 2,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 328.3333333333333,
-                "y": 473.33333333333337
+                "x": 754,
+                "y": 1627.75
             }
         },
         "cave2.tmx": {
@@ -531,8 +531,8 @@
             "scale": 0.5,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 1055,
-                "y": 756
+                "x": 1056,
+                "y": 757
             }
         },
         "swordcon-basic.tsx": {
@@ -553,12 +553,12 @@
         "room1-floor1.tmx"
     ],
     "project": "The Caverns.tiled-project",
-    "property.type": "int",
+    "property.type": "string",
     "recentFiles": [
+        "cave1.tmx",
         "room1-floor1.tmx",
         "cave3.tmx",
         "cave2.tmx",
-        "cave1.tmx",
         "Project0-tileset1.tsx",
         "level1/level1.tmx",
         "C:/Users/LukeG/Downloads/invisboi.tsx",

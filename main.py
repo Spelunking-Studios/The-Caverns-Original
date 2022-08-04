@@ -85,7 +85,6 @@ class Game:
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
         self.points = 0
-        self.gravity = 1.6
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
@@ -102,7 +101,6 @@ class Game:
         self.pSprites = Group()
         self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
-        self.player.gravity = self.gravity
         self.end = False
         self.pause = False
         self.pauseScreen = PauseOverlay(self)

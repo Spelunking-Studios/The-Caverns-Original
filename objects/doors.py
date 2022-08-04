@@ -50,6 +50,18 @@ class Entrance(pygame.sprite.Sprite):
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
         #self.image.fill(self.color)
 
+def Entrance1(game, objT):
+    return Entrance(game, objT)
+
+def Entrance2(game, objT):
+    return Entrance(game, objT)
+
+def Entrance3(game, objT):
+    return Entrance(game, objT)
+
+def Entrance4(game, objT):
+    return Entrance(game, objT)
+
 class Teleporter(pygame.sprite.Sprite):
     color = (255, 255, 255)
 

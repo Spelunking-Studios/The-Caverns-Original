@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="211">
+<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="211">
  <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="39" height="60">
   <data encoding="base64">
@@ -129,6 +129,7 @@
   <object id="196" name="Door" x="821" y="1639" width="21" height="7">
    <properties>
     <property name="targetLevel" value="cave2"/>
+    <property name="targetObj" value="Entrance"/>
    </properties>
   </object>
   <object id="197" name="Enemy" type="Zombie" x="353" y="1670">
