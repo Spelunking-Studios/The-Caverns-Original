@@ -496,11 +496,11 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 0.125,
-            "selectedLayer": 0,
+            "scale": 5.5,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 424,
-                "y": 708
+                "x": 266,
+                "y": 668.6363636363637
             }
         },
         "cave2.tmx": {
@@ -549,9 +549,9 @@
     "project": "Project0.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "cave1.tmx",
         "cave3.tmx",
         "cave2.tmx",
+        "cave1.tmx",
         "Project0-tileset1.tsx",
         "level1/level1.tmx",
         "C:/Users/LukeG/Downloads/invisboi.tsx",
