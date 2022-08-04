@@ -1,31 +1,125 @@
+from xml.dom.pulldom import parseString
 import pygame
 import pytmx
 from stgs import *
 import enemies
 import objects as objs
-import os
+import os, json
 
 class GameMap:
     def __init__(self, game):
         self.game = game
-        self.levels = [
-            Level(asset('Tiled/cave1.tmx')),
-            Level(asset('Tiled/cave2.tmx'))
+        self.floors = [
+            Floor(game, 1)
         ]
-        self.level = self.levels[0]
-    
-    def switchLevel(self, name, start="entrance"):
-        for l in self.levels:
-            if l.name == name:
-                self.loadLevel(l, start)
-        
-    def loadLevel(self, level=None, start="entrance"):
-        self.level.clearSprites()
-        self.level = level if level else self.level
-        self.level.load(self.game, start)
+        self.floor = self.floors[0]
+    def update(self):
+        """Update the map"""
+        self.floor.update()
+    def setFloor(self, num):
+        """Sets the map's floor"""
+        for f in self.levels:
+            if f.floorNum == num:
+                self.loadFloor(f)
+    def loadFloor(self, floor=None):
+        """Load the map's active floor"""
+        self.floor.clear()
+        self.floor = floor if floor else self.floor
+        self.floor.load()
+
+class Room:
+    """Represents a single room"""
+    def __init__(self, floor, roomFilePath, **kwargs):
+        """Initialize the room"""
+        self.floor = floor
+        self.roomFilePath = roomFilePath
+        self.scale = 3
+        self.entranceNum = -1
+        self.sprites = pygame.sprite.Group()
+        self.width = winWidth * self.scale
+        self.height = winHeight * self.scale
+        self.rect = pygame.Rect((0, 0, self.width, self.height))
+        self.loaded = False
+        self.name = os.path.splitext(
+            os.path.basename(self.roomFilePath)
+        )[0]
+        self.image = pygame.Surface((self.width, self.height))
+        self.image.fill((0, 255, 0))
+        self.bgImage = pygame.Surface((self.width, self.height))
+        self.bgImage.fill((0, 255, 0))
+
+        for k, v in kwargs.items():
+            self.__dict__[k] = v
+    def load(self):
+        """Load the room's associated data"""
+        self.loadTiledData()
+    def loadTiledData(self):
+        """Load data from the tiled file"""
+        self.tiledData = pytmx.load_pygame(self.roomFilePath, pixelAlpha = True)
+        for layer in self.tiledData.visible_layers:
+            # Go through every layer till we reach the bg layer
+            if isinstance(layer, pytmx.TiledImageLayer):
+                # The background image layer
+                self.bgImage = layer.image
+        # Go through every object in the map
+        entrances = [] # List of entrances
+        twayEntrance = None # The entrance the player is exiting
+        for tobject in self.tiledData.objects:
+            print(tobject.type)
+            if tobject.type == "Entrance":
+                entrances.append(tobject)
+        for entrance in entrances:
+            if entrance.properties["entranceNumber"] == self.entranceNum:
+                twayEntrance = entrance
+        # Set the player's position to the entrance
+        if twayEntrance:
+            self.floor.game.player.setPos((twayEntrance.x, twayEntrance.y))
+    def update(self):
+        """Update the room"""
+        self.image.blit(
+            self.bgImage,
+            self.bgImage.get_rect()
+        )
+    def enter(self, number):
+        """Enter the room from an entrance"""
+        self.entranceNum = number
+        self.load()
+
+class Floor:
+    """Represents a floor"""
+    def __init__(self, game, num):
+        """Basic initialization of props"""
+        self.game = game
+        self.floorNum = num
+        self.mappingsFilePath = asset(f"floorMappings/floor{self.floorNum}.json")
+        self.rooms = []
+        self.room = None
+        self.loadMappings()
+        self.initRooms()
+    def load(self):
+        """Load the floor"""
+        self.enterRoom(0, 1)
+    def update(self):
+        """Update the floor"""
+        self.room.update()
+    def loadMappings(self):
+        with open(self.mappingsFilePath, "r") as f:
+            data = json.load(f)
+            self.roomCount = data["numberOfRooms"]
+    def initRooms(self):
+        for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
+            self.rooms.append(Room(
+                self,
+                asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
+            ))
+        self.room = self.rooms[0]
+    def clear(self):
+        pass
+    def enterRoom(self, roomNumber, exitNumber):
+        self.room = self.rooms[roomNumber]
+        self.room.enter(exitNumber)
 
 class Level:
-
     def __init__(self, mapDir, **kwargs):
         self.mapDir = mapDir
         self.sprites = pygame.sprite.Group()
@@ -50,11 +144,12 @@ class Level:
         if self.startSprite:
             self.game.player.setPos(self.startSprite.rect.center, True)
         else:
-            self.game.player.setPos(self.width/2, self.height/2)
+            self.game.player.setPos((self.width/2, self.height/2))
 
     def loadTiled(self, start="entrance"):  # Map needs to be specified
         self.enemyCnt = 0
         self.tmxdata = pytmx.load_pygame(self.mapDir, pixelalpha=True)
+        print(self.tmxdata.layers)
         self.width = self.tmxdata.width * self.tmxdata.tilewidth * self.scale
         self.height = self.tmxdata.height * self.tmxdata.tileheight * self.scale
         self.levelSize = (self.width, self.height)
@@ -64,6 +159,7 @@ class Level:
         tile = self.tmxdata.get_tile_image_by_gid
         for layer in self.tmxdata.visible_layers:
             if isinstance(layer, pytmx.TiledTileLayer):
+                # Load a tile layer
                 for x, y, gid, in layer:
                     tileImage = tile(gid)
                     if not tileImage is None:
@@ -71,8 +167,8 @@ class Level:
                         self.image.blit(
                             tileImage, (x * self.tmxdata.tilewidth * self.scale, y * self.tmxdata.tileheight * self.scale))
             if isinstance(layer, pytmx.TiledImageLayer):
+                # Load an image layer
                 pass
-
                 # img = layer.image#pygame.image.load().image.convert_alpha()
                 # print(vars(layer))
                 # self.image.blit(pygame.transform.scale(img, (img.get_width()*self.scale, img.get_height()*self.scale)), (627, 1875))#(layer.offsetx* self.scale, layer.offsety* self.scale))
@@ -136,7 +232,7 @@ class Level:
             s.kill()
 
 # Remember to include tileset image and tsx file with the tmx file of the map
-level1 = Level(asset('Tiled/cave1.tmx'))
+#level1 = Level(asset('Tiled/cave1.tmx'))
 
 # All Game levels
-gameLevels = [level1]
+#gameLevels = [level1]

@@ -54,7 +54,6 @@ class Grouper:
     def allGroups(self):
         return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 
-Grouper()
 #### Game object ####
 class Game:
     """Represents an instance of the game"""
@@ -139,6 +138,7 @@ class Game:
     def update(self): 
         self.getFps()
         self.getPause()
+        self.map.update()
         if self.pause:
             self.pSprites.update()
         else:
@@ -152,7 +152,7 @@ class Game:
         pygame.display.update()
 
     def render(self):
-        self.win.blit(self.map.level.image, self.cam.apply(self.map.level))
+        self.win.blit(self.map.floor.room.image, self.cam.apply(self.map.floor.room))
 
         for layer in self.rendLayers:
             for sprite in layer:

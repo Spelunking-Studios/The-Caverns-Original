@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.4" tiledversion="1.4.1" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="211">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="39" height="60" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="211">
  <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <layer id="1" name="Tile Layer 1" width="39" height="60">
   <data encoding="base64">
@@ -169,7 +169,4 @@
   </object>
   <object id="210" name="Entrance" type="entrance2" x="824" y="1612" width="16" height="8"/>
  </objectgroup>
- <imagelayer id="7" name="Image Layer 1" offsetx="4" offsety="270">
-  <image source="../../../../../../Downloads/DungeonFloor.png" width="960" height="720"/>
- </imagelayer>
 </map>
