@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "cave1.tmx",
+    "activeFile": "room1-floor1.tmx",
     "expandedProjectPaths": [
     ],
     "exportAsImage.drawTileGrid": false,
@@ -496,18 +496,18 @@
             "scaleInEditor": 3
         },
         "cave1.tmx": {
-            "scale": 5.5,
+            "scale": 1.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 266,
-                "y": 668.6363636363637
+                "x": 328.3333333333333,
+                "y": 473.33333333333337
             }
         },
         "cave2.tmx": {
             "scale": 0.5,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 304,
+                "x": 305,
                 "y": 320
             }
         },
@@ -515,7 +515,7 @@
             "scale": 1,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 464,
+                "x": 464.5,
                 "y": 368
             }
         },
@@ -525,6 +525,14 @@
             "viewCenter": {
                 "x": 288,
                 "y": 351.99999999999994
+            }
+        },
+        "room1-floor1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1055,
+                "y": 756
             }
         },
         "swordcon-basic.tsx": {
@@ -542,13 +550,12 @@
     "map.tileWidth": 32,
     "map.width": 30,
     "openFiles": [
-        "cave1.tmx",
-        "cave2.tmx",
-        "cave3.tmx"
+        "room1-floor1.tmx"
     ],
-    "project": "Project0.tiled-project",
-    "property.type": "string",
+    "project": "The Caverns.tiled-project",
+    "property.type": "int",
     "recentFiles": [
+        "room1-floor1.tmx",
         "cave3.tmx",
         "cave2.tmx",
         "cave1.tmx",
@@ -559,8 +566,7 @@
         "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/level4.tmx",
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level4/level4.tmx",
         "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/arkanos.tsx",
-        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level5/level5.tmx",
-        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level6/level6.tmx"
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level5/level5.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

@@ -72,7 +72,7 @@ def fAsset(assetName):
     '''
     global ASSETSPATH
 
-    return os.path.join(PATH, 'fonts', assetName)
+    return os.path.join(PATH, "assets", 'fonts', assetName)
 
 # Custom Generated fonts
 fgenedfs = {}

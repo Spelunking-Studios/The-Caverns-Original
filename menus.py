@@ -178,7 +178,7 @@ def main(game, loadingScreenOn = False):
             game.win.blit(settingsButton.image, settingsButton.rect)
 
             if startButton.clicked:
-                game.map.loadLevel()
+                game.map.loadFloor()
                 break
             
             if settingsButton.clicked:
