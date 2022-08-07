@@ -10,3 +10,4 @@ from .platforms import *
 from .playerItems import *
 from .projectiles import *
 from .walls import *
+from .navig import *

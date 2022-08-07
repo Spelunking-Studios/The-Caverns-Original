@@ -195,6 +195,7 @@ class Player(pygame.sprite.Sprite):
         else:
             self.moveRect.topleft = tup
         self.rect = self.moveRect.copy()
+        print(self.rect)
     
     def getAttackMask(self):
         img2 = self.image.copy()

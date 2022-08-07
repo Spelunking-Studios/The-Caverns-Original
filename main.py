@@ -141,6 +141,7 @@ class Game:
             self.pSprites.update()
         else:
             self.sprites.update()
+            self.map.update()
             self.checkHits()
         self.overlayer.update()
         self.cam.update()

@@ -10,7 +10,7 @@ class GameMap:
     def __init__(self, game):
         self.game = game
         self.floors = [
-            Floor(game, 1)
+            Floor(self, game, 1)
         ]
         self.floor = self.floors[0]
     def update(self):
@@ -29,9 +29,10 @@ class GameMap:
 
 class Floor:
     """Represents a floor"""
-    def __init__(self, game, num):
+    def __init__(self, map, game, num):
         """Basic initialization of props"""
         self.game = game
+        self.map = map
         self.floorNum = num
         self.mappingsFilePath = asset(f"floorMappings/floor{self.floorNum}.json")
         self.rooms = []
@@ -41,7 +42,8 @@ class Floor:
 
     def load(self):
         """Load the floor"""
-        self.enterRoom(0, 1)
+        # Enter the first room in the floor at the room's generic entrance
+        self.enterRoom(0, None)
 
     def update(self):
         """Update the floor"""
@@ -56,25 +58,37 @@ class Floor:
         for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
             self.rooms.append(Room(
                 self,
+                i,
                 asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
             ))
         self.room = self.rooms[0]
         
     def clear(self):
         pass
-    def enterRoom(self, roomNumber, exitNumber):
+    def enterRoom(self, roomNumber, target):
         self.room = self.rooms[roomNumber]
-        self.room.enter(exitNumber)
+        self.room.enter(target)
+    def changeRoom(self, target):
+        # Get the room number from the target
+        # Thanks for regex searching code
+        # https://stackoverflow.com/a/15340694/15566643 - UltraInstinct
+        roomNumber = int(re.search(
+            "^[0-9]",
+            re.split("^floor[0-9]-room", target)[1]
+        ).group(0))
+        print(f"Changing room to {roomNumber}...")
+        self.enterRoom(roomNumber - 1, target)
 
 class Room:
     """Represents a single room"""
-    def __init__(self, floor, roomFilePath, **kwargs):
+    def __init__(self, floor, num, roomFilePath, **kwargs):
         """Initialize the room"""
         self.floor = floor
         self.roomFilePath = roomFilePath
+        self.roomNum = num
         self.scale = 3
         self.entranceNum = -1
-        self.sprites = pygame.sprite.Group()
+        self.objects = []
         self.width = winWidth * self.scale
         self.height = winHeight * self.scale
         self.rect = pygame.Rect((0, 0, self.width, self.height))
@@ -86,12 +100,18 @@ class Room:
         self.image.fill((0, 255, 0))
         self.bgImage = pygame.Surface((self.width, self.height))
         self.bgImage.fill((0, 255, 0))
+        self.target = None
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
     def load(self):
         """Load the room's associated data"""
+        self.objects = []
         self.loadTiledData()
+        self.image.blit(
+            self.bgImage,
+            self.bgImage.get_rect()
+        )
     def loadTiledData(self):
         """Load data from the tiled file"""
         self.tiledData = pytmx.load_pygame(self.roomFilePath, pixelAlpha = True)
@@ -100,39 +120,87 @@ class Room:
             if isinstance(layer, pytmx.TiledImageLayer):
                 # The background image layer
                 self.bgImage = layer.image
-        # Go through every object in the map
-        entrances = [] # List of entrances
         twayEntrance = None # The entrance the player is exiting
+        # Go through every object in the map
         for tobject in self.tiledData.objects:
-            print(tobject.type)
-            isEntrance = re.search("^Entrance", tobject.type)
-            if isEntrance:
-                entrances.append({
-                    "o": tobject,
-                    "num": int(re.split("^Entrance-", tobject.type)[1:][0])
-                })
-        for entrance in entrances:
-            if entrance["num"] == self.entranceNum:
-                if not "properties" in vars(entrance["o"]).keys():
-                    entrance["o"].properties = {
-                        "entranceNumber":  entrance["num"]
-                    }
-                else:
-                    entrance["o"].properties["entranceNumber"] = entrance["num"]
-                twayEntrance = entrance["o"]
+            # Scale the object
+            #tobject.x, tobject.y = tobject.x * self.scale, tobject.y * self.scale
+            #tobject.width, tobject.height = tobject.width * self.scale, tobject.height * self.scale
+            print(tobject.type, tobject.name)
+            entrances = [] # List of entrances
+            exits = [] # List of exits
+            objc = objs.__dict__[tobject.type]
+            obj = objc(self, tobject)
+            self.objects.append(obj)
+            if obj.objT.name == self.target and self.target:
+                twayEntrance = obj
+        print(self.objects)
+        # for tobject in self.tiledData.objects:
+        #     
+        #     print(tobject.type)
+        #     isEntrance = re.search("^Entrance", tobject.type)
+        #     isExit = re.search("^Exit", tobject.type)
+        #     if isEntrance:
+        #         entrances.append({
+        #             "o": tobject,
+        #             "num": int(re.split("^Entrance-", tobject.type)[1:][0])
+        #         })
+        #     elif isExit:
+        #         exits.append({
+        #             "o": tobject,
+        #             "num": int(re.split("^Exit-", tobject.type)[1:][0])
+        #         })
+        # self.exits = exits
+        # self.entrances = entrances
+        # print(self.exits)
+        # for entrance in entrances:
+        #     if entrance["num"] == self.entranceNum:
+        #         if not "properties" in vars(entrance["o"]).keys():
+        #             entrance["o"].properties = {
+        #                 "entranceNumber":  entrance["num"]
+        #             }
+        #         else:
+        #             entrance["o"].properties["entranceNumber"] = entrance["num"]
+        #         twayEntrance = entrance["o"]
         # Set the player's position to the entrance
         if twayEntrance:
-            self.floor.game.player.setPos((twayEntrance.x, twayEntrance.y))
+            print(twayEntrance)
+            self.floor.game.player.setPos((twayEntrance.rect.x, twayEntrance.rect.y))
     def update(self):
         """Update the room"""
-        self.image.blit(
-            self.bgImage,
-            self.bgImage.get_rect()
-        )
-    def enter(self, number):
-        """Enter the room from an entrance"""
-        self.entranceNum = number
+        # Update the objects
+        for obj in self.objects:
+            if isinstance(obj, objs.Exit):
+                # Check if the player is on the exit
+                ppos = self.floor.map.game.player.rect
+                if (
+                    ppos.x >= obj.rect.x and
+                    ppos.x <= (obj.rect.x + obj.rect.width) and
+                    ppos.y >= obj.rect.y and
+                    ppos.y <= (obj.rect.y + obj.rect.height)
+                ):
+                    if "target" in obj.objT.properties.keys():
+                        t = obj.objT.properties["target"]
+                    else:
+                        t = None
+                    self.exit(t)
+    def enter(self, target):
+        """Enter the room from an entrance
+        
+        If target is not None, the player will move to the specified target id
+        """
+        self.target = target
+        if not self.target:
+            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-entrance1"
+        print(self.target)
         self.load()
+    def exit(self, target):
+        """Exit the romm from an exit
+        
+        If target is not None, the player will move to the specified target id
+        """
+        self.objects = []
+        self.floor.changeRoom(target)
 
 class Level:
     def __init__(self, mapDir, **kwargs):

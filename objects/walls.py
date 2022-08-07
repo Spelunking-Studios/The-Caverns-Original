@@ -9,9 +9,11 @@ from stgs import *
 class Wall(pygame.sprite.Sprite):
     
 
-    def __init__(self, game, objT, **kwargs):
-        self.groups = game.groups.colliders, game.layer1 if DEBUG else game.groups.colliders
-        pygame.sprite.Sprite.__init__(self, self.groups)
+    def __init__(self, room, objT, **kwargs):
+        #self.groups = game.groups.colliders, game.layer1 if DEBUG else game.groups.colliders
+        pygame.sprite.Sprite.__init__(self)
+        self.room = room
+        self.objT = objT
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
         self.color = (255, 255, 255)
         for k, v in kwargs.items():
