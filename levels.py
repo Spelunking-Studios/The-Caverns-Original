@@ -4,7 +4,7 @@ import pytmx
 from stgs import *
 import enemies
 import objects as objs
-import os, json
+import os, json, re
 
 class GameMap:
     def __init__(self, game):
@@ -105,11 +105,21 @@ class Room:
         twayEntrance = None # The entrance the player is exiting
         for tobject in self.tiledData.objects:
             print(tobject.type)
-            if tobject.type == "Entrance":
-                entrances.append(tobject)
+            isEntrance = re.search("^Entrance", tobject.type)
+            if isEntrance:
+                entrances.append({
+                    "o": tobject,
+                    "num": int(re.split("^Entrance-", tobject.type)[1:][0])
+                })
         for entrance in entrances:
-            if entrance.properties["entranceNumber"] == self.entranceNum:
-                twayEntrance = entrance
+            if entrance["num"] == self.entranceNum:
+                if not "properties" in vars(entrance["o"]).keys():
+                    entrance["o"].properties = {
+                        "entranceNumber":  entrance["num"]
+                    }
+                else:
+                    entrance["o"].properties["entranceNumber"] = entrance["num"]
+                twayEntrance = entrance["o"]
         # Set the player's position to the entrance
         if twayEntrance:
             self.floor.game.player.setPos((twayEntrance.x, twayEntrance.y))

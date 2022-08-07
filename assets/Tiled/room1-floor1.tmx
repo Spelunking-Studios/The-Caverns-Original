@@ -1,12 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="22">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="23">
  <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <imagelayer id="2" name="Image Layer" locked="1">
   <image source="level1/room1.jpeg" width="2048" height="1536"/>
  </imagelayer>
- <objectgroup id="5" name="Lights">
-  <object id="7" name="Testing Light Source" type="LightSource" x="736" y="520" width="40" height="40"/>
- </objectgroup>
+ <objectgroup id="5" name="Lights"/>
  <layer id="6" name="tiles" width="64" height="48" visible="0">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
@@ -78,10 +76,7 @@
   <object id="20" type="Wall" x="1672" y="176" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="4" name="Entrences/Exits">
-  <object id="3" name="Entrance" type="Entrance" x="720" y="1184" width="80" height="32">
-   <properties>
-    <property name="entranceNumber" type="int" value="1"/>
-   </properties>
-  </object>
+  <object id="3" name="Entrance" type="Entrance-1" x="720" y="1184" width="80" height="32"/>
+  <object id="22" name="Exit" type="Exit-1" x="1536" y="152" width="80" height="32"/>
  </objectgroup>
 </map>
