@@ -10,7 +10,7 @@ class GameMap:
     def __init__(self, game, index=0):
         self.game = game
         self.floors = [
-            Floor(game, "Floor1")
+            Floor(self, game, 1)
         ]
         self.index = index
         self.floor = self.floors[self.index]    # The floor loading will be based on an index within the floors list 
@@ -32,53 +32,223 @@ class GameMap:
 
 class Floor:
     """Represents a floor"""
-    def __init__(self, game, folder="Floor1"):
+    def __init__(self, map, game, num):
         """Basic initialization of props"""
         self.game = game
-        self.folderPath = tAsset(folder)
-        # Finds the path of every room in the floor folder
-        self.roomPaths =  []
-        for root, d, files in os.walk(self.folderPath):
-            for f in files:
-                self.roomPaths.append(os.path.join(root, f)) 
-        
-        print(self.roomPaths)
-        # Generates room objects from path
-        self.rooms = [Room(self, i) for i in self.roomPaths]
-        # This stores the current room number or index within the rooms list 
-        self.current = 0
+        self.map = map
+        self.floorNum = num
+        self.mappingsFilePath = asset(f"floorMappings/floor{self.floorNum}.json")
+        self.rooms = []
+        self.room = None
+        self.loadMappings()
+        self.initRooms()
 
     def load(self):
-        """Loads the floor (by default in the first room)"""
-        self.enterRoom("room1-floor1")
+        """Load the floor"""
+        # Enter the first room in the floor at the room's generic entrance
+        self.enterRoom(0, None)
 
-    def getRoomByName(self, name):
-        for r in self.rooms:
-            if r.name == name:
-                return r
-        raise Exception(f"NO ROOM CORRESPONDING TO {name}")
+    def update(self):
+        """Update the floor"""
+        self.room.update()
 
-    def enterRoom(self, room, startObj="Entrance"):
-        self.room = self.getRoomByName(room)
-        self.room.load(startObj)
+    def loadMappings(self):
+        with open(self.mappingsFilePath, "r") as f:
+            data = json.load(f)
+            self.roomCount = data["numberOfRooms"]
 
-    # def clear(self):
-    #     pass
-
-    # def update(self):
-    #     """Update the floor"""
-    #     self.room.update(
+    def initRooms(self):
+        for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
+            self.rooms.append(Room(
+                self,
+                i,
+                asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
+            ))
+        self.room = self.rooms[0]
+        
+    def clear(self):
+        pass
+    def enterRoom(self, roomNumber, target):
+        self.room = self.rooms[roomNumber]
+        self.room.enter(target)
+    def changeRoom(self, target):
+        # Get the room number from the target
+        # Thanks for regex searching code
+        # https://stackoverflow.com/a/15340694/15566643 - UltraInstinct
+        if not isinstance(target, str):
+            return
+        roomNumber = int(re.search(
+            "^[0-9]",
+            re.split("^floor[0-9]-room", target)[1]
+        ).group(0))
+        print(f"Changing room to {roomNumber}...")
+        self.enterRoom(roomNumber - 1, target)
 
 class Room:
     """Represents a single room"""
-    def __init__(self, floor, filePath, **kwargs):
+    def __init__(self, floor, num, roomFilePath, **kwargs):
         """Initialize the room"""
         self.floor = floor
-        self.game = floor.game
-        self.filePath = filePath
-        self.scale = 1
+        self.roomFilePath = roomFilePath
+        self.roomNum = num
+        self.scale = 3
+        self.entranceNum = -1
+        self.objects = []
+        self.width = winWidth * self.scale
+        self.height = winHeight * self.scale
+        self.rect = pygame.Rect((0, 0, self.width, self.height))
+        self.loaded = False
+        self.name = os.path.splitext(
+            os.path.basename(self.roomFilePath)
+        )[0]
+        self.image = pygame.Surface((self.width, self.height))
+        self.bgImage = pygame.Surface((self.width, self.height))
+        self.target = None
 
-        # Container for all the sprites corresponding to the room
+        for k, v in kwargs.items():
+            self.__dict__[k] = v
+    def load(self):
+        """Load the room's associated data"""
+        self.objects = []
+        self.loadTiledData()
+        self.image.blit(
+            self.bgImage,
+            self.bgImage.get_rect()
+        )
+    def loadTiledData(self):
+        """Load data from the tiled file"""
+        self.tiledData = pytmx.load_pygame(self.roomFilePath, pixelAlpha = True)
+        for layer in self.tiledData.visible_layers:
+            # Go through every layer till we reach the bg layer
+            if isinstance(layer, pytmx.TiledImageLayer):
+                # The background image layer
+                self.bgImage = layer.image
+        twayEntrance = None # The entrance the player is exiting
+        # Go through every object in the map
+        for tobject in self.tiledData.objects:
+            entrances = [] # List of entrances
+            exits = [] # List of exits
+            objc = objs.__dict__[tobject.type]
+            obj = objc(self, tobject)
+            self.objects.append(obj)
+            if obj.objT.name == self.target and self.target:
+                twayEntrance = obj
+        # Set the player's position to the entrance
+        if twayEntrance:
+            tpos = (twayEntrance.rect.x, twayEntrance.rect.y)
+            # Check to make sure the player doesn't land on the entrance/exit
+            prect = self.getRealignedPlayerRect()
+            center = [
+                twayEntrance.rect.x + (twayEntrance.rect.width >> 2),
+                twayEntrance.rect.y + (twayEntrance.rect.height >> 2)
+            ]
+            poses = [
+                ( # Right
+                    center[0] + twayEntrance.rect.width + prect.width,
+                    center[1]
+                ),
+                ( # Left
+                    center[0] - twayEntrance.rect.width - prect.width,
+                    center[1]
+                ),
+                ( # Top
+                    center[0],
+                    center[1] - twayEntrance.rect.height - prect.height
+                ),
+                ( # Bottom
+                    center[0],
+                    center[1] + twayEntrance.rect.height + prect.height
+                )
+            ]
+            opens = [
+                True, # Right
+                True, # Left
+                True, # Top
+                True # Bottom
+            ]
+            index = 0
+            for pos in poses:
+                if pos[0] < 0 or pos[1] < 0:
+                    opens[index] = False
+                    continue
+                self.floor.game.player.setPos(pos)
+                for o in self.objects:
+                    if not isinstance(o, (objs.Exit, objs.Entrance)):
+                        if o.rect.colliderect(self.floor.game.player.rect):
+                            opens[index] = False
+                            break
+                index += 1
+            del index
+            index = 0
+            for open in opens:
+                if open:
+                    self.floor.game.player.setPos(poses[index])
+                    return
+                index += 1
+            del index
+            self.floor.game.player.setPos(tpos, True)
+    def getRealignedPlayerRect(self):
+        c = list(self.floor.game.player.moveRect)
+        c[0] += c[2] / 2
+        c[1] += c[3] / 2
+        return pygame.Rect(c)
+    def update(self):
+        """Update the room"""
+        # Update the objects
+        self.image.blit(
+            self.bgImage,
+            self.bgImage.get_rect()
+        )
+        prect = self.getRealignedPlayerRect()
+        for obj in self.objects:
+            if isinstance(obj, (objs.Exit, objs.Entrance)):
+                pygame.draw.rect(
+                    self.image,
+                    (255, 255, 255),
+                    obj.rect
+                )
+                # Check if the player is on the exit
+                ppos = prect
+                pygame.draw.circle(
+                    self.image,
+                    (0, 0, 255),
+                    (ppos.x, ppos.y),
+                    5
+                )
+                #sr = self.image.get_rect()
+                #for x in range(sr.width):
+                #    for y in range(sr.height):
+                #        if obj.rect.collidepoint(x, y):
+                #            self.image.set_at((x, y), (0, 0, 255))
+                if obj.rect.collidepoint(ppos[0], ppos[1]):
+                    if "target" in obj.objT.properties.keys():
+                        t = obj.objT.properties["target"]
+                    else:
+                        t = None
+                    self.exit(t)
+    def enter(self, target):
+        """Enter the room from an entrance
+        
+        If target is not None, the player will move to the specified target id
+        """
+        self.target = target
+        if not self.target:
+            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-entrance1"
+        self.load()
+    def exit(self, target):
+        """Exit the romm from an exit
+        
+        If target is not None, the player will move to the specified target id
+        """
+        if not target:
+            print("No target specified (is this intentional?)")
+            return
+        self.objects = []
+        self.floor.changeRoom(target)
+
+class Level:
+    def __init__(self, mapDir, **kwargs):
+        self.mapDir = mapDir
         self.sprites = pygame.sprite.Group()
         # A way to track which sprite the player should go to when the room loads
         self.startSprite = None
@@ -101,11 +271,11 @@ class Room:
             print("There is no starting object")
             self.game.player.setPos((self.width/2, self.height/2))
 
-    def loadTiled(self, start="Entrance"):
-        """Load data from the tiled file"""
-        self.tiledData = pytmx.load_pygame(self.filePath, pixelAlpha = True)
-        self.width = self.tiledData.width * self.tiledData.tilewidth * self.scale
-        self.height = self.tiledData.height * self.tiledData.tileheight * self.scale
+    def loadTiled(self, start="entrance"):  # Map needs to be specified
+        self.enemyCnt = 0
+        self.tmxdata = pytmx.load_pygame(self.mapDir, pixelalpha=True)
+        self.width = self.tmxdata.width * self.tmxdata.tilewidth * self.scale
+        self.height = self.tmxdata.height * self.tmxdata.tileheight * self.scale
         self.levelSize = (self.width, self.height)
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.image = pygame.Surface(self.levelSize)

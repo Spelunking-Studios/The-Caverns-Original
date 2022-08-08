@@ -528,19 +528,19 @@
             }
         },
         "room1-floor1.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 4,
+            "scale": 0.33,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1055,
-                "y": 756
+                "x": 1025.7575757575755,
+                "y": 769.6969696969695
             }
         },
         "room2-floor1.tmx": {
-            "scale": 0.33,
+            "scale": 0.5,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1125.7575757575755,
-                "y": 736.3636363636363
+                "x": 1025,
+                "y": 712
             }
         },
         "swordcon-basic.tsx": {
