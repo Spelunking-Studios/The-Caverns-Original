@@ -26,9 +26,9 @@ class GameMap:
             
         self.floor.enterRoom(room, startObj)
     
-    # def update(self):
-    #     """Update the map"""
-    #     self.floor.update()
+    def update(self):
+        """Update the map"""
+        self.floor.update()
 
 class Floor:
     """Represents a floor"""
@@ -62,7 +62,7 @@ class Floor:
             self.rooms.append(Room(
                 self,
                 i,
-                asset(f"Tiled/room{i}-floor{self.floorNum}.tmx")
+                asset(f"Tiled/Floor{self.floorNum}/room{i}.tmx")
             ))
         self.room = self.rooms[0]
         

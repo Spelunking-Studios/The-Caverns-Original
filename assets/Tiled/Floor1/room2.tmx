@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="90">
  <imagelayer id="2" name="Image Layer">
-  <image source="level1/room2.jpeg" width="2048" height="1536"/>
+  <image source="room2.jpeg" width="2048" height="1536"/>
  </imagelayer>
  <objectgroup id="3" name="Walls">
   <object id="1" type="Wall" x="824" y="40" width="152" height="408"/>

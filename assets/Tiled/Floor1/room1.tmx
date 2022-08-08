@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="23">
- <tileset firstgid="1" source="Project0-tileset1.tsx"/>
  <imagelayer id="2" name="Image Layer" locked="1">
-  <image source="level1/room1.jpeg" width="2048" height="1536"/>
+  <image source="room1.jpeg" width="2048" height="1536"/>
  </imagelayer>
- <objectgroup id="5" name="Lights"/>
  <objectgroup id="3" name="Walls">
   <object id="1" type="Wall" x="456" y="136" width="504" height="64"/>
   <object id="4" type="Wall" x="480" y="1168" width="176" height="80"/>

@@ -3,8 +3,9 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "room2-floor1.tmx",
+    "activeFile": "",
     "expandedProjectPaths": [
+        "Floor1"
     ],
     "exportAsImage.drawTileGrid": false,
     "exportAsImage.includeBackgroundColor": false,
@@ -12,6 +13,22 @@
     "exportAsImage.visibleLayersOnly": true,
     "file.lastUsedOpenFilter": "All Files (*)",
     "fileStates": {
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1025.6205013017511,
+                "y": 769.4767471540151
+            }
+        },
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1025.6205013017511,
+                "y": 769.4767471540151
+            }
+        },
         "C:/Program Files (x86)/Tiled/examples/perspective_walls.tmx": {
             "scale": 1,
             "selectedLayer": 0,
@@ -491,6 +508,22 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Floor1/room1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": -1,
+            "viewCenter": {
+                "x": 1025,
+                "y": 764
+            }
+        },
+        "Floor1/room2.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1027.7114707233652,
+                "y": 771.5677165756292
+            }
+        },
         "Project0-tileset1.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 3
@@ -528,19 +561,19 @@
             }
         },
         "room1-floor1.tmx": {
-            "scale": 0.33,
-            "selectedLayer": 3,
+            "scale": 0.5,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1025.7575757575755,
-                "y": 769.6969696969695
+                "x": 1055,
+                "y": 756
             }
         },
         "room2-floor1.tmx": {
-            "scale": 0.5,
-            "selectedLayer": 1,
+            "scale": 0.33,
+            "selectedLayer": 0,
             "viewCenter": {
-                "x": 1025,
-                "y": 712
+                "x": 1125.7575757575755,
+                "y": 736.3636363636363
             }
         },
         "swordcon-basic.tsx": {
@@ -558,24 +591,22 @@
     "map.tileWidth": 32,
     "map.width": 30,
     "openFiles": [
-        "room1-floor1.tmx",
-        "room2-floor1.tmx"
     ],
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "Floor1/room2.tmx",
+        "Floor1/room1.tmx",
         "room1-floor1.tmx",
         "room2-floor1.tmx",
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx",
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx",
         "cave3.tmx",
         "cave2.tmx",
         "cave1.tmx",
         "Project0-tileset1.tsx",
         "level1/level1.tmx",
-        "C:/Users/LukeG/Downloads/invisboi.tsx",
-        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level1/level1.tmx",
-        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/level4.tmx",
-        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level4/level4.tmx",
-        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/arkanos.tsx"
+        "C:/Users/LukeG/Downloads/invisboi.tsx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",
