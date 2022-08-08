@@ -71,6 +71,17 @@ class Player(pygame.sprite.Sprite):
         self.weaponCollisions()
         if joystickEnabled:
             self.cursor.update()
+        pygame.draw.lines(
+            self.image,
+            (0, 255, 0),
+            True,
+            [
+                (self.rect.x, self.rect.y),
+                (self.rect.x + self.rect.width, self.rect.y),
+                (self.rect.x + self.rect.width, self.rect.y + self.rect.height),
+                (self.rect.x, self.rect.y + self.rect.height)
+            ]
+        )
 
     def checkActions(self):
         now = pygame.time.get_ticks()

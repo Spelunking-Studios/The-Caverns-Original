@@ -164,7 +164,7 @@ class Room:
         if twayEntrance:
             tpos = (twayEntrance.rect.x, twayEntrance.rect.y)
             # Check to make sure the player doesn't land on the entrance/exit
-            prect = self.floor.map.game.player.rect
+            prect = self.getRealignedPlayerRect()
             center = [
                 twayEntrance.rect.x + (twayEntrance.rect.width >> 2),
                 twayEntrance.rect.y + (twayEntrance.rect.height >> 2)
@@ -217,10 +217,20 @@ class Room:
                     return
                 index += 1
             del index
-            self.floor.game.player.setPos(tpos)
+            self.floor.game.player.setPos(tpos, True)
+    def getRealignedPlayerRect(self):
+        c = list(self.floor.game.player.moveRect)
+        c[0] += c[2] / 2
+        c[1] += c[3] / 2
+        return pygame.Rect(c)
     def update(self):
         """Update the room"""
         # Update the objects
+        self.image.blit(
+            self.bgImage,
+            self.bgImage.get_rect()
+        )
+        prect = self.getRealignedPlayerRect()
         for obj in self.objects:
             if isinstance(obj, (objs.Exit, objs.Entrance)):
                 pygame.draw.rect(
@@ -229,7 +239,18 @@ class Room:
                     obj.rect
                 )
                 # Check if the player is on the exit
-                ppos = self.floor.map.game.player.rect
+                ppos = prect
+                pygame.draw.circle(
+                    self.image,
+                    (0, 0, 255),
+                    (ppos.x, ppos.y),
+                    5
+                )
+                #sr = self.image.get_rect()
+                #for x in range(sr.width):
+                #    for y in range(sr.height):
+                #        if obj.rect.collidepoint(x, y):
+                #            self.image.set_at((x, y), (0, 0, 255))
                 if obj.rect.collidepoint(ppos[0], ppos[1]):
                     if "target" in obj.objT.properties.keys():
                         t = obj.objT.properties["target"]
@@ -243,7 +264,7 @@ class Room:
         """
         self.target = target
         if not self.target:
-            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-entrance1"
+            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-exit1"
         print(self.target)
         self.load()
     def exit(self, target):
@@ -251,6 +272,8 @@ class Room:
         
         If target is not None, the player will move to the specified target id
         """
+        if not target:
+            return
         self.objects = []
         self.floor.changeRoom(target)
 
