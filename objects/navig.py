@@ -6,13 +6,22 @@ class NavigEnt(pygame.sprite.Sprite):
         self.room = room
         self.objT = objT
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
-        # Rotation
-        if self.objT.rotation != 0:
+        self.normalRect = self.rect.copy()
+        self.rot = self.objT.rotation
+        self.updateRot()
+        print(self.rect, self.normalRect)
+            
+    def updateRot(self):
+        if self.rot != 0:
             print(self.objT.rotation)
-            angle = math.radians(-self.objT.rotation)
-            print(math.degrees(angle))
-            #cx = self.objT.centerX
-            #cy = self.objT.centerY
+            angle = -self.objT.rotation
+            # Make a image and rotate that, and get the rect
+            # Thnks pygame for doing the math for me ;)
+            rrsurf = pygame.Surface(self.normalRect[2:])
+            pygame.transform.rotate(rrsurf, angle)
+            self.rect = rrsurf.get_rect()
+            self.rect.x = self.normalRect[0]
+            self.rect.y = self.normalRect[1]
 
 class Entrance(NavigEnt):
     def __init__(self, room, objT):
