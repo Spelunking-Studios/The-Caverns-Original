@@ -73,7 +73,6 @@ class Floor:
         # Thanks for regex searching code
         # https://stackoverflow.com/a/15340694/15566643 - UltraInstinct
         if not isinstance(target, str):
-            print(type(target), target)
             return
         roomNumber = int(re.search(
             "^[0-9]",
@@ -100,9 +99,7 @@ class Room:
             os.path.basename(self.roomFilePath)
         )[0]
         self.image = pygame.Surface((self.width, self.height))
-        self.image.fill((0, 255, 0))
         self.bgImage = pygame.Surface((self.width, self.height))
-        self.bgImage.fill((0, 255, 0))
         self.target = None
 
         for k, v in kwargs.items():
@@ -133,33 +130,6 @@ class Room:
             self.objects.append(obj)
             if obj.objT.name == self.target and self.target:
                 twayEntrance = obj
-        # for tobject in self.tiledData.objects:
-        #     
-        #     print(tobject.type)
-        #     isEntrance = re.search("^Entrance", tobject.type)
-        #     isExit = re.search("^Exit", tobject.type)
-        #     if isEntrance:
-        #         entrances.append({
-        #             "o": tobject,
-        #             "num": int(re.split("^Entrance-", tobject.type)[1:][0])
-        #         })
-        #     elif isExit:
-        #         exits.append({
-        #             "o": tobject,
-        #             "num": int(re.split("^Exit-", tobject.type)[1:][0])
-        #         })
-        # self.exits = exits
-        # self.entrances = entrances
-        # print(self.exits)
-        # for entrance in entrances:
-        #     if entrance["num"] == self.entranceNum:
-        #         if not "properties" in vars(entrance["o"]).keys():
-        #             entrance["o"].properties = {
-        #                 "entranceNumber":  entrance["num"]
-        #             }
-        #         else:
-        #             entrance["o"].properties["entranceNumber"] = entrance["num"]
-        #         twayEntrance = entrance["o"]
         # Set the player's position to the entrance
         if twayEntrance:
             tpos = (twayEntrance.rect.x, twayEntrance.rect.y)
@@ -206,10 +176,6 @@ class Room:
                             break
                 index += 1
             del index
-            print("rightIsOpen", opens[0])
-            print("leftIsOpen", opens[1])
-            print("topIsOpen", opens[2])
-            print("bottomIsOpen", opens[3])
             index = 0
             for open in opens:
                 if open:
@@ -264,8 +230,7 @@ class Room:
         """
         self.target = target
         if not self.target:
-            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-exit1"
-        print(self.target)
+            self.target = f"floor{self.floor.floorNum}-room{self.roomNum}-entrance1"
         self.load()
     def exit(self, target):
         """Exit the romm from an exit
@@ -273,6 +238,7 @@ class Room:
         If target is not None, the player will move to the specified target id
         """
         if not target:
+            print("No target specified (is this intentional?)")
             return
         self.objects = []
         self.floor.changeRoom(target)
@@ -307,7 +273,6 @@ class Level:
     def loadTiled(self, start="entrance"):  # Map needs to be specified
         self.enemyCnt = 0
         self.tmxdata = pytmx.load_pygame(self.mapDir, pixelalpha=True)
-        print(self.tmxdata.layers)
         self.width = self.tmxdata.width * self.tmxdata.tilewidth * self.scale
         self.height = self.tmxdata.height * self.tmxdata.tileheight * self.scale
         self.levelSize = (self.width, self.height)
