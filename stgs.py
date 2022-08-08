@@ -14,6 +14,7 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
+DEBUG = False
 
 #### Establishes file paths ####
 try:
@@ -51,28 +52,28 @@ fxVolume = 1
 
 #### Returns the asset's path ####
 def asset(assetName):
-    '''
-    Returns asset path given asset name
-    '''
+    '''Returns asset path given asset name'''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, assetName)
 
 def sAsset(assetName):
-    '''
-    Returns sound path given sound name
-    '''
+    '''Returns sound path given sound name'''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, 'sounds', assetName)
 
 def fAsset(assetName):
-    '''
-    Returns font path given font name
-    '''
+    '''Returns font path given font name'''
     global ASSETSPATH
 
-    return os.path.join(PATH, "assets", 'fonts', assetName)
+    return os.path.join(ASSETSPATH, 'fonts', assetName)
+
+def tAsset(assetName):
+    '''Returns Tiled file path given font name'''
+    global ASSETSPATH
+
+    return os.path.join(ASSETSPATH, 'Tiled', assetName)
 
 # Custom Generated fonts
 fgenedfs = {}
@@ -88,7 +89,7 @@ def fgen(fn, s):
 winWidth, winHeight = 1280, 720
 winFlags = 0#pygame.HWSURFACE
 
-iconPath = asset('logo.png')
+iconPath = asset('logo.jpeg')
 
 #### Anti-Aliasing on text ####
 aalias = True
@@ -196,8 +197,6 @@ if __name__ != '__main__':
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
     }
 
-    
-DEBUG = False
 def dist(vec1, vec2):
     '''Distance formula between two pygame Vectors'''
     dist1 = (vec1.x-vec2.x)**2

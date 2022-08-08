@@ -14,24 +14,20 @@ class Door(pygame.sprite.Sprite):
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
         self.game = game
-        self.targetLevel = 'cave1'
-        self.targetId = "entrance"
-        #self.game.level.door = self
-        #self.image = pygame.Surface((objT.width, objT.height))
+        self.targetRoom = 'room1-floor1'
+        self.targetObj = "entrance"
+
         for k, v in kwargs.items():
             self.__dict__[k] = v
         for k, v in objT.properties.items():
             self.__dict__[k] = v
-
-        #self.parts = fx.particles(self.game, pygame.Rect(self.rect.x, self.rect.y, 64, 12), tickSpeed=2, size = 14)
-        #self.parts.setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
     
     def update(self):
         if self.rect.colliderect(self.game.player.moveRect):
             self.game.pause = True
             def func():
                 self.game.unPause()
-                self.game.map.switchLevel(self.targetLevel, self.targetId)
+                self.game.map.switchRoom(self.targetRoom, self.targetObj)
             fx.FadeOut(self.game, onEnd=func)
 
 class Entrance(pygame.sprite.Sprite):
@@ -41,14 +37,10 @@ class Entrance(pygame.sprite.Sprite):
         self.groups = game.sprites, game.layer1
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
-        #game.level.entrance = self
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
-
-        #self.image = pygame.Surface((self.rect.width, self.rect.height))
-        #self.image.fill(self.color)
 
 def Entrance1(game, objT):
     return Entrance(game, objT)

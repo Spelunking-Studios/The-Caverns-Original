@@ -1,8 +1,11 @@
 import pygame
 from stgs import *
 
-pygame.mixer.init()
-pygame.mixer.pre_init(44100, -16, 2, 2048)
+try:
+    pygame.mixer.init()
+    pygame.mixer.pre_init(44100, -16, 2, 2048)
+except pygame.error:
+    pass
 
 ## Provide name: file and volume offset (will not exceed one or drop below zero)
 fx = {

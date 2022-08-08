@@ -136,7 +136,6 @@ class Game:
     def update(self): 
         self.getFps()
         self.getPause()
-        self.map.update()
         if self.pause:
             self.pSprites.update()
         else:
