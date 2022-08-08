@@ -188,7 +188,11 @@ class Player(pygame.sprite.Sprite):
         for obj in self.game.groups.colliders:
             if isinstance(obj, Wall):
                 if self.moveRect.colliderect(obj.rect):
-                    returnVal = obj.rect  
+                    returnVal = obj.rect 
+        for obj in self.game.map.floor.room.objects:
+            if isinstance(obj, Wall):
+                if self.moveRect.colliderect(obj.rect):
+                    returnVal = obj.rect
             # else:
             #     if pygame.sprite.collide_circle(self, obj):
             #         return obj.getCollider()
