@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "room1-floor1.tmx",
+    "activeFile": "room2-floor1.tmx",
     "expandedProjectPaths": [
     ],
     "exportAsImage.drawTileGrid": false,
@@ -531,16 +531,16 @@
             "scale": 2,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1583.25,
-                "y": 256.5
+                "x": 1640.75,
+                "y": 167.5
             }
         },
         "room2-floor1.tmx": {
-            "scale": 0.33,
+            "scale": 0.75,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1022.7272727272727,
-                "y": 768.1818181818182
+                "x": 756.6666666666666,
+                "y": 665.3333333333333
             }
         },
         "swordcon-basic.tsx": {
@@ -564,8 +564,8 @@
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "room2-floor1.tmx",
         "room1-floor1.tmx",
+        "room2-floor1.tmx",
         "cave3.tmx",
         "cave2.tmx",
         "cave1.tmx",

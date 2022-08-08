@@ -72,6 +72,9 @@ class Floor:
         # Get the room number from the target
         # Thanks for regex searching code
         # https://stackoverflow.com/a/15340694/15566643 - UltraInstinct
+        if not isinstance(target, str):
+            print(type(target), target)
+            return
         roomNumber = int(re.search(
             "^[0-9]",
             re.split("^floor[0-9]-room", target)[1]
@@ -123,10 +126,6 @@ class Room:
         twayEntrance = None # The entrance the player is exiting
         # Go through every object in the map
         for tobject in self.tiledData.objects:
-            # Scale the object
-            #tobject.x, tobject.y = tobject.x * self.scale, tobject.y * self.scale
-            #tobject.width, tobject.height = tobject.width * self.scale, tobject.height * self.scale
-            print(tobject.type, tobject.name)
             entrances = [] # List of entrances
             exits = [] # List of exits
             objc = objs.__dict__[tobject.type]
@@ -134,7 +133,6 @@ class Room:
             self.objects.append(obj)
             if obj.objT.name == self.target and self.target:
                 twayEntrance = obj
-        print(self.objects)
         # for tobject in self.tiledData.objects:
         #     
         #     print(tobject.type)
@@ -164,21 +162,75 @@ class Room:
         #         twayEntrance = entrance["o"]
         # Set the player's position to the entrance
         if twayEntrance:
-            print(twayEntrance)
-            self.floor.game.player.setPos((twayEntrance.rect.x, twayEntrance.rect.y))
+            tpos = (twayEntrance.rect.x, twayEntrance.rect.y)
+            # Check to make sure the player doesn't land on the entrance/exit
+            prect = self.floor.map.game.player.rect
+            center = [
+                twayEntrance.rect.x + (twayEntrance.rect.width >> 2),
+                twayEntrance.rect.y + (twayEntrance.rect.height >> 2)
+            ]
+            poses = [
+                ( # Right
+                    center[0] + twayEntrance.rect.width + prect.width,
+                    center[1]
+                ),
+                ( # Left
+                    center[0] - twayEntrance.rect.width - prect.width,
+                    center[1]
+                ),
+                ( # Top
+                    center[0],
+                    center[1] - twayEntrance.rect.height - prect.height
+                ),
+                ( # Bottom
+                    center[0],
+                    center[1] + twayEntrance.rect.height + prect.height
+                )
+            ]
+            opens = [
+                True, # Right
+                True, # Left
+                True, # Top
+                True # Bottom
+            ]
+            index = 0
+            for pos in poses:
+                if pos[0] < 0 or pos[1] < 0:
+                    opens[index] = False
+                    continue
+                self.floor.game.player.setPos(pos)
+                for o in self.objects:
+                    if not isinstance(o, (objs.Exit, objs.Entrance)):
+                        if o.rect.colliderect(self.floor.game.player.rect):
+                            opens[index] = False
+                            break
+                index += 1
+            del index
+            print("rightIsOpen", opens[0])
+            print("leftIsOpen", opens[1])
+            print("topIsOpen", opens[2])
+            print("bottomIsOpen", opens[3])
+            index = 0
+            for open in opens:
+                if open:
+                    self.floor.game.player.setPos(poses[index])
+                    return
+                index += 1
+            del index
+            self.floor.game.player.setPos(tpos)
     def update(self):
         """Update the room"""
         # Update the objects
         for obj in self.objects:
-            if isinstance(obj, objs.Exit):
+            if isinstance(obj, (objs.Exit, objs.Entrance)):
+                pygame.draw.rect(
+                    self.image,
+                    (255, 255, 255),
+                    obj.rect
+                )
                 # Check if the player is on the exit
                 ppos = self.floor.map.game.player.rect
-                if (
-                    ppos.x >= obj.rect.x and
-                    ppos.x <= (obj.rect.x + obj.rect.width) and
-                    ppos.y >= obj.rect.y and
-                    ppos.y <= (obj.rect.y + obj.rect.height)
-                ):
+                if obj.rect.collidepoint(ppos[0], ppos[1]):
                     if "target" in obj.objT.properties.keys():
                         t = obj.objT.properties["target"]
                     else:
