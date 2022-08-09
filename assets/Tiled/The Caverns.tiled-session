@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "Floor1/room1.tmx",
     "expandedProjectPaths": [
         "Floor1"
     ],
@@ -508,12 +508,20 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Floor1/room0.tmx": {
+            "scale": 0.3742091049382716,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1278.696840043301,
+                "y": 836.4307438527758
+            }
+        },
         "Floor1/room1.tmx": {
             "scale": 0.5,
-            "selectedLayer": -1,
+            "selectedLayer": 2,
             "viewCenter": {
-                "x": 1025,
-                "y": 764
+                "x": 1033,
+                "y": 762
             }
         },
         "Floor1/room2.tmx": {
@@ -581,16 +589,22 @@
         }
     },
     "frame.defaultDuration": 201,
+    "last.worldFilePath": "/media/ben/405F-AFA0/Code/The-Caverns/assets/Tiled/Floor1",
+    "loadedWorlds": [
+        "/media/ben/405F-AFA0/Code/The-Caverns/assets/Tiled/Floor1/room0.tmx"
+    ],
     "map.fixedSize": true,
-    "map.height": 30,
+    "map.height": 32,
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": null,
     "map.orientation": 1,
     "map.renderOrder": 0,
     "map.tileHeight": 32,
     "map.tileWidth": 32,
-    "map.width": 30,
+    "map.width": 80,
     "openFiles": [
+        "Floor1/room1.tmx",
+        "Floor1/room2.tmx"
     ],
     "project": "The Caverns.tiled-project",
     "property.type": "string",

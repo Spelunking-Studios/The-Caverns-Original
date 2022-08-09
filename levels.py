@@ -56,14 +56,20 @@ class Floor:
         with open(self.mappingsFilePath, "r") as f:
             data = json.load(f)
             self.roomCount = data["numberOfRooms"]
+            try:
+                self.firstRoomIndex = data["firstRoomIndex"]
+            except KeyError:
+                self.firstRoomIndex = 1
 
     def initRooms(self):
-        for i in range(1, self.roomCount + 1): # Add 1 to offset python's indexing starting at 0
+        i = self.firstRoomIndex
+        while i < (self.roomCount + 1) and i < 30: # Cap it at 30 to prevent absurdly large numbers
             self.rooms.append(Room(
                 self,
                 i,
                 asset(f"Tiled/Floor{self.floorNum}/room{i}.tmx")
             ))
+            i += 1
         self.room = self.rooms[0]
         
     def clear(self):
@@ -82,7 +88,7 @@ class Floor:
             re.split("^floor[0-9]-room", target)[1]
         ).group(0))
         print(f"Changing room to {roomNumber}...")
-        self.enterRoom(roomNumber - 1, target)
+        self.enterRoom(roomNumber - self.firstRoomIndex, target)
 
 class Room:
     """Represents a single room"""
@@ -94,6 +100,7 @@ class Room:
         self.scale = 3
         self.entranceNum = -1
         self.objects = []
+        self.enemies = []
         self.width = winWidth * self.scale
         self.height = winHeight * self.scale
         self.rect = pygame.Rect((0, 0, self.width, self.height))
@@ -126,13 +133,17 @@ class Room:
         twayEntrance = None # The entrance the player is exiting
         # Go through every object in the map
         for tobject in self.tiledData.objects:
-            entrances = [] # List of entrances
-            exits = [] # List of exits
-            objc = objs.__dict__[tobject.type]
-            obj = objc(self, tobject)
-            self.objects.append(obj)
-            if obj.objT.name == self.target and self.target:
-                twayEntrance = obj
+            if tobject.type != "Enemy":
+                objc = objs.__dict__[tobject.type]
+                obj = objc(self, tobject)
+                self.objects.append(obj)
+                if obj.objT.name == self.target and self.target:
+                    twayEntrance = obj
+            else:
+                ec = enemies.__dict__[tobject.name]
+                e = ec(self, tobject)
+                self.enemies.append(e)
+        print(self.enemies)
         # Set the player's position to the entrance
         if twayEntrance:
             tpos = (twayEntrance.rect.x, twayEntrance.rect.y)
@@ -226,6 +237,13 @@ class Room:
                     else:
                         t = None
                     self.exit(t)
+        for enemy in self.enemies:
+            if isinstance(enemy, (enemies.Rat)):
+                pass
+            self.image.blit(
+                enemy.image,
+                enemy.rect
+            )
     def enter(self, target):
         """Enter the room from an entrance
         

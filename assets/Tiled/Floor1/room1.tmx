@@ -22,7 +22,11 @@
   <object id="20" type="Wall" x="1672" y="176" width="48" height="48"/>
  </objectgroup>
  <objectgroup id="4" name="Entrences/Exits">
-  <object id="3" name="floor1-room1-entrance1" type="Entrance" x="720" y="1200" width="80" height="32"/>
+  <object id="3" name="floor1-room1-entrance1" type="Entrance" x="720" y="1200" width="80" height="32">
+   <properties>
+    <property name="target" value="floor1-room0-exit1"/>
+   </properties>
+  </object>
   <object id="22" name="floor1-room1-exit1" type="Exit" x="1528" y="176" width="96" height="32">
    <properties>
     <property name="target" value="floor1-room2-entrance1"/>

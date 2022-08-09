@@ -1,3 +1,4 @@
 {
-    "numberOfRooms": 2
+    "numberOfRooms": 2,
+    "firstRoomIndex": 0
 }
