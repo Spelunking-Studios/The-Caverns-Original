@@ -51,11 +51,13 @@ musicVolume = 1
 fxVolume = 1
 
 #### Returns the asset's path ####
-def asset(assetName):
+def asset(*args):
     '''Returns asset path given asset name'''
     global ASSETSPATH
-
-    return os.path.join(ASSETSPATH, assetName)
+    r = ASSETSPATH
+    for arg in args:
+        r = os.path.join(r, arg)
+    return r
 
 def sAsset(assetName):
     '''Returns sound path given sound name'''

@@ -141,7 +141,7 @@ class Room:
                     twayEntrance = obj
             else:
                 ec = enemies.__dict__[tobject.name]
-                e = ec(self, tobject)
+                e = ec(self.floor.game, tobject)
                 self.enemies.append(e)
         print(self.enemies)
         # Set the player's position to the entrance

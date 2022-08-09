@@ -96,6 +96,21 @@ class PlayerAnimation:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
 
+class Animation:
+    """Basic animation"""
+    def __init__(self, sprite):
+        self.sprite = sprite
+        self.imageEffects = []
+        self.delay = 12
+        self.lastTick = pygame.time.get_ticks()
+    def fx(self, fx):
+        """Add an effect to the animation"""
+        self.imageEffects.append(fx)
+    def update(self):
+        if pygame.time.get_ticks() - self.lastTick >= self.delay:
+            for fx in self.imageEffects:
+                fx.update(self.sprite.image, self.sprite.origImage)
+
 class BasicAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     cache = {}
@@ -112,7 +127,7 @@ class BasicAnimation:
         if type(sprite) in self.cache:
             self.imgSheet = self.cache[type(sprite)]
         else:
-            print("caching")
+            print("caching imgSheet")
             for k, v in self.imgSheet.items():
                 self.imgSheet[k] = Spritesheet(v)
             self.cache[type(sprite)] = self.imgSheet
@@ -159,12 +174,16 @@ class HurtFx(pygame.sprite.Sprite):
         self.start = pygame.time.get_ticks()
         self.duration = duration
 
-    def update(self, image):
+    def update(self, image, restoreImage = None):
         time = pygame.time.get_ticks() - self.start
         if time < self.duration:
             darkness = min(255, max(0, round(255 * (time/self.duration))))
             image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
+            print(time)
         else:
+            # Restore image
+            if restoreImage:
+                image = restoreImage
             self.kill()
 
 
