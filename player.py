@@ -20,15 +20,15 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, game, image, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
-        self.hitCooldown = 500
+        self.hitCooldown = 200
         self.vel = Vector2(0, 0)
-        self.speed = 1*deltaConst
+        self.speed = 1 * deltaConst
         self.drag = 0.80
         self.damage = 10
         self.roomBound = True
         self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png'), 'wand':asset('player/playerHit1.png')}
         self.width, self.height = 42, 42
-        self.health = 50
+        self.health = 100
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)

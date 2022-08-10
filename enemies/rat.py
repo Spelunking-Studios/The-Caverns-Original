@@ -7,12 +7,13 @@ class Rat(Enemy):
     """A rat enemy"""
     def __init__(self, game, objT):
         super().__init__(game, objT)
-        self.health = 5
-        self.damage = 1
+        self.health = 20
+        self.damage = 5
         self.width = 48
         self.height = 48
         self.angle = 0
-        self.speed = 4
+        self.speed = 1 * deltaConst
+        self.attackDelay = 120
         self.vel = pygame.Vector2(0, 0)
         self.image = pygame.transform.scale(pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha(), (self.width, self.height))
         self.origImage = self.image.copy()
