@@ -7,11 +7,12 @@ class Rat(Enemy):
     """A rat enemy"""
     def __init__(self, game, objT):
         super().__init__(game, objT)
-        self.health = 20
+        self.health = 5
+        self.damage = 1
         self.width = 48
         self.height = 48
         self.angle = 0
-        self.lastAttack = 0
+        self.speed = 4
         self.vel = pygame.Vector2(0, 0)
         self.image = pygame.transform.scale(pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha(), (self.width, self.height))
         self.origImage = self.image.copy()
@@ -67,7 +68,16 @@ class Rat(Enemy):
         return False
     def move(self):
         """Move the rat"""
+        testVec = pygame.Vector2(self.pos)
+        testVec.x += self.vel.x * self.speed
+        if not self.collideCheck(testVec):
+            self.pos.x += self.vel.x * self.speed
+        testVec = pygame.Vector2(self.pos)
+        testVec.y += self.vel.y * self.speed
+        if not self.collideCheck(testVec):
+            self.pos.y += self.vel.y * self.speed
         self.setAngle()
+        self.rect.center = self.pos
     def update(self):
         super().update()
         # Move towards the player

@@ -14,10 +14,14 @@ class Enemy(pygame.sprite.Sprite):
         self.groups = game.sprites, game.groups.enemies, game.layer2
         self.health = 5
         self.damage = 5
-        self.points = 5
+        self.points = 1
+        self.speed = 1
         self.lID = objT.id
         self.game = game
+        self.pos = pygame.Vector2(objT.x, objT.y)
         self.rect = pygame.Rect(0, 0, 64, 64)
+        self.lastAttack = now()
+        self.attackDelay = 60
         self.w, h = 64, 64
         self.lastHit = 0 
         for k, v in kwargs.items():
