@@ -106,7 +106,8 @@ class Game:
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
-        self.statsInfo = hud.StatHud(self)
+        # self.statsInfo = hud.StatHud(self)
+        # self.slots = hud.SlotHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
         
@@ -140,7 +141,6 @@ class Game:
             self.pSprites.update()
         else:
             self.sprites.update()
-            self.map.update()
             self.checkHits()
         self.overlayer.update()
         self.cam.update()
@@ -342,17 +342,13 @@ class Game:
     def gameOver(self):
         menus.gameOver(self)
 
-    def refresh(self, bg = False, isSurface = False):
+    def refresh(self, bg = False, isSurface=False):
         """Updates the background
 
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
         if bg:
-            if not isSurface:
-                i = pygame.image.load(bg)
-            else:
-                i = bg
-            self.win.blit(pygame.transform.scale(i, (winWidth, winHeight)).convert(), (0, 0))
+            self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
         else:
             self.win.fill((0, 0, 0))
 
