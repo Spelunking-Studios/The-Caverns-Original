@@ -107,7 +107,7 @@ class Game:
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         # self.statsInfo = hud.StatHud(self)
-        # self.slots = hud.SlotHud(self)
+        self.slots = hud.SlotHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
         
@@ -342,7 +342,7 @@ class Game:
     def gameOver(self):
         menus.gameOver(self)
 
-    def refresh(self, bg = False, isSurface=False):
+    def refresh(self, bg = False):
         """Updates the background
 
         If bg is True, the provided image is used, otherwise the solid color black is used
