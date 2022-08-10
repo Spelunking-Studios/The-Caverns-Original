@@ -90,11 +90,12 @@ class Button(pygame.sprite.Sprite):
     def reset(self):
         self.clicked = False
 
-class Text:
+class Text(pygame.sprite.Sprite):
     '''
     Basic Text object
     '''
     def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), ):
+        super().__init__()
         if isinstance(fNum, str):
             self.font = fonts[fNum]
         else:
@@ -103,6 +104,7 @@ class Text:
         self.color = color
         self.bgColor = bgColor
         self.pos = pygame.Vector2(pos)
+        self.aalias = aalias
         self.setText(text, multiline)
     def setText(self, text, multiline = False):
         if multiline:
@@ -122,7 +124,7 @@ class Text:
                             word = wordsplit[1]
                         else:
                             word_color = self.color
-                        word_surface = self.font.render(word, aalias, word_color)
+                        word_surface = self.font.render(word, self.aalias, word_color)
                         word_width, word_height = word_surface.get_size()
                         if x + word_width >= max_width:
                             x = 0  # Reset the x.

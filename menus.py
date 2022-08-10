@@ -4,48 +4,54 @@ from menu import *
 from stgs import *
 import colors
 
-def compendiumMenu(game):
-    x, y = 100, 100
-    stepX, stepY = 180, 120
-    returnButton = Button(game, (winWidth-240, 70), text="Return", center = True)
-    #MenuItem(game, (x, y), asset(''), desc='', text=''),
-    itemCompendium = [
-        MenuItem(game, (x, y), asset('player/sw1.png'), zoomMin = 1.5, zoomMax = 2.8, desc='You take on the role of a brave sword who dares to save his kingdom from terrorizing monsters. The sword represents your being and your weapon joined together as one. Use yourself wisely', text='Sword'),
-        MenuItem(game, (x+stepX, y), asset('objects/redPole.png'), zoomMax = 1.5, desc="This game uses the mouse to direct yourgame (The sword if you haven't gotten that) and upon a click you will be launched in the direction of its pointer. To advance to each level, the player must reach the stone pole bearing the red magic AFTER DEFEATING ALL THE MONSTERS! Press C to toggle the camera between the end post view and the player view. Also press R to restart an attempt on a level and P to pause. Good luck on your journey!", text='Know ur 101s'),
-        MenuItem(game, (x+stepX*2, y), asset('objects/greenPole.png'), zoomMax = 1.5, desc='This rebounder pole shows up with a green magical aura. This represents your only means of changing direction in this game. Make sure you you aim yourself well ;)', text='Rebounder pole'),
-    ]
-    comps = pygame.sprite.Group(returnButton,) #itemCompendium)
-    descText = ''
-    while True:
-        descText = ''
-        pygame.time.delay(50)
+class Menu:
+    def __init__(self, game):
+        self.game = game
+        self.comps = pygame.sprite.Group()
+        self.layer1 = pygame.sprite.Group()
+        self.running = True
         
-        game.runEvents()
-        game.refresh()
+        self.bg = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
+        self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
 
-        comps.update()
-        for comp in comps:
-            game.win.blit(comp.image, comp.rect)
+    def run(self):
+        while self.running:
+            self.game.clock.tick(FPS)
+            self.game.runEvents()
+            self.game.refresh(self.bg)
+            self.comps.update()
+            self.update()
+            self.render()
+            pygame.display.update()
+    
+    def render(self):
+        for s in self.layer1:
+            self.game.win.blit(s.image, s.rect)
+    
+    def update(self):
+        pass
 
-        # for i in itemCompendium:
-        #     if i.hover:
-        #         descText = i.desc
-
-        if returnButton.clicked:
-            break
+class CompendiumMenu(Menu):
+    def __init__(self, game):
+        super().__init__(game)
+        
+        #MenuItem(game, (x, y), asset(''), desc='', text=''),
+        self.returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, groups = [self.comps, self.layer1])
+        self.comps.add([Text('description1', "descText", colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)])
+        self.comps.add([Text('main-title1', TITLE,  colors.yellow, game.antialiasing, (30,winHeight - 70), False)])
+        self.layer1.add([c for c in self.comps if c not in self.layer1])
+        self.run()
+    
+    def update(self):
+        if self.returnButton.clicked:
+            self.running = False
 
         if checkKey(keySet['start']):
-            game.map.loadLevel()
-            break
-        
-        text1 = fonts['main-title1'].render(TITLE, game.antialiasing, colors.yellow)
-        text2 = Text('description1', descText, colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)
-        game.win.blit(text1, (30,winHeight - 70))
-        game.win.blit(text2.image, text2.pos)
+            self.game.map.loadLevel()
+            self.running = False
 
-        keys = pygame.key.get_pressed()
         
-        pygame.display.update()
+        
 
 def settingsMenu(game):
     returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, colors=(colors.yellow, colors.white))
@@ -163,7 +169,7 @@ def main(game, loadingScreenOn = False):
         #    (0, 0, 0, tv),
         #    (0, 0, winWidth, winHeight)
         #)
-        game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        game.refresh(loadingScreenBGSurface)
         
         comps.update()
         creditsButton.update()
@@ -186,7 +192,7 @@ def main(game, loadingScreenOn = False):
                 settingsButton.reset()
             
             if instructionsButton.clicked:
-                compendiumMenu(game)
+                CompendiumMenu(game)
                 instructionsButton.reset()
             
             if creditsButton.clicked:
@@ -238,7 +244,7 @@ def creditsMenu(game):
     while True:
         game.clock.tick(FPS)
         game.runEvents()
-        game.refresh(bg = loadingScreenBGSurface, isSurface = True)
+        game.refresh(loadingScreenBGSurface)
         returnButton.update()
         if returnButton.clicked:
             break

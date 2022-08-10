@@ -528,8 +528,8 @@
             "scale": 0.47824707031249997,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 1027.7114707233652,
-                "y": 771.5677165756292
+                "x": 1025.6205013017511,
+                "y": 769.4767471540151
             }
         },
         "Project0-tileset1.tsx": {
@@ -609,8 +609,8 @@
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Floor1/room2.tmx",
         "Floor1/room1.tmx",
+        "Floor1/room2.tmx",
         "room1-floor1.tmx",
         "room2-floor1.tmx",
         "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx",

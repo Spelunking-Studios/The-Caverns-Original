@@ -72,17 +72,6 @@ class Player(pygame.sprite.Sprite):
         self.weaponCollisions()
         if joystickEnabled:
             self.cursor.update()
-        pygame.draw.lines(
-            self.image,
-            (0, 255, 0),
-            True,
-            [
-                (self.rect.x, self.rect.y),
-                (self.rect.x + self.rect.width, self.rect.y),
-                (self.rect.x + self.rect.width, self.rect.y + self.rect.height),
-                (self.rect.x, self.rect.y + self.rect.height)
-            ]
-        )
 
     def checkActions(self):
         now = pygame.time.get_ticks()
@@ -189,11 +178,7 @@ class Player(pygame.sprite.Sprite):
         for obj in self.game.groups.colliders:
             if isinstance(obj, Wall):
                 if self.moveRect.colliderect(obj.rect):
-                    returnVal = obj.rect 
-        for obj in self.game.map.floor.room.objects:
-            if isinstance(obj, Wall):
-                if self.moveRect.colliderect(obj.rect):
-                    returnVal = obj.rect
+                    returnVal = obj.rect  
             # else:
             #     if pygame.sprite.collide_circle(self, obj):
             #         return obj.getCollider()
@@ -211,7 +196,6 @@ class Player(pygame.sprite.Sprite):
         else:
             self.moveRect.topleft = tup
         self.rect = self.moveRect.copy()
-        print(self.rect)
     
     def getAttackMask(self):
         img2 = self.image.copy()
