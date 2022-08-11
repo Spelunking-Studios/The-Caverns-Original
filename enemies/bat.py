@@ -32,7 +32,7 @@ class Bat(Enemy):
         self.image = self.wingImages[self.wingState]
         self.origImage = self.image.copy()
         # Rotate the image
-        self.setAngle()
+        self.setAngle() 
     def update(self):
         super().update()
         # Move towards the player
@@ -46,7 +46,7 @@ class Bat(Enemy):
     def setAngle(self):
         mPos = pygame.Vector2(self.game.player.rect.center)
         pPos = self.rect
-        mPos.x -= pPos.centerx 
+        mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
         if mPos.length() > 500:
             self.vel = pygame.Vector2(0, 0)
@@ -66,7 +66,7 @@ class Bat(Enemy):
             else:
                 self.vel = pygame.Vector2(0, 0)
                 if now() - self.lastAttack >= self.attackDelay:
-                    self.game.player.takeDamage(5)
+                    self.game.player.takeDamage(self.damage)
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
     
