@@ -17,13 +17,18 @@ class Enemy(pygame.sprite.Sprite):
         self.points = 1
         self.speed = 1
         self.lID = objT.id
+        self.vel = pygame.Vector2(0, 0)
+        self.angle = 0
         self.game = game
         self.pos = pygame.Vector2(objT.x, objT.y)
-        self.rect = pygame.Rect(0, 0, 64, 64)
+        self.rect = pygame.Rect(objT.x, objT.x, 64, 64)
         self.lastAttack = now()
         self.attackDelay = 60
-        self.w, h = 64, 64
-        self.lastHit = 0 
+        self.width, self.height = 64, 64
+        self.lastHit = 0
+        self.image = pygame.Surface((self.width, self.height))
+        self.origImage = self.image.copy()
+        self.animations = Animation(self)
         for k, v in kwargs.items():
             self.__dict__[k] = v
         for k, v in objT.properties.items():
@@ -36,24 +41,50 @@ class Enemy(pygame.sprite.Sprite):
             self.kill()
         self.move()
 
-    ## Vertical or horizontal movement
     def move(self):
-        pass
-        # testVec = pygame.Vector2((self.pos.x, self.pos.y))
-        # if self.collideCheck(testVec + (self.dir*self.vel)):
-        #     if not self.dir.x == 0:
-        #         self.dir = pygame.Vector2((-self.dir.x, 0))
-        #     elif not self.dir.y == 0:
-        #         self.dir = pygame.Vector2((0, -self.dir.y))
-
-        # self.pos += self.dir *self.vel 
+        """Move the enemy"""
+        testVec = pygame.Vector2(self.pos)
+        testVec.x += self.vel.x * self.speed
+        if not self.collideCheck(testVec):
+            self.pos.x += self.vel.x * self.speed
+        testVec = pygame.Vector2(self.pos)
+        testVec.y += self.vel.y * self.speed
+        if not self.collideCheck(testVec):
+            self.pos.y += self.vel.y * self.speed
+        self.setAngle()
+        self.rect.center = self.pos
         
+    def setAngle(self):
+        mPos = pygame.Vector2(self.game.player.rect.center)
+        pPos = self.rect
+        mPos.x -= pPos.centerx 
+        mPos.y -= pPos.centery
+        if mPos.length() > 500:
+            self.vel = pygame.Vector2(0, 0)
+            self.animations.freeze = True
 
+        else:
+            self.animations.freeze = False
+            if mPos.length() > 20:
+                try:
+                    mPos.normalize_ip()
+                    self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
+                    self.vel = mPos
+                except ValueError:
+                    self.angle = 0
+                    self.vel = pygame.Vector2(0, 0)
+                self.angle -= 90
+            else:
+                self.vel = pygame.Vector2(0, 0)
+                if now() - self.lastAttack >= self.attackDelay:
+                    self.game.player.takeDamage(5)
+        self.image = pygame.transform.rotate(self.origImage, self.angle)
+        self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
     def collideCheck(self, vector):
-        testRect = pygame.Rect(0, 0, self.rect.width, self.rect.height)
+        testRect = pygame.Rect(0, 0, 32, 32)
         testRect.center = vector
         for obj in self.game.groups.colliders:
-            if testRect.colliderect(obj.rect):
+            if testRect.colliderect(obj.rect) and not obj == self:
                 return True
         
         return False
