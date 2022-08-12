@@ -39,7 +39,6 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         if self.health <= 0:
             self.kill()
-        self.move()
 
     def move(self):
         """Move the enemy"""
