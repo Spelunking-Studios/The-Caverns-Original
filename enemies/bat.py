@@ -108,7 +108,6 @@ class Bat(Enemy):
             # Re-roll movement skew
             self.movementSkew = random.randint(-10, 10)
             tAngle = (self.game.player.angle + 180) % 360
-            print(tAngle)
             vec = pygame.Vector2()
             vec.from_polar((10, tAngle))
             target = [
@@ -132,8 +131,6 @@ class Bat(Enemy):
         testVec.y += self.vel.y * self.speed
         if not self.collideCheck(testVec):
             self.pos.y += self.vel.y * self.speed
-        if not self.attacking:
-            print(self.attacking)
         self.setAngle()
         self.rect.center = self.pos
         if self.vecsAreEqual(self.pos, self.attack["endPos"]):
@@ -167,7 +164,6 @@ class Bat(Enemy):
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
         if mPos.length() < 20 and now() - self.lastAttack >= self.attackDelay:
-            print("Len:", mPos.length())
             self.game.player.takeDamage(self.damage)
             self.attackedPlayer = True
             self.attack["reachedPlayer"] = True
