@@ -39,7 +39,6 @@ class Enemy(pygame.sprite.Sprite):
     def update(self):
         if self.health <= 0:
             self.kill()
-        self.move()
 
     def move(self):
         """Move the enemy"""
@@ -77,7 +76,7 @@ class Enemy(pygame.sprite.Sprite):
             else:
                 self.vel = pygame.Vector2(0, 0)
                 if now() - self.lastAttack >= self.attackDelay:
-                    self.game.player.takeDamage(5)
+                    self.game.player.takeDamage(self.damage)
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
     def collideCheck(self, vector):

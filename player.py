@@ -93,7 +93,6 @@ class Player(pygame.sprite.Sprite):
                             dmg = self.stats.attack()
                             e.takeDamage(dmg[0])
                             self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
-                        #print(e.health)
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
