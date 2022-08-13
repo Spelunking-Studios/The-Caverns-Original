@@ -3,6 +3,7 @@ from .enemy import Enemy
 from stgs import *
 import animations
 import random
+from time import time
 
 
 # Note to devs:
@@ -33,7 +34,9 @@ class Bat(Enemy):
             "startPos": None,
             "playerPos": None,
             "endPos": None,
-            "reachedPlayer": False
+            "reachedPlayer": False,
+            "last": 0,
+            "delay": 30
         }
         # Wing animation
         self.wingChangeDelay = 60
@@ -62,7 +65,7 @@ class Bat(Enemy):
         # Move towards the player
         self.move()
         # Attack
-        if not self.attacking:
+        if not self.attacking and time() - self.attack["last"] > self.attack["delay"]:
             self.startAttack()
         self.attemptToDealDamage()
         #print(self.angle, self.attack, self.attacking)
@@ -75,6 +78,7 @@ class Bat(Enemy):
     def startAttack(self):
         """Creates all of the necesary values for the bat to begin its attack"""
         print("Starting bat attack")
+        self.attack["last"] = time()
         self.attack["startPos"] = pygame.Vector2(self.rect[:2])
         self.attack["playerPos"] = pygame.Vector2(self.game.player.rect[:2])
         self.pickEndPos(pickRandom = True)
@@ -98,6 +102,8 @@ class Bat(Enemy):
         return ev
     def move(self):
         """Move the bat"""
+        if not self.attacking:
+            return
         testVec = pygame.Vector2(self.pos)
         testVec.x += self.vel.x * self.speed
         if not self.collideCheck(testVec):
@@ -152,6 +158,7 @@ class Bat(Enemy):
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
         if mPos.length() < 20 and now() - self.lastAttack >= self.attackDelay:
+            self.lastAttack = now()
             self.game.player.takeDamage(self.damage)
             self.attack["reachedPlayer"] = True
             #self.pickEndPos(self.angle, pickRandom = True)
@@ -165,7 +172,8 @@ class Bat(Enemy):
                 #print("Facing end pos")
                 self.setAngleFacingTarget(pygame.Vector2(self.attack["endPos"]))
         else:
-            self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
+            pass
+            #self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
     def rotateImage(self):
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
