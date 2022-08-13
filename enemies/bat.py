@@ -3,19 +3,10 @@ from .enemy import Enemy
 from stgs import *
 import animations
 import random
-from time import time
+import time
 
-
-# Note to devs:
-# The bat's movement is based upon a list of movement points which represent
-# the various locations the bat wants to move to.
-# 
-# To actually reach these points, the bat will follow a curve leading to the 
-# different points. 
-# 
-# The curve uses a bezier curve to determine the points the bat will move to.
-# 
-# 
+def utime():
+    return int(time.time())
 
 
 class Bat(Enemy):
@@ -36,7 +27,7 @@ class Bat(Enemy):
             "endPos": None,
             "reachedPlayer": False,
             "last": 0,
-            "delay": 30
+            "delay": 5
         }
         # Wing animation
         self.wingChangeDelay = 60
@@ -65,7 +56,9 @@ class Bat(Enemy):
         # Move towards the player
         self.move()
         # Attack
-        if not self.attacking and time() - self.attack["last"] > self.attack["delay"]:
+        if (self.active and
+            not self.attacking and
+            utime() - self.attack["last"] > self.attack["delay"]):
             self.startAttack()
         self.attemptToDealDamage()
         #print(self.angle, self.attack, self.attacking)
@@ -78,11 +71,12 @@ class Bat(Enemy):
     def startAttack(self):
         """Creates all of the necesary values for the bat to begin its attack"""
         print("Starting bat attack")
-        self.attack["last"] = time()
-        self.attack["startPos"] = pygame.Vector2(self.rect[:2])
-        self.attack["playerPos"] = pygame.Vector2(self.game.player.rect[:2])
+        self.attack["last"] = utime()
+        self.attack["startPos"] = pygame.Vector2(self.rect.center)
+        self.attack["playerPos"] = pygame.Vector2(self.game.player.rect.center)
         self.pickEndPos(pickRandom = True)
         self.attacking = True
+        print(self.attack)
     def endAttack(self):
         """Resets all of the necessary values to effectivly end the attack"""
         self.attack["reachedPlayer"] = False
@@ -102,7 +96,7 @@ class Bat(Enemy):
         return ev
     def move(self):
         """Move the bat"""
-        if not self.attacking:
+        if not self.attacking and not self.active:
             return
         testVec = pygame.Vector2(self.pos)
         testVec.x += self.vel.x * self.speed
@@ -157,8 +151,8 @@ class Bat(Enemy):
         pPos = self.rect
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
-        if mPos.length() < 20 and now() - self.lastAttack >= self.attackDelay:
-            self.lastAttack = now()
+        if mPos.length() < 20 and utime() - self.lastAttack >= self.attackDelay:
+            self.lastAttack = utime()
             self.game.player.takeDamage(self.damage)
             self.attack["reachedPlayer"] = True
             #self.pickEndPos(self.angle, pickRandom = True)
