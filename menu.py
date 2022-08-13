@@ -149,7 +149,7 @@ class SettingSlider(pygame.sprite.Sprite):
         self.game = game
         self.rect = (0, 0, 200, 60)
         self.sliderRect = (0, 0, 20, 10)
-        self.bgColor = colors.black
+        self.bgColor = (0, 0, 0, 0)
         #          line (normal)           Rect
         self.colors = (colors.orangeRed, colors.yellow, (255, 255, 255))
         self.clicked = False
@@ -166,7 +166,7 @@ class SettingSlider(pygame.sprite.Sprite):
 
         self.rect = pygame.Rect(self.rect)
         self.rect.x, self.rect.y = pos
-        self.image = pygame.Surface(self.rect.size)
+        self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.sliderRect = pygame.Rect(self.sliderRect)
         self.sliderRect.centery = self.rect.height/2
         self.sliderRect.x = self.rect.width - self.sliderRect.width

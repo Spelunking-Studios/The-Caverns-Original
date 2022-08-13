@@ -47,61 +47,66 @@ class CompendiumMenu(Menu):
             self.running = False
 
         if checkKey(keySet['start']):
-            self.game.map.loadLevel()
+            self.game.map.loadFloor()
             self.running = False
 
-        
-        
+class SettingsMenu(Menu):
+    def __init__(self, game):
+        super().__init__(game)
+        self.returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, colors=(colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.audioSlider1 = SettingSlider(game, (100, 350), addGroups = [self.comps, self.layer1])
+        self.audioSlider2 = SettingSlider(game, (100, 500), addGroups = [self.comps, self.layer1])
+        fpsButton = Button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = game.toggleFps ,groups = [self.comps, self.layer1], center = True)
+        aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = game.toggleAalias ,groups = [self.comps, self.layer1], center = True, colors=(colors.yellow, colors.white))
+        joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [self.comps, self.layer1], center = True, colors=(colors.yellow, colors.white))
+        self.layer1.add([
+            Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
+            Text('caption1', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
+            Text('caption1', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475)),
+            Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (30,30))
+        ])
+        self.audioSlider1.setRatio(game.mixer.musicVolume)
+        self.audioSlider2.setRatio(game.mixer.fxVolume)
+        self.run()
 
-def settingsMenu(game):
-    returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, colors=(colors.yellow, colors.white))
-    comps = pygame.sprite.Group(returnButton)
-    audioSlider1 = SettingSlider(game, (100, 350), addGroups = [comps])
-    audioSlider2 = SettingSlider(game, (100, 500), addGroups = [comps])
-    audioSlider1.image.set_colorkey((0,0,0))
-    audioSlider2.image.set_colorkey((0,0,0))
-    fpsButton = Button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = game.toggleFps ,groups = [comps], center = True)
-    aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = game.toggleAalias ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
-    joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [comps], center = True, colors=(colors.yellow, colors.white))
-    texts = [
-        Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
-        Text('caption1', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
-        Text('caption1', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475))
-    ]
-    def applyComps():
-        game.mixer.setMusicVolume(audioSlider1.get_ratio())
-        game.mixer.setFxVolume(audioSlider2.get_ratio())
+    def applyComps(self):
+        self.game.mixer.setMusicVolume(self.audioSlider1.get_ratio())
+        self.game.mixer.setFxVolume(self.audioSlider2.get_ratio())
 
-    audioSlider1.setRatio(game.mixer.musicVolume)
-    audioSlider2.setRatio(game.mixer.fxVolume)
-
-    while True:
-        pygame.time.delay(50)
-        
-        game.runEvents()
-        game.refresh()
-        applyComps()
-
-        comps.update()
-        for comp in comps:
-            game.win.blit(comp.image, comp.rect)
-
-        for t in texts:
-            game.win.blit(t.image, t.rect)
-
-        if returnButton.clicked:
-            break
+    def update(self):
+        self.applyComps()
+        if self.returnButton.clicked:
+            self.running = False
 
         if checkKey(keySet['start']):
-            game.map.loadLevel()
-            break
-        
-        text2 = fonts['main-title1'].render(TITLE, game.antialiasing, colors.orangeRed)
-        game.win.blit(text2, (30,30))
+            self.game.map.loadFloor()
+            self.running = False
 
-        keys = pygame.key.get_pressed()
+class creditsMenu(Menu):
+    def __init__(self, game):
+        super().__init__(game)
+        returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white),  groups = [self.comps, self.layer1])
+        menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
+            Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
+            Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
+            Text("subtitle1", "~~~ Code ~~~", colors.orangeRed, game.antialiasing, (0, 275)),
+            Text("3", "Luke Gonsalves", colors.orangeRed, game.antialiasing, (0, 350)),
+            Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
+        ]
+        # Pre-calculate half of the windows width because division is slow
+        halfWinWidth = winWidth / 2
+        for item in menuItems:
+            item.rect.centerx = halfWinWidth
         
-        pygame.display.update()
+        self.layer1.add(menuItems)
+
+    def update(self):
+        if self.returnButton.clicked:
+            self.running = False
+
+        if checkKey(keySet['start']):
+            self.game.map.loadFloor()
+            self.running = False
 
 def main(game, loadingScreenOn = False):
     lssb = game.loadingScreenShownBefore
@@ -188,7 +193,7 @@ def main(game, loadingScreenOn = False):
                 break
             
             if settingsButton.clicked:
-                settingsMenu(game)
+                SettingsMenu(game)
                 settingsButton.reset()
             
             if instructionsButton.clicked:
@@ -206,7 +211,7 @@ def main(game, loadingScreenOn = False):
             keys = pygame.key.get_pressed()
 
             if keys[keySet['start']]:
-                game.map.loadLevel()
+                game.map.loadFloor()
                 break
         else:
             for i in range(int(loadingLinesShowed)):

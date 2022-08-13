@@ -179,7 +179,7 @@ class HurtFx(pygame.sprite.Sprite):
         if time < self.duration:
             darkness = min(255, max(0, round(255 * (time/self.duration))))
             image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
-            print(time)
+            # print(time)
         else:
             # Restore image
             if restoreImage:
