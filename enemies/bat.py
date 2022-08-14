@@ -17,6 +17,7 @@ class Bat(Enemy):
         self.speed = 2 * deltaConst
         self.damage = 1
         self.attackDelay = 60
+        self.detectionRange = 500
         self.width = 32
         self.height = 32
         # Attack behaviour
@@ -70,13 +71,11 @@ class Bat(Enemy):
         self.animations.update()
     def startAttack(self):
         """Creates all of the necesary values for the bat to begin its attack"""
-        print("Starting bat attack")
         self.attack["last"] = utime()
         self.attack["startPos"] = pygame.Vector2(self.rect.center)
         self.attack["playerPos"] = pygame.Vector2(self.game.player.rect.center)
         self.pickEndPos(pickRandom = True)
         self.attacking = True
-        print(self.attack)
     def endAttack(self):
         """Resets all of the necessary values to effectivly end the attack"""
         self.attack["reachedPlayer"] = False
@@ -98,6 +97,7 @@ class Bat(Enemy):
         """Move the bat"""
         if not self.attacking and not self.active:
             return
+        sp = self.pos
         testVec = pygame.Vector2(self.pos)
         testVec.x += self.vel.x * self.speed
         if not self.collideCheck(testVec):
@@ -110,7 +110,6 @@ class Bat(Enemy):
         self.rect.center = self.pos
         # Check if the bat has reached the attack's end position
         if self.vecsAreSemiEqual(self.pos, self.attack["endPos"]):
-            print("Attack over")
             self.endAttack()
     def vecsAreSemiEqual(self, vec1, vec2, error = 10):
         """Checks if the vectors are within error (10) of eachother"""
@@ -126,7 +125,6 @@ class Bat(Enemy):
         if not vec1 or not vec2:
             return False
         if int(vec1.x) == int(vec2.x) and int(vec1.y) == int(vec2.y):
-            print("Attacking", self.attacking)
             return True
         return False
     def setAngleFacingTarget(self, targetPos):
@@ -151,12 +149,11 @@ class Bat(Enemy):
         pPos = self.rect
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
-        if mPos.length() < 20 and utime() - self.lastAttack >= self.attackDelay:
+        if mPos.length() < 20 and (True or utime() >= self.attackDelay + self.lastAttack):
             self.lastAttack = utime()
             self.game.player.takeDamage(self.damage)
             self.attack["reachedPlayer"] = True
             #self.pickEndPos(self.angle, pickRandom = True)
-            print("Reached player")
     def setAngle(self):
         if self.attacking:
             if not self.attack["reachedPlayer"]:

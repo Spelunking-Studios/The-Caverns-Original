@@ -21,9 +21,10 @@ class Enemy(pygame.sprite.Sprite):
         self.angle = 0
         self.game = game
         self.active = False
-        self.detectionRange = 120
+        self.detectionRange = 200
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.rect = pygame.Rect(objT.x, objT.x, 64, 64)
+        self.rect.center = (objT.x, objT.y)
         self.lastAttack = now()
         self.attackDelay = 60
         self.width, self.height = 64, 64
