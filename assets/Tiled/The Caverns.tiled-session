@@ -517,11 +517,11 @@
             }
         },
         "Floor1/room1.tmx": {
-            "scale": 0.5,
+            "scale": 1,
             "selectedLayer": 2,
             "viewCenter": {
-                "x": 1023,
-                "y": 767
+                "x": 1023.5,
+                "y": 767.5
             }
         },
         "Floor1/room2.tmx": {

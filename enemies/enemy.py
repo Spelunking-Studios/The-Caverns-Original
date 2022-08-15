@@ -20,8 +20,11 @@ class Enemy(pygame.sprite.Sprite):
         self.vel = pygame.Vector2(0, 0)
         self.angle = 0
         self.game = game
+        self.active = False
+        self.detectionRange = 200
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.rect = pygame.Rect(objT.x, objT.x, 64, 64)
+        self.rect.center = (objT.x, objT.y)
         self.lastAttack = now()
         self.attackDelay = 60
         self.width, self.height = 64, 64
@@ -35,11 +38,10 @@ class Enemy(pygame.sprite.Sprite):
             self.__dict__[k] = v
 
         pygame.sprite.Sprite.__init__(self, self.groups)
-
     def update(self):
         if self.health <= 0:
             self.kill()
-
+        self.checkForActivation()
     def move(self):
         """Move the enemy"""
         testVec = pygame.Vector2(self.pos)
@@ -52,7 +54,6 @@ class Enemy(pygame.sprite.Sprite):
             self.pos.y += self.vel.y * self.speed
         self.setAngle()
         self.rect.center = self.pos
-        
     def setAngle(self):
         mPos = pygame.Vector2(self.game.player.rect.center)
         pPos = self.rect
@@ -87,12 +88,23 @@ class Enemy(pygame.sprite.Sprite):
                 return True
         
         return False
-    
     def takeDamage(self, damage):
         self.health -= damage
         self.animations.fx(HurtFx())
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
-
     def deathSound(self):
         pass
+    def checkForActivation(self):
+        """Check to see if the enemy should activate"""
+        if self.active:
+            return
+        playerPos = pygame.Vector2(self.game.player.rect.center)
+        mePos = self.rect
+        playerPos.x -= mePos.centerx
+        playerPos.y -= mePos.centery
+        if playerPos.length() < self.detectionRange:
+            self.activate()
+    def activate(self):
+        """Activate the enemy"""
+        self.active = True
