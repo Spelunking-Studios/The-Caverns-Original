@@ -23,6 +23,8 @@ class GameMap:
     def switchRoom(self, room, startObj):
         for s in self.floor.room.sprites:
             s.kill()
+        
+        self.game.groups.killAll()
             
         self.floor.enterRoom(room, startObj)
     
@@ -58,7 +60,7 @@ class Floor:
 
     def load(self):
         """Loads the floor (by default in the first room)"""
-        self.enterRoom("room4")
+        self.enterRoom("room1")
 
     def getRoomByName(self, name):
         for r in self.rooms:

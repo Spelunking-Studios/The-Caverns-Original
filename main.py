@@ -50,7 +50,12 @@ class Grouper:
     def clearAll(self):
         for g in self.allGroups():
             g.empty()
-
+    
+    def killAll(self):
+        for g in self.allGroups():
+            for s in g:
+                s.kill()
+                
     def allGroups(self):
         return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 

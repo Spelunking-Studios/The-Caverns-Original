@@ -14,7 +14,7 @@ class Bat(Enemy):
     def __init__(self, game, objT):
         super().__init__(game, objT)
         self.health = 20
-        self.speed = 2 * deltaConst
+        self.speed = 4 * deltaConst
         self.damage = 1
         self.attackDelay = 60
         self.detectionRange = 500

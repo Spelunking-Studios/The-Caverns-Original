@@ -28,6 +28,7 @@ class Door(pygame.sprite.Sprite):
             def func():
                 self.game.unPause()
                 self.game.map.switchRoom(self.targetRoom, self.targetObj)
+                fx.FadeIn(self.game)
             fx.FadeOut(self.game, onEnd=func)
 
 class Entrance(pygame.sprite.Sprite):
@@ -81,6 +82,7 @@ class Teleporter(pygame.sprite.Sprite):
             def func():
                 self.game.unPause()
                 self.game.player.setPos((self.targetPos.x, self.targetPos.y), True)
+                fx.FadeIn(self.game)
 
             fx.FadeOut(self.game, onEnd=func)
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
