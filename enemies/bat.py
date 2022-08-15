@@ -73,7 +73,7 @@ class Bat(Enemy):
         if not self.attacking:
             self.startAttack()
         self.attemptToDealDamage()
-        print(self.angle, self.attack)
+        # print(self.angle, self.attack)
         # Change wing image
         if now() - self.lastWingChange >= self.wingChangeDelay:
             self.wingState = (self.wingState + 1) % len(self.wingStates)

@@ -15,9 +15,9 @@ class GameMap:
         self.index = index
         self.floor = self.floors[self.index]    # The floor loading will be based on an index within the floors list 
 
-    def loadFloor(self, num=1):
+    def loadFloor(self, num=None):
         """Sets the map's floor and activates it"""
-        self.floor = self.floors[num-1]
+        self.floor = self.floors[num if num else self.index]
         self.floor.load()
     
     def switchRoom(self, room, startObj):
@@ -25,6 +25,13 @@ class GameMap:
             s.kill()
             
         self.floor.enterRoom(room, startObj)
+    
+    def getRoom(self):
+        return self.floor.room
+    
+    def nextFloor(self):
+        self.index += 1
+        self.loadFloor()
     
     # def update(self):
     #     """Update the map"""
@@ -51,7 +58,7 @@ class Floor:
 
     def load(self):
         """Loads the floor (by default in the first room)"""
-        self.enterRoom("room1")
+        self.enterRoom("room4")
 
     def getRoomByName(self, name):
         for r in self.rooms:
@@ -114,7 +121,9 @@ class Room:
             # Go through every layer to load the background images
             if isinstance(layer, pytmx.TiledImageLayer):
                 l = layer.image
-                self.image.blit(pygame.transform.scale(l, (l.get_width()*self.scale, l.get_height()*self.scale)), (0, 0))
+                offset = (layer.offsetx*self.scale, layer.offsety*self.scale) if hasattr(layer, 'offsetx') else (0, 0)
+                print(offset)
+                self.image.blit(pygame.transform.scale(l, (l.get_width()*self.scale, l.get_height()*self.scale)), offset)
         
         self.loadTiledObjects(start)
     

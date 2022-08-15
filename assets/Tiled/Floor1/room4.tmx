@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="110" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="7">
+ <imagelayer id="2" name="Image Layer 1">
+  <image source="images/room4.jpg" width="2304" height="3072"/>
+ </imagelayer>
+ <imagelayer id="4" name="Image Layer 2" offsetx="2528" offsety="8">
+  <image source="images/room4b.jpg" width="878" height="1170"/>
+ </imagelayer>
+ <objectgroup id="3" name="Object Layer 1">
+  <object id="1" name="Entrance" x="648" y="272">
+   <point/>
+  </object>
+  <object id="2" name="Teleporter" x="936" y="1104" width="104" height="40">
+   <properties>
+    <property name="target" type="object" value="3"/>
+   </properties>
+  </object>
+  <object id="3" x="2792" y="240">
+   <point/>
+  </object>
+  <object id="4" name="Teleporter" x="2736" y="152" width="104" height="40">
+   <properties>
+    <property name="target" type="object" value="5"/>
+   </properties>
+  </object>
+  <object id="5" x="984" y="1032">
+   <point/>
+  </object>
+  <object id="6" name="Door" x="576" y="152" width="128" height="26.667">
+   <properties>
+    <property name="targetObj" value="Entrance2"/>
+    <property name="targetRoom" value="room3"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
