@@ -12,7 +12,7 @@ class Rat(Enemy):
         self.width = 48
         self.height = 48
         self.angle = 0
-        self.speed = 30
+        self.speed = 50
         self.attackDelay = 120
         self.image = pygame.transform.scale(pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha(), (self.width, self.height))
         self.origImage = self.image.copy()

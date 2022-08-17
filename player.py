@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         # Modifiers
         self.hitCooldown = 200
         self.vel = Vector2(0, 0)
-        self.speed = 1 * deltaConst
+        self.speed = 50
         self.drag = 0.80
         self.damage = 10
         self.roomBound = True
@@ -128,18 +128,19 @@ class Player(pygame.sprite.Sprite):
 
     #### Move Physics ####
     def move(self):
+        dt = self.game.clock.get_rawtime() * 0.001
         if joystickEnabled:
-            self.vel.x += self.speed*getJoy1().get_axis(0)
-            self.vel.y += self.speed*getJoy1().get_axis(1)
+            self.vel.x += self.speed*getJoy1().get_axis(0) * dt
+            self.vel.y += self.speed*getJoy1().get_axis(1) * dt
         else:
             if checkKey('pRight'):
-                self.vel.x += self.speed
+                self.vel.x += self.speed * dt
             if checkKey('pLeft'):
-                self.vel.x -= self.speed
+                self.vel.x -= self.speed * dt
             if checkKey('pUp'):
-                self.vel.y -= self.speed
+                self.vel.y -= self.speed * dt
             if checkKey('pDown'):
-                self.vel.y += self.speed
+                self.vel.y += self.speed * dt
 
         lim = 8
         if self.vel.length() > 0.1: # We can't limit a 0 vector 
@@ -169,7 +170,7 @@ class Player(pygame.sprite.Sprite):
             self.particleFx.hide = True
 
         self.rect.center = self.moveRect.center
-        self.vel = self.vel*self.drag
+        self.vel = self.vel * self.drag
 
     #### Collide checker for player ####
     def collideCheck(self):
