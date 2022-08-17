@@ -29,7 +29,7 @@ class Projectile(pygame.sprite.Sprite):
 
     
     def update(self):
-        self.pos += self.dir *self.vel
+        self.pos += self.dir * self.vel
         self.rect.center = self.pos
         for e in self.game.groups.getProximitySprites(self, 600):
             if hasattr(e, 'image'):
