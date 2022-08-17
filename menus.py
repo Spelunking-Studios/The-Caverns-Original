@@ -211,7 +211,7 @@ def main(game, loadingScreenOn = False):
             keys = pygame.key.get_pressed()
 
             if keys[keySet['start']]:
-                game.map.loadFloor()
+                game.map.loadFloor() 
                 break
         else:
             for i in range(int(loadingLinesShowed)):

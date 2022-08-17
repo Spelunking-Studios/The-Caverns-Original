@@ -68,7 +68,7 @@ class FadeIn(pygame.sprite.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.rect = pygame.Rect(0, 0, winWidth, winHeight)
-        self.image = pygame.surface.Surface((self.rect.width, self.rect.height))
+        self.image = pygame.surface.Surface((self.rect.width, self.rect.height)).convert_alpha()
 
     def update(self):
         if self.alpha < 2*self.speed:

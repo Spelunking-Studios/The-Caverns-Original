@@ -10,7 +10,8 @@ class GameMap:
     def __init__(self, game, index=0):
         self.game = game
         self.floors = [
-            Floor(game, "Floor1")
+            Floor(game, "Floor1"),
+            Floor(game, "Floor2"),
         ]
         self.index = index
         self.floor = self.floors[self.index]    # The floor loading will be based on an index within the floors list 
@@ -52,7 +53,7 @@ class Floor:
             if os.path.isfile(f):
                 self.roomPaths.append(f) 
         
-        print(self.roomPaths)
+        # print(self.roomPaths)
         # Generates room objects from path
         self.rooms = [Room(self, i) for i in self.roomPaths]
         # This stores the current room number or index within the rooms list 
