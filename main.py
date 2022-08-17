@@ -287,6 +287,9 @@ class Game:
         self.currentFps = self.clock.get_fps() 
         return self.currentFps
     
+    def dt(self):
+        return self.clock.get_time()*6/100
+    
     def toggleCam(self):
         self.cam.toggleTarget()
 

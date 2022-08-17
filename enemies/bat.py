@@ -14,7 +14,7 @@ class Bat(Enemy):
     def __init__(self, game, objT):
         super().__init__(game, objT)
         self.health = 20
-        self.speed = 4 * deltaConst
+        self.speed = 4 * self.game.dt()
         self.damage = 1
         self.attackDelay = 60
         self.detectionRange = 500
@@ -99,13 +99,13 @@ class Bat(Enemy):
             return
         sp = self.pos
         testVec = pygame.Vector2(self.pos)
-        testVec.x += self.vel.x * self.speed
+        testVec.x += self.vel.x * self.speed* self.game.dt()
         if not self.collideCheck(testVec):
-            self.pos.x += self.vel.x * self.speed
+            self.pos.x += self.vel.x * self.speed* self.game.dt()
         testVec = pygame.Vector2(self.pos)
-        testVec.y += self.vel.y * self.speed
+        testVec.y += self.vel.y * self.speed* self.game.dt()
         if not self.collideCheck(testVec):
-            self.pos.y += self.vel.y * self.speed
+            self.pos.y += self.vel.y * self.speed* self.game.dt()
         self.setAngle()
         self.rect.center = self.pos
         # Check if the bat has reached the attack's end position

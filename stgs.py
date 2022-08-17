@@ -43,8 +43,6 @@ SHOWFPS = True
 
 #### FPS BOIS ####
 FPS = 60
-delta = 1/FPS
-deltaConst = delta/(1/60)
 
 #### Volumes ####
 musicVolume = 1
@@ -89,7 +87,7 @@ def fgen(fn, s):
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
-winFlags = 0#pygame.HWSURFACE
+winFlags = pygame.HWSURFACE
 
 iconPath = asset('logo.jpeg')
 

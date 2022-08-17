@@ -22,7 +22,7 @@ class Player(pygame.sprite.Sprite):
         # Modifiers
         self.hitCooldown = 200
         self.vel = Vector2(0, 0)
-        self.speed = 1 * deltaConst
+        self.speed = 1
         self.drag = 0.80
         self.damage = 10
         self.roomBound = True
@@ -129,17 +129,17 @@ class Player(pygame.sprite.Sprite):
     #### Move Physics ####
     def move(self):
         if joystickEnabled:
-            self.vel.x += self.speed*getJoy1().get_axis(0)
-            self.vel.y += self.speed*getJoy1().get_axis(1)
+            self.vel.x += self.speed*getJoy1().get_axis(0)* self.game.dt()
+            self.vel.y += self.speed*getJoy1().get_axis(1)* self.game.dt()
         else:
             if checkKey('pRight'):
-                self.vel.x += self.speed
+                self.vel.x += self.speed* self.game.dt()
             if checkKey('pLeft'):
-                self.vel.x -= self.speed
+                self.vel.x -= self.speed* self.game.dt()
             if checkKey('pUp'):
-                self.vel.y -= self.speed
+                self.vel.y -= self.speed* self.game.dt()
             if checkKey('pDown'):
-                self.vel.y += self.speed
+                self.vel.y += self.speed* self.game.dt()
 
         lim = 8
         if self.vel.length() > 0.1: # We can't limit a 0 vector 
@@ -211,8 +211,8 @@ class Cursor:
         self.size = Vector2(6, 6)
     
     def update(self):
-        movex = self.speed*getJoy1().get_axis(2)
-        movey = self.speed*getJoy1().get_axis(3)
+        movex = self.speed*getJoy1().get_axis(2)* self.game.dt()
+        movey = self.speed*getJoy1().get_axis(3)* self.game.dt()
         self.pos.x += movex if abs(getJoy1().get_axis(2)) > 0.5 else 0
         self.pos.y += movey if abs(getJoy1().get_axis(3)) > 0.5 else 0
         
