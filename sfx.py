@@ -4,8 +4,9 @@ from stgs import *
 try:
     pygame.mixer.init()
     pygame.mixer.pre_init(44100, -16, 2, 2048)
+    init = True
 except pygame.error:
-    pass
+    init = False
 
 ## Provide name: file and volume offset (will not exceed one or drop below zero)
 fx = {
@@ -20,20 +21,44 @@ fx = {
     'swing':[sAsset('swing.wav'), 0],
 }
 
+def getDriver():
+    global init
+    return GameMixer() if init else DummyDriver()
+
+class DummyDriver:
+    def __init__(self):
+        self.fxVolume = 1
+        self.musicVolume = 1
+    def setMusicVolume(self, volume):
+        pass
+    def setFxVolume(self, volume):
+        pass
+    def playFxFile(self, sfile, *args):
+        pass
+    def playFx(self, key):
+        pass 
+    def playMusic(self, sfile):
+        pass
+    def stop(self):
+        pass
+
 class GameMixer:
     def __init__(self):
         global fx
         self.fx = fx
         self.fxVolume = 1
         self.musicVolume = 1
-        self.musicChannel = pygame.mixer.Channel(0)
-    
+        try:
+            self.musicChannel = pygame.mixer.Channel(0)
+        except pygame.error:
+            return DummyDriver()
+
     def setMusicVolume(self, volume):
         if isinstance(volume, str):
             pass
         else:
             self.musicVolume = volume
-
+        
         self.musicChannel.set_volume(self.musicVolume)
     
     def setFxVolume(self, volume): ## Probably won't affect sfx in mid play 

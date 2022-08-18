@@ -37,11 +37,11 @@ class FadeOut(pygame.sprite.Sprite):
         if pygame.time.get_ticks() - self.intTime >= self.startDelay:
             if self.alpha > 220:
                 if self.fadeBack:
-                    fadeIn(self.game)
+                    FadeIn(self.game)
                 self.end()
                 self.ended = True
             else:
-                self.alpha += self.speed
+                self.alpha += self.speed * self.game.dt2()
 
         self.image.set_alpha(self.alpha)
 
@@ -74,7 +74,7 @@ class FadeIn(pygame.sprite.Sprite):
         if self.alpha < 2*self.speed:
             self.end()
         else:
-            self.alpha -= self.speed
+            self.alpha -= self.speed* self.game.dt2()
 
         self.image.set_alpha(self.alpha)
 
@@ -214,7 +214,7 @@ class Particle(pygame.sprite.Sprite):
         pygame.draw.circle(self.image, colors.dark(self.color, random.randint(0, self.colorVariation)), (self.rect.width/2, self.rect.height/2), self.w/2)
 
     def update(self):
-        self.pos += self.dir*self.speed
+        self.pos += self.dir*self.speed* self.game.dt2()
         self.speed *= self.drag
         self.rect.center = self.pos.x, self.pos.y
         self.w -= self.shrink

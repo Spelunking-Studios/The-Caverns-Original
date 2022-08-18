@@ -79,7 +79,7 @@ class Game:
         self.hudLayer = Group()
         self.overlayer = Group()
         self.rendLayers = [self.layer1, self.layer2]
-        self.mixer = GameMixer()
+        self.mixer = getDriver()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
         self.mixer.setFxVolume(fxVolume)
         self.antialiasing = aalias
@@ -288,7 +288,10 @@ class Game:
         return self.currentFps
     
     def dt(self):
-        return self.clock.get_time()*6/100
+        return self.clock.get_time()*0.001
+    
+    def dt2(self):
+        return self.clock.get_time()*0.06
     
     def toggleCam(self):
         self.cam.toggleTarget()

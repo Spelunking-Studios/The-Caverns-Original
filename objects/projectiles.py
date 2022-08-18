@@ -2,7 +2,7 @@ import pygame
 import colors
 import math
 import fx
-from stgs import asset
+from stgs import asset, FPS
 from .lights import LightSource, LightEffect
 from animations import BasicAnimation
 
@@ -29,7 +29,7 @@ class Projectile(pygame.sprite.Sprite):
 
     
     def update(self):
-        self.pos += self.dir *self.vel
+        self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
         for e in self.game.groups.getProximitySprites(self, 600):
             if hasattr(e, 'image'):

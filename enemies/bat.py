@@ -4,17 +4,17 @@ from stgs import *
 import animations
 import random
 import time
+# from beziation import bezier
 
 def utime():
     return int(time.time())
-
 
 class Bat(Enemy):
     """A bat enemy"""
     def __init__(self, game, objT):
         super().__init__(game, objT)
         self.health = 20
-        self.speed = 4 * self.game.dt()
+        self.speed = 70
         self.damage = 1
         self.attackDelay = 60
         self.detectionRange = 500
@@ -25,10 +25,13 @@ class Bat(Enemy):
         self.attack = {
             "startPos": None,
             "playerPos": None,
+            "cachedPlayerPos": None,
             "endPos": None,
             "reachedPlayer": False,
+            "bezierCurve": None,
             "last": 0,
-            "delay": 5
+            "delay": 60,
+            "target": None
         }
         # Wing animation
         self.wingChangeDelay = 60
@@ -42,7 +45,11 @@ class Bat(Enemy):
         self.wingImages = []
         for wingState in self.wingStates:
             self.wingImages.append(
-                pygame.transform.scale(pygame.image.load(asset("enemies", "bat", "bat_wings_" + wingState + ".png")).convert_alpha(), (self.width, self.height))
+                pygame.transform.scale(
+                    pygame.image.load(
+                        asset("enemies", "bat", "bat_wings_" + wingState + ".png")
+                    ).convert_alpha(), (self.width, self.height)
+                )
             )
         self.setWingImage()
     def setWingImage(self):
@@ -54,14 +61,13 @@ class Bat(Enemy):
         self.rotateImage()
     def update(self):
         super().update()
+        if self.active:
+            if not self.attacking:
+                if utime() - self.attack["last"] > self.attack["delay"]:
+                    self.startAttack()
+            self.attemptToDealDamage()
         # Move towards the player
         self.move()
-        # Attack
-        if (self.active and
-            not self.attacking and
-            utime() - self.attack["last"] > self.attack["delay"]):
-            self.startAttack()
-        self.attemptToDealDamage()
         #print(self.angle, self.attack, self.attacking)
         # Change wing image
         if now() - self.lastWingChange >= self.wingChangeDelay:
@@ -74,7 +80,9 @@ class Bat(Enemy):
         self.attack["last"] = utime()
         self.attack["startPos"] = pygame.Vector2(self.rect.center)
         self.attack["playerPos"] = pygame.Vector2(self.game.player.rect.center)
+        self.attack["cachedPlayerPos"] = self.attack["playerPos"]
         self.pickEndPos(pickRandom = True)
+        self.attack["target"] = self.attack["playerPos"]
         self.attacking = True
     def endAttack(self):
         """Resets all of the necessary values to effectivly end the attack"""
@@ -93,11 +101,33 @@ class Bat(Enemy):
         ev.y = int(ev.y)
         self.attack["endPos"] = ev
         return ev
+    def getDistFromPlayer(self):
+        mPos = pygame.Vector2(self.game.player.rect.center)
+        pPos = self.rect
+        mPos.x -= pPos.centerx
+        mPos.y -= pPos.centery
+        return mPos.length()
+    def createBezierMotionCurve(self):
+        if self.vecsAreSemiEqual(
+            self.attack["cachedPlayerPos"],
+            self.attack["playerPos"]) and self.attack["bezierCurve"]:
+            return
+        try:
+            self.attack["bezierCurve"] = bezier(4, [
+                self.attack["startPos"],
+                self.attack["bzctpp"],
+                self.attack["playerPos"],
+                self.attack["bzctep"],
+                self.attack["endPos"]
+            ])[self.attack["bzcpr"]:]
+            return True
+        except KeyError:
+            return False
     def move(self):
         """Move the bat"""
         if not self.attacking and not self.active:
             return
-        sp = self.pos
+        # dt = self.game.clock.get_time() / 1000
         testVec = pygame.Vector2(self.pos)
         testVec.x += self.vel.x * self.speed* self.game.dt()
         if not self.collideCheck(testVec):
@@ -163,8 +193,18 @@ class Bat(Enemy):
                 #print("Facing end pos")
                 self.setAngleFacingTarget(pygame.Vector2(self.attack["endPos"]))
         else:
-            pass
-            #self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
+            self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
+            self.angle -= 90
+            mPos = self.pos
+            mPos.x -= self.rect.centerx
+            mPos.y -= self.rect.centery
+            mPos.normalize_ip()
+            testVec = pygame.Vector2(self.pos)
+            testVec.x += mPos.x * self.speed
+            testVec.y += mPos.y * self.speed
+            if self.collideCheck(testVec):
+                print(testVec)
+            self.vel = pygame.Vector2(0, 0)
     def rotateImage(self):
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
