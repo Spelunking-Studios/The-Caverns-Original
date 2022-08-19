@@ -70,7 +70,6 @@ class SlotHud(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
-
 class HeathHud(Hud):
     def __init__(self, game):
         super().__init__(game)
@@ -88,7 +87,6 @@ class HeathHud(Hud):
     def update(self):
         self.rendWidth = 100 / (50 / self.game.player.stats.health)
         self.render()
-
 
 # class InventoryHud(pygame.sprite.Sprite):
 #     def __init__(self, game, **kwargs):

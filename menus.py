@@ -53,17 +53,80 @@ class CompendiumMenu(Menu):
 class SettingsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, colors=(colors.yellow, colors.white), groups = [self.comps, self.layer1])
-        self.audioSlider1 = SettingSlider(game, (100, 350), addGroups = [self.comps, self.layer1])
-        self.audioSlider2 = SettingSlider(game, (100, 500), addGroups = [self.comps, self.layer1])
-        fpsButton = Button(game, (800, 250), text = 'Toggle FPS',  colors=(colors.yellow, colors.white),  onClick = game.toggleFps ,groups = [self.comps, self.layer1], center = True)
-        aaliasButton = Button(game, (800, 330), text = 'Toggle Anti - Aliasing', onClick = game.toggleAalias ,groups = [self.comps, self.layer1], center = True, colors=(colors.yellow, colors.white))
-        joystickButton = Button(game, (800, 530), text = 'Joystick Disable', onClick = game.disableJoystick ,groups = [self.comps, self.layer1], center = True, colors=(colors.yellow, colors.white))
+        self.returnButton = Button(
+            game,
+            (winWidth-240, 70),
+            text = "Return",
+            center = True,
+            colors=(colors.yellow, colors.white),
+            groups = [self.comps, self.layer1]
+        )
+        self.audioSlider1 = SettingSlider(
+            game,
+            (100, 350),
+            addGroups = [self.comps, self.layer1]
+        )
+        self.audioSlider2 = SettingSlider(
+            game,
+            (100, 500),
+            addGroups = [self.comps, self.layer1]
+        )
+        fpsButton = Button(
+            game,
+            (800, 250),
+            text = 'Toggle FPS', 
+            colors=(colors.yellow, colors.white), 
+            onClick = game.toggleFps,
+            groups = [self.comps, self.layer1],
+            center = True
+        )
+        aaliasButton = Button(
+            game,
+            (800, 330),
+            text = 'Toggle Anti - Aliasing',
+            onClick = game.toggleAalias,
+            groups = [self.comps, self.layer1],
+            center = True,
+            colors=(colors.yellow, colors.white)
+        )
+        joystickButton = Button(
+            game,
+            (800, 530),
+            text = 'Joystick Disable',
+            onClick = game.disableJoystick,
+            groups = [self.comps, self.layer1],
+            center = True,
+            colors=(colors.yellow, colors.white)
+        )
         self.layer1.add([
-            Text('title1', 'Audio Control', colors.orangeRed, game.antialiasing, (75, 250)),
-            Text('caption1', 'Music Volume', colors.orangeRed, game.antialiasing, (75, 325)),
-            Text('caption1', 'Fx Volume', colors.orangeRed, game.antialiasing, (75, 475)),
-            Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (30,30))
+            Text(
+                'title1',
+                'Audio Control',
+                colors.orangeRed,
+                game.antialiasing,
+                (75, 250)
+            ),
+            Text(
+                'caption1',
+                'Music Volume',
+                colors.orangeRed,
+                game.antialiasing,
+                (75, 325)
+            ),
+            Text(
+                'caption1',
+                'Fx Volume',
+                colors.orangeRed,
+                game.antialiasing,
+                (75, 475)
+            ),
+            Text(
+                'main-title1',
+                TITLE,
+                colors.orangeRed,
+                game.antialiasing,
+                (30,30)
+            )
         ])
         self.audioSlider1.setRatio(game.mixer.musicVolume)
         self.audioSlider2.setRatio(game.mixer.fxVolume)
@@ -78,11 +141,11 @@ class SettingsMenu(Menu):
         if self.returnButton.clicked:
             self.running = False
 
-        if checkKey(keySet['start']):
-            self.game.map.loadFloor()
-            self.running = False
+        #if checkKey(keySet['start']):
+        #    self.game.map.loadFloor()
+        #    self.running = False
 
-class creditsMenu(Menu):
+class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
         returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white),  groups = [self.comps, self.layer1])
@@ -145,7 +208,7 @@ def main(game, loadingScreenOn = False):
     else:
         toMainMenuButton.clicked = True
 
-    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
+    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), rounded = True)
     settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
     instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
     creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
@@ -204,7 +267,7 @@ def main(game, loadingScreenOn = False):
                 instructionsButton.reset()
             
             if creditsButton.clicked:
-                creditsMenu(game)
+                CreditsMenu(game)
                 creditsButton.reset()
         
             game.win.blit(text1.image, text1)
