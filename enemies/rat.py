@@ -3,10 +3,14 @@ from .enemy import Enemy
 from stgs import *
 import animations
 
+ratImage = None
+
 class Rat(Enemy):
     """A rat enemy"""
     def __init__(self, game, objT):
+        global ratImage
         super().__init__(game, objT)
+
         self.health = 20
         self.damage = 5
         self.width = 48
@@ -14,7 +18,11 @@ class Rat(Enemy):
         self.angle = 0
         self.speed = 90
         self.attackDelay = 120
-        self.image = pygame.transform.scale(pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha(), (self.width, self.height))
+        
+        if not ratImage:
+            ratImage = pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha()
+        
+        self.image = pygame.transform.scale(ratImage, (self.width, self.height))
         self.origImage = self.image.copy()
         self.rect = pygame.Rect(objT.x, objT.y, self.width, self.height)
     def move(self):
