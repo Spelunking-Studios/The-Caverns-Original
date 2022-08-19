@@ -1,3 +1,6 @@
 [submodule "beziation"]
 	path = beziation
 	url = https://github.com/https123456789/Beziation
+[submodule "website"]
+	path = website
+	url = https://github.com/https123456789/The-Caverns-Website
