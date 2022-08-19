@@ -5,6 +5,16 @@ from menu import createFrame
 import overlay
 import colors
 
+class Hud(pygame.sprite.Sprite):
+    def __init__(self, game):
+        self.groups = game.sprites, game.hudLayer
+        self.game = game
+        pygame.sprite.Sprite.__init__(self, self.groups)
+    def render(self):
+        pass
+    def update(self):
+        self.render()
+
 class StatHud(pygame.sprite.Sprite):
     def __init__(self, game, **kwargs):
         self.groups = game.sprites, game.hudLayer
@@ -60,7 +70,24 @@ class SlotHud(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
-        
+
+class HeathHud(Hud):
+    def __init__(self, game):
+        super().__init__(game)
+        self.image = pygame.Surface((100, 20))
+        self.image.fill((255, 255, 255))
+        self.rect = pygame.Rect(20, 600, 100, 20)
+        self.rendWidth = 100
+    def render(self):
+        self.image.fill((255, 255, 255))
+        pygame.draw.rect(
+            self.image,
+            (255, 0, 0),
+            (0, 0, self.rendWidth, 20)
+        )
+    def update(self):
+        self.rendWidth = 100 / (50 / self.game.player.stats.health)
+        self.render()
 
 
 # class InventoryHud(pygame.sprite.Sprite):
