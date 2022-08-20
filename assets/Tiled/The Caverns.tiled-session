@@ -517,27 +517,43 @@
             }
         },
         "Floor1/room1.tmx": {
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.33,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1023.5,
-                "y": 767.5
+                "x": 1025.7575757575755,
+                "y": 766.6666666666665
             }
         },
         "Floor1/room2.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1023.5295318801368,
-                "y": 766.3402930215938
+                "x": 1023.5295318801369,
+                "y": 767.3857777324009
             }
         },
         "Floor1/room3.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 0,
+            "selectedLayer": 3,
             "viewCenter": {
                 "x": 1027.7114707233652,
                 "y": 771.5677165756292
+            }
+        },
+        "Floor1/room4.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 2681,
+                "y": 932
+            }
+        },
+        "Floor1/room5.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1011,
+                "y": 674
             }
         },
         "Project0-tileset1.tsx": {

@@ -1,12 +1,88 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="110" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="7">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="110" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="49">
  <imagelayer id="2" name="Image Layer 1">
   <image source="images/room4.jpg" width="2304" height="3072"/>
  </imagelayer>
  <imagelayer id="4" name="Image Layer 2" offsetx="2528" offsety="8">
   <image source="images/room4b.jpg" width="878" height="1170"/>
  </imagelayer>
- <objectgroup id="3" name="Object Layer 1">
+ <objectgroup id="3" name="Enemies">
+  <object id="7" name="Bat" x="3152" y="336">
+   <point/>
+  </object>
+  <object id="8" name="Bat" x="3144" y="840">
+   <point/>
+  </object>
+  <object id="9" name="Bat" x="2624" y="848">
+   <point/>
+  </object>
+  <object id="10" name="Rat" x="2872" y="752">
+   <point/>
+  </object>
+  <object id="11" name="Rat" x="2824" y="744">
+   <point/>
+  </object>
+  <object id="12" name="Rat" x="2752" y="632">
+   <point/>
+  </object>
+  <object id="13" name="Rat" x="2688" y="640">
+   <point/>
+  </object>
+  <object id="14" name="Rat" x="2728" y="664">
+   <point/>
+  </object>
+  <object id="15" name="Rat" x="2920" y="736">
+   <point/>
+  </object>
+  <object id="16" name="Rat" x="3112" y="648">
+   <point/>
+  </object>
+  <object id="17" name="Rat" x="3080" y="568">
+   <point/>
+  </object>
+  <object id="18" name="Rat" x="3128" y="560">
+   <point/>
+  </object>
+  <object id="19" name="Rat" x="3080" y="504">
+   <point/>
+  </object>
+ </objectgroup>
+ <objectgroup id="6" name="Walls">
+  <object id="20" name="Wall" x="2904" y="480" width="56" height="104"/>
+  <object id="21" name="Wall" x="2864" y="472" width="40" height="104"/>
+  <object id="22" name="Wall" x="2840" y="496" width="24" height="64"/>
+  <object id="23" name="Wall" x="2848" y="480" width="16" height="16"/>
+  <object id="24" name="Wall" x="2904" y="472" width="56" height="8"/>
+  <object id="25" name="Wall" x="2960" y="480" width="24" height="112"/>
+  <object id="26" name="Wall" x="2984" y="496" width="16" height="88"/>
+  <object id="27" name="Wall" x="2880" y="576" width="24" height="16"/>
+  <object id="28" name="Wall" x="2904" y="584" width="24" height="24"/>
+  <object id="29" name="Wall" x="2704" y="128" width="152" height="24"/>
+  <object id="30" name="Wall" x="2840" y="152" width="88" height="40"/>
+  <object id="31" name="Wall" x="2872" y="192" width="56" height="88"/>
+  <object id="32" name="Wall" x="2888" y="280" width="40" height="16"/>
+  <object id="33" name="Wall" x="2928" y="248" width="248" height="48"/>
+  <object id="34" name="Wall" x="3176" y="288" width="40" height="64"/>
+  <object id="35" name="Wall" x="3168" y="352" width="48" height="368"/>
+  <object id="37" name="Wall" x="3160" y="720" width="48" height="136"/>
+  <object id="38" name="Wall" x="2976" y="856" width="192" height="48"/>
+  <object id="39" name="Wall" x="2696" y="864" width="280" height="48"/>
+  <object id="40" name="Wall" x="2584" y="872" width="64" height="48"/>
+  <object id="41" name="Wall" x="2648" y="864" width="48" height="48"/>
+  <object id="42" name="Wall" x="2544" y="648" width="48" height="224"/>
+  <object id="43" name="Wall" x="2536" y="200" width="48" height="288"/>
+  <object id="44" name="Wall" x="2536" y="584" width="48" height="64"/>
+  <object id="45" name="Wall" x="2536" y="488" width="48" height="64"/>
+  <object id="46" name="Wall" x="2536" y="552" width="56" height="32"/>
+  <object id="47" name="Wall" x="2584" y="152" width="152" height="64"/>
+ </objectgroup>
+ <objectgroup id="5" name="Doors">
+  <object id="6" name="Door" x="576" y="152" width="128" height="26.667">
+   <properties>
+    <property name="targetObj" value="Entrance2"/>
+    <property name="targetRoom" value="room3"/>
+   </properties>
+  </object>
   <object id="1" name="Entrance" x="648" y="272">
    <point/>
   </object>
@@ -15,7 +91,7 @@
     <property name="target" type="object" value="3"/>
    </properties>
   </object>
-  <object id="3" x="2792" y="240">
+  <object id="5" x="984" y="1032">
    <point/>
   </object>
   <object id="4" name="Teleporter" x="2736" y="152" width="104" height="40">
@@ -23,14 +99,8 @@
     <property name="target" type="object" value="5"/>
    </properties>
   </object>
-  <object id="5" x="984" y="1032">
+  <object id="3" x="2792" y="240">
    <point/>
-  </object>
-  <object id="6" name="Door" x="576" y="152" width="128" height="26.667">
-   <properties>
-    <property name="targetObj" value="Entrance2"/>
-    <property name="targetRoom" value="room3"/>
-   </properties>
   </object>
  </objectgroup>
 </map>

@@ -45,13 +45,13 @@ class Enemy(pygame.sprite.Sprite):
     def move(self):
         """Move the enemy"""
         testVec = pygame.Vector2(self.pos)
-        testVec.x += self.vel.x * self.speed
+        testVec.x += self.vel.x * self.speed * self.game.dt()
         if not self.collideCheck(testVec):
-            self.pos.x += self.vel.x * self.speed
+            self.pos.x += self.vel.x * self.speed * self.game.dt()
         testVec = pygame.Vector2(self.pos)
-        testVec.y += self.vel.y * self.speed
+        testVec.y += self.vel.y * self.speed * self.game.dt()
         if not self.collideCheck(testVec):
-            self.pos.y += self.vel.y * self.speed
+            self.pos.y += self.vel.y * self.speed * self.game.dt()
         self.setAngle()
         self.rect.center = self.pos
     def setAngle(self):
