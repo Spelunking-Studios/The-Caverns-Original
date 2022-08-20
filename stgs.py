@@ -42,7 +42,7 @@ CAMLIMIT = True
 SHOWFPS = True
 
 #### FPS BOIS ####
-FPS = 60
+FPS = 40
 
 #### Volumes ####
 musicVolume = 1

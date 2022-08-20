@@ -85,7 +85,7 @@ class SettingsMenu(Menu):
 class creditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white),  groups = [self.comps, self.layer1])
+        returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
         menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
             Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
             Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
@@ -108,7 +108,22 @@ class creditsMenu(Menu):
             self.game.map.loadFloor()
             self.running = False
 
-# class Main(Menu):
+class Main(Menu):
+    def __init__(self, game):
+        super().__init__(game)
+        self.startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), groups = [self.comps, self.layer1])
+        self.settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60), groups = [self.comps, self.layer1])
+        self.creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+
+        self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = winWidth / 2, winWidth / 2
+
+        swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
+        swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
+        swordRect.centerx = winWidth/2
+        text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
+        text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
+        text2.rect.centerx = winWidth/2
 
 
 def main(game, loadingScreenOn = False):
@@ -145,7 +160,8 @@ def main(game, loadingScreenOn = False):
     else:
         toMainMenuButton.clicked = True
 
-    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60))
+    print(colors.rgba(colors.yellow, 0))
+    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.rgba(colors.yellow, 0), colors.white), wh=(300, 60))
     settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
     instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
     creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
@@ -156,12 +172,15 @@ def main(game, loadingScreenOn = False):
     comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = winWidth/2
-    swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
-    swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
+    swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (256, 256))
+    swordRect = pygame.Rect(0, 130, swordImg.get_width(), swordImg.get_height())
     swordRect.centerx = winWidth/2
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
-    text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
-    text2.rect.centerx = winWidth/2
+    # text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
+    title = pygame.image.load(asset("objects/TheCaverns2.png"))
+    title.set_colorkey((255,255,255))
+    titleRect = pygame.Rect(0, -40, title.get_width(), title.get_height())
+    titleRect.centerx = winWidth/2
     #text3 = Text('title2', 'Created by LGgameLAB (with help)', colors.orangeRed, game.antialiasing, (0, 110))
     #text3.rect.centerx = winWidth/2
 
@@ -208,7 +227,7 @@ def main(game, loadingScreenOn = False):
                 creditsButton.reset()
         
             game.win.blit(text1.image, text1)
-            game.win.blit(text2.image, text2)
+            game.win.blit(title, titleRect)
             game.win.blit(swordImg, swordRect)
 
             keys = pygame.key.get_pressed()

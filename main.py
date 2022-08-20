@@ -123,8 +123,8 @@ class Game:
     ####  Determines how the run will function ####
     def run(self):
         loadSave("save.p")
+        self.mixer.playMusic(sAsset('intro.wav'))
         self.menuLoop()
-        #self.mixer.playMusic(asset('sounds/track 1.wav'))
         self.mainLoop()
         self.mixer.stop()
         if self.won:

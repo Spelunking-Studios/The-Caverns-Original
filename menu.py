@@ -22,7 +22,7 @@ class Button(pygame.sprite.Sprite):
         self.groups = []
         self.wh = (200, 60)
         #          Normal           Selected
-        self.colors = (colors.yellow, (255, 255, 255))
+        self.colors = (colors.yellow, (255, 255, 255, 0.1))
         self.spriteInit = False
         self.hover = False
         self.clicked = False
