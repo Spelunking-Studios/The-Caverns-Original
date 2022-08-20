@@ -19,6 +19,7 @@ class Enemy(pygame.sprite.Sprite):
         self.lID = objT.id
         self.vel = pygame.Vector2(0, 0)
         self.angle = 0
+        self.reach = 20
         self.game = game
         self.active = False
         self.detectionRange = 200
@@ -42,6 +43,7 @@ class Enemy(pygame.sprite.Sprite):
         if self.health <= 0:
             self.kill()
         self.checkForActivation()
+        self.attemptToDealDamage()
     def move(self):
         """Move the enemy"""
         testVec = pygame.Vector2(self.pos)
@@ -54,32 +56,27 @@ class Enemy(pygame.sprite.Sprite):
             self.pos.y += self.vel.y * self.speed * self.game.dt()
         self.setAngle()
         self.rect.center = self.pos
-    def setAngle(self):
-        mPos = pygame.Vector2(self.game.player.rect.center)
+    def setAngleFacingTarget(self, targetPos):
+        """Rotates the bat to face the target position"""
+        mPos = targetPos
         pPos = self.rect
-        mPos.x -= pPos.centerx 
+        mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
-        if mPos.length() > 500:
-            self.vel = pygame.Vector2(0, 0)
-            self.animations.freeze = True
 
-        else:
-            self.animations.freeze = False
-            if mPos.length() > 20:
-                try:
-                    mPos.normalize_ip()
-                    self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
-                    self.vel = mPos
-                except ValueError:
-                    self.angle = 0
-                    self.vel = pygame.Vector2(0, 0)
-                self.angle -= 90
-            else:
-                self.vel = pygame.Vector2(0, 0)
-                if now() - self.lastAttack >= self.attackDelay:
-                    self.game.player.takeDamage(self.damage)
+        try:
+            mPos.normalize_ip()
+            self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
+            self.vel = mPos
+        except ValueError:
+            self.angle = 0
+            self.vel = pygame.Vector2(0, 0)
+        self.angle -= 90
+        self.rotateImage()
+    def rotateImage(self):
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
+    def setAngle(self):
+        self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
     def collideCheck(self, vector):
         testRect = pygame.Rect(0, 0, 32, 32)
         testRect.center = vector
@@ -93,6 +90,16 @@ class Enemy(pygame.sprite.Sprite):
         self.animations.fx(HurtFx())
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
+    def attemptToDealDamage(self):
+        """Attempt to deal damage to the player"""
+        mPos = pygame.Vector2(self.game.player.rect.center)
+        pPos = self.rect
+        mPos.x -= pPos.centerx
+        mPos.y -= pPos.centery
+        if mPos.length() < self.reach and (True or now() >= self.attackDelay + self.lastAttack):
+            self.lastAttack = now()
+            self.game.player.takeDamage(self.damage)
+            #self.pickEndPos(self.angle, pickRandom = True)
     def deathSound(self):
         pass
     def checkForActivation(self):
@@ -108,3 +115,19 @@ class Enemy(pygame.sprite.Sprite):
     def activate(self):
         """Activate the enemy"""
         self.active = True
+    def vecsAreSemiEqual(self, vec1, vec2, error = 10):
+        """Checks if the vectors are within error (10) of eachother"""
+        # Make sure the vectors exist
+        if not vec1 or not vec2:
+            return False
+        # Make 2 rects
+        rect1 = pygame.Rect(vec1.x, vec1.y, error, error)
+        rect2 = pygame.Rect(vec2.x, vec2.y, error, error)
+        # Check for collision/overlap
+        return rect1.colliderect(rect2)
+    def vecsAreEqual(self, vec1, vec2):
+        if not vec1 or not vec2:
+            return False
+        if int(vec1.x) == int(vec2.x) and int(vec1.y) == int(vec2.y):
+            return True
+        return False
