@@ -29,7 +29,7 @@ class Stats:
 class PlayerStats(Stats):
 	def __init__(self):
 		super().__init__(
-			health=40,
+			health=50,
 			healthMax=40,
 			strength=0,
 			speed=15,

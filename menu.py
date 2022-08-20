@@ -21,14 +21,14 @@ class Button(pygame.sprite.Sprite):
         self.onClick = False
         self.groups = []
         self.wh = (200, 60)
-        #          Normal           Selected
-        self.colors = (colors.yellow, (255, 255, 255, 0.1))
+        self.colors = (colors.yellow, (255, 255, 255))
         self.spriteInit = False
         self.hover = False
         self.clicked = False
         self.instaKill = False
         self.text = ''
         self.center = False
+        self.rounded = True
         for k, v in kwargs.items():
             self.__dict__[k] = v
 
@@ -81,12 +81,24 @@ class Button(pygame.sprite.Sprite):
                         if self.instaKill:
                             self.kill()
 
-            self.image.fill(self.colors[1])
+            self.drawBG(1)
         else:
-            self.image.fill(self.colors[0])
+            self.drawBG(0)
         
         self.image.blit(self.rendText, self.textRect)
-    
+    def drawBG(self, colorIndex = 0):
+        if self.rounded:
+            borderRadius = 15
+        else:
+            borderRadius = 0
+        pygame.draw.rect(
+            self.image,
+            self.colors[colorIndex],
+            self.image.get_rect(),
+            0,
+            borderRadius
+        )
+        return
     def reset(self):
         self.clicked = False
 

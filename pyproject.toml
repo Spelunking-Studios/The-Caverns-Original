@@ -8,6 +8,7 @@ license = "None"
 [tool.poetry.dependencies]
 python = "^3.8"
 PyTMX = "^3.31"
+pygame = "^2.1.2"
 
 [tool.poetry.dev-dependencies]
 

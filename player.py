@@ -29,7 +29,7 @@ class Player(pygame.sprite.Sprite):
         self.roomBound = True
         self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png'), 'wand':asset('player/playerHit1.png')}
         self.width, self.height = 42, 42
-        self.health = 100
+        self.health = 50
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
