@@ -7,6 +7,7 @@ from animations import *
 from objects import *
 from player import *
 from stgs import *
+from effects import HurtEffect
 
 # Base Enemy class - should be inherited by all enemies
 class Enemy(pygame.sprite.Sprite):
@@ -87,7 +88,7 @@ class Enemy(pygame.sprite.Sprite):
         return False
     def takeDamage(self, damage):
         self.health -= damage
-        self.animations.fx(HurtFx())
+        self.animations.fx(HurtEffect())
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
     def attemptToDealDamage(self):

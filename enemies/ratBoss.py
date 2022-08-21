@@ -1,15 +1,17 @@
+from socketserver import ThreadingUnixStreamServer
 from .enemy import Enemy
 from .imageSheet import ImageSheet
 import pygame
 from stgs import asset, now
 import math
+from effects import HurtEffect
 
 class RatBoss(Enemy):
     """Rat Boss enemy"""
     def __init__(self, game, objT):
         super().__init__(game, objT)
         self.health = 200
-        self.damage = 5
+        self.damage = 32
         self.width = 128
         self.height = 128
         self.reach = 64
@@ -27,7 +29,7 @@ class RatBoss(Enemy):
             "3": 5
         }
         for k in self.imagesInfo.keys():
-            for i in range(1, self.imagesInfo[k]):
+            for i in range(1, self.imagesInfo[k] + 1):
                 image = pygame.transform.scale(
                     pygame.image.load(asset("enemies", "rat_boss", f"rat_boss_{int(k)}_{i}.png"))
                         .convert_alpha(),
@@ -40,12 +42,16 @@ class RatBoss(Enemy):
     def update(self):
         super().update()
         self.imageAccumulator += self.game.dt()
-        if (self.imageAccumulator > 1):
+        if (self.imageAccumulator > 0.1):
             self.imageIndex = (self.imageIndex + 1) % self.imagesInfo[str(self.stage)]
             self.image = self.images[self.imageIndex]
             self.origImage = self.image.copy()
+            self.imageAccumulator = 0
         if self.active:
             self.move()
+        if self.hurting:
+            self.applyHurtEffect()
+        self.animations.update()
     def move(self):
         """Move the rat boss"""
         testVec = pygame.Vector2(self.pos)
