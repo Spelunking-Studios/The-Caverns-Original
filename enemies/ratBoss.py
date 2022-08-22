@@ -1,4 +1,7 @@
+<<<<<<< HEAD
 # from socketserver import ThreadingUnixStreamServer
+=======
+>>>>>>> 82eae6df1d06f692c3572baf1f9b8e081664da1f
 from .enemy import Enemy
 from .imageSheet import ImageSheet
 import pygame
@@ -43,14 +46,22 @@ class RatBoss(Enemy):
         super().update()
         self.imageAccumulator += self.game.dt()
         if (self.imageAccumulator > 0.1):
+            if self.stage == 1:
+                self.imageOffset = 0
+            else:
+                ac = 0
+                for k in self.imagesInfo.keys():
+                    if int(k) >= self.stage:
+                        break
+                    ac += self.imagesInfo[k]
+                self.imageOffset = ac
             self.imageIndex = (self.imageIndex + 1) % self.imagesInfo[str(self.stage)]
+            self.imageIndex += self.imageOffset
             self.image = self.images[self.imageIndex]
             self.origImage = self.image.copy()
             self.imageAccumulator = 0
         if self.active:
             self.move()
-        if self.hurting:
-            self.applyHurtEffect()
         self.animations.update()
     def move(self):
         """Move the rat boss"""
@@ -64,3 +75,12 @@ class RatBoss(Enemy):
             self.pos.y += self.vel.y * self.speed * self.game.dt()
         self.setAngle()
         self.rect.center = self.pos
+    def takeDamage(self, damage):
+        super().takeDamage(damage)
+        healthPercent = int(100 / (200 / self.health))
+        if healthPercent > 65:
+            self.stage = 1
+        elif healthPercent > 25:
+            self.stage = 2
+        else:
+            self.stage = 3
