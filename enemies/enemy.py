@@ -88,7 +88,7 @@ class Enemy(pygame.sprite.Sprite):
         return False
     def takeDamage(self, damage):
         self.health -= damage
-        self.animations.fx(HurtEffect())
+        self.animations.fx(HurtEffect(self.game, self))
         self.game.mixer.playFx('hit1')
         self.lastHit = pygame.time.get_ticks()
     def attemptToDealDamage(self):
