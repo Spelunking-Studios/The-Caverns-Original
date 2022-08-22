@@ -301,7 +301,7 @@ def main(game, loadingScreenOn = False):
             if iloadingLinesEloadingTextLen or lssb:
                 if toMainMenuButton.text != "Continue" and iloadingLinesEloadingTextLen:
                     toMainMenuButton.setText("Continue")
-                game.win.blit(toMainMenuButton.image, toMainMenuButton.rect)
+            game.win.blit(toMainMenuButton.image, toMainMenuButton.rect)
             #for t in loadingText:
             #    game.win.blit(t.image, t)
         

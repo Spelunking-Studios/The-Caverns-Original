@@ -30,7 +30,7 @@ class PlayerStats(Stats):
 	def __init__(self):
 		super().__init__(
 			health=50,
-			healthMax=40,
+			healthMax=50,
 			strength=0,
 			speed=15,
 			atkDamage=0,

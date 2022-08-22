@@ -12,7 +12,7 @@ class Rat(Enemy):
         super().__init__(game, objT)
 
         self.health = 20
-        self.damage = 5
+        self.damage = 2
         self.width = 48
         self.height = 48
         self.angle = 0

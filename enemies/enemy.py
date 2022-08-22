@@ -64,24 +64,6 @@ class Enemy(pygame.sprite.Sprite):
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
 
-<<<<<<< HEAD
-        else:
-            self.animations.freeze = False
-            if mPos.length() > 20:
-                try:
-                    mPos.normalize_ip()
-                    self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
-                    self.vel = mPos
-                except ValueError:
-                    self.angle = 0
-                    self.vel = pygame.Vector2(0, 0)
-                self.angle -= 90
-            else:
-                self.vel = pygame.Vector2(0, 0)
-                if now() - self.lastAttack >= self.attackDelay:
-                    self.game.player.takeDamage(self.damage)
-                    self.lastAttack = now()
-=======
         try:
             mPos.normalize_ip()
             self.angle = math.degrees(math.atan2(-mPos.y, mPos.x)) #+ random.randrange(-2, 2)
@@ -92,7 +74,6 @@ class Enemy(pygame.sprite.Sprite):
         self.angle -= 90
         self.rotateImage()
     def rotateImage(self):
->>>>>>> 59365beabc2204ad7a6daacc018bb488a7b1dba3
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
     def setAngle(self):
@@ -107,8 +88,9 @@ class Enemy(pygame.sprite.Sprite):
         return False
     def takeDamage(self, damage):
         self.health -= damage
-        self.animations.fx(HurtEffect())
+        self.animations.fx(HurtEffect(self))
         self.game.mixer.playFx('hit1')
+
         self.lastHit = pygame.time.get_ticks()
     def attemptToDealDamage(self):
         """Attempt to deal damage to the player"""

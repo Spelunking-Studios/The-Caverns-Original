@@ -4,6 +4,7 @@ import menu
 from menu import createFrame
 import overlay
 import colors
+from math import sin 
 
 class Hud(pygame.sprite.Sprite):
     def __init__(self, game):
@@ -73,19 +74,23 @@ class SlotHud(pygame.sprite.Sprite):
 class HeathHud(Hud):
     def __init__(self, game):
         super().__init__(game)
-        self.image = pygame.Surface((100, 20))
-        self.image.fill((255, 255, 255))
-        self.rect = pygame.Rect(20, 600, 100, 20)
-        self.rendWidth = 100
+        
+        self.rect = pygame.Rect(275, 650, 450, 30)
+        self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+        self.bgColor = colors.dark(colors.grey, 70)
+        self.padX, self.padY = 4, 3
+        self.render()
+
     def render(self):
-        self.image.fill((255, 255, 255))
+        self.image.fill(self.bgColor)
         pygame.draw.rect(
             self.image,
-            (255, 0, 0),
-            (0, 0, self.rendWidth, 20)
+            colors.green,#colors.light(colors.green, sin(pygame.time.get_ticks()*80)),
+            (self.padX, self.padY, (self.rect.width-self.padX*2)*(self.game.player.stats.health/self.game.player.stats.healthMax), self.rect.height-self.padY*2),
+            0,
+            5
         )
     def update(self):
-        self.rendWidth = 100 / (50 / self.game.player.stats.health)
         self.render()
 
 # class InventoryHud(pygame.sprite.Sprite):

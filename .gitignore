@@ -9,6 +9,8 @@ __pycache__/
 Sprite Master/
 tests/
 
+website/
+
 # Distribution / packaging
 bin/
 build/

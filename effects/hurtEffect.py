@@ -3,8 +3,8 @@ import pygame
 
 class HurtEffect(Effect):
     """Generic hurt effect"""
-    def __init__(self, game, referant, **kwargs):
-        super().__init__(game, referant)
+    def __init__(self, sprite, **kwargs):
+        super().__init__(sprite.game, sprite)
         self.duration = 0.25
         for key, value in kwargs.items():
             self.__dict__[key] = value
@@ -13,7 +13,7 @@ class HurtEffect(Effect):
         darkness = min(255, max(0, round(
             255 * (self.accumulator/self.duration)
         )))
-        self.referant.image.fill(
+        self.sprite.image.fill(
             (255, darkness, darkness),
             special_flags = pygame.BLEND_MULT
         )
