@@ -75,10 +75,8 @@ class SettingsMenu(Menu):
             game,
             (800, 250),
             text = 'Toggle FPS', 
-            colors=(colors.yellow, colors.white), 
             onClick = game.toggleFps,
             groups = [self.comps, self.layer1],
-            center = True
         )
         aaliasButton = Button(
             game,
@@ -86,8 +84,6 @@ class SettingsMenu(Menu):
             text = 'Toggle Anti - Aliasing',
             onClick = game.toggleAalias,
             groups = [self.comps, self.layer1],
-            center = True,
-            colors=(colors.yellow, colors.white)
         )
         joystickButton = Button(
             game,
@@ -95,8 +91,6 @@ class SettingsMenu(Menu):
             text = 'Joystick Disable',
             onClick = game.disableJoystick,
             groups = [self.comps, self.layer1],
-            center = True,
-            colors=(colors.yellow, colors.white)
         )
         self.layer1.add([
             Text(
@@ -242,7 +236,7 @@ def main(game, loadingScreenOn = False):
     # text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     title = pygame.image.load(asset("objects/TheCaverns2.png"))
     title.set_colorkey((255,255,255))
-    titleRect = pygame.Rect(0, -40, title.get_width(), title.get_height())
+    titleRect = pygame.Rect(0, -80, title.get_width(), title.get_height())
     titleRect.centerx = winWidth/2
     #text3 = Text('title2', 'Created by LGgameLAB (with help)', colors.orangeRed, game.antialiasing, (0, 110))
     #text3.rect.centerx = winWidth/2

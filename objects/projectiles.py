@@ -67,4 +67,3 @@ class Fireball(Projectile):
         LightEffect(self.game, self.rect)
         self.light.kill()
         super().kill()
-        

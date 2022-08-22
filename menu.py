@@ -27,7 +27,7 @@ class Button(pygame.sprite.Sprite):
         self.clicked = False
         self.instaKill = False
         self.text = ''
-        self.center = False
+        self.center = True
         self.rounded = True
         for k, v in kwargs.items():
             self.__dict__[k] = v

@@ -17,7 +17,7 @@ class Rat(Enemy):
         self.height = 48
         self.angle = 0
         self.speed = 90
-        self.attackDelay = 120
+        self.attackDelay = 620
         
         if not ratImage:
             ratImage = pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha()

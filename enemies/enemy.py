@@ -78,6 +78,7 @@ class Enemy(pygame.sprite.Sprite):
                 self.vel = pygame.Vector2(0, 0)
                 if now() - self.lastAttack >= self.attackDelay:
                     self.game.player.takeDamage(self.damage)
+                    self.lastAttack = now()
         self.image = pygame.transform.rotate(self.origImage, self.angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
     def collideCheck(self, vector):
