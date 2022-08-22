@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-# from socketserver import ThreadingUnixStreamServer
-=======
->>>>>>> 82eae6df1d06f692c3572baf1f9b8e081664da1f
 from .enemy import Enemy
 from .imageSheet import ImageSheet
 import pygame
