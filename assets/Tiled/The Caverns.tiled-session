@@ -517,27 +517,43 @@
             }
         },
         "Floor1/room1.tmx": {
-            "scale": 1,
-            "selectedLayer": 2,
+            "scale": 0.33,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1023.5,
-                "y": 767.5
+                "x": 1025.7575757575755,
+                "y": 766.6666666666665
             }
         },
         "Floor1/room2.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 4,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 1023.5295318801368,
-                "y": 766.3402930215938
+                "x": 1023.5295318801369,
+                "y": 767.3857777324009
             }
         },
         "Floor1/room3.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 0,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 1027.7114707233652,
                 "y": 771.5677165756292
+            }
+        },
+        "Floor1/room4.tmx": {
+            "scale": 2,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1908.75,
+                "y": 2685
+            }
+        },
+        "Floor1/room5.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1023,
+                "y": 768
             }
         },
         "Project0-tileset1.tsx": {
@@ -612,11 +628,13 @@
     "map.width": 80,
     "openFiles": [
         "Floor1/room1.tmx",
-        "Floor1/room2.tmx"
+        "Floor1/room2.tmx",
+        "Floor1/room5.tmx"
     ],
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "Floor1/room5.tmx",
         "Floor1/room2.tmx",
         "Floor1/room1.tmx",
         "room1-floor1.tmx",
@@ -627,8 +645,7 @@
         "cave2.tmx",
         "cave1.tmx",
         "Project0-tileset1.tsx",
-        "level1/level1.tmx",
-        "C:/Users/LukeG/Downloads/invisboi.tsx"
+        "level1/level1.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

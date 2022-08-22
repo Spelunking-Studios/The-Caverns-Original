@@ -100,16 +100,19 @@ class Animation:
     """Basic animation"""
     def __init__(self, sprite):
         self.sprite = sprite
-        self.imageEffects = []
-        self.delay = 12
-        self.lastTick = pygame.time.get_ticks()
+        self.imageEffects = pygame.sprite.Group()
+        #self.delay = 12
+        #self.lastTick = pygame.time.get_ticks()
     def fx(self, fx):
         """Add an effect to the animation"""
-        self.imageEffects.append(fx)
+        self.imageEffects.add(fx)
     def update(self):
-        if pygame.time.get_ticks() - self.lastTick >= self.delay:
-            for fx in self.imageEffects:
+        #if pygame.time.get_ticks() - self.lastTick >= self.delay:
+        for fx in self.imageEffects:
+            if isinstance(fx, HurtFx):
                 fx.update(self.sprite.image, self.sprite.origImage)
+            else:
+                fx.update()
 
 class BasicAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####

@@ -71,7 +71,7 @@ class Game:
         Groups each sprite type to perform targetted tasks
         All sprites go into the sprites group
         Sets up window, font, gravity, and cam
-        Loads data for the game levels and the player
+        Loads data for the game levels and the player   
         """
         self.layer1 = Group()
         self.layer2 = Group()
