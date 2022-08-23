@@ -23,13 +23,14 @@ class Player(pygame.sprite.Sprite):
         self.hitCooldown = 200
         self.vel = Vector2(0, 0)
         self.speed = 90
-        self.speedLim = 8
-        self.drag = 0.80
+        self.speedLim = 7
+        self.drag = 0.85
         self.damage = 10
         self.roomBound = True
         self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png'), 'wand':asset('player/playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
+        self.healthAccumulator = 0
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -66,6 +67,11 @@ class Player(pygame.sprite.Sprite):
 
     #### Updates player ####
     def update(self):
+        self.healthAccumulator += self.game.dt()
+        if self.healthAccumulator > 1:
+            if self.stats.health < 50:
+                self.stats.health += 0.1 * (50 - self.stats.health)
+            self.healthAccumulator = 0
         self.move()
         self.setAngle()
         self.checkActions()

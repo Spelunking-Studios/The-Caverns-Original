@@ -2,6 +2,7 @@ import pygame
 from .enemy import Enemy
 from stgs import *
 import animations
+import math, random
 
 ratImage = None
 
@@ -16,8 +17,9 @@ class Rat(Enemy):
         self.width = 48
         self.height = 48
         self.angle = 0
-        self.speed = 90
+        self.speed = 190
         self.attackDelay = 620
+        self.rand = random.randrange(0, 360, 45)
         
         if not ratImage:
             ratImage = pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha()
@@ -36,6 +38,10 @@ class Rat(Enemy):
         if not self.collideCheck(testVec):
             self.pos.y += self.vel.y * (self.speed * self.game.dt())
         self.setAngle()
+        wobble = math.sin(pygame.time.get_ticks()/100+self.rand)*20
+        self.angle -= wobble
+        self.rotateImage()
+        self.vel.rotate_ip(wobble)
         self.rect.center = self.pos
     def update(self):
         super().update()

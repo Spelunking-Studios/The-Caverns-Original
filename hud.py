@@ -74,7 +74,6 @@ class SlotHud(pygame.sprite.Sprite):
 class HeathHud(Hud):
     def __init__(self, game):
         super().__init__(game)
-        
         self.rect = pygame.Rect(275, 650, 450, 30)
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.bgColor = colors.dark(colors.grey, 70)
