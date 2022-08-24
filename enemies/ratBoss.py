@@ -73,7 +73,10 @@ class RatBoss(Enemy):
         self.rect.center = self.pos
     def takeDamage(self, damage):
         super().takeDamage(damage)
-        healthPercent = int(100 / (200 / self.health))
+        try:
+            healthPercent = int(100 / (200 / self.health))
+        except ZeroDivisionError:
+            healthPercent = 0
         if healthPercent > 65:
             self.stage = 1
         elif healthPercent > 25:
