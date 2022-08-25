@@ -29,6 +29,7 @@ class Button(pygame.sprite.Sprite):
         self.text = ''
         self.center = True
         self.rounded = True
+        self.textColors = (colors.black, colors.black)
         for k, v in kwargs.items():
             self.__dict__[k] = v
 
@@ -38,13 +39,16 @@ class Button(pygame.sprite.Sprite):
         self.rect.size = self.wh
         self.rect.x, self.rect.y = pos
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+        self.image.fill((255, 0, 0, 0))
         self.setText(self.text)
-    def setText(self, text):
+    def setText(self, text, color = 0):
         """Sets the button's text
         
         Arguments:
         -----
-        text: string
+        text: string,
+        color: int = 0
+            The index of the text color in the textColor array.
         """
         # Set the text
         self.text = text
@@ -52,7 +56,7 @@ class Button(pygame.sprite.Sprite):
         self.rendText = fonts['menu1'].render(
             self.text,
             self.game.antialiasing,
-            (0, 0, 0)
+            self.textColors[color]
         )
         self.textRect = self.rendText.get_rect()
         if self.center:
@@ -64,7 +68,8 @@ class Button(pygame.sprite.Sprite):
             self.textRect.x += 2
             self.textRect.y += 2
     def update(self):
-        self.image = pygame.Surface(self.rect.size)
+        self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+        self.image.fill((0, 0, 0, 0))
         self.hover = False
         self.clicked = False
         mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
@@ -98,6 +103,7 @@ class Button(pygame.sprite.Sprite):
             0,
             borderRadius
         )
+        self.setText(self.text, colorIndex)
         return
     def reset(self):
         self.clicked = False

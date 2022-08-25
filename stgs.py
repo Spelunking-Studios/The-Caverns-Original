@@ -87,7 +87,7 @@ def fgen(fn, s):
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
-winFlags = pygame.HWSURFACE
+winFlags = pygame.HWSURFACE | pygame.DOUBLEBUF
 
 iconPath = asset('logo.jpeg')
 
@@ -106,7 +106,8 @@ keySet = {
     'pUp': [pygame.K_UP, pygame.K_w],
     'pDown':[pygame.K_DOWN, pygame.K_s],
     'fullScreen': pygame.K_f,
-    'pause': pygame.K_p
+    'pause': pygame.K_p,
+    "inventory": pygame.K_TAB
 }
 
 joystickDisabled = True

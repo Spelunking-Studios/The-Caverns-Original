@@ -106,11 +106,16 @@ class Game:
         self.points = 0
         self.groups = Grouper()
         self.sprites = Group()
+        # Pause Sprites
         self.pSprites = Group()
+        # Inventory Sprites
+        self.iSprites = Group()
         self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
         self.end = False
         self.pause = False
+        self.inInventory = False
+        self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
@@ -148,6 +153,8 @@ class Game:
         self.getPause()
         if self.pause:
             self.pSprites.update()
+        elif self.inInventory:
+            self.iSprites.update()
         else:
             self.sprites.update()
             self.checkHits()
@@ -284,6 +291,14 @@ class Game:
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
             self.lastCamTog = pygame.time.get_ticks()
+        
+        # Inventory
+        if checkKey(keySet["inventory"]):
+            if self.inInventory:
+                self.inventoryOverlay.deactivate()
+            else:
+                self.inventoryOverlay.activate()
+            self.toggleInventory()
 
     def getFps(self):
         self.currentFps = self.clock.get_fps() 
@@ -299,20 +314,24 @@ class Game:
         self.cam.toggleTarget()
 
     def toggleFps(self):
-        if self.showFps:
-            self.showFps = False
-        else:
-            self.showFps = True
+        self.showFPS = not self.showFPS
     
+    def toggleInventory(self):
+        self.inInventory = not self.inInventory
+
+    def openInventory(self):
+        self.inInventory = True
+        self.inventoryOverlay.activate()
+    
+    def closeInventory(self):
+        self.inInventory = False
+        self.inventoryOverlay.deactivate()
+
     def disableJoystick(self):
         self.joystickDisabled = False if self.joystickDisabled else True
 
     def toggleAalias(self):
-        if self.antialiasing:
-            self.antialiasing = False
-        else:
-            self.antialiasing = True
-        
+        self.antialiasing = not self.antialiasing
         self.pauseScreen.loadComponents()
 
     def getFullScreen(self):
@@ -328,9 +347,8 @@ class Game:
             #pygame.display.toggle_fullscreen()
 
     def getPause(self):
-        if pygame.time.get_ticks() - self.lastPause >= 180:
-            keys = pygame.key.get_pressed()
-            if keys[keySet['pause']]:
+        if pygame.time.get_ticks() - self.lastPause >= 60:
+            if checkKey(keySet['pause']):
                 if self.pause:
                     self.unPause()
                 else:
