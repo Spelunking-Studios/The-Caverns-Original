@@ -1,0 +1,1 @@
+pyinstaller main.py --noconfirm --onefile --icon="logo.ico" --add-data "C:/Users/LukeG/Documents/Python dev/The Caverns/The Caverns/save.p;." --add-data "C:/Users/LukeG/Documents/Python dev/The Caverns/The Caverns/assets;assets/" --add-data "C:/Users/LukeG/Documents/Python dev/The Caverns/The Caverns/fonts;fonts/"

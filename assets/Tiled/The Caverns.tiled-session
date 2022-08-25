@@ -1,0 +1,661 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "Floor1/room1.tmx",
+    "expandedProjectPaths": [
+        "Floor1"
+    ],
+    "exportAsImage.drawTileGrid": false,
+    "exportAsImage.includeBackgroundColor": false,
+    "exportAsImage.useCurrentScale": false,
+    "exportAsImage.visibleLayersOnly": true,
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1025.6205013017511,
+                "y": 769.4767471540151
+            }
+        },
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1025.6205013017511,
+                "y": 769.4767471540151
+            }
+        },
+        "C:/Program Files (x86)/Tiled/examples/perspective_walls.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 496,
+                "y": 479
+            }
+        },
+        "C:/Users/LukeG/Documents/D&D/225836_hyptosis_til-art-batch-2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/D&D/d&d1.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1824,
+                "y": 358.5
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/Frodo's House by The river.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 93.66666666666666,
+                "y": 112.33333333333333
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/In Frodo's house.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 150.5,
+                "y": 105.75
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/Map1.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 186.5,
+                "y": 135.5
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/Map2.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 253.66666666666666,
+                "y": 179
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/Tiled/Frodo's House by The Forest.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 189.66666666666666,
+                "y": 17.666666666666664
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/Title.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 149.33333333333331,
+                "y": 38.666666666666664
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/backgrounds/Map1.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 350,
+                "y": 31
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Game 1/assets/untitled.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 266.3333333333333,
+                "y": 145.33333333333331
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/Cat Ladies House.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 144.66666666666666,
+                "y": 119
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/Fish.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": -8,
+                "y": 8
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/Inside cat house.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 128.25,
+                "y": 98.5
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/Rope.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 56.666666666666664,
+                "y": 62.666666666666664
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/The Fountain.tmx": {
+            "scale": 3,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": -247.66666666666666,
+                "y": -63.666666666666664
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/UpperLad.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 175,
+                "y": 171.33333333333331
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/Welcome.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 133.66666666666666,
+                "y": 125.66666666666666
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/Mother Final Encounter/assets/Tiled Tilesets/gameItems.tmx": {
+            "scale": 4,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 98.25,
+                "y": 42.25
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/RPG ultima/assets/tilesets/dungeonTest.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 422.66666666666663,
+                "y": 307.3333333333333
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/RPG ultima/assets/tilesets/map1.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 200.66666666666666,
+                "y": 160
+            }
+        },
+        "C:/Users/LukeG/Documents/GB - studio/RPG ultima/assets/tilesets/map2.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 354.5,
+                "y": 213
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/cyber_space_tileset1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/cyber_space_tileset2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 8
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level 1/level1.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1314,
+                "y": 1150
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level1/level1(2).tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1039.5,
+                "y": 399
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level1/level1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 2249.9999999999995,
+                "y": 1263.6363636363635
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level1/level12.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1598.4848484848485,
+                "y": 898.4848484848486
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level2/level2.tmx": {
+            "scale": 1,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1023.5,
+                "y": 768
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level2/level22.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 826,
+                "y": 65
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level3/level3.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1599.6666666666665,
+                "y": 896
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 560,
+                "y": 366
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/cyber_space_tileset1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/cyber_space_tileset2.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/level3.tmx": {
+            "scale": 0.17040625,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1602.0539152759948,
+                "y": 1604.9880799559874
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level4/level4.tmx": {
+            "scale": 3,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 197.49999999999997,
+                "y": 19.166666666666657
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level5/level5.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 703.75,
+                "y": 1279.25
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/level6/level6.tmx": {
+            "scale": 4,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 854.125,
+                "y": 522.875
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/Tiled/tilesetBG1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/CyberSpacePygame/assets/transparency.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/arkanos.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/cyber_space_tileset1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level1/level1(2).tmx": {
+            "scale": 4,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1074.125,
+                "y": 378.125
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level1/level1.tmx": {
+            "scale": 1,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 507.5,
+                "y": 297.5
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level2/level2.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 318.3333333333333,
+                "y": 319.33333333333337
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level3/level3.tmx": {
+            "scale": 5.5,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 349.72727272727275,
+                "y": 439.2727272727273
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/level4/level4.tmx": {
+            "scale": 1,
+            "selectedLayer": 7,
+            "viewCenter": {
+                "x": 373.5,
+                "y": 335.5
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/swordcon-basic.tsx": {
+            "dynamicWrapping": false
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/Tiled/world.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 241.5,
+                "y": 749
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/GMTK Game Jam 21 - Joined together - A Sword's conquest/assets/swordcon-adv.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/Pygame Game Framework/assets/Tiled/cyber_space_tileset1.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/Pygame Game Framework/assets/Tiled/level1/level1(2).tmx": {
+            "scale": 0.75,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 823.3333333333333,
+                "y": 566
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/Pygame Game Framework/assets/Tiled/level1/level1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 150,
+                "y": 692.4242424242424
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v.3/assets/dungeon basics.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v.3/assets/dungeonTest.tmx": {
+            "scale": 4,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 255.875,
+                "y": 255.875
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v.3/assets/farm1.4.tmx": {
+            "scale": 1.6068359374999999,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 256.093351160812,
+                "y": 99.26340099671816
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v.3/assets/farmShtuff.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2 (take two)/Jungle world.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1474,
+                "y": 668
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/dungeon basics 2.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/dungeon basics.tsx": {
+            "scaleInDock": 3,
+            "scaleInEditor": 2
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/dungeonTest.tmx": {
+            "scale": 3,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 255.99999999999997,
+                "y": 255.83333333333334
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/farm.tmx": {
+            "scale": 2,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 528.25,
+                "y": 468.25
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/farm1.4.tmx": {
+            "scale": 2,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 256,
+                "y": 255.75
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/farmShtuff.tsx": {
+            "scaleInDock": 1.5,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/sample_assets/cool world test.tmx": {
+            "scale": 1,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1470,
+                "y": 510.5
+            }
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/sample_assets/epic game art.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/RPG Engine v2.5 (take 3)/village_tileset_16.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Documents/Python dev/TheFountain.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 137.66666666666666,
+                "y": 132
+            }
+        },
+        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/arkanos.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/Tiled/level4/level4.tmx": {
+            "scale": 0.3978125,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1660.329929300864,
+                "y": 521.6025137470542
+            }
+        },
+        "C:/Users/LukeG/Downloads/a-swords-conquest-windows-64/assets/swordcon-adv.tsx": {
+            "scaleInDock": 1
+        },
+        "C:/Users/LukeG/Downloads/invisboi.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Floor1/room0.tmx": {
+            "scale": 0.3742091049382716,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1278.696840043301,
+                "y": 836.4307438527758
+            }
+        },
+        "Floor1/room1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1022.7272727272726,
+                "y": 769.6969696969695
+            }
+        },
+        "Floor1/room2.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1023.5295318801368,
+                "y": 766.3402930215938
+            }
+        },
+        "Floor1/room3.tmx": {
+            "scale": 0.47824707031249997,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1027.7114707233652,
+                "y": 771.5677165756292
+            }
+        },
+        "Floor1/room4.tmx": {
+            "scale": 2,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 1908.75,
+                "y": 2685
+            }
+        },
+        "Floor1/room5.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 1023,
+                "y": 768
+            }
+        },
+        "Project0-tileset1.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 3
+        },
+        "cave1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 328.3333333333333,
+                "y": 473.33333333333337
+            }
+        },
+        "cave2.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 305,
+                "y": 320
+            }
+        },
+        "cave3.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 464.5,
+                "y": 368
+            }
+        },
+        "level1/level1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 2,
+            "viewCenter": {
+                "x": 288,
+                "y": 351.99999999999994
+            }
+        },
+        "room1-floor1.tmx": {
+            "scale": 0.5,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1055,
+                "y": 756
+            }
+        },
+        "room2-floor1.tmx": {
+            "scale": 0.33,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 1125.7575757575755,
+                "y": 736.3636363636363
+            }
+        },
+        "swordcon-basic.tsx": {
+            "scaleInDock": 1
+        }
+    },
+    "frame.defaultDuration": 201,
+    "last.worldFilePath": "/media/ben/405F-AFA0/Code/The-Caverns/assets/Tiled/Floor1",
+    "loadedWorlds": [
+        "/media/ben/405F-AFA0/Code/The-Caverns/assets/Tiled/Floor1/room0.tmx"
+    ],
+    "map.fixedSize": true,
+    "map.height": 32,
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": null,
+    "map.orientation": 1,
+    "map.renderOrder": 0,
+    "map.tileHeight": 32,
+    "map.tileWidth": 32,
+    "map.width": 80,
+    "openFiles": [
+        "Floor1/room1.tmx",
+        "Floor1/room2.tmx",
+        "Floor1/room5.tmx"
+    ],
+    "project": "The Caverns.tiled-project",
+    "property.type": "string",
+    "recentFiles": [
+        "Floor1/room5.tmx",
+        "Floor1/room2.tmx",
+        "Floor1/room1.tmx",
+        "room1-floor1.tmx",
+        "room2-floor1.tmx",
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx",
+        "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx",
+        "cave3.tmx",
+        "cave2.tmx",
+        "cave1.tmx",
+        "Project0-tileset1.tsx",
+        "level1/level1.tmx"
+    ],
+    "tileset.embedInMap": false,
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.margin": 0,
+    "tileset.spacing": 0,
+    "tileset.tileSize": {
+        "height": 32,
+        "width": 32
+    },
+    "tileset.transparentColor": "#000000",
+    "tileset.type": 0,
+    "tileset.useTransparentColor": false
+}
