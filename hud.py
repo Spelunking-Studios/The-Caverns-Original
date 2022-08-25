@@ -16,12 +16,9 @@ class Hud(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
-class StatHud(pygame.sprite.Sprite):
+class StatHud(Hud):
     def __init__(self, game, **kwargs):
-        self.groups = game.sprites, game.hudLayer
-        self.game = game
-        pygame.sprite.Sprite.__init__(self, self.groups)
-        
+        super().__init__(game)
         self.tWidth = 10
         self.tHeight =  8
         self.tileSize = 32
@@ -89,8 +86,6 @@ class HeathHud(Hud):
             0,
             5
         )
-    def update(self):
-        self.render()
 
 # class InventoryHud(pygame.sprite.Sprite):
 #     def __init__(self, game, **kwargs):

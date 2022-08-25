@@ -20,7 +20,7 @@ class Player(pygame.sprite.Sprite):
     def __init__(self, game, image, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
-        self.hitCooldown = 200
+        self.hitCooldown = 300
         self.vel = Vector2(0, 0)
         self.speed = 90
         self.speedLim = 7
@@ -101,7 +101,7 @@ class Player(pygame.sprite.Sprite):
                             e.takeDamage(dmg[0])
                             self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
     
-    def takeDamage(self, damage):
+    def takeDamage(self, damage, knockback=0):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()

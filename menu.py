@@ -64,7 +64,6 @@ class Button(pygame.sprite.Sprite):
             self.textRect.x += 2
             self.textRect.y += 2
     def update(self):
-        self.image = pygame.Surface(self.rect.size)
         self.hover = False
         self.clicked = False
         mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
@@ -86,6 +85,7 @@ class Button(pygame.sprite.Sprite):
             self.drawBG(0)
         
         self.image.blit(self.rendText, self.textRect)
+        
     def drawBG(self, colorIndex = 0):
         if self.rounded:
             borderRadius = 15
@@ -98,7 +98,7 @@ class Button(pygame.sprite.Sprite):
             0,
             borderRadius
         )
-        return
+
     def reset(self):
         self.clicked = False
 

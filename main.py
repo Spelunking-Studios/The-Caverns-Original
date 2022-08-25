@@ -363,10 +363,9 @@ class Game:
 
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
+        self.win.fill((0, 0, 0))
         if bg:
             self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
-        else:
-            self.win.fill((0, 0, 0))
 
 while __name__ == '__main__':
     game1 = Game()

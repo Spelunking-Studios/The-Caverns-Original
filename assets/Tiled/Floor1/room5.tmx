@@ -1,10 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="77">
+<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="78">
  <imagelayer id="2" name="Image Layer 1">
   <image source="images/room5.jpg" width="2048" height="1536"/>
  </imagelayer>
  <objectgroup id="3" name="Doors">
-  <object id="1" name="Entrance" x="256" y="216" width="96" height="24"/>
+  <object id="1" name="Entrance" x="264" y="272" width="96" height="24"/>
+  <object id="77" name="Door" x="256" y="200" width="104" height="32">
+   <properties>
+    <property name="targetObj" value="Entrance2"/>
+    <property name="targetRoom" value="room4"/>
+   </properties>
+  </object>
  </objectgroup>
  <objectgroup id="4" name="Walls">
   <object id="3" name="RatBoss" x="984" y="704">
