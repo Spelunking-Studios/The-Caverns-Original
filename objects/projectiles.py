@@ -52,7 +52,8 @@ class Fireball(Projectile):
         self.animations = BasicAnimation(self)
         self.animations.delay = 30
         self.image = self.animations.getFirstFrame()
-        self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
+        self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
+        self.rect.center = self.pos
         self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size = 8)
         self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
         self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
