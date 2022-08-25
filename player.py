@@ -11,6 +11,7 @@ from stgs import *
 from overlay import transparentRect
 import fx
 import stats
+from inventory import Inventory
 
 
 #### Player object ####
@@ -31,6 +32,7 @@ class Player(pygame.sprite.Sprite):
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
+        self.inventory = Inventory(self)
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
