@@ -53,6 +53,8 @@ class Player(pygame.sprite.Sprite):
         self.stats = stats.PlayerStats()
         self.lastHit = 0
         self.lastAttack = 0
+        self.lastTimeTookDamage = 0
+        self.healDelay = 3
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
         self.lightImg = pygame.image.load(asset('objects/light2.png'))
@@ -77,7 +79,8 @@ class Player(pygame.sprite.Sprite):
 
     #### Updates player ####
     def update(self):
-        self.healthAccumulator += self.game.dt()
+        if time() - self.lastTimeTookDamage > self.healDelay:
+            self.healthAccumulator += self.game.dt()
         if self.healthAccumulator > 1:
             if self.stats.health < 50:
                 self.stats.health += 0.1 * (50 - self.stats.health)
@@ -114,6 +117,7 @@ class Player(pygame.sprite.Sprite):
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
+            self.lastTimeTookDamage = time()
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
@@ -146,6 +150,7 @@ class Player(pygame.sprite.Sprite):
 
     #### Move Physics ####
     def move(self):
+        # Apply motion based on user input
         if joystickEnabled:
             self.vel.x += self.speed*getJoy1().get_axis(0)* self.game.dt()
             self.vel.y += self.speed*getJoy1().get_axis(1)* self.game.dt()
@@ -158,7 +163,7 @@ class Player(pygame.sprite.Sprite):
                 self.vel.y -= self.speed*self.game.dt()
             if checkKey('pDown'):
                 self.vel.y += self.speed*self.game.dt()
-
+        # Limit
         lim = self.speedLim * self.game.dt2()
         if self.vel.length() > 0.1: # We can't limit a 0 vector 
             self.vel.scale_to_length(max(-lim,min(self.vel.length(),lim)))

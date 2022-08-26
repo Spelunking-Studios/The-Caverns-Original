@@ -1,6 +1,6 @@
 import math
 import random
-
+from time import time
 import fx
 import pygame
 from animations import *
@@ -9,8 +9,8 @@ from player import *
 from stgs import *
 from effects import HurtEffect
 
-# Base Enemy class - should be inherited by all enemies
 class Enemy(pygame.sprite.Sprite):
+    """Base enemy class"""
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites, game.groups.enemies, game.layer2
         self.health = 5
@@ -28,7 +28,7 @@ class Enemy(pygame.sprite.Sprite):
         self.rect = pygame.Rect(objT.x, objT.x, 64, 64)
         self.rect.center = (objT.x, objT.y)
         self.lastAttack = now()
-        self.attackDelay = 60
+        self.attackDelay = 1
         self.width, self.height = 64, 64
         self.lastHit = 0
         self.image = pygame.Surface((self.width, self.height))
@@ -58,7 +58,7 @@ class Enemy(pygame.sprite.Sprite):
         self.setAngle()
         self.rect.center = self.pos
     def setAngleFacingTarget(self, targetPos):
-        """Rotates the bat to face the target position"""
+        """Rotates the enemy to face the target position"""
         mPos = targetPos
         pPos = self.rect
         mPos.x -= pPos.centerx
@@ -98,8 +98,8 @@ class Enemy(pygame.sprite.Sprite):
         pPos = self.rect
         mPos.x -= pPos.centerx
         mPos.y -= pPos.centery
-        if mPos.length() < self.reach and (True or now() >= self.attackDelay + self.lastAttack):
-            self.lastAttack = now()
+        if mPos.length() < self.reach and (time() - self.lastAttack >= self.attackDelay):
+            self.lastAttack = time()
             self.game.player.takeDamage(self.damage)
             #self.pickEndPos(self.angle, pickRandom = True)
     def deathSound(self):
@@ -118,7 +118,7 @@ class Enemy(pygame.sprite.Sprite):
         """Activate the enemy"""
         self.active = True
     def vecsAreSemiEqual(self, vec1, vec2, error = 10):
-        """Checks if the vectors are within error (10) of eachother"""
+        """Checks if the vectors are within error (10) of each other"""
         # Make sure the vectors exist
         if not vec1 or not vec2:
             return False
