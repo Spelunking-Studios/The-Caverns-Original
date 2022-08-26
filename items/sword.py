@@ -7,7 +7,7 @@ class Sword(Item):
     def __init__(self, owner):
         super().__init__(owner, surpressIICreation = True)
         self.damage = 1
-        self.delay = 1
+        self.delay = 0.5
         self.lastUse = -1
         self.inventoryItem = InventoryItem(
             self.owner.inventory,

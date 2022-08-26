@@ -293,11 +293,8 @@ class Game:
             self.lastCamTog = pygame.time.get_ticks()
         
         # Inventory
-        if checkKey(keySet["inventory"]):
-            if self.inInventory:
-                self.inventoryOverlay.deactivate()
-            else:
-                self.inventoryOverlay.activate()
+        if checkKey(keySet["inventory"]) and self.inventoryOverlay.checkIfActivationPossible():
+            self.toggleInventory()
 
     def getFps(self):
         self.currentFps = self.clock.get_fps() 
@@ -316,7 +313,10 @@ class Game:
         self.showFPS = not self.showFPS
     
     def toggleInventory(self):
-        self.inInventory = not self.inInventory
+        if self.inInventory:
+            self.closeInventory()
+        else:
+            self.openInventory()
 
     def openInventory(self):
         self.inInventory = True

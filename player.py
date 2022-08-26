@@ -1,6 +1,7 @@
 #### Imports ####
 
 import math
+from time import time
 
 import pygame
 from pygame import Vector2

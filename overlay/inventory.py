@@ -17,8 +17,8 @@ class InventoryOverlay(Overlay):
         self.lastInventoryPollTime = 0
         self.inventoryPollDelay = 10
         self.iitems = []
-        self.lastOpenTime = 0
-        self.openDelay = 1
+        self.lastChangeTime = 0
+        self.changeDelay = 0.5
         self.itemComps = pygame.sprite.Group()
         self.loadComps()
         self.render()
@@ -61,20 +61,26 @@ class InventoryOverlay(Overlay):
         if self.active:
             if self.exitBtn.clicked:
                 self.deactivate()
-                self.game.closeInventory()
             if time() - self.lastInventoryPollTime >= self.inventoryPollDelay:
                 self.pollInventory()
                 self.lastInventoryPollTime = time()
             self.render()
             self.comps.update()
+    def checkIfActivationPossible(self):
+        return time() - self.lastChangeTime >= self.changeDelay
     def activate(self):
-        if time() - self.lastOpenTime >= self.openDelay:
-            self.lastOpenTime = time()
+        if self.checkIfActivationPossible():
+            self.lastChangeTime = time()
             super().activate()
-            self.game.inInventory = True
+            if not self.game.inInventory:
+                print("Warning: game's inventory overlay was not open. Opening it...")
+                self.game.openInventory()
     def deactivate(self):
         super().deactivate()
-        self.game.inInventory = False
+        self.lastChangeTime = time()
+        if self.game.inInventory:
+            print("Warning: game's inventory overlay was not closed. Closing it...")
+            self.game.closeInventory()
     def render(self):
         self.image.fill((0, 0, 0, 127))
         self.image.blit(self.menuBg, (self.width / 2 - 400, self.height / 2 - 300))
