@@ -157,10 +157,24 @@ class Text(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
         self.image = self.image.convert_alpha()
 
+class Image(pygame.sprite.Sprite):
+    def __init__(self, image, pos, **kwargs):
+        self.image = image
+        self.pos = pos
+        self.x = 0
+        self.y = 0
+        self.width = 32
+        self.height = 32
+        self.groups = []
+        for key, value in kwargs.items():
+            self.__dict__[key] = value
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+        super().__init__(self.groups)
+
 class SettingSlider(pygame.sprite.Sprite):
     '''
     A menu object that acts as a basic slider that stores it's value as a percentage ( use SettingSlider.getRatio() )
-    It renders itself using pygame draw methods and color values given as SettingSlider.color
+    It renders itself using pygame draw methods and color values given as SettingSlider.colors
     '''
     
     def __init__(self, game, pos,**kwargs):

@@ -298,7 +298,6 @@ class Game:
                 self.inventoryOverlay.deactivate()
             else:
                 self.inventoryOverlay.activate()
-            self.toggleInventory()
 
     def getFps(self):
         self.currentFps = self.clock.get_fps() 

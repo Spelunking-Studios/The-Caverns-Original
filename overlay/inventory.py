@@ -1,9 +1,11 @@
 from .overlay import Overlay
-from menu import Button
+from menu import Button, Image
 import colors
-from stgs import winWidth, winHeight
+from stgs import winWidth, winHeight, asset
 import pygame
 from time import time
+
+cachedImages = {}
 
 class InventoryOverlay(Overlay):
     def __init__(self, game):
@@ -15,6 +17,8 @@ class InventoryOverlay(Overlay):
         self.lastInventoryPollTime = 0
         self.inventoryPollDelay = 10
         self.iitems = []
+        self.lastOpenTime = 0
+        self.openDelay = 1
         self.itemComps = pygame.sprite.Group()
         self.loadComps()
         self.render()
@@ -46,7 +50,13 @@ class InventoryOverlay(Overlay):
     def pollInventory(self):
         """Poll the inventory for items"""
         self.iitems = self.game.player.inventory.items.items()
-        print(self.iitems)
+        for item in self.itemComps:
+            item.kill()
+        for item in self.iitems:
+            if not item[0] in cachedImages:
+                cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(asset("items", item[1]["category"], item[0] + ".png")), (32, 32))
+            Image(cachedImages[item[0]], (0, 0), groups = [self.itemComps])
+        print(self.itemComps)
     def update(self):
         if self.active:
             if self.exitBtn.clicked:
@@ -57,6 +67,14 @@ class InventoryOverlay(Overlay):
                 self.lastInventoryPollTime = time()
             self.render()
             self.comps.update()
+    def activate(self):
+        if time() - self.lastOpenTime >= self.openDelay:
+            self.lastOpenTime = time()
+            super().activate()
+            self.game.inInventory = True
+    def deactivate(self):
+        super().deactivate()
+        self.game.inInventory = False
     def render(self):
         self.image.fill((0, 0, 0, 127))
         self.image.blit(self.menuBg, (self.width / 2 - 400, self.height / 2 - 300))
