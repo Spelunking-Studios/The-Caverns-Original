@@ -20,6 +20,7 @@
         pkgs.xorg.libXinerama
         pkgs.xorg.libXcursor
         pkgs.xorg.libXi
+        pkgs.glfw
     ];
     env = {
         LD_INCLUDE_PATH = pkgs.lib.makeLibraryPath ([

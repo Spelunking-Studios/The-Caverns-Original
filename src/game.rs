@@ -1,18 +1,24 @@
 use raylib::prelude::*;
 
-pub struct Game;
+use crate::settings;
 
-impl Defautl for Game {
+pub struct Game {}
+
+impl Default for Game {
     fn default() -> Game {
         Game {}
     }
 }
 
 impl Game {
-    fn init(&self) {
-        
+    fn init(&self) -> (RaylibHandle, RaylibThread) {
+        let (hand, _thread) = raylib::init()
+            .size(1200, 700)
+            .title(settings::TITLE)
+            .build();
+        (hand, _thread)
     }
     pub fn run(&self) {
-        self.init();
+        let (mut rl, _thread) = self.init();
     }
 }
