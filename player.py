@@ -1,4 +1,3 @@
-
 #### Imports ####
 
 import math
@@ -12,6 +11,7 @@ from overlay import transparentRect
 import fx
 import stats
 from inventory import Inventory
+from items import Sword
 
 
 #### Player object ####
@@ -33,6 +33,13 @@ class Player(pygame.sprite.Sprite):
         self.health = 50
         self.healthAccumulator = 0
         self.inventory = Inventory(self)
+
+        ############################
+        # This is just for testing #
+        ############################
+        self.sword = Sword(self)
+        self.inventory.addItem(self.sword.inventoryItem)
+        self.inventory.setEquippedWeapon(self.sword.inventoryItem)
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -88,7 +95,8 @@ class Player(pygame.sprite.Sprite):
         action2 = getJoy1().get_axis(4) > 0 if joystickEnabled else pygame.mouse.get_pressed()[2] and self.stats.inventory.getSlot(2) != None
 
         if action1:
-            self.stats.inventory.getSlot(1).action(self)
+            #self.stats.inventory.getSlot(1).action(self)
+            self.inventory.equippedWeapon.owners[-1].action(self)
         elif action2:
             self.stats.inventory.getSlot(2).action(self)
             

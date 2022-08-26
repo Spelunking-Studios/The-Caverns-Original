@@ -13,6 +13,7 @@ class Inventory:
         """
         self.entity = entity
         self.items = {}
+        self.equippedWeapon = None
     def addItem(self, item):
         """Adds an item to the inventory
         
@@ -45,6 +46,16 @@ class Inventory:
             return self.items[name]
         except KeyError:
             return False
+    def setEquippedWeapon(self, item):
+        """
+        Set the equiped weapon
+        
+        Arguments:
+        -----
+        item: InventoryItem
+            The item to be equipped
+        """
+        self.equippedWeapon = item
     def filter(self, _for, by = "groups"):
         """
         Filter all items by either their groups or cetegory
