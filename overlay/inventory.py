@@ -3,6 +3,7 @@ from menu import Button
 import colors
 from stgs import winWidth, winHeight
 import pygame
+from time import time
 
 class InventoryOverlay(Overlay):
     def __init__(self, game):
@@ -11,6 +12,10 @@ class InventoryOverlay(Overlay):
         self.height = winHeight
         self.image = pygame.Surface((self.width, self.height), pygame.SRCALPHA).convert_alpha()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
+        self.lastInventoryPollTime = 0
+        self.inventoryPollDelay = 10
+        self.iitems = []
+        self.itemComps = pygame.sprite.Group()
         self.loadComps()
         self.render()
     def loadComps(self):
@@ -38,11 +43,18 @@ class InventoryOverlay(Overlay):
             wh = (80, 20),
             rounded = False
         )
+    def pollInventory(self):
+        """Poll the inventory for items"""
+        self.iitems = self.game.player.inventory.items.items()
+        print(self.iitems)
     def update(self):
         if self.active:
             if self.exitBtn.clicked:
                 self.deactivate()
                 self.game.closeInventory()
+            if time() - self.lastInventoryPollTime >= self.inventoryPollDelay:
+                self.pollInventory()
+                self.lastInventoryPollTime = time()
             self.render()
             self.comps.update()
     def render(self):
@@ -50,3 +62,5 @@ class InventoryOverlay(Overlay):
         self.image.blit(self.menuBg, (self.width / 2 - 400, self.height / 2 - 300))
         for comp in self.comps:
             self.image.blit(comp.image, comp.rect)
+        for itemComp in self.itemComps:
+            self.image.blit(itemComp.image, itemComp.rect)
