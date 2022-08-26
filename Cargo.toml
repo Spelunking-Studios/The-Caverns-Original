@@ -1,8 +1,10 @@
 [package]
-name = "the-caverns"
+name = "the_caverns"
 version = "0.1.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
+raylib = "3.7.0"
+tiled = "0.10.2"

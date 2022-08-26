@@ -1,4 +1,15 @@
-run = ""
+run = "clear && ./target/debug/the_caverns"
+compile = "cargo build"
+entrypoint = "src/main.rs"
+onBoot = "rustup toolchain install stable"
 
 [nix]
 channel = "stable-21_11"
+
+[languages]
+
+[languages.rust]
+pattern = "**/*.rs"
+
+[languages.rust.languageServer]
+start = "rust-analyzer"
