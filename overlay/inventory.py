@@ -52,10 +52,20 @@ class InventoryOverlay(Overlay):
         self.iitems = self.game.player.inventory.items.items()
         for item in self.itemComps:
             item.kill()
+        itemIndex = 0
         for item in self.iitems:
             if not item[0] in cachedImages:
-                cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(asset("items", item[1]["category"], item[0] + ".png")), (32, 32))
-            Image(cachedImages[item[0]], (0, 0), groups = [self.itemComps])
+                cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(asset("items", item[1]["category"], item[0] + ".png")), (64, 64))
+            i = Image(
+                cachedImages[item[0]],
+                (
+                    (self.width / 2 - 400) + 10 + (74 * (itemIndex % 3)),
+                    (self.height / 2 - 300) + 30 + (74 * (itemIndex % 3))
+                ),
+                groups = [self.itemComps]
+            )
+            print(i.rect)
+            itemIndex += 1
         print(self.itemComps)
     def update(self):
         if self.active:

@@ -159,10 +159,11 @@ class Text(pygame.sprite.Sprite):
 
 class Image(pygame.sprite.Sprite):
     def __init__(self, image, pos, **kwargs):
+        self.trueImage = image
         self.image = image
-        self.pos = pos
-        self.x = 0
-        self.y = 0
+        self.colors = [(50, 50, 50), (60, 60, 60]
+        self.x = pos[0]
+        self.y = pos[1]
         self.width = 32
         self.height = 32
         self.groups = []
@@ -170,6 +171,12 @@ class Image(pygame.sprite.Sprite):
             self.__dict__[key] = value
         self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         super().__init__(self.groups)
+        self.drawBG()
+    def drawBG(self, colorIndex = 0):
+        self.image.fill(self.colors[colorIndex)
+        self.image.blit(self.trueImage)
+    def update(self):
+        mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
 
 class SettingSlider(pygame.sprite.Sprite):
     '''
