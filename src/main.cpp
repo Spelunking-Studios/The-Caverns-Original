@@ -9,6 +9,7 @@ int main(int argc, char**argv) {
     Engine e;
     e.setMainLoop(mainLoop);
     e.setEventHandler(eventHandler);
+    e.setClearColor(sf::Color::Green);
     e.run();
     return 0;
 }
@@ -20,6 +21,8 @@ void eventHandler(Engine *e, sf::Event event) {
 }
 
 void mainLoop(Engine *e, sf::RenderWindow *window) {
+    // Clear the screen
+    e->clearScreen();
     // Process events
     e->processEvents();
     // Update the screen

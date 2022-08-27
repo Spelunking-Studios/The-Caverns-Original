@@ -10,12 +10,15 @@ class Engine {
         Window* window;
         void (*eventHandler)(Engine *e, sf::Event event);
         void (*mainLoopFn)(Engine *e, sf::RenderWindow *window);
+        sf::Color clearColor = sf::Color::Black;
         // Methods
         void run(void);
         void stop(void);
         void setMainLoop(void (*fn)(Engine *e, sf::RenderWindow *window));
         void setEventHandler(void (*callback)(Engine *e, sf::Event event));
         void processEvents(void);
+        void clearScreen(void);
+        void setClearColor(sf::Color c);
 };
 
 inline Engine::Engine() {
@@ -46,4 +49,12 @@ inline void Engine::processEvents(void) {
     while (window->sfmlWindow->pollEvent(event)) {
         (*eventHandler)(this, event);
     }
+}
+
+inline void Engine::clearScreen(void) {
+    window->sfmlWindow->clear(clearColor);
+}
+
+inline void Engine::setClearColor(sf::Color c) {
+    clearColor = c;
 }
