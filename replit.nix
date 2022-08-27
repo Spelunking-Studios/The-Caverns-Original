@@ -1,6 +1,8 @@
 { pkgs }: {
 	deps = [
 		pkgs.python39Full
+        pkgs.cmake
+        pkgs.sfml
 	];
   env = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath ([
