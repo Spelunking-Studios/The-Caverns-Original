@@ -18,6 +18,7 @@ class Item:
         """
         self.owner = owner
         self.surpressIICreation = False
+        hasImage = False
         for key, value in kwargs.items():
             self.__dict__[key] = value
         if not self.surpressIICreation:

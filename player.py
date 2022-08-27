@@ -12,7 +12,7 @@ from overlay import transparentRect
 import fx
 import stats
 from inventory import Inventory
-from items import Sword
+from items import Sword, Item
 
 
 #### Player object ####
@@ -35,9 +35,9 @@ class Player(pygame.sprite.Sprite):
         self.healthAccumulator = 0
         self.inventory = Inventory(self)
 
-        ############################
-        # This is just for testing #
-        ############################
+        ########################
+        # This is just for now #
+        ########################
         self.sword = Sword(self)
         self.inventory.addItem(self.sword.inventoryItem)
         self.inventory.setEquippedWeapon(self.sword.inventoryItem)

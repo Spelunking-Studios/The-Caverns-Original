@@ -2,7 +2,7 @@ from .overlay import Overlay
 from menu import Button, Image
 import colors
 from stgs import winWidth, winHeight, asset
-import pygame
+import pygame, os
 from time import time
 
 cachedImages = {}
@@ -52,20 +52,31 @@ class InventoryOverlay(Overlay):
         self.iitems = self.game.player.inventory.items.items()
         for item in self.itemComps:
             item.kill()
-        itemIndex = 0
+        ix = 0
+        iy = 0 
+        print(self.iitems)
         for item in self.iitems:
+            print(item)
             if not item[0] in cachedImages:
-                cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(asset("items", item[1]["category"], item[0] + ".png")), (64, 64))
+                imagePath = asset("items", item[1]["category"], item[0] + ".png")
+                if os.path.exists(imagePath):
+                    cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(imagePath).convert_alpha(), (64, 64))
+                else:
+                    cachedImages[item[0]] = pygame.transform.scale(pygame.Surface((1, 1), pygame.SRCALPHA).convert_alpha(), (64, 64))
+            imref = cachedImages[item[0]]
             i = Image(
-                cachedImages[item[0]],
+                imref,
                 (
-                    (self.width / 2 - 400) + 10 + (74 * (itemIndex % 3)),
-                    (self.height / 2 - 300) + 30 + (74 * (itemIndex % 3))
+                    (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
+                    (self.height / 2 - 300) + 30 + (74 * (iy % 3))
                 ),
                 groups = [self.itemComps]
             )
             print(i.rect)
-            itemIndex += 1
+            ix += 1
+            if ix > 3:
+                ix = 0
+                iy += 1
         print(self.itemComps)
     def update(self):
         if self.active:

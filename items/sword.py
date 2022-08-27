@@ -9,6 +9,7 @@ class Sword(Item):
         self.damage = 1
         self.delay = 0.5
         self.lastUse = -1
+        hasImage = True
         self.inventoryItem = InventoryItem(
             self.owner.inventory,
             "Sword",
