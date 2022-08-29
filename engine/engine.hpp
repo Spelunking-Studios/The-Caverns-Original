@@ -1,34 +1,79 @@
+#pragma once
+
+#ifndef ENGINE_HPP
+#define ENGINE_HPP
+
 #include <iostream>
-#include <window.hpp>
-#include <sprite.hpp>
+#include <vector>
+#include <exception>
+
+class Menu;
+
+#include "window.hpp"
+#include "sprite.hpp"
+#include "surface.hpp"
+#include "ui/menu/component.hpp"
+#include "ui/menu/text.hpp"
+#include "exceptions.hpp"
 
 class Engine {
     public:
         // Constructor & Destructor
         Engine();
+        Engine(int width, int height);
         // Properties
-        Window* window;
+        int width = 1;
+        int height = 1;
+        Window *window;
+        Menu *activeMenu;
+        bool inMenu = false;
+        std::vector<Menu *> menus = {};
         void (*eventHandler)(Engine *e, sf::Event event);
         void (*mainLoopFn)(Engine *e, sf::RenderWindow *window);
+        void (*gameLoopFn)(Engine *e, sf::RenderWindow *window);
         sf::Color clearColor = sf::Color::Black;
         // Methods
         void run(void);
         void stop(void);
         void setMainLoop(void (*fn)(Engine *e, sf::RenderWindow *window));
+        void setGameLoop(void (*fn)(Engine *e, sf::RenderWindow *window));
         void setEventHandler(void (*callback)(Engine *e, sf::Event event));
         void processEvents(void);
         void clearScreen(void);
         void setClearColor(sf::Color c);
+        int addMenu(Menu *m);
+        void setMenu(int index);
 };
 
+#include "ui/menu.hpp"
+
 inline Engine::Engine() {
-    window = new Window();
+    window = new Window(width, height);
+}
+
+inline Engine::Engine(int width, int height) {
+    this->width = width;
+    this->height = height;
+    window = new Window(width, height);
 }
 
 inline void Engine::run(void) {
     std::cout << "Running engine..." << std::endl;
     while (window->sfmlWindow->isOpen()) {
+        // Main loop is run every frame
+        // Clear the screen
+        this->clearScreen();
         (*mainLoopFn)(this, window->sfmlWindow);
+        // If the engine is not in a menu, run the game loop
+        if (!inMenu) {
+            (*gameLoopFn)(this, window->sfmlWindow);
+        } else {
+            // Run the active menu's cycle method
+            (*activeMenu).cycle();
+            // Draw the active menu's surface to the window
+        }
+        // Display
+        window->sfmlWindow->display();
     }
 }
 
@@ -38,6 +83,10 @@ inline void Engine::stop(void) {
 
 inline void Engine::setMainLoop(void (*fn)(Engine *e, sf::RenderWindow *window)) {
     mainLoopFn = fn;
+}
+
+inline void Engine::setGameLoop(void (*fn)(Engine *e, sf::RenderWindow *window)) {
+    gameLoopFn = fn;
 }
 
 inline void Engine::setEventHandler(void (*callback)(Engine *e, sf::Event event)) {
@@ -58,3 +107,17 @@ inline void Engine::clearScreen(void) {
 inline void Engine::setClearColor(sf::Color c) {
     clearColor = c;
 }
+
+inline int Engine::addMenu(Menu *m) {
+    this->menus.push_back(m);
+    return this->menus.size() - 1;
+}
+
+inline void Engine::setMenu(int index) {
+    if (index < 0 || index > this->menus.size()) {
+        throw invalid_index_exception((char*)("index must be greater than 0 and less than the number of menus"));
+    }
+    this->activeMenu = this->menus[index];
+}
+
+#endif

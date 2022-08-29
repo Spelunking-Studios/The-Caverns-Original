@@ -1,21 +1,27 @@
+#ifndef ENGINE_WINDOW_HPP
+#define ENGINE_WINDOW_HPP
+
 #include <iostream>
 #include <SFML/Graphics.hpp>
 
 class Window {
     public:
-        // Constructor
-        Window();
+        Window(int width, int height);
         ~Window();
-        // Properties
+        int width, height;
         sf::RenderWindow* sfmlWindow;
 };
 
-inline Window::Window() {
+inline Window::Window(int width, int height) {
     std::cout << "Creating window..." << std::endl;
-    sfmlWindow = new sf::RenderWindow(sf::VideoMode(1200, 700), "The Caverns");
+    this->width = width;
+    this->height = height;
+    sfmlWindow = new sf::RenderWindow(sf::VideoMode(width, height), "The Caverns");
 }
 
 inline Window::~Window() {
     std::cout << "Closing window..." << std::endl;
     sfmlWindow->close();
 }
+
+#endif
