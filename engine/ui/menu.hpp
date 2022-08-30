@@ -30,5 +30,13 @@ inline int Menu::addComponent(MenuComponent *comp) {
 }
 
 inline void Menu::cycle(void) {
+    // Update all of the components
+    for (int i = 0; i < comps.size(); i++) {
+        comps[i]->update();
+    }
+    // Draw all of the components
+    for (int i = 0; i < comps.size(); i++) {
+        (*comps[i]) >> (*this->surface);
+    }
     (*this->surface) >> *(e->window->sfmlWindow);
 }

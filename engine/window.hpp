@@ -3,6 +3,7 @@
 
 #include <iostream>
 #include <SFML/Graphics.hpp>
+#include "surface.hpp"
 
 class Window {
     public:
@@ -10,6 +11,8 @@ class Window {
         ~Window();
         int width, height;
         sf::RenderWindow* sfmlWindow;
+        Surface *surface;
+        void update(void);
 };
 
 inline Window::Window(int width, int height) {
@@ -17,11 +20,17 @@ inline Window::Window(int width, int height) {
     this->width = width;
     this->height = height;
     sfmlWindow = new sf::RenderWindow(sf::VideoMode(width, height), "The Caverns");
+    surface = new Surface(0, 0, width, height);
+    surface->fill();
 }
 
 inline Window::~Window() {
     std::cout << "Closing window..." << std::endl;
     sfmlWindow->close();
+}
+
+inline void Window::update(void) {
+    (*surface) >> (*sfmlWindow);
 }
 
 #endif
