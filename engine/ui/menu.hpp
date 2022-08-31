@@ -19,9 +19,9 @@ inline Menu::Menu(Engine *e) {
     //windowSize.y = 3;
     //windowSize.x = 3;
     surface = new Surface(0, 0, windowSize.x, windowSize.y);
-    //surface->setFillColor(sf::Color::Black);
+    sf::Color c(0, 0, 0, 255);
+    surface->setFillColor(c);
     surface->fill();
-    std::cout << "Menu created" << std::endl;
 };
 
 inline int Menu::addComponent(MenuComponent *comp) {
@@ -36,7 +36,9 @@ inline void Menu::cycle(void) {
     }
     // Draw all of the components
     for (int i = 0; i < comps.size(); i++) {
-        (*comps[i]) >> (*this->surface);
+        //std::cout << i << std::endl;
+        //(*comps[i]) >> (*this->surface);
+        comps[i]->draw(this->surface);
     }
     (*this->surface) >> *(e->window->sfmlWindow);
 }

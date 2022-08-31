@@ -21,6 +21,7 @@ inline Window::Window(int width, int height) {
     this->height = height;
     sfmlWindow = new sf::RenderWindow(sf::VideoMode(width, height), "The Caverns");
     surface = new Surface(0, 0, width, height);
+    surface->setFillColor(sf::Color::Black);
     surface->fill();
 }
 
