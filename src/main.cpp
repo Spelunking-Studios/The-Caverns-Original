@@ -2,6 +2,7 @@
 
 void eventHandler(Engine *e, sf::Event event);
 void mainLoop(Engine *e, sf::RenderWindow *window);
+void gameLoop(Engine *e, sf::RenderWindow *window);
 
 int screenWidth = 1200;
 int screenHeight = 700;
@@ -13,6 +14,7 @@ int main(int argc, char**argv) {
     // Hook up the main loop and event handler
     (*e).setMainLoop(mainLoop);
     (*e).setEventHandler(eventHandler);
+    (*e).setGameLoop(gameLoop);
     // Set the default background color of the window
     (*e).setClearColor(sf::Color::Green);
     // Build the meus
@@ -35,4 +37,8 @@ void mainLoop(Engine *e, sf::RenderWindow *window) {
     // Runs every frame
     // Process events
     e->processEvents();
+}
+
+void gameLoop(Engine *e, sf::RenderWindow *window) {
+    
 }

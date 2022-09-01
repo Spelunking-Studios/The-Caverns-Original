@@ -25,11 +25,11 @@ class TextSurface: public Surface {
         void init(int x, int y, std::string text);
 };
 
-inline TextSurface::TextSurface(std::string text) {
+inline TextSurface::TextSurface(std::string text) : Surface(0, 0, 200, 100) {
     init(0, 0, text);
 }
 
-inline TextSurface::TextSurface(int x, int y, std::string text) {
+inline TextSurface::TextSurface(int x, int y, std::string text) : Surface(x, y, 200, 100) {
     init(x, y, text);
 }
 
@@ -65,6 +65,9 @@ inline void TextSurface::init(int x, int y, std::string text) {
     sf::Texture t = sf::Texture(rt.getTexture());
     // Resize ourself to fit the texture
     this->resize(textSize.width, textSize.height);
+    this->Surface::init(x, y, (int)textSize.width, (int)textSize.height);
+    this->x = x;
+    this->y = y;
     // Load the texture into the surface??
     this->loadFromTexture(&t);
 }

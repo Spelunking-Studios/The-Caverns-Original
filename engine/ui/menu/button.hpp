@@ -8,7 +8,6 @@ class ButtonComponent: public MenuComponent {
     public:
         ButtonComponent(Menu *m, std::string text);
         Menu *menu;
-        TextComponent *textComp;
         Surface *surface;
         std::string *text;
         int x, y, width, height;
@@ -20,5 +19,4 @@ inline ButtonComponent::ButtonComponent(Menu *m, std::string text) : menu(m), te
     width = 100;
     height = 50;
     surface = new Surface(x, y, width, height);
-    textComp = new TextComponent(menu, text);
 }
