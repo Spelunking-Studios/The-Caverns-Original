@@ -7,6 +7,9 @@
 #include <vector>
 #include <exception>
 
+#include <SFML/System/Clock.hpp>
+#include <SFML/System/Time.hpp>
+
 class Menu;
 
 #include "window.hpp"
@@ -32,6 +35,9 @@ class Engine {
         void (*mainLoopFn)(Engine *e, sf::RenderWindow *window);
         void (*gameLoopFn)(Engine *e, sf::RenderWindow *window);
         sf::Color clearColor = sf::Color::Black;
+        sf::Clock *clock;
+        unsigned int fps = 0;
+        int deltaTime = 0;
         // Methods
         void run(void);
         void stop(void);
@@ -43,24 +49,32 @@ class Engine {
         void setClearColor(sf::Color c);
         int addMenu(Menu *m);
         void setMenu(int index);
+    protected:
+        void updateFPS(void);
+        sf::Time lastFrameTime = sf::Time::Zero;
+
 };
 
 #include "ui/menu.hpp"
 
 inline Engine::Engine() {
     window = new Window(width, height);
+    clock = new sf::Clock;
 }
 
 inline Engine::Engine(int width, int height) {
     this->width = width;
     this->height = height;
     window = new Window(width, height);
+    clock = new sf::Clock;
 }
 
 inline void Engine::run(void) {
     std::cout << "Running engine..." << std::endl;
     while (window->sfmlWindow->isOpen()) {
         // Main loop is run every frame
+        // Update FPS
+        updateFPS();
         // Clear the screen
         this->clearScreen();
         (*mainLoopFn)(this, window->sfmlWindow);
@@ -118,6 +132,12 @@ inline void Engine::setMenu(int index) {
         throw invalid_index_exception((char*)("index must be greater than 0 and less than the number of menus"));
     }
     this->activeMenu = this->menus[index];
+}
+
+inline void Engine::updateFPS(void) {
+    sf::Time currentFrameTime = clock->getElapsedTime();
+    deltaTime = (currentFrameTime - lastFrameTime).asMilliseconds();
+    fps = 1000 / deltaTime;
 }
 
 #endif
