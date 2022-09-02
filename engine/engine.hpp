@@ -38,6 +38,7 @@ class Engine {
         sf::Clock *clock;
         unsigned int fps = 0;
         int deltaTime = 0;
+        sf::Vector2i mousePosition = sf::Mouse::getPosition();
         // Methods
         void run(void);
         void stop(void);
@@ -75,6 +76,8 @@ inline void Engine::run(void) {
         // Main loop is run every frame
         // Update FPS
         updateFPS();
+        // Update mouse
+        mousePosition = sf::Mouse::getPosition();
         // Clear the screen
         this->clearScreen();
         (*mainLoopFn)(this, window->sfmlWindow);

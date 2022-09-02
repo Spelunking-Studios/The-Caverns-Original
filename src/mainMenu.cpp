@@ -7,7 +7,7 @@ void buildMainMenu(void) {
         e->addMenu(mainMenu)
     );
     std::vector<MenuComponent*> cs = {
-        new TextComponent(mainMenu, "The Caverns", 450, 25)
+        new TextComponent(mainMenu, "The Caverns", 485, 25)
     };
     for (int i = 0; i < cs.size(); i++) {
         (*mainMenu).addComponent(cs[i]);
