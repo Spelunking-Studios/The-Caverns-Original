@@ -114,9 +114,18 @@ inline void Surface::draw(Surface *s) {
 inline void Surface::draw(sf::Image& im) {
     for (int i = 0; i < width; i++) {
         for (int j = 0; j < height; j++) {
+            int k = x + i;
+            int l = y + j;
+            sf::Vector2u s(0, 0);
+            s = im.getSize();
+            if (k < 0 || k > (s.x - 1) || l < 0 || l > (s.y - 1)) {
+                std::cout << "!!! (" << k << ", " << l << ") for " << s.x << " x " << s.y << " and "
+                    << width << " x " << height << " with " << x << ", " << y << std::endl;
+                continue;
+            }
             sf::Color sp = image->getPixel(i, j);
             sp.a = 255;
-            im.setPixel(x + i, y + j, sp);
+            im.setPixel(k, l, sp);
         }
     }
 }

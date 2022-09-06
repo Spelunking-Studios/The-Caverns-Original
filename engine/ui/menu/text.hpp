@@ -8,9 +8,9 @@ class TextComponent: public MenuComponent {
     public:
         TextComponent(Menu *m, std::string text, int x, int y);
         Surface& operator>>(Surface& s) override;
-        sf::Color textColor = sf::Color::White;
         void draw(Surface *s) override;
         void setTextColor(sf::Color c);
+	    void setBgColor(sf::Color c);
     protected:
         TextSurface *surface;
         std::string text;
@@ -36,4 +36,8 @@ inline void TextComponent::draw(Surface *s) {
 
 inline void TextComponent::setTextColor(sf::Color c) {
     surface->setTextColor(c);
+}
+
+inline void TextComponent::setBgColor(sf::Color c) {
+	surface->setBgColor(c);
 }

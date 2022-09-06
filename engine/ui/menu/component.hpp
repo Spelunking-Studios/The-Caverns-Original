@@ -6,7 +6,7 @@ class MenuComponent {
     public:
         MenuComponent();
         MenuComponent(Menu *menu, int x, int y);
-        void update(void) {};
+        virtual void update(Engine *e) {};
         virtual Surface& operator>>(Surface& s);
         virtual void draw(Surface *s);
         int x = 0;
@@ -26,10 +26,10 @@ inline MenuComponent::MenuComponent(Menu *menu, int x, int y) {
 }
 
 inline Surface& MenuComponent::operator>>(Surface& s) {
-    std::cout << "blank" << std::endl;
+    std::cout << "blank component >>" << std::endl;
     return s;
 }
 
 inline void MenuComponent::draw(Surface *s) {
-    std::cout << "blank" << std::endl;
+    std::cout << "blank component draw" << std::endl;
 }

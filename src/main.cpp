@@ -31,6 +31,12 @@ void eventHandler(Engine *e, sf::Event event) {
     if (event.type == sf::Event::Closed) {
         e->stop();
     }
+    if (event.type == sf::Event::MouseButtonPressed) {
+        e->setMouseButtonState(true);
+    }
+    if (event.type == sf::Event::MouseButtonReleased) {
+        e->setMouseButtonState(false);
+    }
 }
 
 void mainLoop(Engine *e, sf::RenderWindow *window) {

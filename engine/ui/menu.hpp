@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "../engine.hpp"
+#include "menu/component.hpp"
 
 class Menu {
     public:
@@ -32,7 +33,7 @@ inline int Menu::addComponent(MenuComponent *comp) {
 inline void Menu::cycle(void) {
     // Update all of the components
     for (int i = 0; i < comps.size(); i++) {
-        comps[i]->update();
+        comps[i]->update(e);
     }
     // Draw all of the components
     for (int i = 0; i < comps.size(); i++) {

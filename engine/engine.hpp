@@ -1,8 +1,5 @@
 #pragma once
 
-#ifndef ENGINE_HPP
-#define ENGINE_HPP
-
 #include <iostream>
 #include <vector>
 #include <exception>
@@ -15,9 +12,8 @@ class Menu;
 #include "window.hpp"
 #include "sprite.hpp"
 #include "surface.hpp"
-#include "ui/menu/component.hpp"
-#include "ui/menu/text.hpp"
 #include "exceptions.hpp"
+#include "collision/collision.hpp"
 
 class Engine {
     public:
@@ -38,6 +34,9 @@ class Engine {
         sf::Clock *clock;
         unsigned int fps = 0;
         int deltaTime = 0;
+        bool mouseButtonState = false;
+        int clickAccumulator = 0;
+        int clickTimeout = 1000;
         sf::Vector2i mousePosition = sf::Mouse::getPosition();
         // Methods
         void run(void);
@@ -50,9 +49,13 @@ class Engine {
         void setClearColor(sf::Color c);
         int addMenu(Menu *m);
         void setMenu(int index);
+        int clickAt(int x, int y, int button);
+        std::vector<int> getClick(int index);
+        void setMouseButtonState(bool s);
     protected:
         void updateFPS(void);
         sf::Time lastFrameTime = sf::Time::Zero;
+        std::vector<std::vector<int>> clicks = {};
 
 };
 
@@ -77,7 +80,22 @@ inline void Engine::run(void) {
         // Update FPS
         updateFPS();
         // Update mouse
-        mousePosition = sf::Mouse::getPosition();
+        mousePosition = sf::Mouse::getPosition(*(window->sfmlWindow));
+        if (mouseButtonState) {
+            if (clickAccumulator < clickTimeout) {
+                clickAccumulator += deltaTime;
+            } else {
+                clickAccumulator = 0;
+                int bp = -1;
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Left)) {
+                    bp = 0;
+                }
+                if (sf::Mouse::isButtonPressed(sf::Mouse::Button::Right)) {
+                    bp = 2;
+                }
+                this->clickAt(mousePosition.x, mousePosition.y, bp);
+            }
+        }
         // Clear the screen
         this->clearScreen();
         (*mainLoopFn)(this, window->sfmlWindow);
@@ -137,10 +155,25 @@ inline void Engine::setMenu(int index) {
     this->activeMenu = this->menus[index];
 }
 
+inline void Engine::setMouseButtonState(bool s) {
+    std::cout << "Mouse state: " << s << std::endl;
+    this->mouseButtonState = s;
+}
+
 inline void Engine::updateFPS(void) {
     sf::Time currentFrameTime = clock->getElapsedTime();
     deltaTime = (currentFrameTime - lastFrameTime).asMilliseconds();
     fps = 1000 / deltaTime;
 }
 
-#endif
+inline int Engine::clickAt(int x, int y, int button) {
+    this->clicks.push_back(std::vector<int> {x, y, button});
+    return this->clicks.size() - 1;
+}
+
+inline std::vector<int> Engine::getClick(int index) {
+    if (index < this->clicks.size() && index >= 0) {
+        return this->clicks[index];
+    }
+    return std::vector<int> {-1, -1, -1};
+}
