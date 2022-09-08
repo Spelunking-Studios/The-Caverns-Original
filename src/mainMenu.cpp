@@ -4,6 +4,11 @@
 #include "ui/menu/button.hpp"
 #include "ui/menu/text.hpp"
 
+void startGame(void) {
+    e->inMenu = false;
+    std::cout << "starting game..." << std::endl;
+}
+
 void buildMainMenu(void) {
     Menu *mainMenu = new Menu(e);
     e->setMenu(
@@ -11,6 +16,7 @@ void buildMainMenu(void) {
     );
     TextComponent *title = new TextComponent(mainMenu, "The Caverns", 485, 25);
     ButtonComponent *startBtn = new ButtonComponent(mainMenu, "Start", 485, 500);
+    startBtn->setClickHandler(startGame);
     std::vector<MenuComponent*> cs = {
         title,
         startBtn

@@ -32,10 +32,10 @@ void eventHandler(Engine *e, sf::Event event) {
         e->stop();
     }
     if (event.type == sf::Event::MouseButtonPressed) {
-        e->setMouseButtonState(true);
+        e->setMouseButtonState(true, event.mouseButton.button);
     }
     if (event.type == sf::Event::MouseButtonReleased) {
-        e->setMouseButtonState(false);
+        e->setMouseButtonState(false, event.mouseButton.button);
     }
 }
 

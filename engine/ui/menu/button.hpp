@@ -6,6 +6,7 @@
 #include "../../surface.hpp"
 #include "../../textSurface.hpp"
 #include "../../collision/collision.hpp"
+#include "defaults.hpp"
 #include <vector>
 
 class ButtonComponent: public MenuComponent {
@@ -24,8 +25,10 @@ class ButtonComponent: public MenuComponent {
         sf::Color textColor = sf::Color::Black;
         void update(Engine *e) override;
         void draw(Surface *s) override;
+        void setClickHandler(void (*ch)(void));
     protected:
         void init(Menu *m, int x, int y, int width, int height, std::string text);
+        void (*clickHandler)(void);
 };
 
 inline ButtonComponent::ButtonComponent(Menu *m, std::string text) {
@@ -60,6 +63,8 @@ inline void ButtonComponent::init(Menu *m, int x, int y, int width, int height, 
     surface = new Surface(x, y, width, height);
     surface->setFillColor(bgColor);
     surface->fill();
+    // Set the default click handler
+    this->setClickHandler(_blankClickHandler);
 }
 
 inline void ButtonComponent::update(Engine *e) {
@@ -78,11 +83,19 @@ inline void ButtonComponent::update(Engine *e) {
     std::vector<int> c = e->getClick(0);
     if (c[0] > -1 && c[2] == 0) {
         clicked = rc.pointCollide(c[0], c[1]);
-        std::cout << "Clicked!!!!!" << std::endl;
+        if (clicked) {
+            std::cout << "Clicked: " << c[0] << ", " << c[1] << std::endl;
+            clickHandler();
+        }
     }
+    clicked = false;
 }
 
 inline void ButtonComponent::draw(Surface *s) {
     textSurface->draw(surface);
     surface->draw(s);
+}
+
+inline void ButtonComponent::setClickHandler(void (*ch)(void)) {
+    this->clickHandler = ch;
 }
