@@ -131,6 +131,9 @@ inline void Surface::draw(sf::Image& im) {
 }
 
 inline sf::Color Surface::getPixel(int x, int y) {
+    if (x < 0 || x > width || y < 0 || y > height) {
+        return sf::Color::Black;
+    }
     return image->getPixel(x, y);
 }
 

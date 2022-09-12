@@ -8,6 +8,7 @@ int screenWidth = 1200;
 int screenHeight = 700;
 
 Engine *e = new Engine(screenWidth, screenHeight);
+Game *game = new Game(e);
 
 int main(int argc, char**argv) {
     std::cout << "The Caverns" << std::endl;
@@ -46,5 +47,8 @@ void mainLoop(Engine *e, sf::RenderWindow *window) {
 }
 
 void gameLoop(Engine *e, sf::RenderWindow *window) {
-    
+    if (!game->loaded) {
+        game->load();
+    }
+    game->cycle(window);
 }

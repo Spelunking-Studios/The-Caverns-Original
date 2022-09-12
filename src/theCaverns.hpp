@@ -8,7 +8,10 @@
 #include <ui/menu/text.hpp>
 #include <vector>
 
+#include "game.hpp"
+
 extern Engine *e;
+extern Game *game;
 extern Menu *mainMenu;
 extern int screenWidth;
 extern int screenHeight;

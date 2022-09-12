@@ -20,6 +20,11 @@ inline Window::Window(int width, int height) {
     this->width = width;
     this->height = height;
     sfmlWindow = new sf::RenderWindow(sf::VideoMode(width, height), "The Caverns");
+    // Center window
+    sf::Vector2<int> wpos(sf::VideoMode::getDesktopMode().width / 2, sf::VideoMode::getDesktopMode().height / 2);
+    wpos.x -= this->width / 2;
+    wpos.y -= this->height / 2;
+    sfmlWindow->setPosition(wpos);
     surface = new Surface(0, 0, width, height);
     surface->setFillColor(sf::Color::Black);
     surface->fill();

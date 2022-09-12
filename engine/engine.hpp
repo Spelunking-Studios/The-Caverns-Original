@@ -14,6 +14,8 @@ class Menu;
 #include "surface.hpp"
 #include "exceptions.hpp"
 #include "collision/collision.hpp"
+#include "camera.hpp"
+#include "level.hpp"
 
 class Engine {
     public:
@@ -70,7 +72,7 @@ inline Engine::Engine() {
 inline Engine::Engine(int width, int height) {
     this->width = width;
     this->height = height;
-    window = new Window(width, height);
+    window = new Window(this->width, this->height);
     clock = new sf::Clock;
 }
 
