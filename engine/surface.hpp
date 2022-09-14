@@ -27,6 +27,8 @@ class Surface {
         void setFillColor(sf::Color c);
         void fill(void);
         void loadFromTexture(sf::Texture *texture);
+        void loadFromImage(sf::Image *image);
+        void loadFromImage(std::string filepath);
         void draw(Surface *s);
         void draw(sf::Image& im);
         sf::Color getPixel(int x, int y);
@@ -105,6 +107,24 @@ inline void Surface::fill(void) {
 
 inline void Surface::loadFromTexture(sf::Texture *texture) {
     *image = texture->copyToImage();
+}
+
+inline void Surface::loadFromImage(sf::Image *image) {
+    sf::Vector2u size = image->getSize();
+    // Resize to fit image
+    this->resize(size.x, size.y);
+    // Draw all of the pixels
+    for (int x = 0; x < size.x; x++) {
+        for (int y = 0; y < size.y; y++) {
+            this->setPixel(x, y, image->getPixel(x, y));
+        }
+    }
+}
+
+inline void Surface::loadFromImage(std::string filepath) {
+    sf::Image *i = new sf::Image();
+    i->loadFromFile(filepath);
+    this->loadFromImage(i);
 }
 
 inline void Surface::draw(Surface *s) {

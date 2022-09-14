@@ -17,6 +17,7 @@ class Floor {
         Floor(int floorNumber);
         void load(void);
         void load(Document *doc);
+        int getNumber(void);
     protected:
         int number;
         std::vector<Room<Floor>*> rooms = {};
@@ -61,8 +62,9 @@ inline void Floor::load(void) {
     int numberOfRooms = rd->GetInt();
     for (int i = 0; i < numberOfRooms; i++) {
         this->rooms.push_back(
-            new Room<Floor>(i)
+            new Room<Floor>(i, this)
         );
+        this->rooms[i]->load();
     }
     std::cout << "Floor " << number << " loaded with " << numberOfRooms << " rooms." << std::endl;
 }
@@ -78,5 +80,15 @@ inline void Floor::load(Document *doc) {
         _Exit(1);
     }
     int numberOfRooms = rd->GetInt();
+    for (int i = 0; i < numberOfRooms; i++) {
+        this->rooms.push_back(
+            new Room<Floor>(i, this)
+        );
+        this->rooms[i]->load();
+    }
     std::cout << "Floor " << number << " loaded with " << numberOfRooms << " rooms." << std::endl;
+}
+
+inline int Floor::getNumber(void) {
+    return this->number;
 }
