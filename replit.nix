@@ -1,6 +1,7 @@
 { pkgs }: {
 	deps = [
 		pkgs.python39Full
+        pkgs.tokei
 	];
   env = {
     LD_LIBRARY_PATH = pkgs.lib.makeLibraryPath ([

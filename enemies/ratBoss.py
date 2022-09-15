@@ -10,13 +10,13 @@ class RatBoss(Enemy):
     def __init__(self, game, objT):
         super().__init__(game, objT)
         self.health = 200
-        self.damage = 32
+        self.damage = 15
         self.width = 128
         self.height = 128
         self.reach = 64
         self.angle = 0
         self.speed = 40
-        self.attackDelay = 240
+        self.attackDelay = 0.5
         self.detectionRange = 1000
         self.imageAccumulator = 0
         self.images = []

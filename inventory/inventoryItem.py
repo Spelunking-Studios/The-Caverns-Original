@@ -20,7 +20,7 @@ class InventoryItem:
         self.stats = {}
         self.groups = ["All"]
         self.category = "General"
-        self.image = pygame.Surface((50, 50), pygame.SRCALPHA).convert_alpha()
+        #self.image = pygame.Surface((50, 50), pygame.SRCALPHA).convert_alpha()
         self.description = ""
         for key, value in kwargs.items():
             self.__dict__[key] = value

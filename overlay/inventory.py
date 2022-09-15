@@ -2,7 +2,7 @@ from .overlay import Overlay
 from menu import Button, Image
 import colors
 from stgs import winWidth, winHeight, asset
-import pygame
+import pygame, os
 from time import time
 
 cachedImages = {}
@@ -17,8 +17,8 @@ class InventoryOverlay(Overlay):
         self.lastInventoryPollTime = 0
         self.inventoryPollDelay = 10
         self.iitems = []
-        self.lastOpenTime = 0
-        self.openDelay = 1
+        self.lastChangeTime = 0
+        self.changeDelay = 0.5
         self.itemComps = pygame.sprite.Group()
         self.loadComps()
         self.render()
@@ -53,43 +53,57 @@ class InventoryOverlay(Overlay):
         self.iitems = self.game.player.inventory.items.items()
         for item in self.itemComps:
             item.kill()
-        i = 0
+        ix = 0
+        iy = 0 
+        print(self.iitems)
         for item in self.iitems:
+            print(item)
             if not item[0] in cachedImages:
-                cachedImages[item[0]] = pygame.transform.scale(
-                    pygame.image.load(
-                        asset("items", item[1]["category"], item[0] + ".png")
-                    ),
-                    (32, 32)
-                )
-            offset = list(self.getOffset())
-            offset[0] += 10 + ((32 * i) % 50)
-            offset[1] += 30 + ((32 * i) % 50)
-            p = (offset[0], offset[1])
-            Image(cachedImages[item[0]], p, groups = [self.itemComps])
-            i += 1
-        print("Polled inventory.")
+                imagePath = asset("items", item[1]["category"], item[0] + ".png")
+                if os.path.exists(imagePath):
+                    cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(imagePath).convert_alpha(), (64, 64))
+                else:
+                    cachedImages[item[0]] = pygame.transform.scale(pygame.Surface((1, 1), pygame.SRCALPHA).convert_alpha(), (64, 64))
+            imref = cachedImages[item[0]]
+            i = Image(
+                imref,
+                (
+                    (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
+                    (self.height / 2 - 300) + 30 + (74 * (iy % 3))
+                ),
+                groups = [self.itemComps]
+            )
+            print(i.rect)
+            ix += 1
+            if ix > 3:
+                ix = 0
+                iy += 1
+        print(self.itemComps)
     def update(self):
         """Update (DUH)"""
         if self.active:
             if self.exitBtn.clicked:
                 self.deactivate()
-                self.game.closeInventory()
             if time() - self.lastInventoryPollTime >= self.inventoryPollDelay:
                 self.pollInventory()
                 self.lastInventoryPollTime = time()
             self.comps.update()
-            self.render()
+    def checkIfActivationPossible(self):
+        return time() - self.lastChangeTime >= self.changeDelay
     def activate(self):
-        """Activate the inventory"""
-        if time() - self.lastOpenTime >= self.openDelay:
-            self.lastOpenTime = time()
+        if self.checkIfActivationPossible():
+            self.lastChangeTime = time()
             super().activate()
-            self.game.inInventory = True
+            if not self.game.inInventory:
+                print("Warning: game's inventory overlay was not open. Opening it...")
+                self.game.openInventory()
     def deactivate(self):
         """Deactivate the inventory"""
         super().deactivate()
-        self.game.inInventory = False
+        self.lastChangeTime = time()
+        if self.game.inInventory:
+            print("Warning: game's inventory overlay was not closed. Closing it...")
+            self.game.closeInventory()
     def render(self):
         """Render the inventory"""
         self.image.fill((0, 0, 0, 127))
