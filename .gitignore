@@ -26,6 +26,11 @@ var/
 .installed.cfg
 *.egg
 
+# Nuitka
+main.build
+main.dist
+main.onefile-build
+
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

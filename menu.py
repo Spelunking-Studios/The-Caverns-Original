@@ -158,11 +158,11 @@ class Text(pygame.sprite.Sprite):
         self.image = self.image.convert_alpha()
 
 class Image(pygame.sprite.Sprite):
+    """Basic Image"""
     def __init__(self, image, pos, **kwargs):
         self.image = image
-        self.pos = pos
-        self.x = 0
-        self.y = 0
+        self.x = pos[0]
+        self.y = pos[1]
         self.width = 32
         self.height = 32
         self.groups = []

@@ -23,6 +23,7 @@ class InventoryOverlay(Overlay):
         self.loadComps()
         self.render()
     def loadComps(self):
+        """Loads all of the components"""
         self.menuBg = pygame.Surface((800, 600), pygame.SRCALPHA).convert_alpha()
         self.menuBg.fill((15, 15, 15, 255))
         self.exitBtn = Button(
@@ -52,12 +53,24 @@ class InventoryOverlay(Overlay):
         self.iitems = self.game.player.inventory.items.items()
         for item in self.itemComps:
             item.kill()
+        i = 0
         for item in self.iitems:
             if not item[0] in cachedImages:
-                cachedImages[item[0]] = pygame.transform.scale(pygame.image.load(asset("items", item[1]["category"], item[0] + ".png")), (32, 32))
-            Image(cachedImages[item[0]], (0, 0), groups = [self.itemComps])
-        print(self.itemComps)
+                cachedImages[item[0]] = pygame.transform.scale(
+                    pygame.image.load(
+                        asset("items", item[1]["category"], item[0] + ".png")
+                    ),
+                    (32, 32)
+                )
+            offset = list(self.getOffset())
+            offset[0] += 10 + ((32 * i) % 50)
+            offset[1] += 30 + ((32 * i) % 50)
+            p = (offset[0], offset[1])
+            Image(cachedImages[item[0]], p, groups = [self.itemComps])
+            i += 1
+        print("Polled inventory.")
     def update(self):
+        """Update (DUH)"""
         if self.active:
             if self.exitBtn.clicked:
                 self.deactivate()
@@ -65,20 +78,25 @@ class InventoryOverlay(Overlay):
             if time() - self.lastInventoryPollTime >= self.inventoryPollDelay:
                 self.pollInventory()
                 self.lastInventoryPollTime = time()
-            self.render()
             self.comps.update()
+            self.render()
     def activate(self):
+        """Activate the inventory"""
         if time() - self.lastOpenTime >= self.openDelay:
             self.lastOpenTime = time()
             super().activate()
             self.game.inInventory = True
     def deactivate(self):
+        """Deactivate the inventory"""
         super().deactivate()
         self.game.inInventory = False
     def render(self):
+        """Render the inventory"""
         self.image.fill((0, 0, 0, 127))
-        self.image.blit(self.menuBg, (self.width / 2 - 400, self.height / 2 - 300))
+        self.image.blit(self.menuBg, self.getOffset())
         for comp in self.comps:
             self.image.blit(comp.image, comp.rect)
         for itemComp in self.itemComps:
             self.image.blit(itemComp.image, itemComp.rect)
+    def getOffset(self):
+        return (self.width / 2 - 400, self.height / 2 - 300)
