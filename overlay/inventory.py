@@ -21,7 +21,6 @@ class InventoryOverlay(Overlay):
         self.changeDelay = 0.5
         self.itemComps = pygame.sprite.Group()
         self.loadComps()
-        self.render()
     def loadComps(self):
         """Loads all of the components"""
         self.menuBg = pygame.Surface((800, 600), pygame.SRCALPHA).convert_alpha()
@@ -54,8 +53,7 @@ class InventoryOverlay(Overlay):
         for item in self.itemComps:
             item.kill()
         ix = 0
-        iy = 0 
-        print(self.iitems)
+        iy = 0
         for item in self.iitems:
             print(item)
             if not item[0] in cachedImages:
@@ -65,14 +63,12 @@ class InventoryOverlay(Overlay):
                 else:
                     cachedImages[item[0]] = pygame.transform.scale(pygame.Surface((1, 1), pygame.SRCALPHA).convert_alpha(), (64, 64))
             imref = cachedImages[item[0]]
-            i = Image(
-                imref,
-                (
-                    (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
-                    (self.height / 2 - 300) + 30 + (74 * (iy % 3))
-                ),
-                groups = [self.itemComps]
+            pos = (
+                (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
+                (self.height / 2 - 300) + 30 + (74 * (iy % 3))
             )
+            print(pos)
+            i = Image(imref, pos, groups = [self.itemComps])
             print(i.rect)
             ix += 1
             if ix > 3:
@@ -88,6 +84,7 @@ class InventoryOverlay(Overlay):
                 self.pollInventory()
                 self.lastInventoryPollTime = time()
             self.comps.update()
+            self.render()
     def checkIfActivationPossible(self):
         return time() - self.lastChangeTime >= self.changeDelay
     def activate(self):
@@ -113,4 +110,8 @@ class InventoryOverlay(Overlay):
         for itemComp in self.itemComps:
             self.image.blit(itemComp.image, itemComp.rect)
     def getOffset(self):
+        """Get the position of the upper left corner of the overlay
+        
+        Returns: tuple (x, y)
+        """
         return (self.width / 2 - 400, self.height / 2 - 300)

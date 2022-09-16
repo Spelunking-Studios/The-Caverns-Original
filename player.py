@@ -12,7 +12,7 @@ from overlay import transparentRect
 import fx
 import stats
 from inventory import Inventory
-from items import Sword, Item
+from items import Item, Sword, Dagger
 
 
 #### Player object ####
@@ -39,7 +39,9 @@ class Player(pygame.sprite.Sprite):
         # This is just for now #
         ########################
         self.sword = Sword(self)
+        self.dagger = Dagger(self)
         self.inventory.addItem(self.sword.inventoryItem)
+        self.inventory.addItem(self.dagger.inventoryItem)
         self.inventory.setEquippedWeapon(self.sword.inventoryItem)
 
         self.groups = [game.sprites, game.layer2]
@@ -63,6 +65,8 @@ class Player(pygame.sprite.Sprite):
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
+
+        self.attackState = None
 
         if joystickEnabled:
             self.cursor = Cursor()
@@ -106,12 +110,15 @@ class Player(pygame.sprite.Sprite):
             
             
     def weaponCollisions(self):
+        if self.attackState == "attack":
+            self.animations.setMode("hit")
+            self.attackState = None
         if self.animations.mode == "hit":
             for e in self.game.groups.getProximitySprites(self, 600):
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
-                            dmg = self.stats.attack()
+                            dmg = self.inventory.equippedWeapon.owners[-1].getAttackDamage()
                             e.takeDamage(dmg[0])
                             self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
     
