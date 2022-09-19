@@ -10,7 +10,7 @@ class Item:
         -----
         owner
             The owner of the item.
-            Note: the owner must have an inventory property that is a Inventory object
+            Note: The owner must have an inventory property that is a Inventory object
         surpressIICreation: boolean = False
             Prevent the item from creating an InventoryItem object.
             Only use this when you will be setting the object or don't want the
@@ -23,3 +23,5 @@ class Item:
             self.__dict__[key] = value
         if not self.surpressIICreation:
             self.inventoryItem = InventoryItem(self.owner.inventory, "Item")
+    def action(self, owner):
+        print("Blank Item action.")

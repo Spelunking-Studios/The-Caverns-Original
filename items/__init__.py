@@ -1,3 +1,4 @@
 from .item import Item
-from .dagger import Dagger
-from .sword import Sword
+from .weapon import Weapon
+from .weapons import Dagger
+from .weapons import Sword
