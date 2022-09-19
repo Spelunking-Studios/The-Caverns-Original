@@ -86,9 +86,7 @@ class Button(pygame.sprite.Sprite):
                         if self.instaKill:
                             self.kill()
 
-            self.drawBG(1)
-        else:
-            self.drawBG(0)
+        self.drawBG(int(self.hover))
         
         self.image.blit(self.rendText, self.textRect)
     def drawBG(self, colorIndex = 0):

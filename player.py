@@ -108,7 +108,6 @@ class Player(pygame.sprite.Sprite):
         elif action2:
             self.stats.inventory.getSlot(2).action(self)
             
-            
     def weaponCollisions(self):
         if self.attackState == "attack":
             self.animations.setMode("hit")

@@ -68,7 +68,7 @@ class InventoryOverlay(Overlay):
                 (self.height / 2 - 300) + 30 + (74 * (iy % 3))
             )
             print(pos)
-            i = Image(imref, pos, groups = [self.itemComps])
+            i = Image(imref, self.game, pos, groups = [self.itemComps])
             print(i.rect)
             ix += 1
             if ix > 3:
@@ -84,6 +84,7 @@ class InventoryOverlay(Overlay):
                 self.pollInventory()
                 self.lastInventoryPollTime = time()
             self.comps.update()
+            self.itemComps.update()
             self.render()
     def checkIfActivationPossible(self):
         return time() - self.lastChangeTime >= self.changeDelay
