@@ -44,25 +44,48 @@ class StatHud(pygame.sprite.Sprite):
     def update(self):
         self.render()
 
-# The HUD for the current items in use
-class SlotHud(pygame.sprite.Sprite):
+class SlotsHud(pygame.sprite.Sprite):
     def __init__(self, game, **kwargs):
         self.groups = game.sprites, game.hudLayer
         self.game = game
+        self.slots = pygame.sprite.Group()
         pygame.sprite.Sprite.__init__(self, self.groups)
 
+        # Create the slots
+        self.sheildSlot = SlotHud((10, 610))
+        self.mainSlot1 = SlotHud((130, 610))
+        self.mainSlot2 = SlotHud((250, 610))
+        self.spellSlot1 = SlotHud((890, 610))
+        self.spellSlot2 = SlotHud((1020, 610))
+        self.spellSlot3 = SlotHud((1150, 610))
+
+        # Add the slots
+        self.slots.add(self.sheildSlot)
+        self.slots.add(self.mainSlot1)
+        self.slots.add(self.mainSlot2)
+        self.slots.add(self.spellSlot1)
+        self.slots.add(self.spellSlot2)
+        self.slots.add(self.spellSlot3)
+    def update(self):
+        self.slots.update()
+
+class SlotHud(pygame.sprite.Sprite):
+    def __init__(self, pos, **kwargs):
+        pygame.sprite.Sprite.__init__(self)
+
+        self.pos = pos
+
         self.slotImg = pygame.image.load(asset("ui/weapon_slot.png"))
-        self.slotScale = 4/5
+        self.slotScale = 3/5
         self.slotSize = pygame.Vector2(self.slotImg.get_size())*self.slotScale
         self.slotImg = pygame.transform.scale(self.slotImg, (int(self.slotSize.x), int(self.slotSize.y)))
 
         self.image = self.renderBase()
-        self.rect = pygame.Rect(10, 8, self.image.get_width(), self.image.get_height())
+        self.rect = pygame.Rect(self.pos[0], self.pos[1], self.image.get_width(), self.image.get_height())
     
     def renderBase(self):
-        img = pygame.Surface((400, 200), pygame.SRCALPHA)
+        img = pygame.Surface(self.slotSize, pygame.SRCALPHA)
         img.blit(self.slotImg, (0, 0))
-        img.blit(self.slotImg, (self.slotSize.x + 10, 0))
         return img
     
     def render(self):
@@ -74,7 +97,7 @@ class SlotHud(pygame.sprite.Sprite):
 class HeathHud(Hud):
     def __init__(self, game):
         super().__init__(game)
-        self.rect = pygame.Rect(275, 650, 450, 30)
+        self.rect = pygame.Rect(400, 680, 450, 20)
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.bgColor = colors.dark(colors.grey, 70)
         self.padX, self.padY = 4, 3

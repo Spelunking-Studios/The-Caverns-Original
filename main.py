@@ -120,7 +120,7 @@ class Game:
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         # self.statsInfo = hud.StatHud(self) 
-        self.slots = hud.SlotHud(self)
+        self.slots = hud.SlotsHud(self)
         self.healthHud = hud.HeathHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
@@ -183,7 +183,11 @@ class Game:
         self.renderDarkness()
 
         for sprite in self.hudLayer:
-            self.win.blit(sprite.image, sprite.rect)
+            if isinstance(sprite, hud.SlotsHud):
+                for slotHud in sprite.slots:
+                    self.win.blit(slotHud.image, slotHud.rect)
+            else:
+                self.win.blit(sprite.image, sprite.rect)
         
         for sprite in self.overlayer:
             try:
