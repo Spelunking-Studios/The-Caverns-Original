@@ -12,7 +12,7 @@ from overlay import transparentRect
 import fx
 import stats
 from inventory import Inventory
-from items import Item, Sword, Dagger
+import items
 
 
 #### Player object ####
@@ -33,16 +33,17 @@ class Player(pygame.sprite.Sprite):
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
-        self.inventory = Inventory(self)
+        self.inventory = Inventory()
 
         ########################
         # This is just for now #
         ########################
-        self.sword = Sword(self)
-        self.dagger = Dagger(self)
-        self.inventory.addItem(self.sword.inventoryItem)
-        self.inventory.addItem(self.dagger.inventoryItem)
-        self.inventory.setEquippedWeapon(self.sword.inventoryItem)
+        self.sword = items.Sword()
+        self.dagger = items.Dagger()
+        self.inventory.add_item(self.sword)
+        self.inventory.add_item(self.dagger)
+        self.equippedWeapon = self.sword;
+        #self.inventory.setEquippedWeapon(self.sword.inventoryItem)
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -104,7 +105,7 @@ class Player(pygame.sprite.Sprite):
 
         if action1:
             #self.stats.inventory.getSlot(1).action(self)
-            self.inventory.equippedWeapon.owners[-1].action(self)
+            self.equippedWeapon.action(self)
         elif action2:
             self.stats.inventory.getSlot(2).action(self)
             
@@ -117,7 +118,7 @@ class Player(pygame.sprite.Sprite):
                 if hasattr(e, 'image'):
                     if pygame.sprite.collide_mask(self, e):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
-                            dmg = self.inventory.equippedWeapon.owners[-1].getAttackDamage()
+                            dmg = self.equippedWeapon.get_attack_damage(self)
                             e.takeDamage(dmg[0])
                             self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
     

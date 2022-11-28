@@ -297,7 +297,7 @@ class Game:
             self.lastCamTog = pygame.time.get_ticks()
         
         # Inventory
-        if checkKey(keySet["inventory"]) and self.inventoryOverlay.checkIfActivationPossible():
+        if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
             self.toggleInventory()
 
     def getFps(self):

@@ -1,77 +1,41 @@
-from .inventoryItem import InventoryItem
+from items import Item
+
 
 class Inventory:
-    """Represents an inventory"""
-    def __init__(self, entity):
-        """
-        Initializes the inventory
+    def __init__(self):
+        self._registry = {
+            "items": {}
+        }
 
-        Arguments:
-        -----
-        entity: any
-            The entity the inventory belongs to
-        """
-        self.entity = entity
-        self.items = {}
-        self.equippedWeapon = None
-    def addItem(self, item):
-        """Adds an item to the inventory
-        
-        Arguments:
-        -----
-        item: InventoryItem
-            The item to be added to the inventory.
-        """
-        try:
-            self.items[item.name]["items"].append(item)
-        except KeyError:
-            self.items[item.name] = {
-                "description": item.description,
-                "category": item.category,
-                "items": [item]
-            }
-    def getItemByName(self, name):
-        """Get an item listing for a given name
-        
-        Arguments:
-        -----
-        name
-            The name of the item
+    def add_item(self, item):
+        """Add an item to the inventory"""
 
-        Returns:
-        -----
-        The item listing (dict) on a success and False on failure
-        """
-        try:
-            return self.items[name]
-        except KeyError:
-            return False
-    def setEquippedWeapon(self, item):
-        """
-        Set the equiped weapon
-        
-        Arguments:
-        -----
-        item: InventoryItem
-            The item to be equipped
-        """
-        self.equippedWeapon = item
-    def filter(self, _for, by = "groups"):
-        """
-        Filter all items by either their groups or cetegory
+        name = item.__class__.__name__
+        entry = self._registry["items"].get(name, None)
 
-        Arguments:
-        -----
-        _for: string
-            The string to search the items against
-        by: string = "groups"
-            The method by which items will be filtered. Must be either "groups" or "category"
-        
-        Returns:
-        -----
-        A list of item listings (dict) on a success and and empty list on failure
-        """
-        return filter(
-            lambda item: item != None,
-            [item if item[by] == _for else None for item in self.items]
-        )
+        # Only add instances of Item
+        if isinstance(item, Item):
+            # If the item's class has an entry, append the item
+
+            if entry:
+                entry["items"].append(item)
+
+            # Otherwise, make an new entry
+            else:
+                self._registry["items"][name] = {
+                    "items": [item]
+                }
+        else:
+            print(
+                "\x1b[93mWARNING:",
+                "Item of type",
+                name,
+                "was not added to the inventory",
+                "becasue it is not a instance of Item.\x1b[0m"
+            )
+
+        # Return either the entry or None
+        return self._registry["items"].get(name, None)
+
+    def get_items(self):
+        return self._registry["items"]

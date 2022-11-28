@@ -6,7 +6,6 @@ class Image(pygame.sprite.Sprite):
         # Load image while attempting to use a predefined image if provided
         if image:
             # Make a copy - not a reference
-            print("Using cached image:", image)
             self.trueImage = image.copy()
             self.image = pygame.Surface((64, 64))
         else:

@@ -1,23 +1,30 @@
 from ..weapon import Weapon
-from inventory import InventoryItem
-from time import time
+import pygame
+from stgs import asset
+
 
 class Sword(Weapon):
     """Represents the base sword"""
-    def __init__(self, owner):
-        super().__init__(owner, surpressIICreation = True)
-        self.damage = 1
-        self.delay = 0.5
-        self.lastUse = -1
-        hasImage = True
-        self.inventoryItem = InventoryItem(
-            self.owner.inventory,
-            "Sword",
-            groups = ["Weapon", "Sword"],
-            category = "Weapon",
-            description = "Base Sword",
-            owners = [self],
-            stats = {
-                "attackDamage": 5
-            }
-        )
+
+    def __init__(self):
+        super().__init__()
+        self.cache_key = "renderable__" + self.__class__.__name__
+        self.stats["attack"] = {
+            "cooldown": 1,
+            "damage": 10,
+            "critVariance": 5
+        }
+        self.stats["categories"] = self.base_categories + ["sword"]
+        self.stats["description"] = "Base sword"
+        if self.cache_key not in self._cache:
+            self._cache[self.cache_key] = pygame.image.load(
+                asset("items", "weapon", "sword.png")
+            ).convert_alpha()
+        self.renderable = self._cache.get(self.cache_key, None)
+
+    def _attack(self, user):
+        self._route_attack(user)
+        print("Sword action")
+
+    def _player_attack(self, player):
+        player.attackState = "attack"

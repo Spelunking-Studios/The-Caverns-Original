@@ -5,7 +5,7 @@ __pycache__/
 # C extensions
 *.so
 
-#Luke's Folders
+# Luke's Folders
 Sprite Master/
 tests/
 
