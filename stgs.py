@@ -80,8 +80,8 @@ fgenedfs = {}
 
 def fgen(fn, s):
     """Generate a custom font"""
-    rn = fn + "-" + s
-    if not fgenedfs[rn]:
+    rn = fn + "-" + str(s)
+    if not fgenedfs.get(rn, None):
         fgenedfs[rn] = pygame.font.Font(fAsset(fn), s)
     return fgenedfs[rn]
 

@@ -5,8 +5,7 @@ class Text(pygame.sprite.Sprite):
     '''
     Basic Text object
     '''
-    def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), ):
-        super().__init__()
+    def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), **kwargs): 
         if isinstance(fNum, str):
             self.font = fonts[fNum]
         else:
@@ -16,7 +15,14 @@ class Text(pygame.sprite.Sprite):
         self.bgColor = bgColor
         self.pos = pygame.Vector2(pos)
         self.aalias = aalias
+        self.groups = []
+
+        for key, value in kwargs.items():
+            self.__dict__[key] = value
+
         self.setText(text, multiline)
+
+        super().__init__(self.groups)
     def setText(self, text, multiline = False):
         if multiline:
             ## This code is thanks to https://stackoverflow.com/questions/42014195/rendering-text-with-multiple-lines-in-pygame 

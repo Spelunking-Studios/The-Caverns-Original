@@ -39,8 +39,10 @@ class Player(pygame.sprite.Sprite):
         # This is just for now #
         ########################
         self.sword = items.Sword()
+        self.great_sword = items.GreatSword()
         self.dagger = items.Dagger()
         self.inventory.add_item(self.sword)
+        self.inventory.add_item(self.great_sword)
         self.inventory.add_item(self.dagger)
         self.equippedWeapon = self.sword; 
 

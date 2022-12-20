@@ -1,6 +1,6 @@
 from .overlay import Overlay
-from menu import Button, Image
-from stgs import winWidth, winHeight
+from menu import Button, Image, Text
+from stgs import winWidth, winHeight, fgen
 import pygame
 from time import time
 
@@ -65,6 +65,9 @@ class InventoryOverlay(Overlay):
         for item in self.item_comps:
             item.kill()
 
+        # Identify the player's equipped weapon
+        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__
+
         # Setup the loop
         ix = 0
         iy = 0
@@ -93,27 +96,47 @@ class InventoryOverlay(Overlay):
                         pygame.SRCALPHA
                     ).convert_alpha()
             imref = self._cached_images[item]
-
+ 
             # Create the image component
             pos = (
-                (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
-                (self.height / 2 - 300) + 30 + (74 * (iy % 3))
+                (self.width / 2 - 400) + 10 + (80 * ix),
+                (self.height / 2 - 300) + 30 + (90 * iy)
             )
             i = Image(imref, self.game, pos, groups=[self.item_comps], iitem=item)
             i.setClickHandler(self.handle_item_click)
 
+            # Create a label if the item is also the player's current wepon
+            if item == player_equipped_weapon:
+                print("Player has", item, "equipped.")
+                font = fgen("ComicSansMS.ttf", 12)
+                text = Text(font, "Equipped", (255, 255, 255), pos=(pos[0] + 6, pos[1] + 66), groups=[self.item_comps])
+
             # Update positioning variables
             ix += 1
-            if ix > 3:
+            if ix > 2:
                 ix = 0
                 iy += 1
 
     def handle_item_click(self, caller):
+        # Load info about the item
         item_name = caller.iitem
         entry = self.game.player.inventory._registry["items"].get(item_name, None)
+        
         if entry:
+            # Make sure the item isn't already equipped
+            if self.game.player.equippedWeapon.__class__.__name__ == item_name:
+                print("The player already has '" + item_name + "' equipped.")
+                return
+
+            # Set the player's equipped weapon
             self.game.player.equippedWeapon = entry["items"][0]
+            
+            # Print a message to the console
             print("Changed the player's equipped weapon to '" + item_name + "'.")
+
+            # Force a rerender of the overlay
+            self.poll_inventory()
+            self.render()
         else:
             print(
                 "\x1b[93Warning:",
