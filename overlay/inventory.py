@@ -99,13 +99,27 @@ class InventoryOverlay(Overlay):
                 (self.width / 2 - 400) + 10 + (74 * (ix % 3)),
                 (self.height / 2 - 300) + 30 + (74 * (iy % 3))
             )
-            Image(imref, self.game, pos, groups=[self.item_comps])
+            i = Image(imref, self.game, pos, groups=[self.item_comps], iitem=item)
+            i.setClickHandler(self.handle_item_click)
 
             # Update positioning variables
             ix += 1
             if ix > 3:
                 ix = 0
                 iy += 1
+
+    def handle_item_click(self, caller):
+        item_name = caller.iitem
+        entry = self.game.player.inventory._registry["items"].get(item_name, None)
+        if entry:
+            self.game.player.equippedWeapon = entry["items"][0]
+            print("Changed the player's equipped weapon to '" + item_name + "'.")
+        else:
+            print(
+                "\x1b[93Warning:",
+                "Could not find an inventory entry for the '" + item_name + "'",
+                "item.\x1b[0m"
+            )
 
     def update(self):
         """Update (DUH)"""

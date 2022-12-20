@@ -63,7 +63,7 @@ class Image(pygame.sprite.Sprite):
                     self.clicked = True
                     # Run the click event handler if one exists
                     if self.onClick:
-                        self.onClick()
+                        self.onClick(self)
         self.render()
     def render(self):
         # Draw background

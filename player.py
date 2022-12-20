@@ -42,8 +42,7 @@ class Player(pygame.sprite.Sprite):
         self.dagger = items.Dagger()
         self.inventory.add_item(self.sword)
         self.inventory.add_item(self.dagger)
-        self.equippedWeapon = self.sword;
-        #self.inventory.setEquippedWeapon(self.sword.inventoryItem)
+        self.equippedWeapon = self.sword; 
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
