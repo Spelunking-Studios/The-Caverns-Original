@@ -25,6 +25,9 @@ class InventoryOverlay(Overlay):
         self.change_delay = 0.5
         self.item_comps = pygame.sprite.Group()
         self.load_comps()
+        self.tooltip_last = None
+        self.tooltip_ac = 0
+        self.tooltip_id = None
 
     def load_comps(self):
         """Loads all of the components"""
@@ -66,7 +69,7 @@ class InventoryOverlay(Overlay):
             item.kill()
 
         # Identify the player's equipped weapon
-        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__
+        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__  # noqa
 
         # Setup the loop
         ix = 0
@@ -96,20 +99,37 @@ class InventoryOverlay(Overlay):
                         pygame.SRCALPHA
                     ).convert_alpha()
             imref = self._cached_images[item]
- 
+
             # Create the image component
             pos = (
                 (self.width / 2 - 400) + 10 + (80 * ix),
                 (self.height / 2 - 300) + 30 + (90 * iy)
             )
-            i = Image(imref, self.game, pos, groups=[self.item_comps], iitem=item)
+            i = Image(
+                imref,
+                self.game,
+                pos,
+                groups=[self.item_comps],
+                iitem=item,  # Custom! Not used by the actual image at all
+                tooltip=(
+                    item,
+                    "A Very Very Long Description."
+                ),  # Also custom
+                ukey=item  # Custom key to uid the element
+            )
             i.setClickHandler(self.handle_item_click)
 
             # Create a label if the item is also the player's current wepon
             if item == player_equipped_weapon:
                 print("Player has", item, "equipped.")
                 font = fgen("ComicSansMS.ttf", 12)
-                text = Text(font, "Equipped", (255, 255, 255), pos=(pos[0] + 6, pos[1] + 66), groups=[self.item_comps])
+                Text(
+                    font,
+                    "Equipped",
+                    (255, 255, 255),
+                    pos=(pos[0] + 6, pos[1] + 66),
+                    groups=[self.item_comps]
+                )
 
             # Update positioning variables
             ix += 1
@@ -120,8 +140,11 @@ class InventoryOverlay(Overlay):
     def handle_item_click(self, caller):
         # Load info about the item
         item_name = caller.iitem
-        entry = self.game.player.inventory._registry["items"].get(item_name, None)
-        
+        entry = self.game.player.inventory._registry["items"].get(
+            item_name,
+            None
+        )
+
         if entry:
             # Make sure the item isn't already equipped
             if self.game.player.equippedWeapon.__class__.__name__ == item_name:
@@ -130,9 +153,12 @@ class InventoryOverlay(Overlay):
 
             # Set the player's equipped weapon
             self.game.player.equippedWeapon = entry["items"][0]
-            
+
             # Print a message to the console
-            print("Changed the player's equipped weapon to '" + item_name + "'.")
+            print(
+                "Changed the player's equipped weapon to",
+                "'" + item_name + "'."
+            )
 
             # Force a rerender of the overlay
             self.poll_inventory()
@@ -140,7 +166,8 @@ class InventoryOverlay(Overlay):
         else:
             print(
                 "\x1b[93Warning:",
-                "Could not find an inventory entry for the '" + item_name + "'",
+                "Could not find an inventory entry for the",
+                "'" + item_name + "'",
                 "item.\x1b[0m"
             )
 
@@ -192,12 +219,118 @@ class InventoryOverlay(Overlay):
 
     def render(self):
         """Render the inventory"""
+        # Draw BG
         self.image.fill((0, 0, 0, 127))
         self.image.blit(self.menu_bg, self.get_offset())
+
+        # Draw non-item comps
         for comp in self.comps:
             self.image.blit(comp.image, comp.rect)
+
+        # Draw items
         for item_comp in self.item_comps:
             self.image.blit(item_comp.image, item_comp.rect)
+
+        # Draw tooltip
+
+        # If no time exists, set it
+        if not self.tooltip_last:
+            self.tooltip_last = time()
+
+        # Set some base variables
+        mpos = pygame.mouse.get_pos()  # Mouse position
+        found = False  # If the comp that is hovered over is found
+
+        # Search through all of the item components till we find
+        # the one that is being hovered over
+        for item_comp in self.item_comps:
+            # Discard any components that are not images
+            if not isinstance(item_comp, Image):
+                continue
+
+            # Check to see if the mouse is over the component
+            over = item_comp.rect.collidepoint(mpos)
+
+            if over:
+                # Check to see if we are still hovering over the same image
+                if self.tooltip_id == item_comp.ukey or not self.tooltip_id:
+                    # Add to accumulator and update the last time
+                    self.tooltip_ac += time() - self.tooltip_last
+                    self.tooltip_last = time()
+
+                    # Mark the found flag (since we did find it)
+                    found = True
+
+                    # If the mouse has been over the component long enough
+                    # show the tooltip
+                    if self.tooltip_ac >= 0.25:
+                        # Create a basic surface for the tooltip
+                        tooltip_surf = pygame.Surface(
+                            (self.width, self.height),
+                            pygame.SRCALPHA
+                        )
+
+                        # Generate all of the fonts that are going to be used
+                        title_font = fgen("PixelLove.ttf", 18)
+                        main_font = fgen("ComicSansMS.ttf", 12)
+
+                        # Render the text
+                        tooltip_title = title_font.render(
+                            item_comp.tooltip[0],
+                            True,
+                            (255, 255, 255)
+                        )
+                        tooltip_desc = main_font.render(
+                            item_comp.tooltip[1],
+                            True,
+                            (255, 255, 255)
+                        )
+
+                        # Determine the size of the box we need
+                        width = min(
+                            max(
+                                tooltip_title.get_size()[0],
+                                tooltip_desc.get_size()[0]
+                            ) + 4,
+                            300
+                        )
+
+                        # Draw the box
+                        pygame.draw.rect(
+                            tooltip_surf,
+                            (40, 40, 40),
+                            (
+                                item_comp.rect.x + item_comp.rect.width + 5,
+                                item_comp.rect.y,
+                                width,
+                                50
+                            )
+                        )
+
+                        # Draw on the title
+                        tooltip_surf.blit(tooltip_title, (
+                            item_comp.rect.x + item_comp.rect.width + 7,
+                            item_comp.rect.y + 2,
+                        ))
+
+                        # Draw on the description
+                        tooltip_surf.blit(tooltip_desc, (
+                            item_comp.rect.x + item_comp.rect.width + 7,
+                            item_comp.rect.y + 20
+                        ))
+
+                        # Blit the tooltip surface onto the overlay surface
+                        self.image.blit(tooltip_surf, (0, 0))
+
+                # Update the tooltip key to match the now hovered image
+                self.tooltip_id = item_comp.ukey
+
+                # We found what we are looking for so why continue
+                break
+
+        # If nothing could be found, clear the accumulator
+        if not found:
+            self.tooltip_ac = 0
 
     def get_offset(self):
         """Get the position of the upper left corner of the overlay

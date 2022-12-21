@@ -6,28 +6,35 @@ class Image(pygame.sprite.Sprite):
         # Load image while attempting to use a predefined image if provided
         if image:
             # Make a copy - not a reference
-            self.trueImage = image.copy()
-            self.image = pygame.Surface((64, 64))
+            self.trueImage = image.copy().convert_alpha()
+            self.image = pygame.Surface((64, 64)).convert_alpha()
         else:
             # No predefined
             self.trueImage = pygame.Surface((1, 1), pygame.SRCALPHA)
             self.trueImage.fill((0, 0, 0, 0))
-            self.image = pygame.Surface((64, 64))
+            self.image = pygame.Surface((64, 64)).convert_alpha()
+
         # Colors [normal, hover]
-        self.colors = [(50, 50, 50), (60, 60, 0)]
+        self.colors = [(50, 50, 50), (40, 40, 40)]
+
         # Size, Pos
         self.x = pos[0]
         self.y = pos[1]
         self.width = 64
         self.height = 64
+
         # State
         self.hover = False
         self.clicked = False
+
         # Event Handlers
         self.onClick = None
+
         # Other
         self.groups = []
+        self.border_radius = 0
         self.game = game
+
         # Custom
         for key, value in kwargs.items():
             self.__dict__[key] = value
@@ -68,6 +75,7 @@ class Image(pygame.sprite.Sprite):
     def render(self):
         # Draw background
         self.drawBG(int(self.hover)) # Typecast from bool to int (True/False) -> (1/0)
+
         # Draw the image
         self.image.blit(self.trueImage, (0, 0))
     def setClickHandler(self, fn):
