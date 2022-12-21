@@ -1,6 +1,7 @@
 import pygame
 from stgs import winWidth, winHeight, asset, checkKey
 
+
 class MapOverlay(pygame.sprite.Sprite):
     def __init__(self, game):
         self.game = game
@@ -9,20 +10,26 @@ class MapOverlay(pygame.sprite.Sprite):
         self.text = []
         self.active = False
         self.rect = pygame.Rect(0, 0, winWidth, winHeight)
-        self.image = pygame.Surface((winWidth, winHeight), pygame.SRCALPHA).convert()
-        self.loadComponents()
+        self.image = pygame.Surface(
+            (winWidth, winHeight),
+            pygame.SRCALPHA
+        )
+        self.load_components()
         self.render()
 
-    def loadComponents(self):
+    def load_components(self):
         for comp in self.components:
             comp.kill()
-            
+
         self.mapImage = pygame.image.load(asset('gameMap.png'))
-        self.mapImage = pygame.transform.scale(self.mapImage, (int(winWidth), int(winHeight))).convert()
+        self.mapImage = pygame.transform.scale(
+            self.mapImage,
+            (int(winWidth), int(winHeight))
+        ).convert_alpha()
 
     def activate(self):
         self.active = True
-        
+
     def deactivate(self):
         self.active = False
 
@@ -40,11 +47,7 @@ class MapOverlay(pygame.sprite.Sprite):
                 self.activate()
                 self.game.pause = True
                 self.game.lastPause = now
-    
+
     def render(self):
-        self.image.fill((0,0,0,190)) #self.transparent)
+        self.image.fill((0, 0, 0, 190))
         self.image.blit(self.mapImage, (0, 0))
-        # for comp in self.components:
-        #     self.image.blit(comp.image, comp.rect)
-        # for text in self.text:
-        #     self.image.blit(text.image, text.pos) 

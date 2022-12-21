@@ -1,1 +1,1 @@
-flake8 items inventory overlay/inventory.py
+flake8 items inventory overlay

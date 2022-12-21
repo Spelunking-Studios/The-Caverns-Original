@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="77">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="64" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="6" nextobjectid="92">
  <imagelayer id="2" name="Image Layer 1">
   <image source="images/room5.jpg" width="2048" height="1536"/>
  </imagelayer>
  <objectgroup id="3" name="Doors">
-  <object id="1" name="Entrance" x="256" y="216" width="96" height="24"/>
+  <object id="1" name="Entrance" x="268" y="231.333" width="96" height="24"/>
  </objectgroup>
  <objectgroup id="4" name="Walls">
-  <object id="3" name="RatBoss" x="984" y="704">
-   <point/>
-  </object>
   <object id="4" name="Wall" x="152" y="1256" width="1672" height="56"/>
   <object id="5" name="Wall" x="136" y="200" width="120" height="72"/>
   <object id="13" name="Wall" x="408" y="96" width="40" height="160"/>
@@ -77,5 +74,49 @@
   <object id="72" name="Wall" x="1488" y="576" width="16" height="8"/>
   <object id="73" name="Wall" x="1400" y="448" width="16" height="104"/>
   <object id="74" name="Wall" x="1544" y="432" width="8" height="96"/>
+ </objectgroup>
+ <objectgroup id="5" name="Enemies">
+  <object id="3" name="RatBoss" x="1704" y="936">
+   <point/>
+  </object>
+  <object id="77" name="Rat" x="1038" y="324">
+   <point/>
+  </object>
+  <object id="78" name="Rat" x="998" y="432">
+   <point/>
+  </object>
+  <object id="84" name="Rat" x="684" y="808">
+   <point/>
+  </object>
+  <object id="85" name="Rat" x="774" y="1232">
+   <point/>
+  </object>
+  <object id="86" name="Rat" x="832" y="1054">
+   <point/>
+  </object>
+  <object id="87" name="Rat" x="778" y="1120">
+   <point/>
+  </object>
+  <object id="88" name="Rat" x="838" y="1154">
+   <point/>
+  </object>
+  <object id="89" name="Rat" x="646" y="840">
+   <point/>
+  </object>
+  <object id="79" name="Rat" x="1100" y="432">
+   <point/>
+  </object>
+  <object id="80" name="Bat" x="292" y="668">
+   <point/>
+  </object>
+  <object id="81" name="Bat" x="596" y="228">
+   <point/>
+  </object>
+  <object id="82" name="Bat" x="1244" y="1190">
+   <point/>
+  </object>
+  <object id="83" name="Bat" x="1254" y="788">
+   <point/>
+  </object>
  </objectgroup>
 </map>

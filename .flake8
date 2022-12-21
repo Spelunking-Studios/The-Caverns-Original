@@ -1,0 +1,5 @@
+[flake8]
+extend_ignore = ANN101
+exclude = .git
+max-complexity = 10
+max-line-length = 80

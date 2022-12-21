@@ -74,6 +74,8 @@ class InventoryOverlay(Overlay):
         # Setup the loop
         ix = 0
         iy = 0
+
+        # Loop over each item
         for item in self.iitems:
             if item not in self._cached_images:
                 print(
@@ -132,10 +134,11 @@ class InventoryOverlay(Overlay):
                 )
 
             # Update positioning variables
-            ix += 1
-            if ix > 2:
+            if ix + 1 > 2:
                 ix = 0
                 iy += 1
+            else:
+                ix += 1
 
     def handle_item_click(self, caller):
         # Load info about the item

@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Floor1/room1.tmx",
+    "activeFile": "Floor1/room5.tmx",
     "expandedProjectPaths": [
         "Floor1"
     ],
@@ -520,16 +520,16 @@
             "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1022.7272727272726,
-                "y": 769.6969696969695
+                "x": 1024.2424242424242,
+                "y": 769.6969696969696
             }
         },
         "Floor1/room2.tmx": {
             "scale": 0.47824707031249997,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1023.5295318801368,
-                "y": 766.3402930215938
+                "x": 1024.575016590944,
+                "y": 767.3857777324008
             }
         },
         "Floor1/room3.tmx": {
@@ -550,10 +550,10 @@
         },
         "Floor1/room5.tmx": {
             "scale": 0.5,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1023,
-                "y": 768
+                "x": 1022,
+                "y": 852
             }
         },
         "Project0-tileset1.tsx": {
@@ -634,9 +634,9 @@
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
-        "Floor1/room5.tmx",
-        "Floor1/room2.tmx",
         "Floor1/room1.tmx",
+        "Floor1/room2.tmx",
+        "Floor1/room5.tmx",
         "room1-floor1.tmx",
         "room2-floor1.tmx",
         "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx",

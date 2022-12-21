@@ -8,7 +8,7 @@ from pygame import Vector2
 from animations import *
 from objects import *
 from stgs import *
-from overlay import transparentRect
+from overlay import transparent_rect
 import fx
 import stats
 from inventory import Inventory
@@ -230,7 +230,7 @@ class Player(pygame.sprite.Sprite):
     def getAttackMask(self):
         img2 = self.image.copy()
         img2.set_colorkey((0, 0, 0))
-        cutHole = transparentRect((50, 50), 0)
+        cutHole = transparent_rect((50, 50), 0)
         img2.blit(cutHole, cutHole.get_rect(center=self.image.get_rect().center), special_flags=pygame.BLEND_MULT)
         self.mask = pygame.mask.from_surface(img2)
         #return img2
