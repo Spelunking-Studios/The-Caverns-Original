@@ -1,12 +1,16 @@
-from .coins import *
-from .consumable import *
-from .doors import *
-from .hpbar import *
-from .keys import *
-from .lights import *
-from .meters import *
-from .npc1 import *
-from .playerItems import *
-from .projectiles import *
-from .walls import *
-# from .navig import *
+from .doors import Entrance, Entrance2, Door, Teleporter
+from .playerItems import Sword1, MagicWand
+from .walls import Wall
+from .chest import Chest
+
+
+__all__ = [
+    "Chest",
+    "Door",
+    "Entrance",
+    "Entrance2",
+    "MagicWand",
+    "Sword1",
+    "Teleporter",
+    "Wall"
+]

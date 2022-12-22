@@ -3,7 +3,7 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "Floor1/room5.tmx",
+    "activeFile": "Floor1/room1.tmx",
     "expandedProjectPaths": [
         "Floor1"
     ],
@@ -517,16 +517,16 @@
             }
         },
         "Floor1/room1.tmx": {
-            "scale": 0.33,
+            "scale": 1,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1024.2424242424242,
-                "y": 769.6969696969696
+                "x": 949,
+                "y": 874
             }
         },
         "Floor1/room2.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 3,
+            "selectedLayer": 2,
             "viewCenter": {
                 "x": 1024.575016590944,
                 "y": 767.3857777324008
@@ -534,18 +534,18 @@
         },
         "Floor1/room3.tmx": {
             "scale": 0.47824707031249997,
-            "selectedLayer": 2,
+            "selectedLayer": 1,
             "viewCenter": {
-                "x": 1027.7114707233652,
-                "y": 771.5677165756292
+                "x": 1028.7569554341726,
+                "y": 771.5677165756293
             }
         },
         "Floor1/room4.tmx": {
-            "scale": 2,
+            "scale": 0.33,
             "selectedLayer": 3,
             "viewCenter": {
-                "x": 1908.75,
-                "y": 2685
+                "x": 1275.7575757575758,
+                "y": 1745.4545454545455
             }
         },
         "Floor1/room5.tmx": {
@@ -627,15 +627,15 @@
     "map.tileWidth": 32,
     "map.width": 80,
     "openFiles": [
-        "Floor1/room1.tmx",
-        "Floor1/room2.tmx",
-        "Floor1/room5.tmx"
+        "Floor1/room1.tmx"
     ],
     "project": "The Caverns.tiled-project",
     "property.type": "string",
     "recentFiles": [
         "Floor1/room1.tmx",
         "Floor1/room2.tmx",
+        "Floor1/room3.tmx",
+        "Floor1/room4.tmx",
         "Floor1/room5.tmx",
         "room1-floor1.tmx",
         "room2-floor1.tmx",
@@ -643,9 +643,7 @@
         "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx",
         "cave3.tmx",
         "cave2.tmx",
-        "cave1.tmx",
-        "Project0-tileset1.tsx",
-        "level1/level1.tmx"
+        "cave1.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

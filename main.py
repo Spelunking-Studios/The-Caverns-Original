@@ -28,26 +28,41 @@ import hud
 
 
 class Grouper:
-    '''A class to control and manipulate multiple groups (pygame.group.Group) of game objects that is mainly designed for in code control'''
+    '''A class to control and manipulate multiple groups (pygame.group.Group)
+    of game objects that is mainly designed for in code control'''
     def __init__(self):
         """Contains helpful groups for organizing different types of sprites"""
         # Create sprite groups here
         self.enemies = Group()
         self.lightSources = Group()
         self.colliders = Group()
-        self.pProjectiles = Group() # Player Projectiles
-        self.eProjectiles = Group() # Enemy Projectiles
+        self.interactable = Group()  # Sprites that can be interacted with
+        self.pProjectiles = Group()  # Player Projectiles
+        self.eProjectiles = Group()  # Enemy Projectiles
 
-    def getProximitySprites(self, sprite, proximity=300, *args): 
-        '''This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
-        takes: sprite (pygame.sprite.Sprite), proximity (distance in pixels), *args (list of groups you wanna check from or enemies by default)'''
+    def getProximitySprites(self, sprite, proximity=300, groups=[]): 
+        """Returns a list of sprites that fall within the specified proximity\
+        to the specified sprite.
 
-        groups = args if len(args) > 1 else [self.enemies]
+        Arguments:
+        ----------
+        sprite: The sprite that the proximity will be around
+        proximity (default=300): The max distance from the sprite another\
+        sprite can be
+        groups (default=[]): The groups in which entities can be
+        found
+        """
+
         returnList = []
-        for g in groups:
-            for e in g:
-                if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(sprite.rect.center)) <= proximity:
-                    returnList.append(e)
+
+        for group in groups:
+            for ent in group:
+                ent_center = pygame.Vector2(ent.rect.center)
+                sprite_center = pygame.Vector2(sprite.rect.center)
+                dist = ent_center.distance_to(sprite_center)
+                if dist <= proximity:
+                    returnList.append(ent)
+
         return returnList
     
     def clearAll(self):
@@ -75,10 +90,11 @@ class Game:
         """
         self.layer1 = Group()
         self.layer2 = Group()
+        self.layer3 = Group()  # Non-Static Level Objects
         self.fxLayer = Group()
         self.hudLayer = Group()
         self.overlayer = Group()
-        self.rendLayers = [self.layer1, self.layer2]
+        self.rendLayers = [self.layer1, self.layer2, self.layer3]
         self.mixer = getDriver()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
         self.mixer.setFxVolume(fxVolume)
@@ -157,6 +173,7 @@ class Game:
             self.iSprites.update()
         else:
             self.sprites.update()
+            self.layer3.update()
             self.checkHits()
         self.overlayer.update()
         self.cam.update()
@@ -170,12 +187,9 @@ class Game:
 
         for layer in self.rendLayers:
             for sprite in layer:
-                try:
+                if hasattr(sprite, "image"):
                     if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
                         self.win.blit(sprite.image, self.cam.apply(sprite))
-                    # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
-                except AttributeError:
-                    pass
         
         for fx in self.fxLayer:
             self.win.blit(fx.image, fx.rect)

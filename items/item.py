@@ -27,6 +27,13 @@ class Item:
             self._attack(user)
             self.stats["use"]["last"] = now
 
+    def deserialize(self, o):
+        self.stats = o
+        self.stats["use"] = {
+            "fn": self.action,
+            "last": -1
+        }
+
     def _attack(self, user):
         print("\x1b[93\
         WARNING: Base item was used, but it doesn't do anything.\

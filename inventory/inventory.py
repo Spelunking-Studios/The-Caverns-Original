@@ -1,4 +1,5 @@
-from items import Item
+import json
+from items import Item, Weapon, Sword, Dagger, GreatSword
 
 
 class Inventory:
@@ -47,3 +48,40 @@ class Inventory:
     def get_items(self):
         """Retrives all of the itemes in the inventory"""
         return self._registry["items"]
+
+    def serialize(self):
+        """Serialized the inventory into bytes"""
+        return json.dumps(
+            self._registry,
+            default=self._serialize_json_default
+        )
+
+    def _serialize_json_default(self, o):
+        if isinstance(o, Item):
+            stats = o.stats.copy()
+            stats.pop("use", None)
+            return json.dumps(o.stats, default=self._serialize_json_default)
+
+    def deserialize(self, s):
+        """Loads the serialized string into the current object"""
+        allowed_items = [Item, Weapon, Sword, GreatSword, Dagger]
+
+        first_data_level = json.loads(s)
+        for item_name in first_data_level["items"]:
+            if item_name not in [c.__name__ for c in allowed_items]:
+                print(
+                    "\x1b[93mWarning:",
+                    "item of type",
+                    "'" + item_name + "'",
+                    "is not a valid item.\x1b[0m"
+                )
+                continue
+            item = first_data_level["items"][item_name]
+            for true_item in item["items"]:
+                true_item_data = json.loads(true_item)
+                i = None
+                for index, c in enumerate(allowed_items):
+                    if c.__name__ == item_name:
+                        i = allowed_items[index]()
+                i.deserialize(true_item_data)
+                self.add_item(i)

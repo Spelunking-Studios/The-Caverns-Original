@@ -1,12 +1,10 @@
-#### Imports ####
-
 import math
 from time import time
 
 import pygame
 from pygame import Vector2
 from animations import *
-from objects import *
+from objects import Wall, Chest
 from stgs import *
 from overlay import transparent_rect
 import fx
@@ -29,7 +27,7 @@ class Player(pygame.sprite.Sprite):
         self.drag = 0.85
         self.damage = 10
         self.roomBound = True
-        self.imgSheet = {"default": asset('player//samplePlayer.png'), 'hit':asset('player/playerHit1.png'), 'wand':asset('player/playerHit1.png')}
+        self.imgSheet = {"default": asset('player', 'samplePlayer.png'), 'hit':asset('player', 'playerHit1.png'), 'wand':asset('player', 'playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
@@ -61,7 +59,7 @@ class Player(pygame.sprite.Sprite):
         self.healDelay = 3
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
-        self.lightImg = pygame.image.load(asset('objects/light2.png'))
+        self.lightImg = pygame.image.load(asset('objects', 'light2.png'))
         self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
         self.lightScale.scale_to_length(1000)
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
@@ -100,9 +98,25 @@ class Player(pygame.sprite.Sprite):
             self.cursor.update()
 
     def checkActions(self):
+        # Get the current time
         now = pygame.time.get_ticks()
-        action1 = getJoy1().get_axis(5) > 0 if joystickEnabled else pygame.mouse.get_pressed()[0] and self.stats.inventory.getSlot(1) != None
-        action2 = getJoy1().get_axis(4) > 0 if joystickEnabled else pygame.mouse.get_pressed()[2] and self.stats.inventory.getSlot(2) != None
+        
+        # Setup the actions
+        action1, action2 = None, None
+
+        # Check for a joystick
+        if joystickEnabled:
+            action1 = getJoy1().get_axis(5) > 0
+            action2 = getJoy1().get_axis(4) > 0
+        else:
+            # Mouse
+
+            # Get the pressed buttons
+            pressed_buttons = pygame.mouse.get_pressed()
+            
+            # Update the actions
+            action1 = pressed_buttons[0]
+            action2 = pressed_buttons[2] 
 
         if action1:
             #self.stats.inventory.getSlot(1).action(self)
@@ -115,13 +129,52 @@ class Player(pygame.sprite.Sprite):
             self.animations.setMode("hit")
             self.attackState = None
         if self.animations.mode == "hit":
-            for e in self.game.groups.getProximitySprites(self, 600):
+            # Create a list of all close by interactables
+            interactables = self.game.groups.getProximitySprites(
+                self,
+                200,
+                groups=[self.game.groups.interactable]
+            )
+
+            # Create a list of all close by enemies
+            enemies = self.game.groups.getProximitySprites(
+                self,
+                600,
+                groups=[self.game.groups.enemies]
+            )
+
+            # Check for an interaction with an interactable
+            for entity in interactables:
+                # Only deal with entities that have images
+                if hasattr(entity, "image"):
+                    # Determine the cooldown time
+                    cooldown = self.equippedWeapon.stats["attack"]["cooldown"]
+
+                    # Check for the collision
+                    if time() - entity.last_interaction_time >= cooldown:
+                        if pygame.sprite.collide_mask(self, entity):
+                            entity.interact()
+
+            # Check for a hit with an enemy
+            for e in enemies:
+                # Only deal with enemies that have an image
                 if hasattr(e, 'image'):
+                    # Check for the collision
                     if pygame.sprite.collide_mask(self, e):
+                        # Make sure the timing works
                         if pygame.time.get_ticks() - e.lastHit >= 260:
+                            # Determine the amount of damage
                             dmg = self.equippedWeapon.get_attack_damage(self)
+                            
+                            # Deal the damage
                             e.takeDamage(dmg[0])
-                            self.combatParts.particle(Vector2(e.rect.center), dmg[0], dmg[1])
+
+                            # Make some nice particles
+                            self.combatParts.particle(
+                                Vector2(e.rect.center),
+                                dmg[0],
+                                dmg[1]
+                            )
     
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
@@ -206,7 +259,7 @@ class Player(pygame.sprite.Sprite):
     def collideCheck(self):
         returnVal = False
         for obj in self.game.groups.colliders:
-            if isinstance(obj, Wall):
+            if isinstance(obj, (Wall, Chest)):
                 if self.moveRect.colliderect(obj.rect):
                     returnVal = obj.rect  
             # else:
