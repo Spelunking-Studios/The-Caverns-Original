@@ -217,7 +217,6 @@ def main(game, loadingScreenOn = False):
     else:
         toMainMenuButton.clicked = True
 
-    print(colors.rgba(colors.yellow, 0))
     startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.rgba(colors.yellow, 255), colors.white), wh=(300, 60), rounded = True)
     settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
     instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))

@@ -66,7 +66,7 @@ class Grouper:
 class Game:
     """Represents an instance of the game"""
     def __init__(self):
-        """Initializes the game object
+        """Initializes the game object"A Very Very Long Description.
         
         Groups each sprite type to perform targetted tasks
         All sprites go into the sprites group
@@ -128,7 +128,7 @@ class Game:
 
     ####  Determines how the run will function ####
     def run(self):
-        loadSave("save.p")
+        loadSave("game.store")
         self.mixer.playMusic(sAsset('intro.wav'))
         self.menuLoop()
         self.mainLoop()

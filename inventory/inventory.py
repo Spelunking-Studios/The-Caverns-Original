@@ -37,5 +37,13 @@ class Inventory:
         # Return either the entry or None
         return self._registry["items"].get(name, None)
 
+    def get_item(self, name):
+        """Retrives an item from the inventory"""
+        registry_query = self._registry["items"].get(name, None)
+        if registry_query:
+            registry_query["stats"] = registry_query["items"][0].stats
+        return registry_query
+
     def get_items(self):
+        """Retrives all of the itemes in the inventory"""
         return self._registry["items"]

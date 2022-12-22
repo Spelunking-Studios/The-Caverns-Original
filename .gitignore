@@ -9,6 +9,9 @@ __pycache__/
 Sprite Master/
 tests/
 
+# Save
+game.store
+
 website/
 
 # Distribution / packaging

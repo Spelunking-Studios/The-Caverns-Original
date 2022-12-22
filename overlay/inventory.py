@@ -61,8 +61,11 @@ class InventoryOverlay(Overlay):
 
     def poll_inventory(self):
         """Poll the inventory for items"""
+        # Make a variable for convenience
+        inventory = self.game.player.inventory
+
         # Fetch the items in the inventory
-        self.iitems = self.game.player.inventory.get_items()
+        self.iitems = inventory.get_items()
 
         # Destroy all of the components
         for item in self.item_comps:
@@ -76,31 +79,41 @@ class InventoryOverlay(Overlay):
         iy = 0
 
         # Loop over each item
-        for item in self.iitems:
-            if item not in self._cached_images:
+        for item_name in self.iitems:
+            # Retrive the item from the inventory
+            item = inventory.get_item(item_name)
+
+            # Make sure the image exists in the cache
+            if item_name not in self._cached_images:
+                # Print an info message
                 print(
                     "\x1b[36mInventoryOverlay:",
-                    f"caching renderable for {item} item\x1b[0m"
+                    f"caching renderable for {item_name} item\x1b[0m"
                 )
-                if (
-                    len(self.iitems[item]["items"]) and
-                    self.iitems[item]["items"][0].renderable
-                ):
-                    self._cached_images[item] = pygame.transform.scale(
-                        self.iitems[item]["items"][0].renderable,
+
+                # If the item has an image, cache it
+                # Otherwise, create a dummy image
+                if (len(item["items"]) and item["items"][0].renderable):
+                    self._cached_images[item_name] = pygame.transform.scale(
+                        item["items"][0].renderable,
                         (64, 64)
                     )
                 else:
+                    # Print a warning message for devs
                     print(
                         "\x1b[93mInventoryOverlay: Warning:",
                         "no renderable found for the item,",
                         "using a placeholder.\x1b[0m"
                     )
-                    self._cached_images[item] = pygame.Surface(
+
+                    # Add a placeholder into the cache
+                    self._cached_images[item_name] = pygame.Surface(
                         (64, 64),
                         pygame.SRCALPHA
                     ).convert_alpha()
-            imref = self._cached_images[item]
+
+            # Grab the image out of cache
+            imref = self._cached_images[item_name]
 
             # Create the image component
             pos = (
@@ -112,18 +125,18 @@ class InventoryOverlay(Overlay):
                 self.game,
                 pos,
                 groups=[self.item_comps],
-                iitem=item,  # Custom! Not used by the actual image at all
+                iitem=item_name,  # Custom! Not used by the actual image at all
                 tooltip=(
-                    item,
-                    "A Very Very Long Description."
+                    item_name,
+                    item["stats"]["description"]
                 ),  # Also custom
-                ukey=item  # Custom key to uid the element
+                ukey=item_name  # Custom key to uid the element
             )
             i.setClickHandler(self.handle_item_click)
 
             # Create a label if the item is also the player's current wepon
-            if item == player_equipped_weapon:
-                print("Player has", item, "equipped.")
+            if item_name == player_equipped_weapon:
+                print("Player has", item_name, "equipped.")
                 font = fgen("ComicSansMS.ttf", 12)
                 Text(
                     font,

@@ -139,10 +139,8 @@ class Bat(Enemy):
     def setAngle(self):
         if self.attacking:
             if not self.attack["reachedPlayer"]:
-                #print("Facing player")
                 self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
             else:
-                #print("Facing end pos")
                 self.setAngleFacingTarget(pygame.Vector2(self.attack["endPos"]))
         else:
             self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
