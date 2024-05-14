@@ -148,7 +148,8 @@ class Bat(Enemy):
             mPos = self.pos
             mPos.x -= self.rect.centerx
             mPos.y -= self.rect.centery
-            mPos.normalize_ip()
+            if mPos.length() > 0:
+                mPos.normalize_ip()
             testVec = pygame.Vector2(self.pos)
             testVec.x += mPos.x * self.speed
             testVec.y += mPos.y * self.speed
