@@ -31,7 +31,7 @@ class Projectile(pygame.sprite.Sprite):
     def update(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
-        for e in self.game.groups.getProximitySprites(self, 600):
+        for e in self.game.groups.getProximitySprites(self, 600, self.game.groups.enemies):
             if hasattr(e, 'image'):
                 if pygame.sprite.collide_mask(self, e):
                     self.hit(e)
