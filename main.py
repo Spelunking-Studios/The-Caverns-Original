@@ -52,7 +52,7 @@ class Grouper:
         groups (default=[]): The groups in which entities can be
         found
         """
-
+        groups = groups if isinstance(groups, list) else [groups]
         returnList = []
 
         for group in groups:
