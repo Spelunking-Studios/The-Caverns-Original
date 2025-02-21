@@ -1,8 +1,9 @@
 import pygame
 import colors
 from stgs import *
+import util
 
-class Button(pygame.sprite.Sprite):
+class Button(util.Sprite):
     '''
     A menu object that that stores a clicked value when hovered over
 
@@ -63,6 +64,7 @@ class Button(pygame.sprite.Sprite):
         else:
             self.textRect.x += 2
             self.textRect.y += 2
+
     def update(self):
         self.hover = False
         self.clicked = False
@@ -102,7 +104,7 @@ class Button(pygame.sprite.Sprite):
     def reset(self):
         self.clicked = False
 
-class Text(pygame.sprite.Sprite):
+class Text(util.Sprite):
     '''
     Basic Text object
     '''
@@ -151,7 +153,7 @@ class Text(pygame.sprite.Sprite):
         self.rect = pygame.Rect(self.pos.x, self.pos.y, self.image.get_width(), self.image.get_height())
         self.image = self.image.convert_alpha()
 
-class SettingSlider(pygame.sprite.Sprite):
+class SettingSlider(util.Sprite):
     '''
     A menu object that acts as a basic slider that stores it's value as a percentage ( use SettingSlider.getRatio() )
     It renders itself using pygame draw methods and color values given as SettingSlider.color
@@ -219,7 +221,7 @@ class SettingSlider(pygame.sprite.Sprite):
             if mouseRect.colliderect(self.rect):
                 self.clicked = True
 
-class MenuItem(pygame.sprite.Sprite):
+class MenuItem(util.Sprite):
     '''
     A menu object that zooms in and out when hovered over. Requires a position and surface.
     

@@ -5,8 +5,9 @@ import fx
 from stgs import asset, FPS
 from .lights import LightSource, LightEffect
 from animations import BasicAnimation
+import util
 
-class Projectile(pygame.sprite.Sprite):
+class Projectile(util.Sprite):
     def __init__(self, game, pos, target, **kwargs):
         self.groups = game.sprites, game.layer2
         self.game = game

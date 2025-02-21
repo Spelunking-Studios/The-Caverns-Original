@@ -4,7 +4,7 @@ import fx
 import pygame
 from animations import *
 from stgs import *
-
+import util
 
 class LightSource(pygame.sprite.Sprite):
     img = asset('objects/light2.png')
@@ -23,6 +23,8 @@ class LightSource(pygame.sprite.Sprite):
             for k, v in objT.properties.items():
                 self.__dict__[k] = v
 
+    def draw(self, ctx, transform):
+            darkness.blit(sprite.sourceImg, transform(sprite))
 class LightEffect(LightSource):
     def __init__(self, game, rect, **kwargs):
         self.life = 200

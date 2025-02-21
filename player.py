@@ -11,10 +11,11 @@ from stgs import *
 from overlay import transparentRect
 import fx
 import stats
+import util
 
 
 #### Player object ####
-class Player(pygame.sprite.Sprite):
+class Player(util.Sprite):
     '''The Player Object'''
     #### Player Initializations ####
     def __init__(self, game, image, **kwargs):

@@ -7,10 +7,11 @@ from animations import *
 from objects import *
 from player import *
 from stgs import *
+import util
 from effects import HurtEffect
 
 # Base Enemy class - should be inherited by all enemies
-class Enemy(pygame.sprite.Sprite):
+class Enemy(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites, game.groups.enemies, game.layer2
         self.health = 5

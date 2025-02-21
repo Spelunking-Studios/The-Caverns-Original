@@ -3,8 +3,9 @@ import fx
 import pygame
 from animations import *
 from stgs import *
+import util
 
-class Npc1(pygame.sprite.Sprite):
+class Npc1(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.groups =  game.sprites, game.layer2
         pygame.sprite.Sprite.__init__(self, self.groups)

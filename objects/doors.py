@@ -4,12 +4,13 @@ import fx
 import pygame
 from animations import *
 from stgs import *
+import util
    
-class Door(pygame.sprite.Sprite):
+class Door(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites, 
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
@@ -31,11 +32,11 @@ class Door(pygame.sprite.Sprite):
                 fx.FadeIn(self.game)
             fx.FadeOut(self.game, onEnd=func)
 
-class Entrance(pygame.sprite.Sprite):
+class Entrance(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites 
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
@@ -55,11 +56,11 @@ def Entrance3(game, objT):
 def Entrance4(game, objT):
     return Entrance(game, objT)
 
-class Teleporter(pygame.sprite.Sprite):
+class Teleporter(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.game = game
         self.level = self.game.map.getRoom()
@@ -88,11 +89,11 @@ class Teleporter(pygame.sprite.Sprite):
         #self.image = pygame.Surface((self.rect.width, self.rect.height))
         #self.image.fill(self.color)
 
-class Exit(pygame.sprite.Sprite):
+class Exit(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)

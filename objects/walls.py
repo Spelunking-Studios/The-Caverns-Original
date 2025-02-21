@@ -4,9 +4,10 @@ import fx
 import pygame
 from animations import *
 from stgs import *
+import util
+import colors 
 
-
-class Wall(pygame.sprite.Sprite):
+class Wall(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.groups = game.groups.colliders, game.layer1 if DEBUG else game.groups.colliders
         super().__init__(self.groups)
@@ -19,6 +20,6 @@ class Wall(pygame.sprite.Sprite):
         for k, v in objT.properties.items():
             self.__dict__[k] = v
 
+    def draw(self, ctx, transform):
         if DEBUG:
-            self.image = pygame.Surface((self.rect.width, self.rect.height))
-            self.image.fill(self.color)
+            pygame.draw.rect(ctx, colors.white, transform(self.rect))

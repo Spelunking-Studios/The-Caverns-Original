@@ -2,8 +2,9 @@ import pygame
 from animations import *
 from stgs import *
 import enemies
+import util
 
-class Spawner(pygame.sprite.Sprite):
+class Spawner(util.Sprite):
     '''
     The base class for an entity spawner that repeatedly spawns entites based on a rectangular area 
     '''

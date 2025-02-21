@@ -163,12 +163,13 @@ class Game:
 
         for layer in self.rendLayers:
             for sprite in layer:
-                try:
-                    if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
-                        self.win.blit(sprite.image, self.cam.apply(sprite))
-                    # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
-                except AttributeError:
-                    pass
+                # try:
+                # if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
+                #     self.win.blit(sprite.image, self.cam.apply(sprite))
+                sprite.draw(self.win, self.cam.applyRect)
+                # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
+                # except AttributeError:
+                #     pass
         
         for fx in self.fxLayer:
             self.win.blit(fx.image, fx.rect)
@@ -181,6 +182,7 @@ class Game:
         for sprite in self.overlayer:
             try:
                 if sprite.active:
+
                     self.win.blit(sprite.image, sprite.rect)
             except AttributeError:
                 self.win.blit(sprite.image, sprite.rect)

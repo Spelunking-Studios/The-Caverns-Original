@@ -50,7 +50,7 @@ class PlayerStats(Stats):
 			print("DAMN YOU HIT A CRITICAL")
 		else:
 			crit = False
-			damage = randint(max(0, dmg-atkVar), dmg+atkVar)
+			damage = randint(max(0, int(dmg-atkVar)), int(dmg+atkVar))
 		
 		return damage, crit
 

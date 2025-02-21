@@ -1,5 +1,5 @@
-import PygameShader
-from PygameShader import gaussianBlur5x5, shader
+# import PygameShader
+# from PygameShader import gaussianBlur5x5, shader
 # with open("pygameshaderdoc.txt", "w") as f:
 #     f.write(shader.__file__)
 import pygame
@@ -18,7 +18,7 @@ class Menu:
         self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
         # gaussianBlur5x5.canny_blur5x5_surface24_c(self.bg)
         # shader.blur(self.bg, 2)
-        shader.bloom(self.bg, 5, False)
+        # shader.bloom(self.bg, 5, False)
         # shader.swirl(self.bg, 95)
     def run(self):
         while self.running:
@@ -268,7 +268,10 @@ def main(game, loadingScreenOn = False):
         settingsButton.update()
 
         iloadingLinesEloadingTextLen = int(loadingLinesShowed) == len(loadingText)
-
+        keys = pygame.key.get_pressed()
+        if keys[keySet['start']]:
+            toMainMenuButton.clicked = True
+ 
         if toMainMenuButton.clicked:
             for comp in comps:
                 game.win.blit(comp.image, comp.rect)
@@ -301,6 +304,7 @@ def main(game, loadingScreenOn = False):
                 game.map.loadFloor() 
                 break
         else:
+
             for i in range(int(loadingLinesShowed)):
                 game.win.blit(loadingText[i].image, loadingText[i])
             if loadingLinesShowed <= len(loadingText):

@@ -2,12 +2,13 @@ from stgs import *
 #from animations import animation
 import colors
 import random
+import util
 
 #### All screen effects/fx will be done in the fx specific layer or in the overlay.
 #  Duration should be handled by the fx object.
 #  Fx initiation into the fx layer will record its instance
 #  
-class FadeOut(pygame.sprite.Sprite):
+class FadeOut(util.Sprite):
     alpha = 0
     speed = 4 
     fadeBack = False
@@ -51,7 +52,7 @@ class FadeOut(pygame.sprite.Sprite):
         if not self.noKill:
             self.kill()
 
-class FadeIn(pygame.sprite.Sprite):
+class FadeIn(util.Sprite):
     alpha = 255
     speed = 5 
 
@@ -83,10 +84,10 @@ class FadeIn(pygame.sprite.Sprite):
             self.onEnd()
         self.kill()
 
-#class timer(pygame.sprite):
+#class timer(util):
 #    def __init__(self, game, duration=600):
 
-class Particles(pygame.sprite.Sprite):
+class Particles(util.Sprite):
     def __init__(self, game, entity, **kwargs):
         self.game = game
         self.groups = game.sprites
@@ -184,7 +185,7 @@ class CombatParticles(Particles):
         self.particles.add(self.particleType(self.game, pygame.Vector2(1, 0).rotate(random.randint(self.dirRange[0], self.dirRange[1])), pos, partKwargs))
 
 
-class Particle(pygame.sprite.Sprite):
+class Particle(util.Sprite):
     def __init__(self, game, dir, pos, kwargs):
         self.game = game
         self.groups = game.layer1
@@ -243,7 +244,7 @@ class NumParticle(Particle):
             self.kill()
 
 ### This is pretty pointless but eyy
-# class highlight(pygame.sprite.Sprite):
+# class highlight(util.Sprite):
 #     def __init__(self, game, entity, **kwargs):
 #         self.game = game
 #         self.groups = game.sprites, game.layer1
