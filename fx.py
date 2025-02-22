@@ -1,8 +1,8 @@
+import util
 from stgs import *
 #from animations import animation
 import colors
 import random
-import util
 
 #### All screen effects/fx will be done in the fx specific layer or in the overlay.
 #  Duration should be handled by the fx object.

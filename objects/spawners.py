@@ -1,8 +1,8 @@
+import util
 import pygame
 from animations import *
 from stgs import *
 import enemies
-import util
 
 class Spawner(util.Sprite):
     '''
@@ -10,7 +10,7 @@ class Spawner(util.Sprite):
     '''
     def __init__(self, game, objT, **kwargs):
         self.game = game
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         
         # Defaults

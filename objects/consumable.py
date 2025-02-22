@@ -1,11 +1,12 @@
 import random
 
 import fx
+import util
 import pygame
 from animations import *
 from stgs import *
 
-class Consumable(pygame.sprite.Sprite):
+class Consumable(util.Sprite):
     imgSheet = {'active': False, 'static': True,'tileWidth': 32}
     image = pygame.Surface((imgSheet['tileWidth'], imgSheet['tileWidth']))
 

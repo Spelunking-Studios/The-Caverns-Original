@@ -1,3 +1,4 @@
+import util
 import random
 
 import fx
@@ -6,11 +7,11 @@ from animations import *
 from stgs import *
 
 
-class Key(pygame.sprite.Sprite):
+class Key(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, image, **kwargs):
-        self.groups = game.sprites, game.layer1
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         game.level.key = self
 

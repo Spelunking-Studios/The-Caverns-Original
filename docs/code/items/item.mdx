@@ -1,0 +1,67 @@
+import Callout from 'nextra-theme-docs/callout'
+
+# Item (items.Item)
+
+This class represents the most basic item in the game and its only real purpose is as a base class for all other items in the game
+to either derrive from (directly or indirectly). The class does feature the most minimal but complete API/interface to ensure complete
+compatability with APIs/interfaces implemented by all derrived classes.
+
+## Constructor (__init__)
+
+### Arguments
+
+#### owner
+
+The owner of the item.
+
+<Callout type="warning" emoji="⚠️">
+    The owner must have an inventory property that is a `Inventory` object
+</Callout>
+
+#### surpressIICreation: boolean = False
+
+Prevent the item from creating an `InventoryItem` object. Only use this when you will be setting the object after calling the constructor (through `super().__init__(owner)`) or don't want the item to be added into the owner's inventory.
+
+## Properties
+
+### owner
+
+The owner of the item.
+
+<Callout type="warning" emoji="⚠️">
+    The owner must have an inventory property that is a `Inventory` object
+</Callout>
+
+### surpressIICreation
+
+Type: Boolean
+Default: False
+
+Controls whether or not the item creates an `InventoryItem` and adds it to the owner's inventory.
+
+<Callout type="warning" emoji="⚠️">
+    Only use this when you will be setting the object after calling the constructor (through `super().__init__(owner)`) or don't want the item to be added into the owner's inventory.
+</Callout>
+
+### inventoryItem
+
+Type: `InventoryItem`
+
+An `InventoryItem` that acts as a reference to
+
+<Callout type="warning" emoji="⚠️">
+    If `surpressIICreation` is `True`, this property **will not exist** on the item.
+</Callout>
+
+## Methods
+
+
+### action
+
+<Callout type="warning" emoji="⚠️">
+    This method exists purely to ensure that all `Item`s have a `action` method. Do **NOT** call it. It does nothing useful.
+</Callout>
+
+#### Arguments
+
+- `owner`

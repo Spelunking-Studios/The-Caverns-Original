@@ -1,3 +1,4 @@
+import util
 import pygame
 from random import randint
 import objects
@@ -50,13 +51,10 @@ class PlayerStats(Stats):
 			print("DAMN YOU HIT A CRITICAL")
 		else:
 			crit = False
-			damage = randint(max(0, int(dmg-atkVar)), int(dmg+atkVar))
+			damage = randint(int(max(0, dmg-atkVar)), int(dmg+atkVar))
 		
 		return damage, crit
 
-# zomb = Stats(atkDamage=3)
-# print(zomb.attack())
-	
 class Inventory:
 	def __init__(self, *args, **kwargs):#sprite, *args, **kwargs):
 		self.slotMax = 5
@@ -99,10 +97,3 @@ class Inventory:
 			except IndexError:
 				self.slots[x] = None
 		self.slotMax += increase
-
-# inv1 = Inventory("banana", "apple", "strawberry", "coconut", "kiwi", "grape", slotMax = 6)
-# inv1.setSlot(2, 'pineapple')
-# print(inv1.slots)
-# inv1.expand(2, 'peach', 'watermelon')
-# print(inv1.slots)
-# print(inv1.getIndex('peach'))

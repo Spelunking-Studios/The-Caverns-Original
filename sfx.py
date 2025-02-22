@@ -1,3 +1,4 @@
+import util
 import pygame
 from stgs import *
 

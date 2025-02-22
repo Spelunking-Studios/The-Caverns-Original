@@ -12,7 +12,6 @@ import sys
 from stgs import loadSave, saveFile
 loadSave(saveFile)
 from stgs import *
-from camera import *
 from fx import *
 from levels import *
 from menu import *
@@ -20,6 +19,7 @@ from menu import *
 from overlay import *
 from player import *
 from sfx import *
+from util import *
 import menus
 import hud
 # from PygameShader.shader import shader_sobel24_fast_inplace, shader_bloom_effect_array24
@@ -28,26 +28,41 @@ import hud
 
 
 class Grouper:
-    '''A class to control and manipulate multiple groups (pygame.group.Group) of game objects that is mainly designed for in code control'''
+    '''A class to control and manipulate multiple groups (pygame.group.Group)
+    of game objects that is mainly designed for in code control'''
     def __init__(self):
         """Contains helpful groups for organizing different types of sprites"""
         # Create sprite groups here
         self.enemies = Group()
         self.lightSources = Group()
         self.colliders = Group()
-        self.pProjectiles = Group() # Player Projectiles
-        self.eProjectiles = Group() # Enemy Projectiles
+        self.interactable = Group()  # Sprites that can be interacted with
+        self.pProjectiles = Group()  # Player Projectiles
+        self.eProjectiles = Group()  # Enemy Projectiles
 
-    def getProximitySprites(self, sprite, proximity=300, *args): 
-        '''This function is necessary for framerate saving when attacking with a weapon mesh or is just helpful for getting a smaller list of mobs
-        takes: sprite (pygame.sprite.Sprite), proximity (distance in pixels), *args (list of groups you wanna check from or enemies by default)'''
+    def getProximitySprites(self, sprite, proximity=300, groups=[]): 
+        """Returns a list of sprites that fall within the specified proximity\
+        to the specified sprite.
 
-        groups = args if len(args) > 1 else [self.enemies]
+        Arguments:
+        ----------
+        sprite: The sprite that the proximity will be around
+        proximity (default=300): The max distance from the sprite another\
+        sprite can be
+        groups (default=[]): The groups in which entities can be
+        found
+        """
+        groups = groups if isinstance(groups, list) else [groups]
         returnList = []
-        for g in groups:
-            for e in g:
-                if pygame.Vector2(e.rect.center).distance_to(pygame.Vector2(sprite.rect.center)) <= proximity:
-                    returnList.append(e)
+
+        for group in groups:
+            for ent in group:
+                ent_center = pygame.Vector2(ent.rect.center)
+                sprite_center = pygame.Vector2(sprite.rect.center)
+                dist = ent_center.distance_to(sprite_center)
+                if dist <= proximity:
+                    returnList.append(ent)
+
         return returnList
     
     def clearAll(self):
@@ -66,7 +81,7 @@ class Grouper:
 class Game:
     """Represents an instance of the game"""
     def __init__(self):
-        """Initializes the game object
+        """Initializes the game object"A Very Very Long Description.
         
         Groups each sprite type to perform targetted tasks
         All sprites go into the sprites group
@@ -75,10 +90,11 @@ class Game:
         """
         self.layer1 = Group()
         self.layer2 = Group()
+        self.layer3 = Group()  # Non-Static Level Objects
         self.fxLayer = Group()
         self.hudLayer = Group()
         self.overlayer = Group()
-        self.rendLayers = [self.layer1, self.layer2]
+        self.rendLayers = [self.layer1, self.layer2, self.layer3]
         self.mixer = getDriver()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
         self.mixer.setFxVolume(fxVolume)
@@ -106,16 +122,21 @@ class Game:
         self.points = 0
         self.groups = Grouper()
         self.sprites = Group()
+        # Pause Sprites
         self.pSprites = Group()
+        # Inventory Sprites
+        self.iSprites = Group()
         self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
         self.end = False
         self.pause = False
+        self.inInventory = False
+        self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         # self.statsInfo = hud.StatHud(self) 
-        self.slots = hud.SlotHud(self)
+        self.slots = hud.SlotsHud(self)
         self.healthHud = hud.HeathHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
@@ -123,7 +144,7 @@ class Game:
 
     ####  Determines how the run will function ####
     def run(self):
-        loadSave("save.p")
+        loadSave("game.store")
         self.mixer.playMusic(sAsset('intro.wav'))
         self.menuLoop()
         self.mainLoop()
@@ -148,8 +169,11 @@ class Game:
         self.getPause()
         if self.pause:
             self.pSprites.update()
+        elif self.inInventory:
+            self.iSprites.update()
         else:
             self.sprites.update()
+            self.layer3.update()
             self.checkHits()
         self.overlayer.update()
         self.cam.update()
@@ -163,13 +187,10 @@ class Game:
 
         for layer in self.rendLayers:
             for sprite in layer:
-                # try:
-                # if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
-                #     self.win.blit(sprite.image, self.cam.apply(sprite))
+                # if hasattr(sprite, "image"):
+                #     if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
+                #         self.win.blit(sprite.image, self.cam.apply(sprite))
                 sprite.draw(self.win, self.cam.applyRect)
-                # pygame.draw.rect(self.win, (200, 0, 0), self.cam.apply(sprite), 1)
-                # except AttributeError:
-                #     pass
         
         for fx in self.fxLayer:
             self.win.blit(fx.image, fx.rect)
@@ -177,12 +198,15 @@ class Game:
         self.renderDarkness()
 
         for sprite in self.hudLayer:
-            self.win.blit(sprite.image, sprite.rect)
+            if isinstance(sprite, hud.SlotsHud):
+                for slotHud in sprite.slots:
+                    self.win.blit(slotHud.image, slotHud.rect)
+            else:
+                self.win.blit(sprite.image, sprite.rect)
         
         for sprite in self.overlayer:
             try:
                 if sprite.active:
-
                     self.win.blit(sprite.image, sprite.rect)
             except AttributeError:
                 self.win.blit(sprite.image, sprite.rect)
@@ -286,6 +310,10 @@ class Game:
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
             self.lastCamTog = pygame.time.get_ticks()
+        
+        # Inventory
+        if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
+            self.toggleInventory()
 
     def getFps(self):
         self.currentFps = self.clock.get_fps() 
@@ -301,20 +329,27 @@ class Game:
         self.cam.toggleTarget()
 
     def toggleFps(self):
-        if self.showFps:
-            self.showFps = False
-        else:
-            self.showFps = True
+        self.showFPS = not self.showFPS
     
+    def toggleInventory(self):
+        if self.inInventory:
+            self.closeInventory()
+        else:
+            self.openInventory()
+
+    def openInventory(self):
+        self.inInventory = True
+        self.inventoryOverlay.activate()
+    
+    def closeInventory(self):
+        self.inInventory = False
+        self.inventoryOverlay.deactivate()
+
     def disableJoystick(self):
         self.joystickDisabled = False if self.joystickDisabled else True
 
     def toggleAalias(self):
-        if self.antialiasing:
-            self.antialiasing = False
-        else:
-            self.antialiasing = True
-        
+        self.antialiasing = not self.antialiasing
         self.pauseScreen.loadComponents()
 
     def getFullScreen(self):
@@ -330,9 +365,8 @@ class Game:
             #pygame.display.toggle_fullscreen()
 
     def getPause(self):
-        if pygame.time.get_ticks() - self.lastPause >= 180:
-            keys = pygame.key.get_pressed()
-            if keys[keySet['pause']]:
+        if pygame.time.get_ticks() - self.lastPause >= 60:
+            if checkKey(keySet['pause']):
                 if self.pause:
                     self.unPause()
                 else:
@@ -365,9 +399,10 @@ class Game:
 
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
-        self.win.fill((0, 0, 0))
         if bg:
             self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
+        else:
+            self.win.fill((0, 0, 0))
 
 while __name__ == '__main__':
     game1 = Game()

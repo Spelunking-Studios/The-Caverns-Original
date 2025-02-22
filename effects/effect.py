@@ -1,7 +1,8 @@
 import pygame
+import util
 from stgs import *
 
-class Effect(pygame.sprite.Sprite):
+class Effect(util.Sprite):
     """Base Effect class"""
     def __init__(self, game, sprite, **kwargs):
         """Init"""

@@ -1,11 +1,11 @@
 import pygame
+import util
 import colors
 import math
 import fx
 from stgs import asset, FPS
 from .lights import LightSource, LightEffect
 from animations import BasicAnimation
-import util
 
 class Projectile(util.Sprite):
     def __init__(self, game, pos, target, **kwargs):
@@ -32,7 +32,7 @@ class Projectile(util.Sprite):
     def update(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
-        for e in self.game.groups.getProximitySprites(self, 600):
+        for e in self.game.groups.getProximitySprites(self, 600, self.game.groups.enemies):
             if hasattr(e, 'image'):
                 if pygame.sprite.collide_mask(self, e):
                     self.hit(e)

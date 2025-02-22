@@ -1,16 +1,16 @@
 import random
 
 import fx
+import util
 import pygame
 from animations import *
 from stgs import *
-import util
    
 class Door(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites, 
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
@@ -36,7 +36,7 @@ class Entrance(util.Sprite):
     color = (255, 255, 255)
 
     def __init__(self, game, objT, **kwargs):
-        self.groups = game.sprites 
+        self.groups = game.sprites
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)

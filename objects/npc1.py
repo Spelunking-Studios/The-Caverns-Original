@@ -1,9 +1,9 @@
+import util
 import pygame
 import fx
 import pygame
 from animations import *
 from stgs import *
-import util
 
 class Npc1(util.Sprite):
     def __init__(self, game, objT, **kwargs):

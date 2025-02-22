@@ -1,11 +1,10 @@
 import random
-
+import util
 import fx
 import pygame
 from animations import *
 from stgs import *
-import util
-import colors 
+
 
 class Wall(util.Sprite):
     def __init__(self, game, objT, **kwargs):
@@ -19,6 +18,10 @@ class Wall(util.Sprite):
             self.__dict__[k] = v
         for k, v in objT.properties.items():
             self.__dict__[k] = v
+
+        if DEBUG:
+            self.image = pygame.Surface((self.rect.width, self.rect.height))
+            self.image.fill(self.color)
 
     def draw(self, ctx, transform):
         if DEBUG:

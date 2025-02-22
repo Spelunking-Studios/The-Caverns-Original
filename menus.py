@@ -1,7 +1,4 @@
-# import PygameShader
-# from PygameShader import gaussianBlur5x5, shader
-# with open("pygameshaderdoc.txt", "w") as f:
-#     f.write(shader.__file__)
+import util
 import pygame
 from overlay import *
 from menu import *
@@ -14,15 +11,12 @@ class Menu:
         self.comps = pygame.sprite.Group()
         self.layer1 = pygame.sprite.Group()
         self.running = True
+        
         self.bg = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
         self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
-        # gaussianBlur5x5.canny_blur5x5_surface24_c(self.bg)
-        # shader.blur(self.bg, 2)
-        # shader.bloom(self.bg, 5, False)
-        # shader.swirl(self.bg, 95)
+
     def run(self):
         while self.running:
-            pygame.display.set_caption(TITLE + f" {self.game.getFps()}")
             self.game.clock.tick(FPS)
             self.game.runEvents()
             self.game.refresh(self.bg)
@@ -149,7 +143,7 @@ class SettingsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
         menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
             Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
             Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
@@ -163,7 +157,6 @@ class CreditsMenu(Menu):
             item.rect.centerx = halfWinWidth
         
         self.layer1.add(menuItems)
-        self.run()
 
     def update(self):
         if self.returnButton.clicked:
@@ -225,7 +218,6 @@ def main(game, loadingScreenOn = False):
     else:
         toMainMenuButton.clicked = True
 
-    print(colors.rgba(colors.yellow, 0))
     startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.rgba(colors.yellow, 255), colors.white), wh=(300, 60), rounded = True)
     settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
     instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
@@ -268,10 +260,7 @@ def main(game, loadingScreenOn = False):
         settingsButton.update()
 
         iloadingLinesEloadingTextLen = int(loadingLinesShowed) == len(loadingText)
-        keys = pygame.key.get_pressed()
-        if keys[keySet['start']]:
-            toMainMenuButton.clicked = True
- 
+
         if toMainMenuButton.clicked:
             for comp in comps:
                 game.win.blit(comp.image, comp.rect)
@@ -304,7 +293,6 @@ def main(game, loadingScreenOn = False):
                 game.map.loadFloor() 
                 break
         else:
-
             for i in range(int(loadingLinesShowed)):
                 game.win.blit(loadingText[i].image, loadingText[i])
             if loadingLinesShowed <= len(loadingText):

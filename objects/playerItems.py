@@ -21,7 +21,7 @@ class MagicWand:
     '''A magic wielding wand'''
     def __init__(self):
         self.lastAttack = 0
-        self.attackDelay = 30
+        self.attackDelay = 300
         self.damage = 12
         self.atkVariance = 0
     

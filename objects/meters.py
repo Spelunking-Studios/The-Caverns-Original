@@ -1,10 +1,10 @@
+import util
 import random
 
 import fx
 import pygame
 from animations import *
 from stgs import *
-import util
 
 class CoinMeter(util.Sprite):
 

@@ -51,8 +51,8 @@ class Bat(Enemy):
                     ).convert_alpha(), (self.width, self.height)
                 )
             )
-        self.set_wing_image()
-    def set_wing_image(self):
+        self.setWingImage()
+    def setWingImage(self):
         """Sets the bat's wing image"""
         # Load the image
         self.image = self.wingImages[self.wingState]
@@ -64,18 +64,18 @@ class Bat(Enemy):
         if self.active:
             if not self.attacking:
                 if utime() - self.attack["last"] > self.attack["delay"]:
-                    self.start_attack()
-            self.deal_damage()
+                    self.startAttack()
+            self.attemptToDealDamage()
         # Move towards the player
         self.move()
         #print(self.angle, self.attack, self.attacking)
         # Change wing image
         if now() - self.lastWingChange >= self.wingChangeDelay:
             self.wingState = (self.wingState + 1) % len(self.wingStates)
-            self.set_wing_image()
+            self.setWingImage()
             self.lastWingChange = now()
         self.animations.update()
-    def start_attack(self):
+    def startAttack(self):
         """Creates all of the necesary values for the bat to begin its attack"""
         self.attack["last"] = utime()
         self.attack["startPos"] = pygame.Vector2(self.rect.center)
@@ -84,7 +84,7 @@ class Bat(Enemy):
         self.pickEndPos(pickRandom = True)
         self.attack["target"] = self.attack["playerPos"]
         self.attacking = True
-    def end_attack(self):
+    def endAttack(self):
         """Resets all of the necessary values to effectivly end the attack"""
         self.attack["reachedPlayer"] = False
         self.attacking = False
@@ -120,12 +120,12 @@ class Bat(Enemy):
         testVec.y += self.vel.y * self.speed* self.game.dt()
         if not self.collideCheck(testVec):
             self.pos.y += self.vel.y * self.speed* self.game.dt()
-        self.set_angle()
+        self.setAngle()
         self.rect.center = self.pos
         # Check if the bat has reached the attack's end position
         if self.vecsAreSemiEqual(self.pos, self.attack["endPos"]):
-            self.end_attack()
-    def deal_damage(self):
+            self.endAttack()
+    def attemptToDealDamage(self):
         """Attempt to deal damage to the player"""
         mPos = pygame.Vector2(self.game.player.rect.center)
         pPos = self.rect
@@ -136,13 +136,11 @@ class Bat(Enemy):
             self.game.player.takeDamage(self.damage)
             self.attack["reachedPlayer"] = True
             #self.pickEndPos(self.angle, pickRandom = True)
-    def set_angle(self):
+    def setAngle(self):
         if self.attacking:
             if not self.attack["reachedPlayer"]:
-                #print("Facing player")
                 self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
             else:
-                #print("Facing end pos")
                 self.setAngleFacingTarget(pygame.Vector2(self.attack["endPos"]))
         else:
             self.setAngleFacingTarget(pygame.Vector2(self.game.player.rect.center))
@@ -150,7 +148,8 @@ class Bat(Enemy):
             mPos = self.pos
             mPos.x -= self.rect.centerx
             mPos.y -= self.rect.centery
-            mPos.normalize_ip()
+            if mPos.length() > 0:
+                mPos.normalize_ip()
             testVec = pygame.Vector2(self.pos)
             testVec.x += mPos.x * self.speed
             testVec.y += mPos.y * self.speed

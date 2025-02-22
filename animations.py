@@ -1,3 +1,4 @@
+import util
 import pygame
 from stgs import *
 
@@ -171,7 +172,7 @@ class BasicAnimation:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
 
-class HurtFx(pygame.sprite.Sprite):
+class HurtFx(util.Sprite):
     def __init__(self, duration = 300):
         pygame.sprite.Sprite.__init__(self)
         self.start = pygame.time.get_ticks()

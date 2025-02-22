@@ -1,7 +1,8 @@
 from animations import *
 from stgs import *
+import util
 
-class ClassName(pygame.sprite.Sprite):
+class ClassName(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.sprites, game.layer1

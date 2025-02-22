@@ -1,12 +1,13 @@
 import random
 
 import fx
+import util
 import pygame
 from animations import *
 from stgs import *
 
 
-class HealthBar(pygame.sprite.Sprite):
+class HealthBar(util.Sprite):
     x = winWidth/3
     y = 3
     width = 100

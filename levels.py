@@ -61,7 +61,7 @@ class Floor:
 
     def load(self):
         """Loads the floor (by default in the first room)"""
-        self.enterRoom("room5")
+        self.enterRoom("room1")
 
     def getRoomByName(self, name):
         for r in self.rooms:
@@ -114,6 +114,7 @@ class Room:
 
     def loadTiled(self, start="Entrance"):
         """Load data from the tiled file"""
+        print(f"Loading {self.filePath}")
         self.tiledData = pytmx.load_pygame(self.filePath, pixelAlpha = True)
         self.width = self.tiledData.width * self.tiledData.tilewidth * self.scale
         self.height = self.tiledData.height * self.tiledData.tileheight * self.scale
