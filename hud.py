@@ -4,6 +4,7 @@ from stgs import *
 import menu
 from menu import createFrame
 import overlay
+import menu
 import colors
 from math import sin 
 
@@ -38,7 +39,7 @@ class StatHud(util.Sprite):
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
-            text = overlay.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
+            text = menu.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
             self.image.blit(text.image, text.pos)
             self.image.set_alpha(128)
         

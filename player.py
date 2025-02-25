@@ -129,6 +129,7 @@ class Player(util.Sprite):
         if self.attackState == "attack":
             self.animations.setMode("hit")
             self.attackState = None
+            self.game.mixer.playFx("swing")
         if self.animations.mode == "hit":
             # Create a list of all close by interactables
             interactables = self.game.groups.getProximitySprites(

@@ -41,7 +41,7 @@ CAMLIMIT = True
 SHOWFPS = True
 
 #### FPS BOIS ####
-FPS = 60
+FPS = 120
 
 #### Volumes ####
 musicVolume = 1
@@ -195,7 +195,8 @@ if __name__ != '__main__':
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
         'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
-        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15)
+        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
+        'tooltip': fgen("ComicSansMS.ttf", 12)
     }
 
 def dist(vec1, vec2):

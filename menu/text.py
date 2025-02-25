@@ -3,7 +3,7 @@ from stgs import aalias, fonts
 
 class Text(pygame.sprite.Sprite):
     '''
-    Basic Text object
+    Text object with multiline support
     '''
     def __init__(self, fNum, text, color, aalias=True, pos=(0, 0), multiline=False, size=(900, 600), bgColor=(0, 0, 0, 0), **kwargs): 
         if isinstance(fNum, str):

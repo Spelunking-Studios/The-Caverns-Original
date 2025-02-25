@@ -135,7 +135,7 @@ class Game:
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
-        # self.statsInfo = hud.StatHud(self) 
+        self.statsInfo = hud.StatHud(self) 
         self.slots = hud.SlotsHud(self)
         self.healthHud = hud.HeathHud(self)
         self.updateT = pygame.time.get_ticks()

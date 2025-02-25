@@ -1,6 +1,8 @@
 from .overlay import Overlay
 from menu import Button, Image, Text
 from stgs import winWidth, winHeight, fgen
+import colors
+import menu
 import pygame
 from time import time
 
@@ -28,6 +30,10 @@ class InventoryOverlay(Overlay):
         self.tooltip_last = None
         self.tooltip_ac = 0
         self.tooltip_id = None
+
+
+        # Random settings
+        self.maxToolTipSize = 400
 
     def load_comps(self):
         """Loads all of the components"""
@@ -296,19 +302,26 @@ class InventoryOverlay(Overlay):
                             True,
                             (255, 255, 255)
                         )
-                        tooltip_desc = main_font.render(
+                        # tooltip_desc = main_font.render(
+                        #     item_comp.tooltip[1],
+                        #     True,
+                        #     (255, 255, 255)
+                        # )
+                        tooltip_desc = menu.Text(
+                            fgen("ComicSansMS.ttf", 12),
                             item_comp.tooltip[1],
-                            True,
-                            (255, 255, 255)
+                            colors.white,
+                            True
                         )
+
 
                         # Determine the size of the box we need
                         width = min(
                             max(
                                 tooltip_title.get_size()[0],
-                                tooltip_desc.get_size()[0]
+                                tooltip_desc.rect.width
                             ) + 4,
-                            300
+                            self.maxToolTipSize
                         )
 
                         # Draw the box
@@ -330,7 +343,7 @@ class InventoryOverlay(Overlay):
                         ))
 
                         # Draw on the description
-                        tooltip_surf.blit(tooltip_desc, (
+                        tooltip_surf.blit(tooltip_desc.image, (
                             item_comp.rect.x + item_comp.rect.width + 7,
                             item_comp.rect.y + 20
                         ))
