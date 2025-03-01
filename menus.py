@@ -12,8 +12,8 @@ class Menu:
         self.layer1 = pygame.sprite.Group()
         self.running = True
         
-        self.bg = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
-        self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
+        self.bg = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
+        # self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
 
     def run(self):
         while self.running:
@@ -66,6 +66,7 @@ class SettingsMenu(Menu):
             game,
             (100, 350),
             addGroups = [self.comps, self.layer1]
+
         )
         self.audioSlider2 = SettingSlider(
             game,
@@ -188,12 +189,12 @@ def main(game, loadingScreenOn = False):
     lssb = game.loadingScreenShownBefore
     if loadingScreenOn:
         game.loadingScreenShownBefore = True
-    # Loading screen
-    toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
-    toMainMenuButton.rect.centerx = winWidth / 2
-    loadingScreenBGSurface = pygame.image.load(asset("loading screen.jpeg")).convert_alpha()
-    loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
-    if loadingScreenOn:
+        # Loading screen
+        toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton.rect.centerx = winWidth / 2
+        loadingScreenBGSurface = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
+        loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
+    
         loadingText = []
         tti = 0
         ti = 1

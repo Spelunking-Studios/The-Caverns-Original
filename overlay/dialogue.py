@@ -58,10 +58,13 @@ class DialogueOverlay(util.Sprite):
         for comp in self.components:
             self.image.blit(comp.image, comp.rect)
 
-    def dialogue(self, npc):
+    def dialogueFromNpc(self, npc):
         self.activate()
         self.components.add(Dialogue(self.game, npc.text))
 
+    def dialogueFromText(self, text):
+        self.activate()
+        self.components.add(Dialogue(self.game, text))
 
 class Dialogue(util.Sprite):
     def __init__(self, game, text, **kwargs):

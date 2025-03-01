@@ -6,12 +6,13 @@ from .menuItem import MenuItem
 from .settingSlider import SettingSlider
 from .text import Text
 
-def createFrame(width, height, tileSize = 32, bPal = pygame.image.load(asset('objects/dPallette2.png'))):
+def createFrame(width, height, tileSize = 32, bPalPath = asset('objects/dPallette2.png')):
     '''
     Create a GUI frame from a 3x3 tile pallet provided a given width and height.
     NOTE: The height and width are refering to # in tiles
     '''
     baseImage = pygame.Surface((width*tileSize, height*tileSize), pygame.SRCALPHA)
+    bPal = pygame.image.load(bPalPath)
     borderPalette = bPal.convert_alpha()
     tWidth = int(baseImage.get_width()/tileSize)
     tHeight = int(baseImage.get_height()/tileSize)
