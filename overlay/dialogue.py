@@ -64,7 +64,9 @@ class DialogueOverlay(util.Sprite):
 
     def dialogueFromText(self, text):
         self.activate()
-        self.components.add(Dialogue(self.game, text))
+        text = [text] if isinstance(text, str) else text
+        for t in text:
+            self.components.add(Dialogue(self.game, t))
 
 class Dialogue(util.Sprite):
     def __init__(self, game, text, **kwargs):
