@@ -7,11 +7,12 @@ import objects as objs
 import os
 
 class GameMap:
-    def __init__(self, game, index=0):
+    def __init__(self, game, index=2):
         self.game = game
         self.floors = [
             Floor(game, "Floor1"),
             Floor(game, "Floor2"),
+            Floor(game, "Floor3"),
         ]
         self.index = index
         self.floor = self.floors[self.index]    # The floor loading will be based on an index within the floors list 
@@ -87,7 +88,7 @@ class Room:
         self.floor = floor
         self.game = floor.game
         self.filePath = filePath
-        self.scale = 1
+        self.scale = 2
 
         # Container for all the sprites corresponding to the room
         self.sprites = pygame.sprite.Group()
@@ -128,7 +129,15 @@ class Room:
                 offset = (layer.offsetx*self.scale, layer.offsety*self.scale) if hasattr(layer, 'offsetx') else (0, 0)
                 print(offset)
                 self.image.blit(pygame.transform.scale(l, (l.get_width()*self.scale, l.get_height()*self.scale)), offset)
-        
+            if isinstance(layer, pytmx.TiledTileLayer):
+                tile = self.tiledData.get_tile_image_by_gid
+                for x, y, gid, in layer:
+                    tileImage = tile(gid)
+                    if not tileImage is None:
+                        tileImage = pygame.transform.scale(tileImage, (self.tiledData.tilewidth* self.scale, self.tiledData.tilewidth * self.scale))
+                        self.image.blit(
+                            tileImage, (x * self.tiledData.tilewidth * self.scale, y * self.tiledData.tileheight * self.scale))
+
         self.loadTiledObjects(start)
     
     def loadTiledObjects(self, start="Entrance"):
