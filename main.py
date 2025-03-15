@@ -108,7 +108,6 @@ class Game:
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
-        self.points = 0
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
@@ -119,7 +118,10 @@ class Game:
 
     def new(self):
         self.won = False
-        self.points = 0
+        self.end = False
+        self.pause = False
+        self.inInventory = False
+
         self.groups = Grouper()
         self.sprites = Group()
         # Pause Sprites
@@ -128,9 +130,6 @@ class Game:
         self.iSprites = Group()
         self.map = GameMap(self)
         self.player = Player(self, asset('player/samplePlayer.png'))
-        self.end = False
-        self.pause = False
-        self.inInventory = False
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         self.mapScreen = MapOverlay(self)

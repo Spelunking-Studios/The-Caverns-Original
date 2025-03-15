@@ -8,13 +8,13 @@ class Dagger(Weapon):
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
-        self.stats["attack"] = {
+        self.stats.attack = {
             "cooldown": 0.25,
             "damage": 3,
             "critVariance": 2
         }
-        self.stats["categories"] = self.base_categories + ["dagger"]
-        self.stats["description"] = "Base dagger"
+        self.stats.categories = self.base_categories + ["dagger"]
+        self.stats.description = "Base dagger"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
                 asset("items", "weapon", "dagger.png")
