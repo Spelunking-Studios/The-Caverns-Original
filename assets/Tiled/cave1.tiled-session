@@ -3,14 +3,28 @@
         "height": 4300,
         "width": 2
     },
-    "activeFile": "",
+    "activeFile": "Floor3/room1.tmx",
     "expandedProjectPaths": [
-        "."
+        ".",
+        "Floor3",
+        "Floor1"
     ],
     "fileStates": {
         "32x32 Matt Palette.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
+        },
+        "Caverns Floor 1.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "Floor3/room1.tmx": {
+            "scale": 1.5,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 484.99999999999994,
+                "y": 338.33333333333337
+            }
         },
         "test.tmx": {
             "scale": 2,
@@ -25,9 +39,12 @@
     "map.lastUsedFormat": "tmx",
     "map.layerDataFormat": "1",
     "openFiles": [
+        "Floor3/room1.tmx"
     ],
     "project": "cave1.tiled-project",
     "recentFiles": [
+        "Floor3/room1.tmx",
+        "Caverns Floor 1.tsx",
         "test.tmx",
         "32x32 Matt Palette.tsx"
     ],
