@@ -23,7 +23,7 @@ except AttributeError:
     PATH = os.path.dirname(os.path.realpath(__file__))
 
 # Path to the asset folder
-ASSETSPATH = os.path.join(PATH, 'assets')
+ASSETSPATH = os.path.join(PATH, '../assets')
 
 #### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
 if PATH == os.path.dirname(os.path.realpath(__file__)): #Checks if game is running from local path or has gamedata stored in appdata
