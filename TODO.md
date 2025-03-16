@@ -1,19 +1,64 @@
 # TODOs for The Caverns
 
 
-* Begin to develop the core aspects about the game including the idea of a "light source" that controls your energy and stats. Ideas to build on this could include:
-    * The light source diminishes from the player inside of caves as his contained light energy goes down
-    * The player has a crystal that emmits the light which additionally contains it and must be refilled by travelling to the surface
+## Code
+* Shader integration
+    * add multipass code
+    * make generic texture pass system
+* Inventory
+    * Add magic system
+    * Make sure that saving and loading works
+    * Change font
+    * Optimize? (very slow)
+* HUD
+    * Change health bar
+    * Reduce weapon slots
+    * Add magic system
+* Floor 1
+    * Sprites
+        * Cave beetles (carrion beetles)
+            * add multiple colors of beetles
+            * some beetles are evil some are harmless
+            * different sizes
+            * Burrow action (they can bury themselves into the ground)
+        * Bats
+            * Reuse or rewrite
+        * Stone golem
+        * Rats
+        * Ratpile
+    * Puzzles
+        * Blocked pathway
+        * Maze
+        * Burrow claws
+* Floor 2 (Dark floor)
+    * Wraiths
+    * Black ooze
+    * Totems of death
 * Make enemy generators
-* Give enemies attack based combat and write a projectile script
-* Make overworld
+    * Enemy spawn system
+* Give enemies attack
+* Shader graphics
+    * Fire
+    * Blood
+    * Lightning
+    * Nausea
+    * ~~Warp~~
+    * Flashbang
+
+## Art/Concept
+* Find Tarot cards and pixelize
+    * Make spells based on tarot cards
+* The sanity system
+    * A system intertwined with your players stats that dwindles your strength as you slowly lose sanity
+        * Regain sanity by
+            * Eating remedies
+            * Reading lore scraps
+            * Doing random things (pet the grass, admire your sword)
+
 
 ## Ideas
 * Create a Prefab system to clear up code base
 * Similarly create a macro system
-
-
-
 
 
 ## Completed
