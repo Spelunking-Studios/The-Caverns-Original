@@ -1,19 +1,17 @@
-[tool.poetry]
+[project]
 name = "the-caverns"
-version = "0.0.0"
+version = "0.1.0"
 description = "An exploration ARPG game made in python with pygame."
-authors = ["LGgameLAB"]
-license = "None"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "pygame>=2.6.1",
+    "pytmx>=3.32",
+]
+authors = ["LGgameLAB", "Ben Landon"]
 
-[tool.poetry.dependencies]
-python = "^3.8"
-PyTMX = "^3.31"
-pygame = "^2.1.2"
-flake8 = "^5.0.4"
-pep8-naming = "^0.13.2"
-
-[tool.poetry.dev-dependencies]
-
-[build-system]
-requires = ["poetry-core>=1.0.0"]
-build-backend = "poetry.core.masonry.api"
+[dependency-groups]
+dev = [
+    "flake8>=7.1.2",
+    "pep8-naming>=0.14.1",
+]

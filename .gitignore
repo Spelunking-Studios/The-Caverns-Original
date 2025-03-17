@@ -55,5 +55,6 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
-# Replit Stuff
-venv/
+.venv
+
+main.spec
