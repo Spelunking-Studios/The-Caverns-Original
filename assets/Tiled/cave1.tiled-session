@@ -1,0 +1,60 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+        ".",
+        "Floor1",
+        "Floor3"
+    ],
+    "fileStates": {
+        "32x32 Matt Palette.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "Caverns Floor 1.tsx": {
+            "scaleInDock": 0.75,
+            "scaleInEditor": 1
+        },
+        "Floor3/room1.tmx": {
+            "scale": 1,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 159.5,
+                "y": 142.5
+            }
+        },
+        "Floor3/room2.tmx": {
+            "scale": 3,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 294.5,
+                "y": 150.49999999999997
+            }
+        },
+        "test.tmx": {
+            "scale": 2,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 229.25,
+                "y": 273.25
+            }
+        }
+    },
+    "last.imagePath": "/home/luke/Documents/programming/python/the-caverns/assets/Tiled",
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": "1",
+    "openFiles": [
+    ],
+    "project": "cave1.tiled-project",
+    "recentFiles": [
+        "Floor3/room2.tmx",
+        "Floor3/room1.tmx",
+        "Caverns Floor 1.tsx",
+        "test.tmx",
+        "32x32 Matt Palette.tsx"
+    ],
+    "tileset.lastUsedFormat": "tsx"
+}

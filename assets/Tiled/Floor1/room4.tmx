@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.9" tiledversion="1.9.0" orientation="orthogonal" renderorder="right-down" width="110" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="286">
+<map version="1.8" tiledversion="1.8.2" orientation="orthogonal" renderorder="right-down" width="110" height="96" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="286">
  <imagelayer id="2" name="Image Layer 1">
   <image source="images/room4.jpg" width="2304" height="3072"/>
  </imagelayer>
@@ -302,7 +302,7 @@
   <object id="272" name="Wall" x="2040" y="872" width="32" height="64"/>
   <object id="273" name="Wall" x="2072" y="880" width="16" height="40"/>
   <object id="274" name="Wall" x="2032" y="896" width="8" height="32"/>
-  <object id="275" name="Entrance2" x="1864" y="2648" width="112" height="32"/>
+  <object id="275" name="Entrance2" x="1864" y="2704" width="112" height="32"/>
  </objectgroup>
  <objectgroup id="5" name="Doors">
   <object id="6" name="Door" x="576" y="152" width="128" height="26.667">

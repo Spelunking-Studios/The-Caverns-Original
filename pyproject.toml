@@ -9,6 +9,8 @@ license = "None"
 python = "^3.8"
 PyTMX = "^3.31"
 pygame = "^2.1.2"
+flake8 = "^5.0.4"
+pep8-naming = "^0.13.2"
 
 [tool.poetry.dev-dependencies]
 
