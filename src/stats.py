@@ -34,6 +34,8 @@ class PlayerStats(Stats):
         super().__init__(
                 health=50,
                 healthMax=50,
+                sanity=50,
+                sanityMax=50,
                 strength=0,
                 speed=15,
                 atkDamage=0,

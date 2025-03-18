@@ -102,6 +102,12 @@ class Player(util.Sprite):
         if joystickEnabled:
             self.cursor.update()
 
+        # Testing Sanity
+        self.stats.sanity = max(4, self.stats.sanity-0.08)
+        if self.stats.sanity < self.stats.sanityMax/2:
+            self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
+            self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+
     def checkActions(self):
         # Get the current time
         now = pygame.time.get_ticks()

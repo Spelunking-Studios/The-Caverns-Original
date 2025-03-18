@@ -141,6 +141,7 @@ class Game:
         self.statsInfo = hud.StatHud(self, border = asset("objects/dPallette3.png")) 
         self.slots = hud.SlotsHud(self)
         self.healthHud = hud.HeathHud(self)
+        self.sanityHud = hud.SanityHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
         
@@ -206,8 +207,9 @@ class Game:
                 for slotHud in sprite.slots:
                     self.win.blit(slotHud.image, slotHud.rect)
             else:
-                self.win.blit(sprite.image, sprite.rect)
-        
+                # self.win.blit(sprite.image, sprite.rect)
+                sprite.draw(self.win)
+
         for sprite in self.overlayer:
             try:
                 if sprite.active:
@@ -333,7 +335,7 @@ class Game:
         self.cam.toggleTarget()
 
     def toggleFps(self):
-        self.showFPS = not self.showFPS
+        self.showFps = not self.showFps
     
     def toggleInventory(self):
         if self.inInventory:
