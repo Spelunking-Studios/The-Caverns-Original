@@ -121,6 +121,38 @@ class HeathHud(Hud):
     def update(self):
         self.render()
 
+class SanityHud(Hud):
+    def __init__(self, game):
+        super().__init__(game)
+        self.rect = pygame.Rect(400, 640, 450, 20)
+        self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
+        self.bgColor = colors.dark(colors.grey, 70)
+        self.padX, self.padY = 4, 3
+        # self.render()
+
+        # self.image.fill(self.bgColor)
+    def update(self):
+        self.render()
+    
+    # Overrides the sprite draw to use pygame's draw functions
+    def draw(self, ctx, transform=lambda rect:rect):
+        pygame.draw.rect(
+            ctx,
+            self.bgColor,
+            transform(self.rect),
+        )
+        x, y = self.rect.topleft
+        rect = pygame.Rect(x + self.padX, y + self.padY, (self.rect.width-self.padX*2)*(self.game.player.stats.sanity/self.game.player.stats.sanityMax), self.rect.height-self.padY*2)
+        pygame.draw.rect(
+            ctx,
+            colors.white,#colors.light(colors.green, sin(pygame.time.get_ticks()*80)),
+            transform(rect),
+            0,
+            5
+        )
+
+
+
 # class InventoryHud(util.Sprite):
 #     def __init__(self, game, **kwargs):
 #         self.groups = game.sprites, game.hudLayer

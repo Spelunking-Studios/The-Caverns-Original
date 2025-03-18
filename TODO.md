@@ -36,6 +36,11 @@
     * Totems of death
 * Make enemy generators
     * Enemy spawn system
+* Sanity system
+    * light diminishes as sanity diminishes
+    * white bar on screen
+    * use the wiggle shader to create nausea
+    * distort creatures and alter colors
 * Give enemies attack
 * Shader graphics
     * Fire
@@ -57,6 +62,11 @@
 
 
 ## Ideas
+
+
+
+
+### Code
 * Create a Prefab system to clear up code base
 * Similarly create a macro system
 
