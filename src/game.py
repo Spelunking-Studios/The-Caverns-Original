@@ -129,7 +129,11 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
-        self.player = Player(self, asset('player/samplePlayer.png'))
+        self.player = Player(
+            self,
+            asset('player/samplePlayer.png'),
+            globals()["GAME_STATE"].get("player_inventory", None)
+        )
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         #self.mapScreen = MapOverlay(self)

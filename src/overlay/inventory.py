@@ -31,7 +31,6 @@ class InventoryOverlay(Overlay):
         self.tooltip_ac = 0
         self.tooltip_id = None
 
-
         # Random settings
         self.maxToolTipSize = 400
 
@@ -78,7 +77,7 @@ class InventoryOverlay(Overlay):
             item.kill()
 
         # Identify the player's equipped weapon
-        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__  # noqa
+        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__
 
         # Setup the loop
         ix = 0
@@ -134,7 +133,7 @@ class InventoryOverlay(Overlay):
                 iitem=item_name,  # Custom! Not used by the actual image at all
                 tooltip=(
                     item_name,
-                    item["stats"]["description"]
+                    item["items"][0].stats["description"]
                 ),  # Also custom
                 ukey=item_name  # Custom key to uid the element
             )
@@ -313,7 +312,6 @@ class InventoryOverlay(Overlay):
                             colors.white,
                             True
                         )
-
 
                         # Determine the size of the box we need
                         width = min(

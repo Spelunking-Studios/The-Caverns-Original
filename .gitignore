@@ -58,3 +58,5 @@ docs/_build/
 .venv
 
 main.spec
+game.store
+src/game.store
