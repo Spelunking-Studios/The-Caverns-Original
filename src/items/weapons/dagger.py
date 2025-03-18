@@ -5,6 +5,9 @@ import pygame
 
 class Dagger(Weapon):
     """Represents the base dagger"""
+
+    kind = "Dagger"
+
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__

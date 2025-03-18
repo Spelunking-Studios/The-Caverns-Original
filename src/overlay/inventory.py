@@ -77,30 +77,30 @@ class InventoryOverlay(Overlay):
             item.kill()
 
         # Identify the player's equipped weapon
-        player_equipped_weapon = self.game.player.equippedWeapon.__class__.__name__
+        player_equipped_weapon = getattr(self.game.player.equippedWeapon, "id", None)
 
         # Setup the loop
         ix = 0
         iy = 0
 
         # Loop over each item
-        for item_name in self.iitems:
+        for item_id in self.iitems:
             # Retrive the item from the inventory
-            item = inventory.get_item(item_name)
+            item = inventory.get_item(item_id)
 
             # Make sure the image exists in the cache
-            if item_name not in self._cached_images:
+            if item_id not in self._cached_images:
                 # Print an info message
                 print(
                     "\x1b[36mInventoryOverlay:",
-                    f"caching renderable for {item_name} item\x1b[0m"
+                    f"caching renderable for {item_id} item\x1b[0m"
                 )
 
                 # If the item has an image, cache it
                 # Otherwise, create a dummy image
-                if (len(item["items"]) and item["items"][0].renderable):
-                    self._cached_images[item_name] = pygame.transform.scale(
-                        item["items"][0].renderable,
+                if item.renderable:
+                    self._cached_images[item_id] = pygame.transform.scale(
+                        item.renderable,
                         (64, 64)
                     )
                 else:
@@ -112,13 +112,13 @@ class InventoryOverlay(Overlay):
                     )
 
                     # Add a placeholder into the cache
-                    self._cached_images[item_name] = pygame.Surface(
+                    self._cached_images[item_id] = pygame.Surface(
                         (64, 64),
                         pygame.SRCALPHA
                     ).convert_alpha()
 
             # Grab the image out of cache
-            imref = self._cached_images[item_name]
+            imref = self._cached_images[item_id]
 
             # Create the image component
             pos = (
@@ -130,18 +130,18 @@ class InventoryOverlay(Overlay):
                 self.game,
                 pos,
                 groups=[self.item_comps],
-                iitem=item_name,  # Custom! Not used by the actual image at all
+                iitem=item_id,  # Custom! Not used by the actual image at all
                 tooltip=(
-                    item_name,
-                    item["items"][0].stats["description"]
+                    item.kind,
+                    item.stats["description"]
                 ),  # Also custom
-                ukey=item_name  # Custom key to uid the element
+                ukey=item_id  # Custom key to uid the element
             )
             i.setClickHandler(self.handle_item_click)
 
             # Create a label if the item is also the player's current wepon
-            if item_name == player_equipped_weapon:
-                print("Player has", item_name, "equipped.")
+            if item_id == player_equipped_weapon:
+                print("Player has", item_id, "equipped.")
                 font = fgen("ComicSansMS.ttf", 12)
                 Text(
                     font,
@@ -160,25 +160,25 @@ class InventoryOverlay(Overlay):
 
     def handle_item_click(self, caller):
         # Load info about the item
-        item_name = caller.iitem
+        item_id = caller.iitem
         entry = self.game.player.inventory._registry["items"].get(
-            item_name,
+            item_id,
             None
         )
 
         if entry:
             # Make sure the item isn't already equipped
-            if self.game.player.equippedWeapon.__class__.__name__ == item_name:
-                print("The player already has '" + item_name + "' equipped.")
+            if getattr(self.game.player.equippedWeapon, "id", None) == item_id:
+                print("The player already has '" + item_id + "' equipped.")
                 return
 
             # Set the player's equipped weapon
-            self.game.player.equippedWeapon = entry["items"][0]
+            self.game.player.equippedWeapon = entry
 
             # Print a message to the console
             print(
                 "Changed the player's equipped weapon to",
-                "'" + item_name + "'."
+                "'" + item_id + "'."
             )
 
             # Force a rerender of the overlay
@@ -188,7 +188,7 @@ class InventoryOverlay(Overlay):
             print(
                 "\x1b[93Warning:",
                 "Could not find an inventory entry for the",
-                "'" + item_name + "'",
+                "'" + item_id + "'",
                 "item.\x1b[0m"
             )
 
@@ -293,7 +293,7 @@ class InventoryOverlay(Overlay):
 
                         # Generate all of the fonts that are going to be used
                         title_font = fgen("PixelLove.ttf", 18)
-                        main_font = fgen("ComicSansMS.ttf", 12)
+                        # main_font = fgen("ComicSansMS.ttf", 12)
 
                         # Render the text
                         tooltip_title = title_font.render(

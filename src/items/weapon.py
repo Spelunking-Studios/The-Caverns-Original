@@ -4,6 +4,7 @@ from random import randint
 
 class Weapon(Item):
     base_categories = ["weapon"]
+    kind = "Generic Weapon"
 
     def __init__(self):
         super().__init__()

@@ -132,7 +132,8 @@ class Game:
         self.player = Player(
             self,
             asset('player/samplePlayer.png'),
-            globals()["GAME_STATE"].get("player_inventory", None)
+            globals()["GAME_STATE"].get("player_inventory", None),
+            globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)

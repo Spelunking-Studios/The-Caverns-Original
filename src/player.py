@@ -18,7 +18,7 @@ import items
 class Player(util.Sprite):
     '''The Player Object'''
     #### Player Initializations ####
-    def __init__(self, game, image, saved_inventory=None, **kwargs):
+    def __init__(self, game, image, saved_inventory=None, equipped_weapon=None, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
         self.hitCooldown = 200
@@ -47,7 +47,11 @@ class Player(util.Sprite):
             self.equippedWeapon = self.sword
         else:
             self.inventory.deserialize(saved_inventory)
-            self.equippedWeapon = None
+
+            if equipped_weapon is None:
+                self.equippedWeapon = None
+            else:
+                self.equippedWeapon = self.inventory.get_item(equipped_weapon)
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
