@@ -18,7 +18,7 @@ import items
 class Player(util.Sprite):
     '''The Player Object'''
     #### Player Initializations ####
-    def __init__(self, game, image, **kwargs):
+    def __init__(self, game, image, saved_inventory=None, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
         self.hitCooldown = 200
@@ -34,16 +34,20 @@ class Player(util.Sprite):
         self.healthAccumulator = 0
         self.inventory = Inventory()
 
-        ########################
-        # This is just for now #
-        ########################
-        self.sword = items.Sword()
-        self.great_sword = items.GreatSword()
-        self.dagger = items.Dagger()
-        self.inventory.add_item(self.sword)
-        self.inventory.add_item(self.great_sword)
-        self.inventory.add_item(self.dagger)
-        self.equippedWeapon = self.sword; 
+        if saved_inventory is None:
+            ########################
+            # This is just for now #
+            ########################
+            self.sword = items.Sword()
+            self.great_sword = items.GreatSword()
+            self.dagger = items.Dagger()
+            self.inventory.add_item(self.sword)
+            self.inventory.add_item(self.great_sword)
+            self.inventory.add_item(self.dagger)
+            self.equippedWeapon = self.sword
+        else:
+            self.inventory.deserialize(saved_inventory)
+            self.equippedWeapon = None
 
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
@@ -101,7 +105,7 @@ class Player(util.Sprite):
     def checkActions(self):
         # Get the current time
         now = pygame.time.get_ticks()
-        
+
         # Setup the actions
         action1, action2 = None, None
 
@@ -114,17 +118,17 @@ class Player(util.Sprite):
 
             # Get the pressed buttons
             pressed_buttons = pygame.mouse.get_pressed()
-            
+
             # Update the actions
             action1 = pressed_buttons[0]
-            action2 = pressed_buttons[2] 
+            action2 = pressed_buttons[2]
 
-        if action1:
-            #self.stats.inventory.getSlot(1).action(self)
+        if action1 and self.equippedWeapon:
+            # self.stats.inventory.getSlot(1).action(self)
             self.equippedWeapon.action(self)
         elif action2:
             self.stats.inventory.getSlot(2).action(self)
-            
+
     def weaponCollisions(self):
         if self.attackState == "attack":
             self.animations.setMode("hit")
@@ -167,7 +171,7 @@ class Player(util.Sprite):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
                             # Determine the amount of damage
                             dmg = self.equippedWeapon.get_attack_damage(self)
-                            
+
                             # Deal the damage
                             e.takeDamage(dmg[0])
 
@@ -177,7 +181,7 @@ class Player(util.Sprite):
                                 dmg[0],
                                 dmg[1]
                             )
-    
+
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
             self.lastTimeTookDamage = time()
@@ -185,7 +189,7 @@ class Player(util.Sprite):
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
             self.animations.fx(HurtFx())
-    
+
     def setAngle(self):
         if joystickEnabled:
             mPos = Vector2(self.cursor.pos)
@@ -207,7 +211,7 @@ class Player(util.Sprite):
         self.image = pygame.transform.rotate(self.image, angle)
         self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
         self.mask = pygame.mask.from_surface(self.image, True)
-    
+
     def spin(self):
         self.angle += self.spinSpeed
 
@@ -236,16 +240,16 @@ class Player(util.Sprite):
             if collide:
                 if self.vel.x > 0:
                     self.moveRect.right = collide.left
-                else: 
+                else:
                     self.moveRect.left = collide.right
                 self.vel.x = 0
-            
+
             self.moveRect.y += round(self.vel.y)
             collide = self.collideCheck()
             if collide:
                 if self.vel.y > 0:
                     self.moveRect.bottom = collide.top
-                else: 
+                else:
                     self.moveRect.top = collide.bottom
                 self.vel.y = 0
 
@@ -263,17 +267,17 @@ class Player(util.Sprite):
         for obj in self.game.groups.colliders:
             if isinstance(obj, (Wall, Chest)):
                 if self.moveRect.colliderect(obj.rect):
-                    returnVal = obj.rect  
+                    returnVal = obj.rect
             # else:
             #     if pygame.sprite.collide_circle(self, obj):
             #         return obj.getCollider()
 
         return returnVal
-    
+
     def maskCollide(self, rect2):
         r2 = rect2
         return self.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.moveRect.x,r2.y-self.moveRect.y))
-    
+
     def setPos(self, tup, center=False):
         self.vel = Vector2(0, 0)
         if center:
@@ -281,7 +285,7 @@ class Player(util.Sprite):
         else:
             self.moveRect.topleft = tup
         self.rect = self.moveRect.copy()
-    
+
     def getAttackMask(self):
         img2 = self.image.copy()
         img2.set_colorkey((0, 0, 0))
@@ -290,17 +294,18 @@ class Player(util.Sprite):
         self.mask = pygame.mask.from_surface(img2)
         #return img2
 
+
 class Cursor:
     def __init__(self, xy=(500, 1)):
         self.pos = Vector2(xy)
         self.speed = 25
         self.size = Vector2(6, 6)
-    
+
     def update(self):
         movex = self.speed*getJoy1().get_axis(2)* self.game.dt()
         movey = self.speed*getJoy1().get_axis(3)* self.game.dt()
         self.pos.x += movex if abs(getJoy1().get_axis(2)) > 0.5 else 0
         self.pos.y += movey if abs(getJoy1().get_axis(3)) > 0.5 else 0
-        
+
         self.pos.x = max(0, min(self.pos.x, winWidth-self.size.x))
         self.pos.y = max(0, min(self.pos.y, winHeight-self.size.y))

@@ -1,7 +1,10 @@
-import os, sys
+import os
+import sys
 import pygame
 import colors
 import math
+import pickle
+
 
 TITLE = "The Caverns"
 LOADING_TEXT = [
@@ -27,7 +30,7 @@ ASSETSPATH = os.path.join(PATH, '../assets')
 
 #### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
 if PATH == os.path.dirname(os.path.realpath(__file__)): #Checks if game is running from local path or has gamedata stored in appdata
-    saveFile = os.path.join(PATH, 'game.store')
+    saveFile = os.path.join(PATH, '../game.store')
 else:
     saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store') # Gets save file from appdata
     try:
@@ -47,6 +50,7 @@ FPS = 60
 musicVolume = 1
 fxVolume = 1
 
+
 #### Returns the asset's path ####
 def asset(*args):
     '''Returns asset path given asset name'''
@@ -56,11 +60,13 @@ def asset(*args):
         r = os.path.join(r, arg)
     return r
 
+
 def sAsset(assetName):
     '''Returns sound path given sound name'''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, 'sounds', assetName)
+
 
 def fAsset(assetName):
     '''Returns font path given font name'''
@@ -68,14 +74,17 @@ def fAsset(assetName):
 
     return os.path.join(ASSETSPATH, 'fonts', assetName)
 
+
 def tAsset(assetName):
     '''Returns Tiled file path given font name'''
     global ASSETSPATH
 
     return os.path.join(ASSETSPATH, 'Tiled', assetName)
 
+
 # Custom Generated fonts
 fgenedfs = {}
+
 
 def fgen(fn, s):
     """Generate a custom font"""
@@ -83,6 +92,7 @@ def fgen(fn, s):
     if not fgenedfs.get(rn, None):
         fgenedfs[rn] = pygame.font.Font(fAsset(fn), s)
     return fgenedfs[rn]
+
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
@@ -115,6 +125,7 @@ joysticks = [pygame.joystick.Joystick(i) for i in range(pygame.joystick.get_coun
 joystickConnected = True if len(joysticks) > 0 else False
 joystickEnabled = True if joystickConnected and not joystickDisabled else False
 
+
 def checkJoysticks():
     '''
     STILL IN BETA TESTING
@@ -123,6 +134,7 @@ def checkJoysticks():
     global joystickEnabled
     joystickEnabled = True if joystickConnected and not joystickDisabled else False
 
+
 def getJoy1():
     '''
     STILL IN BETA TESTING
@@ -130,6 +142,7 @@ def getJoy1():
     return joysticks[0] if len(joysticks) > 0 else False
 #### Changes movement from flying to platforming ####
 platformer = True
+
 
 def checkKey(move):
     '''Handy Dandy class for checking the status of keys given a 
@@ -157,6 +170,7 @@ def checkKey(move):
                 return True
     return False
 
+
 class Spritesheet:
     '''utility class for loading and parsing spritesheets'''
 
@@ -167,7 +181,7 @@ class Spritesheet:
             self.image = pygame.image.load(filePath).convert_alpha()
         except TypeError:
             self.image = filePath.copy().convert_alpha()
-        
+
         self.width = self.image.get_width()
         self.height = self.image.get_height()
 
@@ -180,6 +194,7 @@ class Spritesheet:
         img.blit(self.image, (0, 0), (x, y, width, height))
         img = pygame.transform.scale(img, (width, height))
         return img.convert_alpha()
+
 
 # Loads all fonts if program is run indirectly
 if __name__ != '__main__':
@@ -199,19 +214,22 @@ if __name__ != '__main__':
         'tooltip': fgen("ComicSansMS.ttf", 12)
     }
 
+
 def dist(vec1, vec2):
     '''Distance formula between two pygame Vectors'''
     dist1 = (vec1.x-vec2.x)**2
     dist2 = (vec1.y-vec2.y)**2
     return math.sqrt(dist1+dist2)
 
-import pickle
 
 def loadSave(file):
     '''Load save
 
     STILL IN BETA TESTING
     '''
+
+    print("Loading save file...")
+
     try:
         with open(file, 'rb') as f:
             data = pickle.load(f)
@@ -221,6 +239,10 @@ def loadSave(file):
         checkJoysticks()
     except FileNotFoundError:
         print("No Save File")
+
+        # Init some rough defaults
+        globals()["GAME_STATE"] = {}
+
 
 def saveData(file, game):
     '''Save game settings
@@ -233,10 +255,17 @@ def saveData(file, game):
         'aalias': game.antialiasing,
         'SHOWFPS': game.showFps,
         'joystickDisabled': game.joystickDisabled,
-        "LOADING_SCREEN_SHOWN_BEFORE": game.loadingScreenShownBefore
+        "LOADING_SCREEN_SHOWN_BEFORE": game.loadingScreenShownBefore,
+        "GAME_STATE": {}
     }
+
+    # Serialize the player's inventory
+    player_inventory = game.player.inventory.serialize()
+    saveDict["GAME_STATE"]["player_inventory"] = player_inventory
+
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)
+
 
 def tGet(objT, strValue, default=False):
     '''Somewhat redundant function for forcing properties out of a Tiled object
@@ -246,6 +275,7 @@ def tGet(objT, strValue, default=False):
         return objT.properties[strValue]
     except KeyError:
         return default
+
 
 def now():
     '''Returns number of cycles that pygame has been ticking'''

@@ -40,10 +40,7 @@ class Inventory:
 
     def get_item(self, name):
         """Retrives an item from the inventory"""
-        registry_query = self._registry["items"].get(name, None)
-        if registry_query:
-            registry_query["stats"] = registry_query["items"][0].stats
-        return registry_query
+        return self._registry["items"].get(name, None)
 
     def get_items(self):
         """Retrives all of the itemes in the inventory"""
@@ -60,14 +57,15 @@ class Inventory:
         if isinstance(o, Item):
             stats = o.stats.copy()
             stats.pop("use", None)
-            return json.dumps(o.stats, default=self._serialize_json_default)
+            return stats
 
     def deserialize(self, s):
         """Loads the serialized string into the current object"""
         allowed_items = [Item, Weapon, Sword, GreatSword, Dagger]
 
-        first_data_level = json.loads(s)
-        for item_name in first_data_level["items"]:
+        data = json.loads(s)
+
+        for item_name in data["items"]:
             if item_name not in [c.__name__ for c in allowed_items]:
                 print(
                     "\x1b[93mWarning:",
@@ -76,12 +74,11 @@ class Inventory:
                     "is not a valid item.\x1b[0m"
                 )
                 continue
-            item = first_data_level["items"][item_name]
-            for true_item in item["items"]:
-                true_item_data = json.loads(true_item)
-                i = None
-                for index, c in enumerate(allowed_items):
-                    if c.__name__ == item_name:
-                        i = allowed_items[index]()
-                i.deserialize(true_item_data)
-                self.add_item(i)
+
+            item = data["items"][item_name]
+            for item_instance in item["items"]:
+                # Recreate the item
+                _class = list(filter(lambda c: c.__name__ == item_name, allowed_items))[0]
+                new_item = _class()
+                new_item.deserialize(item_instance)
+                self.add_item(new_item)
