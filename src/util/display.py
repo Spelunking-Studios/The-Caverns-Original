@@ -1,6 +1,6 @@
 import pygame
 import moderngl
-from src.shaders import ShaderPass
+from src.shaders import ShaderManager, Shader
 from src.stgs import *
 
 class Display:
@@ -17,6 +17,9 @@ class Display:
 
         # Set up shader target
         self.ctx = moderngl.create_context()
+        self.shaderManager = ShaderManager(self, [
+            Shader(self, "blank.frag")
+        ])
 
     def getFullScreen(self):
         keys = pygame.key.get_pressed()
@@ -37,9 +40,11 @@ class Display:
 
         self.display.blit(window, (0, 0)) 
         frame_texture = self.get_frame() # Convert display to shader texture
+        self.shaderManager.apply(frame_texture)
 
         self.ctx.screen.use()
         self.ctx.clear()
+        self.shaderManager.render()
 
         pygame.display.flip()
         frame_texture.release()
@@ -47,12 +52,15 @@ class Display:
     # Blit passthrough
     def blit(self, img, rect):
         self.display.blit(img, rect)
+    
+    def get_size(self):
+        return self.display.get_size()
 
     def get_frame(self, surf=None):
         if not surf:
-            surf = display
+            surf = self.display
 
-        tex = ctx.texture(surf.get_size(), 4)
+        tex = self.ctx.texture(surf.get_size(), 4)
         tex.filter = (moderngl.NEAREST, moderngl.NEAREST)
         tex.swizzle = 'BGRA'
         tex.write(surf.get_view('1'))
@@ -65,3 +73,4 @@ class Display:
         texture.use(0)
         shader_pass.program['tex'] = 0
         shader_pass.render_object.render(mode=moderngl.TRIANGLE_STRIP)
+
