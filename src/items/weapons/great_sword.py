@@ -6,6 +6,8 @@ from stgs import asset
 class GreatSword(Weapon):
     """Represents the base sword"""
 
+    kind = "Great Sword"
+
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__

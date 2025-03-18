@@ -1,11 +1,14 @@
 from time import time
+import uuid
 
 
 class Item:
     _cache = {}
     base_categories = []
+    kind = "Generic Item"
 
     def __init__(self):
+        self.id = str(uuid.uuid4())
         self.stats = {
             "categories": [],
             "description": "Base item",
@@ -29,6 +32,8 @@ class Item:
 
     def deserialize(self, o):
         self.stats = o
+        self.id = self.stats.pop("id")
+        self.stats.pop("class")
         self.stats["use"] = {
             "fn": self.action,
             "last": -1

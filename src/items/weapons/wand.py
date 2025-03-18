@@ -1,6 +1,9 @@
 from items import Weapon
 
 class Wand(Weapon):
+
+    kind = "Wand"
+
     def __init__(self):
         super().__init__()
 
