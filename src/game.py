@@ -101,10 +101,8 @@ class Game:
         self.antialiasing = aalias
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
-        self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
-        pygame.display.set_caption(TITLE)
-        pygame.display.set_icon(pygame.image.load(iconPath))
-        self.win.convert(32, pygame.RLEACCEL) 
+        self.display = Display()
+        self.win = pygame.Surface((winWidth, winHeight), winFlags)
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
@@ -185,7 +183,7 @@ class Game:
         
         self.render()
 
-        pygame.display.update()
+        self.display.update(self.win)
 
     def render(self):
         self.win.blit(self.map.floor.room.image, self.cam.apply(self.map.floor.room))
@@ -312,7 +310,6 @@ class Game:
                     else:
                         self.quit()
 
-        self.getFullScreen()
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
             self.lastCamTog = pygame.time.get_ticks()
@@ -358,17 +355,6 @@ class Game:
         self.antialiasing = not self.antialiasing
         self.pauseScreen.loadComponents()
 
-    def getFullScreen(self):
-        keys = pygame.key.get_pressed()
-        if keys[keySet['fullScreen']]:
-            if self.fullScreen:
-                self.win = pygame.display.set_mode((winWidth, winHeight), winFlags)
-                self.fullScreen = False
-            else:
-                self.win = pygame.display.set_mode((winWidth, winHeight), winFlags | pygame.FULLSCREEN)
-                self.fullScreen = True
-            pygame.display.set_icon(pygame.image.load(iconPath))
-            #pygame.display.toggle_fullscreen()
 
     def getPause(self):
         if pygame.time.get_ticks() - self.lastPause >= 60:

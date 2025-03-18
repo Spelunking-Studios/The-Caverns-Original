@@ -23,7 +23,7 @@ class Menu:
             self.comps.update()
             self.update()
             self.render()
-            pygame.display.update()
+            self.game.display.update(self.game.win)
     
     def render(self):
         for s in self.layer1:
@@ -306,7 +306,7 @@ def main(game, loadingScreenOn = False):
             #for t in loadingText:
             #    game.win.blit(t.image, t)
         
-        pygame.display.update()
+        game.display.update(game.win)
 
 def gameOver(game):
     restartButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
@@ -332,7 +332,7 @@ def gameOver(game):
         game.win.blit(text1, (50,50))
         game.win.blit(text2, (800, 70))
         
-        pygame.display.update()
+        game.display.update(game.win)
 
 def victoryLoop(game):
     menuButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
@@ -358,4 +358,4 @@ def victoryLoop(game):
         game.win.blit(text2, (800, 70))
         game.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))
         
-        pygame.display.update()
+        game.display.update(game.win)
