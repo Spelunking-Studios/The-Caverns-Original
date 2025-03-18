@@ -23,7 +23,7 @@ class Menu:
             self.comps.update()
             self.update()
             self.render()
-            pygame.display.update()
+            self.game.display.update(self.game.win)
     
     def render(self):
         for s in self.layer1:
@@ -177,7 +177,7 @@ class Main(Menu):
 
         self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = winWidth / 2, winWidth / 2
 
-        swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (320, 320))
+        swordImg = pygame.transform.scale(pygame.image.load(asset('title_sword.png')), (320, 320))
         swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
         swordRect.centerx = winWidth/2
         text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
@@ -230,8 +230,8 @@ def main(game, loadingScreenOn = False):
     comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = winWidth/2
-    swordImg = pygame.transform.scale(pygame.image.load(asset('player/sw1.png')), (256, 256))
-    swordRect = pygame.Rect(0, 130, swordImg.get_width(), swordImg.get_height())
+    swordImg = pygame.transform.scale(pygame.image.load(asset('title_sword.png')), (400, 110))
+    swordRect = pygame.Rect(0, 180, swordImg.get_width(), swordImg.get_height())
     swordRect.centerx = winWidth/2
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
     # text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
@@ -284,7 +284,7 @@ def main(game, loadingScreenOn = False):
                 CreditsMenu(game)
                 creditsButton.reset()
         
-            game.win.blit(text1.image, text1)
+            #game.win.blit(text1.image, text1)
             game.win.blit(title, titleRect)
             game.win.blit(swordImg, swordRect)
 
@@ -306,7 +306,7 @@ def main(game, loadingScreenOn = False):
             #for t in loadingText:
             #    game.win.blit(t.image, t)
         
-        pygame.display.update()
+        game.display.update(game.win)
 
 def gameOver(game):
     restartButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
@@ -332,7 +332,7 @@ def gameOver(game):
         game.win.blit(text1, (50,50))
         game.win.blit(text2, (800, 70))
         
-        pygame.display.update()
+        game.display.update(game.win)
 
 def victoryLoop(game):
     menuButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
@@ -358,4 +358,4 @@ def victoryLoop(game):
         game.win.blit(text2, (800, 70))
         game.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))
         
-        pygame.display.update()
+        game.display.update(game.win)

@@ -5,6 +5,7 @@ description = "An exploration ARPG game made in python with pygame."
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "moderngl>=5.12.0",
     "pygame>=2.6.1",
     "pytmx>=3.32",
 ]
