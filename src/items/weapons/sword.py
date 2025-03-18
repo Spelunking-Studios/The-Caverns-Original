@@ -17,7 +17,7 @@ class Sword(Weapon):
             "critVariance": 5
         }
         self.stats["categories"] = self.base_categories + ["sword"]
-        self.stats["description"] = "The sword given to you by your father on your\n 13th birthday. Your name is engraved upon it"
+        self.stats["description"] = "The sword given to you by your father on your 13th birthday. Your name is engraved upon it"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
                 asset("items", "weapon", "sword.png")

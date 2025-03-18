@@ -1,7 +1,9 @@
 import pygame
 
+
 class Image(pygame.sprite.Sprite):
     """Basic Image"""
+
     def __init__(self, image, game, pos, **kwargs):
         # Load image while attempting to use a predefined image if provided
         if image:
@@ -44,9 +46,10 @@ class Image(pygame.sprite.Sprite):
 
         # Ensure that at least one render is preformed (if update isn't called)
         self.render()
-    def drawBG(self, colorIndex = 0):
+
+    def drawBG(self, colorIndex=0):
         """Draw the background color depending on the provided index.
-        
+
         Arguments:
         -----
         colorIndex: int = 0
@@ -55,6 +58,7 @@ class Image(pygame.sprite.Sprite):
                 - `colorIndex < len(self.colors)
         """
         self.image.fill(self.colors[colorIndex])
+
     def update(self):
         self.hover = False
         self.clicked = False
@@ -72,11 +76,13 @@ class Image(pygame.sprite.Sprite):
                     if self.onClick:
                         self.onClick(self)
         self.render()
+
     def render(self):
         # Draw background
-        self.drawBG(int(self.hover)) # Typecast from bool to int (True/False) -> (1/0)
+        self.drawBG(int(self.hover))  # Typecast from bool to int (True/False) -> (1/0)
 
         # Draw the image
         self.image.blit(self.trueImage, (0, 0))
+
     def setClickHandler(self, fn):
         self.onClick = fn

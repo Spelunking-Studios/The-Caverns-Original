@@ -32,7 +32,8 @@ class InventoryOverlay(Overlay):
         self.tooltip_id = None
 
         # Random settings
-        self.maxToolTipSize = 400
+        self.maxToolTipSize = 300
+        self.padding = 8
 
     def load_comps(self):
         """Loads all of the components"""
@@ -301,26 +302,19 @@ class InventoryOverlay(Overlay):
                             True,
                             (255, 255, 255)
                         )
-                        # tooltip_desc = main_font.render(
-                        #     item_comp.tooltip[1],
-                        #     True,
-                        #     (255, 255, 255)
-                        # )
                         tooltip_desc = menu.Text(
                             fgen("ComicSansMS.ttf", 12),
                             item_comp.tooltip[1],
                             colors.white,
-                            True
+                            True,
+                            multiline=True,
+                            size=(self.maxToolTipSize - self.padding * 2, 900)
                         )
 
                         # Determine the size of the box we need
-                        width = min(
-                            max(
-                                tooltip_title.get_size()[0],
-                                tooltip_desc.rect.width
-                            ) + 4,
-                            self.maxToolTipSize
-                        )
+                        width = self.maxToolTipSize
+                        height = tooltip_title.get_height() + tooltip_desc.last_rendered_y \
+                            + self.padding * 3  # 3 to account for padding between title and desc
 
                         # Draw the box
                         pygame.draw.rect(
@@ -330,20 +324,23 @@ class InventoryOverlay(Overlay):
                                 item_comp.rect.x + item_comp.rect.width + 5,
                                 item_comp.rect.y,
                                 width,
-                                50
+                                height
                             )
                         )
 
+                        title_y = item_comp.rect.y + self.padding
+                        desc_y = title_y + tooltip_title.get_height() + self.padding
+
                         # Draw on the title
                         tooltip_surf.blit(tooltip_title, (
-                            item_comp.rect.x + item_comp.rect.width + 7,
-                            item_comp.rect.y + 2,
+                            item_comp.rect.x + item_comp.rect.width + 5 + self.padding,
+                            title_y
                         ))
 
                         # Draw on the description
                         tooltip_surf.blit(tooltip_desc.image, (
-                            item_comp.rect.x + item_comp.rect.width + 7,
-                            item_comp.rect.y + 20
+                            item_comp.rect.x + item_comp.rect.width + 5 + self.padding,
+                            desc_y
                         ))
 
                         # Blit the tooltip surface onto the overlay surface
