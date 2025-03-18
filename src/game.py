@@ -331,7 +331,7 @@ class Game:
         self.cam.toggleTarget()
 
     def toggleFps(self):
-        self.showFPS = not self.showFPS
+        self.showFps = not self.showFps
     
     def toggleInventory(self):
         if self.inInventory:
