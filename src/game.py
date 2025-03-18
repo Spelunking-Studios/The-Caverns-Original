@@ -109,7 +109,6 @@ class Game:
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
-        self.fullScreen = False
         self.clock = pygame.time.Clock()
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
