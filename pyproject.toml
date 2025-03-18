@@ -13,5 +13,6 @@ authors = ["LGgameLAB", "Ben Landon"]
 [dependency-groups]
 dev = [
     "flake8>=7.1.2",
+    "flameprof>=0.4",
     "pep8-naming>=0.14.1",
 ]
