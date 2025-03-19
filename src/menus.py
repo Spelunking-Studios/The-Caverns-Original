@@ -219,10 +219,10 @@ def main(game, loadingScreenOn = False):
     else:
         toMainMenuButton.clicked = True
 
-    startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.rgba(colors.yellow, 255), colors.white), wh=(300, 60), rounded = True)
-    settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
-    instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
-    creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
+    startButton = ImageButton(game, (0, 340), text="Start", center = True, colors = (colors.rgba(colors.yellow, 255), colors.white), wh=(300, 60), rounded = True)
+    settingsButton = ImageButton(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white))
+    instructionsButton = ImageButton(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
+    creditsButton = ImageButton(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
 
     settingsButton.rect.centerx = (winWidth / 2) - (settingsButton.rect.width / 2) - 10
     creditsButton.rect.centerx = (winWidth / 2) + (creditsButton.rect.width / 2) + 10

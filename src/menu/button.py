@@ -1,5 +1,5 @@
 import pygame
-from stgs import fonts
+from stgs import fonts, asset
 import colors
 
 class Button(pygame.sprite.Sprite):
@@ -89,6 +89,7 @@ class Button(pygame.sprite.Sprite):
         self.drawBG(int(self.hover))
         
         self.image.blit(self.rendText, self.textRect)
+
     def drawBG(self, colorIndex = 0):
         if self.rounded:
             borderRadius = 15
@@ -103,5 +104,23 @@ class Button(pygame.sprite.Sprite):
         )
         self.setText(self.text, colorIndex)
         return
+
     def reset(self):
         self.clicked = False
+
+class ImageButton(Button):
+    def __init__(self, game, pos, **kwargs):
+        super().__init__( game, pos,**kwargs)
+
+        self.images = [
+            pygame.image.load(asset("ui/parchment_1.png")),
+            pygame.image.load(asset("ui/parchment_0.png")),
+        ]
+        for i in range(len(self.images)):
+            self.images[i].set_colorkey((0, 0, 0))
+            self.images[i] = pygame.transform.scale(self.images[i], self.wh)
+
+    def drawBG(self, hover=0):
+        self.image = self.images[hover].copy()
+        self.setText(self.text, hover)
+        return
