@@ -96,7 +96,7 @@ def fgen(fn, s):
 
 #### Establishes window size ####
 winWidth, winHeight = 1280, 720
-winFlags = pygame.HWSURFACE | pygame.DOUBLEBUF
+winFlags = pygame.HWSURFACE | pygame.DOUBLEBUF | pygame.RESIZABLE
 
 iconPath = asset('logo.jpeg')
 

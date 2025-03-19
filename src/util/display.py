@@ -38,8 +38,8 @@ class Display:
     def update(self, window):
         # See if the player toggles fullscreen
         self.getFullScreen()
-
-        self.display.blit(window, (0, 0)) 
+        self.display.fill((0, 0, 0))
+        self.display.blit(window, ((self.display.get_size()[0]-winWidth)/2, (self.display.get_size()[1]-winHeight)/2)) 
         frame_texture = self.get_frame() # Convert display to shader texture
         self.shaderManager.apply(frame_texture)
 
@@ -56,6 +56,10 @@ class Display:
     
     def get_size(self):
         return self.display.get_size()
+    
+    def new_context(self):
+        self.ctx = moderngl.create_context()
+
 
     def get_frame(self, surf=None):
         if not surf:
