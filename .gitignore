@@ -60,3 +60,5 @@ docs/_build/
 main.spec
 game.store
 src/game.store
+game.prof
+prof.svg
