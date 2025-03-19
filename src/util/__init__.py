@@ -1,7 +1,7 @@
 import pygame
 
 from .camera import Cam
-
+from .display import Display
 
 
 class Sprite(pygame.sprite.Sprite):
