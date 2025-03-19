@@ -18,7 +18,8 @@ class Display:
         # Set up shader target
         self.ctx = moderngl.create_context()
         self.shaderManager = ShaderManager(self, [
-            Shader(self, "blank.frag")
+            Shader(self, "blank.frag"),
+            Shader(self, "lightning.frag", {"time": 0})
         ])
 
     def getFullScreen(self):
