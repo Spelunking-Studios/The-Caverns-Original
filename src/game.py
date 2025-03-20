@@ -22,14 +22,12 @@ from sfx import *
 from util import *
 import menus
 import hud
-# from PygameShader.shader import shader_sobel24_fast_inplace, shader_bloom_effect_array24
-# from PygameShader.gaussianBlur5x5 import blur5x5_array24_inplace_c
-
 
 
 class Grouper:
     '''A class to control and manipulate multiple groups (pygame.group.Group)
     of game objects that is mainly designed for in code control'''
+
     def __init__(self):
         """Contains helpful groups for organizing different types of sprites"""
         # Create sprite groups here
@@ -40,7 +38,7 @@ class Grouper:
         self.pProjectiles = Group()  # Player Projectiles
         self.eProjectiles = Group()  # Enemy Projectiles
 
-    def getProximitySprites(self, sprite, proximity=300, groups=[]): 
+    def getProximitySprites(self, sprite, proximity=300, groups=[]):
         """Returns a list of sprites that fall within the specified proximity\
         to the specified sprite.
 
@@ -64,11 +62,11 @@ class Grouper:
                     returnList.append(ent)
 
         return returnList
-    
+
     def clearAll(self):
         for g in self.allGroups():
             g.empty()
-    
+
     def killAll(self):
         for g in self.allGroups():
             for s in g:
@@ -77,12 +75,14 @@ class Grouper:
     def allGroups(self):
         return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 
+
 #### Game object ####
 class Game:
     """Represents an instance of the game"""
+
     def __init__(self):
         """Initializes the game object"A Very Very Long Description.
-        
+
         Groups each sprite type to perform targetted tasks
         All sprites go into the sprites group
         Sets up window, font, gravity, and cam
@@ -134,7 +134,7 @@ class Game:
         )
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
-        #self.mapScreen = MapOverlay(self)
+        # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dPallette3.png")) 
         self.slots = hud.SlotsHud(self)
@@ -142,7 +142,6 @@ class Game:
         self.sanityHud = hud.SanityHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
-        
 
     ####  Determines how the run will function ####
     def run(self):
@@ -161,13 +160,13 @@ class Game:
         self.dialogueScreen.dialogueFromText("Well Hello")
         while not self.end:
             self.clock.tick(FPS)
-            self.refresh()#asset('objects/shocking.jpg'))
+            self.refresh()  # asset('objects/shocking.jpg'))
 
-            ##Updates Game
+            # Updates Game
             self.runEvents()
             self.update()
 
-    def update(self): 
+    def update(self):
         self.getFps()
         self.getPause()
         if self.pause:
@@ -180,7 +179,7 @@ class Game:
             self.checkHits()
         self.overlayer.update()
         self.cam.update()
-        
+
         self.render()
 
         self.display.update(self.win)
@@ -194,10 +193,10 @@ class Game:
                 #     if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
                 #         self.win.blit(sprite.image, self.cam.apply(sprite))
                 sprite.draw(self.win, self.cam.applyRect)
-        
+
         for fx in self.fxLayer:
             self.win.blit(fx.image, fx.rect)
-        
+
         self.renderDarkness()
 
         for sprite in self.hudLayer:
@@ -214,7 +213,7 @@ class Game:
                     self.win.blit(sprite.image, sprite.rect)
             except AttributeError:
                 self.win.blit(sprite.image, sprite.rect)
-        
+
         if self.showFps:
             fpsText = fonts['caption1'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
@@ -223,11 +222,11 @@ class Game:
             pos = self.player.cursor.pos
             size = self.player.cursor.size
             pygame.draw.rect(self.win, (200, 0, 0), (pos.x, pos.y, size.x, size.y))
-        
+
         # shader_bloom_effect_array24(self.win, 0, fast_=True)
-        
+
         # self.win.blit(self.player.getAttackMask(), (0, 0))
-        
+
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
@@ -237,7 +236,6 @@ class Game:
             darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
 
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
-
 
     def checkHits(self):
         pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
@@ -249,16 +247,18 @@ class Game:
             self.mixer.playFx('pHit')
             self.hudLayer.update()
             self.pause = True
+
             def cont():
                 if True:
                     self.cam.target = self.player
                     self.pause = False
                     self.groups.enemies.empty()
                     self.map.switchLevel('cave1')
-                    #self.player.reset()
+                    # self.player.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:
                         s.kill()
+
             def died():
                 Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
                 def end():
@@ -294,46 +294,41 @@ class Game:
         pygame.quit()
         sys.exit()
 
-    def runEvents(self):    
+    def runEvents(self):
         ## Catch all events here
         self.events = pygame.event.get()
         for event in self.events:
             if event.type == pygame.QUIT:
                 self.quit()
-        
+
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.fullScreen:
-                        self.win = pygame.display.set_mode((winWidth, winHeight))
-                        self.fullScreen = False
-                        pygame.display.set_icon(pygame.image.load(iconPath))
-                    else:
-                        self.quit()
+                    self.quit()
 
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
             self.lastCamTog = pygame.time.get_ticks()
-        
+
         # Inventory
         if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
             self.toggleInventory()
 
     def getFps(self):
-        self.currentFps = self.clock.get_fps() 
+        self.currentFps = self.clock.get_fps()
         return self.currentFps
-    
+
     def dt(self):
         return self.clock.get_time()*0.001
-    
+
     def dt2(self):
         return self.clock.get_time()*0.06
-    
+
     def toggleCam(self):
         self.cam.toggleTarget()
 
     def toggleFps(self):
         self.showFps = not self.showFps
-    
+
     def toggleInventory(self):
         if self.inInventory:
             self.closeInventory()
@@ -343,7 +338,7 @@ class Game:
     def openInventory(self):
         self.inInventory = True
         self.inventoryOverlay.activate()
-    
+
     def closeInventory(self):
         self.inInventory = False
         self.inventoryOverlay.deactivate()
@@ -353,8 +348,7 @@ class Game:
 
     def toggleAalias(self):
         self.antialiasing = not self.antialiasing
-        self.pauseScreen.loadComponents()
-
+        self.pauseScreen.load_components()
 
     def getPause(self):
         if pygame.time.get_ticks() - self.lastPause >= 60:
@@ -366,17 +360,13 @@ class Game:
                     self.pauseScreen.activate()
 
                 self.lastPause = pygame.time.get_ticks()
-                
+
     def getSprBylID(self, lID):
         for sprite in self.sprites:
-            try:
-                if sprite.lID == lID:
-                    return sprite
-            except:
-                pass
+            if getattr(sprite, "lID", False):
+                return sprite
         return False
 
-    #### First menu loop ####
     def menuLoop(self):
         menus.main(self, True)
 
@@ -386,7 +376,7 @@ class Game:
     def gameOver(self):
         menus.gameOver(self)
 
-    def refresh(self, bg = False):
+    def refresh(self, bg=False):
         """Updates the background
 
         If bg is True, the provided image is used, otherwise the solid color black is used
@@ -395,4 +385,3 @@ class Game:
             self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
         else:
             self.win.fill((0, 0, 0))
-

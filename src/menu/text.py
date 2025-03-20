@@ -22,9 +22,9 @@ class Text(pygame.sprite.Sprite):
         for key, value in kwargs.items():
             self.__dict__[key] = value
 
-        self.setText(text, multiline)
-
         super().__init__(self.groups)
+
+        self.setText(text, multiline)
 
     def setText(self, text, multiline=False):
         if multiline:
