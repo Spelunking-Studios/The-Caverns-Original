@@ -261,6 +261,9 @@ class InventoryOverlay(Overlay):
         # Search through all of the item components till we find
         # the one that is being hovered over
         for item_comp in self.item_comps:
+            if not isinstance(item_comp, Image):
+                continue
+
             # Check to see if the mouse is over the component
             over = item_comp.rect.collidepoint(mpos)
 
