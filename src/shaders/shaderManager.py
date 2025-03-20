@@ -45,3 +45,7 @@ class ShaderManager:
         for i in range(1, len(active)):
             # Use previous shaders color attachment to stack effects
             self.render_pass(active[i], active[i-1].fbo.color_attachments[0])
+
+    def reload(self):
+        for shader in self.shaders:
+            shader.load(self.display.ctx)

@@ -47,7 +47,7 @@ class Projectile(util.Sprite):
 
 class Fireball(Projectile):
     def __init__(self, game):
-        mPos = pygame.Vector2(pygame.mouse.get_pos()) - pygame.Vector2(game.cam.apply(game.player).center)
+        mPos = pygame.Vector2(self.game.get_mouse_pos()) - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(game, game.player.rect.center, mPos, groups=(game.sprites, game.layer2, game.groups.pProjectiles))
         self.imgSheet = {'main': asset('player/fireball.png')}
         self.animations = BasicAnimation(self)

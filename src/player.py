@@ -204,7 +204,7 @@ class Player(util.Sprite):
         if joystickEnabled:
             mPos = Vector2(self.cursor.pos)
         else:
-            mPos = pygame.Vector2(pygame.mouse.get_pos())  ## Gets mouse position and stores it in vector. This will be translated into the vector that moves the bullet
+            mPos = pygame.Vector2(self.game.get_mouse_pos())  ## Gets mouse position and stores it in vector. This will be translated into the vector that moves the bullet
         pPos = self.game.cam.apply(self)  ## Gets actual position of player on screen
         mPos.x -= pPos.centerx ## Finds the x and y relativity between the mouse and player and then calculates the offset
         mPos.y -= pPos.centery

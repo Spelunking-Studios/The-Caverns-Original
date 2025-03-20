@@ -62,7 +62,7 @@ class Image(pygame.sprite.Sprite):
     def update(self):
         self.hover = False
         self.clicked = False
-        mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
+        mouseRect = pygame.Rect(self.game.get_mouse_pos()[0], self.game.get_mouse_pos()[1], 1, 1)
 
         # Check if mouse is hovering over image
         if mouseRect.colliderect(self.rect):

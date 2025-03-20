@@ -8,7 +8,7 @@ class Display:
     def __init__(self):
         self.resolution = pygame.display.list_modes()[0]
         #self.display = pygame.display.set_mode(self.resolution, winFlags)
-        self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
+        self.display = pygame.display.set_mode((winWidth, winHeight), winFlags, vsync=1)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
         self.display.convert(32, pygame.RLEACCEL) 
@@ -33,19 +33,20 @@ class Display:
                 self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False
             else:
-                self.display = pygame.display.set_mode((winWidth, winHeight), winFlags | pygame.FULLSCREEN)
+                self.display = pygame.display.set_mode(self.resolution, winFlags | pygame.FULLSCREEN)
                 self.fullScreen = True
             pygame.display.set_icon(pygame.image.load(iconPath))
-            #pygame.display.toggle_fullscreen()
+            self.new_context()
     
     def update(self, window):
         # See if the player toggles fullscreen
         self.getFullScreen()
         self.display.fill((0, 0, 0))
-        self.display.blit(window, ((self.display.get_size()[0]-winWidth)/2, (self.display.get_size()[1]-winHeight)/2)) 
+        self.display.blit(window, self.get_offset())
+        self.fullScreen = pygame.display.is_fullscreen()
         frame_texture = self.get_frame() # Convert display to shader texture
         self.shaderManager.apply(frame_texture)
-
+        print(pygame.display.is_fullscreen())
         self.ctx.screen.use()
         self.ctx.clear()
         self.shaderManager.render()
@@ -59,10 +60,13 @@ class Display:
     
     def get_size(self):
         return self.display.get_size()
-    
+
+    def get_offset(self):
+        return ((self.display.get_size()[0]-winWidth)/2, (self.display.get_size()[1]-winHeight)/2)
+
     def new_context(self):
         self.ctx = moderngl.create_context()
-
+        self.shaderManager.reload()
 
     def get_frame(self, surf=None):
         if not surf:

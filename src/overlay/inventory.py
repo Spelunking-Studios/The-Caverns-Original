@@ -260,7 +260,7 @@ class InventoryOverlay(Overlay):
             self.tooltip_last = time()
 
         # Set some base variables
-        mpos = pygame.mouse.get_pos()  # Mouse position
+        mpos = self.game.get_mouse_pos()  # Mouse position
         found = False  # If the comp that is hovered over is found
 
         # Search through all of the item components till we find

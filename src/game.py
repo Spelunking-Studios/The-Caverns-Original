@@ -319,7 +319,10 @@ class Game:
     def getFps(self):
         self.currentFps = self.clock.get_fps() 
         return self.currentFps
-    
+
+    def get_mouse_pos(self):
+        return pygame.Vector2(pygame.mouse.get_pos()) - self.display.get_offset()
+
     def dt(self):
         return self.clock.get_time()*0.001
     

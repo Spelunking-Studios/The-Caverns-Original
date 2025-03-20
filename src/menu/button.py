@@ -72,7 +72,7 @@ class Button(pygame.sprite.Sprite):
         self.image.fill((0, 0, 0, 0))
         self.hover = False
         self.clicked = False
-        mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
+        mouseRect = pygame.Rect(self.game.get_mouse_pos()[0], self.game.get_mouse_pos()[1], 1, 1)
         if mouseRect.colliderect(self.rect):
             self.hover = True
         

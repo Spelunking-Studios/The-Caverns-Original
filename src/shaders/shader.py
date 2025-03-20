@@ -19,8 +19,10 @@ class Shader:
         self.display = display
         self.properties = properties
         self.active = True
-        ctx = display.ctx
+        self.frag_path = frag_path
+        self.load(self.display.ctx)
 
+    def load(self, ctx):
         quad_buffer = ctx.buffer(data=array('f', [
             # position (x, y), uv coords (x, y)
             -1.0, 1.0, 0.0, 0.0,  # topleft
@@ -29,17 +31,11 @@ class Shader:
             1.0, -1.0, 1.0, 1.0,  # bottomright
         ]))
 
-        frag_shader_passes = {
-                # "exposure": 1,
-                # "bloomStrength": 1.5
-        }
-        self.frag_shader = ""
-
-        with open( asset("shaders/" + frag_path) , "r") as file:
+        with open( asset("shaders/" + self.frag_path) , "r") as file:
             self.frag_shader = file.read()
         
         self.program = ctx.program(vertex_shader=self.vert_shader, fragment_shader=self.frag_shader)
-        self.fbo = ctx.framebuffer(color_attachments=[ctx.texture(display.get_size(), 4)])
+        self.fbo = ctx.framebuffer(color_attachments=[ctx.texture(self.display.get_size(), 4)])
         self.render_object = ctx.vertex_array(self.program, [(quad_buffer, '2f 2f', 'vert', 'texcoord')])
 
     def update(self, t=0):
