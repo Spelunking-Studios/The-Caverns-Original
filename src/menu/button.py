@@ -2,22 +2,23 @@ import pygame
 from stgs import fonts
 import colors
 
+
 class Button(pygame.sprite.Sprite):
     '''
     A menu object that that stores a clicked value when hovered over
 
     Arguments
     |    Button.text [str] - stores optional text value
-    |    Button.colors [tup] - Stores colors 
+    |    Button.colors [tup] - Stores colors
     |    Button.center [bool] - Stores whether text is centered or not
 
     Values
     |    Button.clicked [bool] - stores whether it has been clicked or ot since initiation
     |    Button.
     '''
-    def __init__(self, game, pos,**kwargs):
+
+    def __init__(self, game, pos, **kwargs):
         self.game = game
-        
         self.onClick = False
         self.groups = []
         self.wh = (200, 60)
@@ -41,9 +42,10 @@ class Button(pygame.sprite.Sprite):
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.image.fill((255, 0, 0, 0))
         self.setText(self.text)
-    def setText(self, text, color = 0):
+
+    def setText(self, text, color=0):
         """Sets the button's text
-        
+
         Arguments:
         -----
         text: string,
@@ -67,6 +69,7 @@ class Button(pygame.sprite.Sprite):
         else:
             self.textRect.x += 2
             self.textRect.y += 2
+
     def update(self):
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.image.fill((0, 0, 0, 0))
@@ -75,7 +78,7 @@ class Button(pygame.sprite.Sprite):
         mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
         if mouseRect.colliderect(self.rect):
             self.hover = True
-        
+
         if self.hover:
             for event in self.game.events:
                 if event.type == pygame.MOUSEBUTTONDOWN:
@@ -87,9 +90,10 @@ class Button(pygame.sprite.Sprite):
                             self.kill()
 
         self.drawBG(int(self.hover))
-        
+
         self.image.blit(self.rendText, self.textRect)
-    def drawBG(self, colorIndex = 0):
+
+    def drawBG(self, colorIndex=0):
         if self.rounded:
             borderRadius = 15
         else:
@@ -103,5 +107,6 @@ class Button(pygame.sprite.Sprite):
         )
         self.setText(self.text, colorIndex)
         return
+
     def reset(self):
         self.clicked = False
