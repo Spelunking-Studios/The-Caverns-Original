@@ -7,7 +7,7 @@ class Display:
 
     def __init__(self):
         self.resolution = pygame.display.list_modes()[0]
-        # self.display = pygame.display.set_mode(self.resolution)
+        #self.display = pygame.display.set_mode(self.resolution, winFlags)
         self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
@@ -26,6 +26,9 @@ class Display:
         keys = pygame.key.get_pressed()
         if now() - self.last_pressed_fullscreen > 200 and keys[keySet['fullScreen']]:
             self.last_pressed_fullscreen = now()
+            self.toggle_fullscreen()
+
+    def toggle_fullscreen(self):
             if self.fullScreen:
                 self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False

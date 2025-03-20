@@ -303,10 +303,8 @@ class Game:
         
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    if self.fullScreen:
-                        self.win = pygame.display.set_mode((winWidth, winHeight))
-                        self.fullScreen = False
-                        pygame.display.set_icon(pygame.image.load(iconPath))
+                    if self.display.fullScreen:
+                        self.display.toggle_fullscreen()
                     else:
                         self.quit()
 
