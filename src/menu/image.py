@@ -5,17 +5,6 @@ class Image(pygame.sprite.Sprite):
     """Basic Image"""
 
     def __init__(self, image, game, pos, **kwargs):
-        # Load image while attempting to use a predefined image if provided
-        if image:
-            # Make a copy - not a reference
-            self.trueImage = image.copy().convert_alpha()
-            self.image = pygame.Surface((64, 64)).convert_alpha()
-        else:
-            # No predefined
-            self.trueImage = pygame.Surface((1, 1), pygame.SRCALPHA)
-            self.trueImage.fill((0, 0, 0, 0))
-            self.image = pygame.Surface((64, 64)).convert_alpha()
-
         # Colors [normal, hover]
         self.colors = [(50, 50, 50), (40, 40, 40)]
 
@@ -41,8 +30,19 @@ class Image(pygame.sprite.Sprite):
         for key, value in kwargs.items():
             self.__dict__[key] = value
 
-        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
         super().__init__(self.groups)
+        self.rect = pygame.Rect(self.x, self.y, self.width, self.height)
+
+        # Load image while attempting to use a predefined image if provided
+        if image:
+            # Make a copy - not a reference
+            self.trueImage = image.copy().convert_alpha()
+            self.image = pygame.Surface((64, 64)).convert_alpha()
+        else:
+            # No predefined
+            self.trueImage = pygame.Surface((1, 1), pygame.SRCALPHA)
+            self.trueImage.fill((0, 0, 0, 0))
+            self.image = pygame.Surface((64, 64)).convert_alpha()
 
         # Ensure that at least one render is preformed (if update isn't called)
         self.render()
