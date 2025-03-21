@@ -45,7 +45,7 @@ class SettingSlider(pygame.sprite.Sprite):
             else:
                 self.sliderRect.x = min(
                     self.rect.right-self.sliderRect.width,
-                    pygame.mouse.get_pos()[0]-self.sliderRect.width
+                    self.game.get_mouse_pos()[0]-self.sliderRect.width
                 ) - self.rect.x
                 self.sliderRect.x = max(0, self.sliderRect.x)
         else:
@@ -78,7 +78,7 @@ class SettingSlider(pygame.sprite.Sprite):
         pygame.draw.rect(self.image, self.colors[2], self.sliderRect)
 
     def checkClicked(self):
-        if pygame.mouse.get_pressed()[0]:
-            mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
+        if pygame.mouse.get_pressed()[0]: 
+            mouseRect = pygame.Rect(self.game.get_mouse_pos()[0], self.game.get_mouse_pos()[1], 1, 1)
             if mouseRect.colliderect(self.rect):
                 self.clicked = True

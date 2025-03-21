@@ -303,7 +303,10 @@ class Game:
 
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    self.quit()
+                    if self.display.fullScreen:
+                        self.display.toggle_fullscreen()
+                    else:
+                        self.quit()
 
         if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
@@ -316,6 +319,9 @@ class Game:
     def getFps(self):
         self.currentFps = self.clock.get_fps()
         return self.currentFps
+
+    def get_mouse_pos(self):
+        return pygame.Vector2(pygame.mouse.get_pos()) - self.display.get_offset()
 
     def dt(self):
         return self.clock.get_time()*0.001

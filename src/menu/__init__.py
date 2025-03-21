@@ -1,6 +1,6 @@
 import pygame
 from stgs import asset
-from .button import Button
+from .button import Button, ImageButton
 from .image import Image
 from .menuItem import MenuItem
 from .settingSlider import SettingSlider

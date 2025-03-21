@@ -42,7 +42,7 @@ class MenuItem(pygame.sprite.Sprite):
     
     def update(self):
         self.hover = False
-        mouseRect = pygame.Rect(pygame.mouse.get_pos()[0], pygame.mouse.get_pos()[1], 1, 1)
+        mouseRect = pygame.Rect(self.game.get_mouse_pos()[0], self.game.get_mouse_pos()[1], 1, 1)
         if mouseRect.colliderect(self.rect):
             self.hover = True
         if self.hover:
