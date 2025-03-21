@@ -64,9 +64,6 @@ class InventoryOverlay(Overlay):
             rounded=False
         )
 
-        # Render an initial base
-        self.render_base()
-
     def poll_inventory(self):
         """Poll the inventory for items"""
         # Make a variable for convenience
@@ -231,6 +228,7 @@ class InventoryOverlay(Overlay):
                 )
                 self.game.openInventory()
             self.just_active = True
+            self.render_base()
 
     def deactivate(self):
         """Deactivate the inventory"""
@@ -246,6 +244,7 @@ class InventoryOverlay(Overlay):
 
     def render(self):
         """Render the inventory"""
+        self.render_base()
         self.image.blit(self.base_image, (0, 0))
 
         # Draw tooltip
