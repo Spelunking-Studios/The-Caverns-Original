@@ -30,10 +30,17 @@ class InventoryOverlay(Overlay):
         self.last_change_time = 0
         self.change_delay = 0.5
         self.item_comps = pygame.sprite.Group()
-        self.load_comps()
+
         self.tooltip_last = None
         self.tooltip_ac = 0
         self.tooltip_id = None
+
+        # Tabs
+        self.tabs = ["items_btn", "magik_btn"]
+        self.current_tab = 0
+        self.ITEMS_TAB = 0
+
+        self.load_comps()
 
         # Random settings
         self.maxToolTipSize = 300
@@ -58,11 +65,46 @@ class InventoryOverlay(Overlay):
             center=True,
             text="Items",
             groups=[self.comps],
-            colors=((20, 20, 20), (50, 50, 50)),
+            colors=[(20, 20, 20), (50, 50, 50)],
             textColors=((100, 100, 100), (100, 100, 100)),
             wh=(80, 20),
-            rounded=False
+            rounded=False,
+            activeTabColor=(30, 30, 30),
+            inactiveTabColor=(20, 20, 20),
+            onClickContext=self.tabBtnClickHandler
         )
+        self.magik_btn = Button(
+            self.game,
+            (320, 60),
+            center=True,
+            text="Magik",
+            groups=[self.comps],
+            colors=[(20, 20, 20), (50, 50, 50)],
+            textColors=((100, 100, 100), (100, 100, 100)),
+            wh=(80, 20),
+            rounded=False,
+            activeTabColor=(30, 30, 30),
+            inactiveTabColor=(20, 20, 20),
+            onClickContext=self.tabBtnClickHandler
+        )
+
+        self.set_current_tab(0)
+
+    def set_current_tab(self, tab_index):
+        # Deactive the current tab button
+        btn = getattr(self, self.tabs[self.current_tab], None)
+        if btn:
+            btn.colors[0] = btn.inactiveTabColor
+
+        # Activate the new current tab button
+        self.current_tab = tab_index
+        btn = getattr(self, self.tabs[self.current_tab], None)
+        if btn:
+            btn.colors[0] = btn.activeTabColor
+
+    def tabBtnClickHandler(self, btn):
+        tab_index = self.tabs.index(btn.text.lower() + "_btn")
+        self.set_current_tab(tab_index)
 
     def poll_inventory(self):
         """Poll the inventory for items"""
@@ -302,8 +344,9 @@ class InventoryOverlay(Overlay):
             self.base_image.blit(comp.image, comp.rect)
 
         # Draw items
-        for item_comp in self.item_comps:
-            self.base_image.blit(item_comp.image, item_comp.rect)
+        if self.current_tab == self.ITEMS_TAB:
+            for item_comp in self.item_comps:
+                self.base_image.blit(item_comp.image, item_comp.rect)
 
     def render_tooltip(self, item_comp):
         """Render the tooltip for a given item component"""
