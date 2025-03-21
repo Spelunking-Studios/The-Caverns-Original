@@ -46,7 +46,6 @@ class Display:
         self.fullScreen = pygame.display.is_fullscreen()
         frame_texture = self.get_frame() # Convert display to shader texture
         self.shaderManager.apply(frame_texture)
-        print(pygame.display.is_fullscreen())
         self.ctx.screen.use()
         self.ctx.clear()
         self.shaderManager.render()
