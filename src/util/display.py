@@ -7,6 +7,7 @@ from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, iconPath
 class Display:
     def __init__(self):
         self.resolution = pygame.display.list_modes()[0]
+        print(f"resolution {self.resolution}")
         #self.display = pygame.display.set_mode(self.resolution, winFlags)
         self.display = pygame.display.set_mode((winWidth, winHeight), winFlags, vsync=1)
         pygame.display.set_caption(TITLE)
@@ -33,8 +34,9 @@ class Display:
                 self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False
             else:
-                self.display = pygame.display.set_mode(self.resolution, winFlags | pygame.FULLSCREEN)
+                self.display = pygame.display.set_mode(self.resolution, winFlags | pygame.FULLSCREEN )
                 self.fullScreen = True
+            # pygame.display.toggle_fullscreen()
             pygame.display.set_icon(pygame.image.load(iconPath))
             self.new_context()
     
@@ -58,10 +60,13 @@ class Display:
         self.display.blit(img, rect)
 
     def get_size(self):
+        if self.fullScreen:
+            return self.resolution
         return self.display.get_size()
 
     def get_offset(self):
-        return ((self.display.get_size()[0]-winWidth)/2, (self.display.get_size()[1]-winHeight)/2)
+        offset =  pygame.Vector2((self.get_size()[0]-winWidth)/2, (self.get_size()[1]-winHeight)/2)
+        return offset
 
     def new_context(self):
         self.ctx = moderngl.create_context()

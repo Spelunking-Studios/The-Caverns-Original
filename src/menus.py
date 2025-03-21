@@ -144,7 +144,7 @@ class SettingsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
         menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
             Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
             Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
@@ -158,7 +158,8 @@ class CreditsMenu(Menu):
             item.rect.centerx = halfWinWidth
         
         self.layer1.add(menuItems)
-
+        
+        self.run()
     def update(self):
         if self.returnButton.clicked:
             self.running = False
