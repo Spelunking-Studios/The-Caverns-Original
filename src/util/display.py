@@ -7,9 +7,7 @@ from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, iconPath
 class Display:
     def __init__(self):
         self.resolution = pygame.display.list_modes()[0]
-        print(f"resolution {self.resolution}")
-        #self.display = pygame.display.set_mode(self.resolution, winFlags)
-        self.display = pygame.display.set_mode((winWidth, winHeight), winFlags, vsync=1)
+        self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
         self.display.convert(32, pygame.RLEACCEL)
@@ -34,9 +32,9 @@ class Display:
                 self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False
             else:
-                self.display = pygame.display.set_mode(self.resolution, winFlags | pygame.FULLSCREEN )
+                self.display = pygame.display.set_mode(self.resolution, winFlags)
                 self.fullScreen = True
-            # pygame.display.toggle_fullscreen()
+            #pygame.display.toggle_fullscreen()
             pygame.display.set_icon(pygame.image.load(iconPath))
             self.new_context()
     
@@ -45,7 +43,6 @@ class Display:
         self.getFullScreen()
         self.display.fill((0, 0, 0))
         self.display.blit(window, self.get_offset())
-        self.fullScreen = pygame.display.is_fullscreen()
         frame_texture = self.get_frame() # Convert display to shader texture
         self.shaderManager.apply(frame_texture)
         self.ctx.screen.use()
@@ -60,8 +57,6 @@ class Display:
         self.display.blit(img, rect)
 
     def get_size(self):
-        if self.fullScreen:
-            return self.resolution
         return self.display.get_size()
 
     def get_offset(self):

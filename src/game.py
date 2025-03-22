@@ -102,7 +102,7 @@ class Game:
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
         self.display = Display()
-        self.win = pygame.Surface((winWidth, winHeight), winFlags)
+        self.win = pygame.Surface((winWidth, winHeight))
         self.lastPause = pygame.time.get_ticks()
         self.lastReset = pygame.time.get_ticks()
         self.lastCamTog = pygame.time.get_ticks()
