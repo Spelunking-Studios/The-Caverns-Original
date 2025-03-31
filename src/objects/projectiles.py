@@ -1,6 +1,6 @@
 import pygame
 import util
-import colors
+import src.util.colors as colors
 import math
 import fx
 from stgs import asset

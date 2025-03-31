@@ -5,7 +5,7 @@ import menu
 from menu import createFrame
 import overlay
 import menu
-import colors
+import src.util.colors as colors
 from math import sin 
 
 class Hud(util.Sprite):

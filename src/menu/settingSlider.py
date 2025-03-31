@@ -1,5 +1,5 @@
 import pygame
-import colors
+import src.util.colors as colors
 
 
 class SettingSlider(pygame.sprite.Sprite):

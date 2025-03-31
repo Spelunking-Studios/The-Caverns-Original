@@ -1,7 +1,7 @@
 import os
 import sys
 import pygame
-import colors
+import util.colors as colors
 import math
 import pickle
 
@@ -40,7 +40,7 @@ else:
         os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
-CAMLIMIT = True
+CAMLIMIT = False
 SHOWFPS = True
 
 #### FPS BOIS ####

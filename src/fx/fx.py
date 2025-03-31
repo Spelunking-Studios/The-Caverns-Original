@@ -1,7 +1,7 @@
 import util
 from stgs import *
 #from animations import animation
-import colors
+import src.util.colors as colors
 import random
 
 #### All screen effects/fx will be done in the fx specific layer or in the overlay.

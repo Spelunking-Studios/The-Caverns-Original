@@ -2,7 +2,7 @@ import util
 import pygame
 from stgs import winWidth, winHeight, checkKey, asset, fonts
 from menu import createFrame
-import colors
+import src.util.colors as colors
 
 
 class DialogueOverlay(util.Sprite):

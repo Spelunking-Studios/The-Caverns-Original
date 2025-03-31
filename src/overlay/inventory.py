@@ -1,7 +1,7 @@
 from .overlay import Overlay
 from menu import Button, Image, Text
 from stgs import winWidth, winHeight, fgen
-import colors
+import src.util.colors as colors
 import menu
 import pygame
 from time import time

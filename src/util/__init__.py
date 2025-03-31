@@ -2,6 +2,7 @@ import pygame
 
 from .camera import Cam
 from .display import Display
+from .fabrik import fabrik
 
 
 class Sprite(pygame.sprite.Sprite):

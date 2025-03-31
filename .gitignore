@@ -27,3 +27,5 @@
 !README.md
 !.python-version
 !.gitmodules
+
+tests/

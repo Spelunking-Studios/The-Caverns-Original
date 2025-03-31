@@ -1,5 +1,5 @@
 import pygame
-from stgs import *
+from src.stgs import *
 
 class Cam:
 
