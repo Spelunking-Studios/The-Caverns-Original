@@ -147,7 +147,8 @@ class Game:
     def run(self):
         loadSave("game.store")
         self.mixer.playMusic(sAsset('intro.wav'))
-        self.menuLoop()
+        # self.menuLoop()
+        self.map.loadFloor()
         self.mainLoop()
         self.mixer.stop()
         if self.won:

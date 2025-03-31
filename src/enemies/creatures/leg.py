@@ -25,7 +25,6 @@ class Leg:
         self.points = [Vec(0, 0) for i in range(3)]
 
     def build(self, start):
-        print(self.length)
         self.start = start
         length = self.length
         segment = Vec(length, 0)
@@ -69,4 +68,4 @@ class Leg:
         for i in range(1, len(self.points)):
             prev = pygame.Rect(*self.points[i-1], 1, 1)
             cur = pygame.Rect(*self.points[i], 1, 1)
-            pygame.draw.aaline(surf, self.color, transform(prev).topleft, transform(cur).topleft, 3)
+            pygame.draw.line(surf, self.color, transform(prev).topleft, transform(cur).topleft, 3)
