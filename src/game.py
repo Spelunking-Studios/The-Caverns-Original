@@ -136,7 +136,7 @@ class Game:
         self.pauseScreen = PauseOverlay(self)
         # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
-        self.statsInfo = hud.StatHud(self, border = asset("objects/dPallette3.png")) 
+        self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
         self.healthHud = hud.HeathHud(self)
         self.sanityHud = hud.SanityHud(self)
@@ -158,7 +158,7 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        self.dialogueScreen.dialogueFromText("Well Hello")
+        self.dialogueScreen.dialogueFromText("Well Hello there. This is a very long text box that hopefully starts creating multiple text boxes?? will try to make it bette. Once upon a time there were hundreds of evil creatures yadaydaydar")
         while not self.end:
             self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))

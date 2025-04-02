@@ -26,7 +26,7 @@ class StatHud(util.Sprite):
         self.tWidth, self.tHeight =  10, 8   # Width and height of StatHud
         self.tileSize = 32
         self.text = ''
-        self.border = False # False if no border
+        self.border = True# False if no border
 
         for k, v in kwargs.items():
             self.__dict__[k] = v

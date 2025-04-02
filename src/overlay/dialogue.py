@@ -83,13 +83,13 @@ class Dialogue(util.Sprite):
         self.textColor = colors.white
         self.lastInteract = pygame.time.get_ticks()
         self.aalias = True
-        self.borderPalette = pygame.image.load(asset('objects/dPallette2.png'))
-        border_palette_size = (
-            self.borderPalette.get_width() / self.tileSize,
-            self.borderPalette.get_height() / self.tileSize
-        )
-        if any([i < 3 for i in border_palette_size]):
-            print("Check your pallette size. It is currently invalid for the  set tile size.")  # noqa
+        self.borderPalette = asset('objects/dialog-frame.png')
+        # border_palette_size = (
+        #     self.borderPalette.get_width() / self.tileSize,
+        #     self.borderPalette.get_height() / self.tileSize
+        # )
+        # if any([i < 3 for i in border_palette_size]):
+        #     print("Check your pallette size. It is currently invalid for the  set tile size.")  # noqa
         self.render()
         self.finished = False
 
@@ -98,9 +98,9 @@ class Dialogue(util.Sprite):
             (winWidth, self.height * self.tileSize),
             pygame.SRCALPHA
         )
-        self.baseImage = createFrame(winWidth/self.tileSize, self.height)
-        self.rendText = DText(
-            'title1',
+        self.baseImage = createFrame(winWidth/self.tileSize, self.height, self.tileSize, self.borderPalette)
+        self.rendText = DialogueText(
+            'dialogue',
             self.text,
             colors.white,
             True,
@@ -136,7 +136,7 @@ class Dialogue(util.Sprite):
             self.finished = True
 
 
-class DText:
+class DialogueText:
     def __init__(self,
                  fnum,
                  text,
@@ -145,10 +145,18 @@ class DText:
                  pos=(0, 0),
                  size=(900, 600),
                  bg_color=(0, 0, 0, 0)):
+
+        self.fnum = fnum
+        self.text = text
+        self.color = color
+        self.aalias= aalias
+        self.pos = pos
+        self.size = size
+        self.bg_color = bg_color
         # This code is thanks to
         # https://stackoverflow.com/questions/42014195/
         # rendering-text-with-multiple-lines-in-pygame.
-        self.render(fnum, text, color, aalias, pos, size, bg_color)
+        self.render()
         self.pos = pygame.Vector2(pos)
 
         self.rect = (self.pos.x, self.pos.y, size[0], size[1])
@@ -158,42 +166,40 @@ class DText:
     def get_current(self):
         return self.images[self.index]
 
-    def render(self,
-               fnum,
-               text,
-               color,
-               aalias=True,
-               pos=(0, 0),
-               size=(900, 600),
-               bg_color=(0, 0, 0, 0)):
-        self.images = [pygame.Surface(size, pygame.SRCALPHA)]
+    def render(self):
+        self.images = [pygame.Surface(self.size, pygame.SRCALPHA)]
         self.index = 0
-        self.get_current().fill(bg_color)
+        self.get_current().fill(self.bg_color)
+        
+        pad_y = 8
 
-        font = fonts[fnum]
+        font = fonts[self.fnum]
         # 2D array where each row is a list of words.
-        words = [word.split(' ') for word in text.splitlines()]
+        words = [word.split(' ') for word in self.text.splitlines()]
         space = font.size(' ')[0]  # The width of a space.
-        max_width, max_height = size
+        max_width, max_height = self.size
         x, y = 0, 0
         for line in words:
             for word in line:
                 if word != '':
-                    word_surface = font.render(word, aalias, color)
+                    word_surface = font.render(word, self.aalias, self.color)
                     word_width, word_height = word_surface.get_size()
                     if x + word_width >= max_width:
+                        # Check if rows overflow
                         x = 0  # Reset the x.
-                        y += word_height  # Start on new row.
-                    if y > max_height-word_height:
+                        y += word_height + pad_y  # Start on new row.
+                    if y > max_height - word_height:
+                        # Check if text overflows from box
+                        # (creates new box)
                         x, y = 0, 0
-                        self.get_current().convert_alpha()
-                        self.index += 1
                         self.images.append(
-                            pygame.Surface(size, pygame.SRCALPHA)
+                            pygame.Surface(self.size, pygame.SRCALPHA)
                         )
-                    else:
-                        self.get_current().blit(word_surface, (x, y))
-                        x += word_width + space
+                        self.index += 1
+                        self.get_current().convert_alpha()
+                        self.get_current().fill(self.bg_color)
+                    self.get_current().blit(word_surface, (x, y))
+                    x += word_width + space
         self.index = 0
 
     def __str__(self):
