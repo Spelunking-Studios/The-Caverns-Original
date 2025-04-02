@@ -102,7 +102,7 @@ class Dialogue(util.Sprite):
         self.rendText = DialogueText(
             'dialogue',
             self.text,
-            colors.white,
+            (105, 125, 128),
             True,
             (self.tileSize, self.tileSize),
             (

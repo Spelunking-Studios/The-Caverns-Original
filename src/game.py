@@ -158,7 +158,13 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        self.dialogueScreen.dialogueFromText("Well Hello there. This is a very long text box that hopefully starts creating multiple text boxes?? will try to make it bette. Once upon a time there were hundreds of evil creatures yadaydaydar")
+        self.dialogueScreen.dialogueFromText("""
+            You enter the dark cave at the top of Mount Gorngeil. 
+            You hear your footsteps reverberate off the walls that seem to wind endlessly into the depths.
+                                                                                               
+            You are alone                                    
+            
+        """)
         while not self.end:
             self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))

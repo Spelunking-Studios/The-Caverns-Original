@@ -214,7 +214,9 @@ if __name__ != '__main__':
         'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
-        'dialogue': pygame.font.Font(fAsset("IBM_VGA_9x16-2x.ttf"), 38),
+        'dialogue-2': pygame.font.Font(fAsset("IBM_VGA_9x16-2x.ttf"), 38),
+        'dialogue': pygame.font.Font(fAsset("OldeTome.ttf"), 16),
+        'dialogue-3': pygame.font.Font(fAsset("Pixelcastle-Regular.otf"), 38),
         'tooltip': fgen("ComicSansMS.ttf", 12)
     }
 
