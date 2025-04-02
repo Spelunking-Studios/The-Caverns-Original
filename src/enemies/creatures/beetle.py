@@ -15,9 +15,11 @@ class Beetle(util.Sprite):
 
     def __init__(self, game, objT):
         super().__init__((game.sprites, game.layer1))
+        self.game = game
         
         self.pos = Vec((objT.x, objT.y))
         self.dir = Vec(2,0)
+        self.speed = 2
 
         self.leg_mounts = [0 for i in range(6)]
         self.feet = [0 for i in range(6)]
@@ -50,7 +52,8 @@ class Beetle(util.Sprite):
         
     def update(self):
         self.pos += self.dir
-        self.dir.rotate_ip(0.5)
+        # self.dir.rotate_ip(0.5)
+        self.dir = (self.game.player.rect.center - self.pos).normalize()*self.speed
         self.angle = self.dir.as_polar()[1]
         self.chain.pos = self.pos
         self.chain.update()
@@ -82,6 +85,8 @@ class Beetle(util.Sprite):
             self.feet[i] = foot
             i += 1
 
+    def get_colliders(self, type="circle"):
+        return self.chain.get_colliders(type)
 
     def draw(self, surf, transform=None):
         for l in self.legs:

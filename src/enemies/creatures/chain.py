@@ -1,8 +1,9 @@
 import pygame
 from pygame import Vector2 as Vec
 from src.stgs import *
+from src.util import Sprite
 
-class SimpleChain(pygame.sprite.Sprite):
+class SimpleChain(Sprite):
     def __init__(self, game, length, dists):
         super().__init__((game.sprites))
         self.game = game
@@ -18,6 +19,12 @@ class SimpleChain(pygame.sprite.Sprite):
     def update(self):
         self.update_chain()
 
+    def get_colliders(self, type):
+        if type == "circle":
+            return [pygame.Circle(c, 5) for c in self.chain]
+        else:
+            super().get_colliders()
+
 
     def update_chain(self):
         self.chain[0] = self.pos
@@ -28,7 +35,5 @@ class SimpleChain(pygame.sprite.Sprite):
             self.chain_angles[i] = delta.as_polar()[1]
 
     def draw(self, surf, transform=None):
-        # for i in range(len(self.chain)):
-        #     pygame.draw.circle(surf, WHITE, self.chain[i], 5)#self.chain_distances[i]/2)
         pass
 
