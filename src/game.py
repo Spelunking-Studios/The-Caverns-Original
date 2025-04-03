@@ -138,8 +138,6 @@ class Game:
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
-        self.healthHud = hud.HeathHud(self)
-        self.sanityHud = hud.SanityHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
 
