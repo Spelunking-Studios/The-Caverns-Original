@@ -23,7 +23,7 @@ class StatHud(util.Sprite):
         self.groups = game.sprites, game.hudLayer
         self.game = game
         # Set up some defaults
-        self.tWidth, self.tHeight =  10, 8   # Width and height of StatHud
+        self.tWidth, self.tHeight =  10, 6   # Width and height of StatHud
         self.tileSize = 32
         self.text = ''
         self.border = True# False if no border
@@ -43,7 +43,7 @@ class StatHud(util.Sprite):
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
-            text = menu.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
+            text = menu.Text('caption1', self.text, (105, 125, 128), True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
             self.image.blit(text.image, text.pos)
             self.image.set_alpha(128)
         

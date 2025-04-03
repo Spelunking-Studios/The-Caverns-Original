@@ -209,14 +209,18 @@ if __name__ != '__main__':
         '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
         'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
         'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
-        'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
+        'caption1': pygame.font.Font(fAsset('Darinia.ttf'), 20),
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
         'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
-        'dialogue-2': pygame.font.Font(fAsset("IBM_VGA_9x16-2x.ttf"), 38),
-        'dialogue': pygame.font.Font(fAsset("OldeTome.ttf"), 16),
-        'dialogue-3': pygame.font.Font(fAsset("Pixelcastle-Regular.otf"), 38),
+        'dialogue2': pygame.font.Font(fAsset("IBM_VGA_9x16-2x.ttf"), 38),
+        'dialogue6': pygame.font.Font(fAsset("OldeTome.ttf"), 48),
+        'dialogue4': pygame.font.Font(fAsset("GothicPixels.ttf"), 48),
+        'dialogue5': pygame.font.Font(fAsset("Corvid Conspirator v1.1.ttf"), 48),
+        'dialogue': pygame.font.Font(fAsset("gothic-pixel-font.ttf"), 52),
+        'dialogue7': pygame.font.Font(fAsset("Darinia.ttf"), 48),
+        'dialogue3': pygame.font.Font(fAsset("Pixelcastle-Regular.otf"), 38),
         'tooltip': fgen("ComicSansMS.ttf", 12)
     }
 
