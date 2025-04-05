@@ -39,7 +39,7 @@ class StatHud(util.Sprite):
     def render(self):
         s = self.game.player.stats
         hp = "RGB(120,20,0)"+ str(int(s.health)) if s.health < s.healthMax/2.5 else int(s.health)
-        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {s.inventory.getCurrent().damage}\nCritical = {s.crit}%"
+        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {self.game.player.slot1.damage}\nCritical = {s.crit}%"
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()

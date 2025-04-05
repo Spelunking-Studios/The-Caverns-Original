@@ -1,3 +1,5 @@
+import pygame
+import util
 from src.stgs import *
 
 class Animator:
@@ -17,7 +19,7 @@ class Animator:
         # if type(sprite) in self.cache:
         #     self.img_sheet = self.cache[type(sprite)]
         # else:
-        #     print("caching img_sheet")
+        #     print("caching img_sheetchick")
         #     for k, v in self.img_sheet.items():
         #         self.img_sheet[k] = Spritesheet(v)
         #     self.cache[type(sprite)] = self.img_sheet
@@ -71,10 +73,9 @@ class MultiAnimator:
         pass
 
 
-class HurtFx(pygame.sprite.Sprite):
+class HurtFx(util.Sprite):
     def __init__(self, duration = 300):
-        # super().__init__()
-        pygame.sprite.Sprite.__init__(self)
+        super().__init__()
         self.start = now()
         self.duration = duration
 

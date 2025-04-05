@@ -14,7 +14,7 @@ class Sword(Weapon):
         self.stats["attack"] = {
             "cooldown": 0.75,
             "damage": 10,
-            "critVariance": 5
+            "variance": 1
         }
         self.stats["categories"] = self.base_categories + ["sword"]
         self.stats["description"] = "The sword given to you by your father on your 13th birthday. Your name is engraved upon it"
@@ -24,6 +24,8 @@ class Sword(Weapon):
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
 
+        super().bruh_ben()
+    
     def _attack(self, user):
         self._route_attack(user)
         print("Sword action")

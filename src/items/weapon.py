@@ -14,6 +14,11 @@ class Weapon(Item):
             "cooldown": 1
         }
 
+    def bruh_ben(self):
+        # Gives item statistics easy access :)
+        for k, v in self.stats["attack"].items():
+            self.__dict__[k] = v
+
     def _route_attack(self, user):
         if (
             user.__class__.__name__ == "Player" and

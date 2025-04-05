@@ -77,7 +77,7 @@ class InventoryOverlay(Overlay):
             item.kill()
 
         # Identify the player's equipped weapon
-        player_equipped_weapon = getattr(self.game.player.equippedWeapon, "id", None)
+        player_equipped_weapon = getattr(self.game.player.slot1, "id", None)
 
         # Setup the loop
         ix = 0
@@ -171,12 +171,12 @@ class InventoryOverlay(Overlay):
 
         if entry:
             # Make sure the item isn't already equipped
-            if getattr(self.game.player.equippedWeapon, "id", None) == item_id:
+            if getattr(self.game.player.slot1, "id", None) == item_id:
                 print("The player already has '" + item_id + "' equipped.")
                 return
 
             # Set the player's equipped weapon
-            self.game.player.equippedWeapon = entry
+            self.game.player.slot1 = entry
 
             # Print a message to the console
             print(

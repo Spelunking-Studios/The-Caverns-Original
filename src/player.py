@@ -44,15 +44,16 @@ class Player(util.Sprite):
             self.inventory.add_item(self.sword)
             self.inventory.add_item(self.great_sword)
             self.inventory.add_item(self.dagger)
-            self.equippedWeapon = self.sword
+            self.slot1 = self.sword
+            self.slot2 = self.great_sword
         else:
             self.inventory.deserialize(saved_inventory)
 
             if equipped_weapon is None:
-                self.equippedWeapon = None
+                self.slot1 = None
             else:
-                self.equippedWeapon = self.inventory.get_item(equipped_weapon)
-
+                self.slot1 = self.inventory.get_item(equipped_weapon)
+        self.slot2 = items.Wand()
         self.groups = [game.sprites, game.layer2]
         pygame.sprite.Sprite.__init__(self, self.groups)
 
@@ -61,7 +62,7 @@ class Player(util.Sprite):
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
-        self.stats = stats.PlayerStats()
+        self.stats = stats.PlayerStats(self)
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
@@ -133,11 +134,10 @@ class Player(util.Sprite):
             action1 = pressed_buttons[0]
             action2 = pressed_buttons[2]
 
-        if action1 and self.equippedWeapon:
-            # self.stats.inventory.getSlot(1).action(self)
-            self.equippedWeapon.action(self)
+        if action1 and self.slot1:
+            self.slot1.action(self)
         elif action2:
-            self.stats.inventory.getSlot(2).action(self)
+            self.slot2.action(self)
 
     def weaponCollisions(self):
         if self.attackState == "attack":
@@ -164,7 +164,7 @@ class Player(util.Sprite):
                 # Only deal with entities that have images
                 if hasattr(entity, "image"):
                     # Determine the cooldown time
-                    cooldown = self.equippedWeapon.stats["attack"]["cooldown"]
+                    cooldown = self.slot1.cooldown
 
                     # Check for the collision
                     if time() - entity.last_interaction_time >= cooldown:
@@ -178,9 +178,24 @@ class Player(util.Sprite):
                     # Check for the collision
                     if pygame.sprite.collide_mask(self, e):
                         # Make sure the timing works
+                        if pygame.time.get_ticks() - e.last_hit >= 260:
+                            # Determine the amount of damage
+                            dmg = self.stats.attack()#self.slot1.get_attack_damage(self)
+
+                            # Deal the damage
+                            e.take_damage(dmg[0])
+
+                            # Make some nice particles
+                            self.combatParts.particle(
+                                Vector2(e.rect.center),
+                                dmg[0],
+                                dmg[1]
+                            )
+                else:
+                    if self.collide(e, "circle"):
                         if pygame.time.get_ticks() - e.lastHit >= 260:
                             # Determine the amount of damage
-                            dmg = self.equippedWeapon.get_attack_damage(self)
+                            dmg = self.slot1.get_attack_damage(self)
 
                             # Deal the damage
                             e.takeDamage(dmg[0])

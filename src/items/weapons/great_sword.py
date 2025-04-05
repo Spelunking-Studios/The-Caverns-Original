@@ -4,7 +4,7 @@ from stgs import asset
 
 
 class GreatSword(Weapon):
-    """Represents the base sword"""
+    """Massive fricking sword"""
 
     kind = "Great Sword"
 
@@ -14,7 +14,7 @@ class GreatSword(Weapon):
         self.stats["attack"] = {
             "cooldown": 3,
             "damage": 21,
-            "critVariance": 7
+            "variance": 1,
         }
         self.stats["categories"] = self.base_categories + ["sword"]
         self.stats["description"] = "Great sword"
@@ -23,6 +23,8 @@ class GreatSword(Weapon):
                 asset("items", "weapon", "sword.png")
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
+
+        super().bruh_ben()
 
     def _attack(self, user):
         self._route_attack(user)

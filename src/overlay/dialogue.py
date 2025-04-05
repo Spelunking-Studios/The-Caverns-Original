@@ -103,7 +103,7 @@ class Dialogue(util.Sprite):
             'dialogue',
             self.text,
             (105, 125, 128),
-            True,
+            False,
             (self.tileSize, self.tileSize),
             (
                 int(self.image.get_width() - self.tileSize * 2),

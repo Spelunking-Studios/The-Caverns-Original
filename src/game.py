@@ -15,7 +15,7 @@ from stgs import *
 from fx import *
 from levels import *
 from menu import *
-# from objects import *
+import objects
 from overlay import *
 from player import *
 from sfx import *
@@ -126,6 +126,7 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
+        print(globals()["GAME_STATE"].get("player_equipped_weapon", None))
         self.player = Player(
             self,
             asset('player/samplePlayer.png'),
@@ -396,3 +397,9 @@ class Game:
             self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
         else:
             self.win.fill((0, 0, 0))
+
+    def get_prefab(self, name):
+        print(objects.__dict__)
+        for k,v in objects.__dict__.items():
+            if k == name:
+                return v
