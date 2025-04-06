@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="3">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="39">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../floor1-features.tsx"/>
  <layer id="2" name="Tile Layer 2" width="60" height="48">
@@ -19,5 +19,91 @@
   <object id="2" name="Beetle" x="499" y="375">
    <point/>
   </object>
+  <object id="3" name="Beetle" x="354" y="696">
+   <point/>
+  </object>
+  <object id="4" name="Beetle" x="404" y="498">
+   <point/>
+  </object>
+  <object id="5" name="Beetle" x="310" y="432">
+   <point/>
+  </object>
+  <object id="6" name="Beetle" x="666" y="440">
+   <point/>
+  </object>
+  <object id="7" name="Beetle" x="362" y="268">
+   <point/>
+  </object>
+  <object id="8" name="Beetle" x="186" y="400">
+   <point/>
+  </object>
+  <object id="9" name="Beetle" x="298" y="510">
+   <point/>
+  </object>
+  <object id="10" name="Beetle" x="572" y="522">
+   <point/>
+  </object>
+  <object id="11" name="Beetle" x="604" y="372">
+   <point/>
+  </object>
+  <object id="12" name="Beetle" x="402" y="326">
+   <point/>
+  </object>
+  <object id="13" name="Beetle" x="480" y="242">
+   <point/>
+  </object>
+  <object id="14" name="Beetle" x="288" y="296">
+   <point/>
+  </object>
+  <object id="15" name="Beetle" x="476" y="538">
+   <point/>
+  </object>
+  <object id="16" name="Beetle" x="556" y="640">
+   <point/>
+  </object>
+  <object id="17" name="Beetle" x="550" y="800">
+   <point/>
+  </object>
+  <object id="18" name="Beetle" x="454" y="902">
+   <point/>
+  </object>
+  <object id="19" name="Beetle" x="358" y="822">
+   <point/>
+  </object>
+  <object id="20" name="Beetle" x="536" y="720">
+   <point/>
+  </object>
+  <object id="21" name="Beetle" x="740" y="806">
+   <point/>
+  </object>
+  <object id="22" name="Beetle" x="676" y="920">
+   <point/>
+  </object>
+  <object id="23" name="Beetle" x="562" y="984">
+   <point/>
+  </object>
+  <object id="24" name="Beetle" x="436" y="898">
+   <point/>
+  </object>
+  <object id="25" name="Beetle" x="362" y="796">
+   <point/>
+  </object>
+  <object id="26" name="Beetle" x="404" y="952">
+   <point/>
+  </object>
+  <object id="27" name="Beetle" x="376" y="954">
+   <point/>
+  </object>
+  <object id="28" name="Beetle" x="280" y="820">
+   <point/>
+  </object>
+  <object id="29" name="Wall" x="48.6667" y="38.6667" width="174" height="73.3333"/>
+  <object id="30" name="Wall" x="34.6667" y="111.333" width="80.3333" height="792.667"/>
+  <object id="31" name="Wall" x="44" y="901" width="102" height="129.5"/>
+  <object id="32" x="117.5" y="804" width="17.5" height="98.5"/>
+  <object id="33" name="Wall" x="102" y="1027.33" width="70.6667" height="60.6667"/>
+  <object id="34" name="Wall" x="174" y="1038.67" width="28.6667" height="163.333"/>
+  <object id="35" name="Wall" x="202" y="1072" width="30.6667" height="138.667"/>
+  <object id="36" name="Wall" x="232.667" y="1109.33" width="23.3333" height="123.333"/>
  </objectgroup>
 </map>

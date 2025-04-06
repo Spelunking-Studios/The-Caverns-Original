@@ -274,7 +274,8 @@ def saveData(file, game):
     player = game.player
     player_inventory = player.inventory.serialize()
     saveDict["GAME_STATE"]["player_inventory"] = player_inventory
-    saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.equippedWeapon, "id", None)
+    saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
+    saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)
 
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)

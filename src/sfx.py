@@ -48,7 +48,7 @@ class GameMixer:
         global fx
         self.fx = fx
         self.fxVolume = 1
-        self.musicVolume = 1
+        self.musicVolume = 0
         try:
             self.musicChannel = pygame.mixer.Channel(0)
         except pygame.error:
