@@ -399,7 +399,6 @@ class Game:
             self.win.fill((0, 0, 0))
 
     def get_prefab(self, name):
-        print(objects.__dict__)
         for k,v in objects.__dict__.items():
             if k == name:
                 return v

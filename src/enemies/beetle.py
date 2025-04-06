@@ -17,6 +17,8 @@ class Beetle(SimpleEnemy):
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
+
+        self.health = 40
         
         self.vel = Vec(2,0)
         self.speed = 2
@@ -61,6 +63,7 @@ class Beetle(SimpleEnemy):
         self.travel = 2.5
         
     def update(self):
+        super().update()
         self.move()
         self.rect.center = self.pos
         self.chain.pos = self.pos

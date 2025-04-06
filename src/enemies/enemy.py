@@ -19,6 +19,8 @@ class SimpleEnemy(util.Sprite):
         self.pos = pygame.Vector2(objT.x, objT.y)
 
         self.last_hit = 0
+        
+        self.health = 40
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -29,6 +31,12 @@ class SimpleEnemy(util.Sprite):
 
     def take_damage(self, dmg):
         self.last_hit = now()
+        self.health -= dmg
+        self.game.mixer.playFx('hit1')
+
+    def update(self):
+        if self.health <= 0:
+            self.kill()
 
     def kill(self):
         super().kill()

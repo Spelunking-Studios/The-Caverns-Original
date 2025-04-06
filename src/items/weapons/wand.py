@@ -12,7 +12,7 @@ class Wand(Weapon):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
             "cooldown": 0.8,
-            "damage": 123,
+            "damage": 20,
             "variance": 1,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
@@ -27,14 +27,10 @@ class Wand(Weapon):
 
     def _attack(self, user):
         self._route_attack(user)
-        self.action(user)
 
     def _player_attack(self, player):
         player.attackState = "attack"
     
-    def action(self, player):
-        '''Allows item to function via the player'''
-        now = pygame.time.get_ticks()
         # if now - self.lastAttack >= self.player.stats.atkSpeed+self.attackDelay:
         player.animations.setMode('wand')
         player.game.get_prefab("Fireball")(player.game)

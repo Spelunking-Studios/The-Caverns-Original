@@ -63,10 +63,13 @@ class Player(util.Sprite):
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
         self.stats = stats.PlayerStats(self)
+
+        # Timing variables
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
         self.healDelay = 3
+
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
         self.lightImg = pygame.image.load(asset('objects', 'light2.png'))
@@ -77,6 +80,8 @@ class Player(util.Sprite):
         self.combatParts = fx.CombatParticles(game, self)
 
         self.attackState = None
+        # Checks whether player used right or left click last 
+        self.last_action = None
 
         if joystickEnabled:
             self.cursor = Cursor()
@@ -134,10 +139,12 @@ class Player(util.Sprite):
             action1 = pressed_buttons[0]
             action2 = pressed_buttons[2]
 
-        if action1 and self.slot1:
+        if action1:
             self.slot1.action(self)
+            self.last_action = 1
         elif action2:
             self.slot2.action(self)
+            self.last_action = 2
 
     def weaponCollisions(self):
         if self.attackState == "attack":
@@ -191,21 +198,21 @@ class Player(util.Sprite):
                                 dmg[0],
                                 dmg[1]
                             )
-                else:
-                    if self.collide(e, "circle"):
-                        if pygame.time.get_ticks() - e.lastHit >= 260:
-                            # Determine the amount of damage
-                            dmg = self.slot1.get_attack_damage(self)
-
-                            # Deal the damage
-                            e.takeDamage(dmg[0])
-
-                            # Make some nice particles
-                            self.combatParts.particle(
-                                Vector2(e.rect.center),
-                                dmg[0],
-                                dmg[1]
-                            )
+                # else:
+                #     if self.collide(e, "circle"):
+                #         if pygame.time.get_ticks() - e.lastHit >= 260:
+                #             # Determine the amount of damage
+                #             dmg = self.slot1.get_attack_damage(self)
+                #
+                #             # Deal the damage
+                #             e.takeDamage(dmg[0])
+                #
+                #             # Make some nice particles
+                #             self.combatParts.particle(
+                #                 Vector2(e.rect.center),
+                #                 dmg[0],
+                #                 dmg[1]
+                #             )
 
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:

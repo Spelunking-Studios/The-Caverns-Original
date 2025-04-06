@@ -48,11 +48,10 @@ class PlayerStats(Stats):
         self.inventory = player.inventory
 
     def attack(self, weapon = None): # The index here just means which hotbar number the action is
-        if weapon:
-            dmg = weapon.damage + self.strength/5
+        if self.player.last_action == 1:
+            dmg = self.player.slot1.damage + self.strength/5
         else:
-            dmg = self.attack_damage
-        dmg = self.player.slot1.damage + self.strength/5
+            dmg = self.player.slot2.damage + self.strength/5
         atkVar = self.attack_variance + self.player.slot1.variance
         if randint(0, 100) <= self.crit:
             crit = True
