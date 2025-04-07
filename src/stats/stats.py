@@ -10,8 +10,8 @@ class Stats:
         self.health = 0
         self.strength = 0 # This will become a modifier for damage
         self.speed = 0
-        self.atkDamage = 0 # This will not be used on the player because it will have a more complicated damage calculator
-        self.atkVariance = 1
+        self.attack_damage = 0 # This will not be used on the player because it will have a more complicated damage calculator
+        self.attack_variance = 1
         self.crit = 5
 
         for k, v in kwargs.items():
@@ -22,7 +22,7 @@ class Stats:
             self.__dict__[k] = v
 
     def attack(self):
-        damage = randint(max(0, self.atkDamage-self.atkVariance), self.atkDamage+self.atkVariance)
+        damage = randint(max(0, self.attack_damage-self.attack_variance), self.attack_damage+self.atkVariance)
         return damage
 
     def isDead(self):
@@ -30,7 +30,7 @@ class Stats:
 
 
 class PlayerStats(Stats):
-    def __init__(self):
+    def __init__(self, player):
         super().__init__(
                 health=50,
                 healthMax=50,
@@ -38,17 +38,21 @@ class PlayerStats(Stats):
                 sanityMax=50,
                 strength=0,
                 speed=15,
-                atkDamage=0,
-                atkVariance=1,
-                atkSpeed=400, # This is a delay in milliseconds
+                attack_damage=0,
+                attack_variance=1,
+                attack_speed=400, # This is a delay in milliseconds
                 crit=5, # This is a percent out of 100 (make sure its an integer)
                 critBonus = 200, # This is a percent
                 )
-        self.inventory = Inventory(objects.Sword1(),  objects.MagicWand())
+        self.player = player
+        self.inventory = player.inventory
 
-    def attack(self): # The index here just means which hotbar number the action is
-        dmg = self.inventory.getCurrent().damage + self.strength/5
-        atkVar = self.atkVariance + self.inventory.getCurrent().atkVariance
+    def attack(self, weapon = None): # The index here just means which hotbar number the action is
+        if self.player.last_action == 1:
+            dmg = self.player.slot1.damage + self.strength/5
+        else:
+            dmg = self.player.slot2.damage + self.strength/5
+        atkVar = self.attack_variance + self.player.slot1.variance
         if randint(0, 100) <= self.crit:
             crit = True
             damage = randint(max(0, int((dmg-atkVar)*(self.critBonus/100))), int((dmg+atkVar)*(self.critBonus/100)))

@@ -1,7 +1,7 @@
 import os
 import sys
 import pygame
-import colors
+import util.colors as colors
 import math
 import pickle
 
@@ -40,7 +40,7 @@ else:
         os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
-CAMLIMIT = True
+CAMLIMIT = False
 SHOWFPS = True
 
 #### FPS BOIS ####
@@ -209,11 +209,19 @@ if __name__ != '__main__':
         '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
         'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
         'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
-        'caption1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 24),
+        'caption1': pygame.font.Font(fAsset('Darinia.ttf'), 20),
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
-        'gameover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 60),
+        'gameover': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
+        # 'dialogue2': pygame.font.Font(fAsset("IBM_VGA_9x16-2x.ttf"), 38),
+        # 'dialogue6': pygame.font.Font(fAsset("OldeTome.ttf"), 48),
+        # 'dialogue4': pygame.font.Font(fAsset("OldEnglishGothic.otf"), 48),
+        # 'dialogue5': pygame.font.Font(fAsset("Corvid Conspirator v1.1.ttf"), 48),
+        'dialogue': pygame.font.Font(fAsset("gothic-pixel-font.ttf"), 52),
+        # 'dialogue': pygame.font.Font(fAsset("PixelderFuthark.ttf"), 52),
+        # 'dialogue7': pygame.font.Font(fAsset("Darinia.ttf"), 48),
+        # 'dialogue3': pygame.font.Font(fAsset("Pixelcastle-Regular.otf"), 38),
         'tooltip': fgen("ComicSansMS.ttf", 12)
     }
 
@@ -266,7 +274,8 @@ def saveData(file, game):
     player = game.player
     player_inventory = player.inventory.serialize()
     saveDict["GAME_STATE"]["player_inventory"] = player_inventory
-    saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.equippedWeapon, "id", None)
+    saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
+    saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)
 
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)

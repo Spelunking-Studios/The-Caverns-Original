@@ -15,7 +15,7 @@ from stgs import *
 from fx import *
 from levels import *
 from menu import *
-# from objects import *
+import objects
 from overlay import *
 from player import *
 from sfx import *
@@ -126,6 +126,7 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
+        print(globals()["GAME_STATE"].get("player_equipped_weapon", None))
         self.player = Player(
             self,
             asset('player/samplePlayer.png'),
@@ -136,10 +137,8 @@ class Game:
         self.pauseScreen = PauseOverlay(self)
         # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
-        self.statsInfo = hud.StatHud(self, border = asset("objects/dPallette3.png")) 
+        self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
-        self.healthHud = hud.HeathHud(self)
-        self.sanityHud = hud.SanityHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
 
@@ -147,7 +146,8 @@ class Game:
     def run(self):
         loadSave("game.store")
         self.mixer.playMusic(sAsset('intro.wav'))
-        self.menuLoop()
+        # self.menuLoop()
+        self.map.loadFloor()
         self.mainLoop()
         self.mixer.stop()
         if self.won:
@@ -157,7 +157,13 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        self.dialogueScreen.dialogueFromText("Well Hello")
+        self.dialogueScreen.dialogueFromText("""
+            You enter the dark cave at the top of Mount Gorngeil. 
+            You hear your footsteps reverberate off the walls that seem to wind endlessly into the depths.
+                                                                                               
+            You are alone                                    
+            
+        """)
         while not self.end:
             self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))
@@ -391,3 +397,8 @@ class Game:
             self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
         else:
             self.win.fill((0, 0, 0))
+
+    def get_prefab(self, name):
+        for k,v in objects.__dict__.items():
+            if k == name:
+                return v

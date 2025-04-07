@@ -10,6 +10,43 @@ from player import *
 from stgs import *
 from effects import HurtEffect
 
+class SimpleEnemy(util.Sprite):
+    """Base enemy class"""
+    def __init__(self, game, objT, **kwargs):
+        self.game = game
+        self.groups = game.sprites, game.groups.enemies, game.layer2
+        self.lID = objT.id
+        self.pos = pygame.Vector2(objT.x, objT.y)
+
+        self.last_hit = 0
+        
+        self.health = 40
+
+        for k, v in kwargs.items():
+            self.__dict__[k] = v
+        for k, v in objT.properties.items():
+            self.__dict__[k] = v
+
+        pygame.sprite.Sprite.__init__(self, self.groups)
+
+    def take_damage(self, dmg):
+        self.last_hit = now()
+        self.health -= dmg
+        self.game.mixer.playFx('hit1')
+
+    def update(self):
+        if self.health <= 0:
+            self.kill()
+
+    def kill(self):
+        super().kill()
+        # Will eventually implement a blood splatter effect when killing enemies
+        # self.game.blood_splatter()
+
+
+
+
+
 class Enemy(util.Sprite):
     """Base enemy class"""
     def __init__(self, game, objT, **kwargs):

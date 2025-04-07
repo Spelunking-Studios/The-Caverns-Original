@@ -5,7 +5,7 @@ import menu
 from menu import createFrame
 import overlay
 import menu
-import colors
+import src.util.colors as colors
 from math import sin 
 
 class Hud(util.Sprite):
@@ -23,10 +23,10 @@ class StatHud(util.Sprite):
         self.groups = game.sprites, game.hudLayer
         self.game = game
         # Set up some defaults
-        self.tWidth, self.tHeight =  10, 8   # Width and height of StatHud
+        self.tWidth, self.tHeight =  10, 6   # Width and height of StatHud
         self.tileSize = 32
         self.text = ''
-        self.border = False # False if no border
+        self.border = True# False if no border
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -39,11 +39,11 @@ class StatHud(util.Sprite):
     def render(self):
         s = self.game.player.stats
         hp = "RGB(120,20,0)"+ str(int(s.health)) if s.health < s.healthMax/2.5 else int(s.health)
-        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {s.inventory.getCurrent().damage}\nCritical = {s.crit}%"
+        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {self.game.player.slot1.damage}\nCritical = {s.crit}%"
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
-            text = menu.Text('caption1', self.text, colors.white, True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
+            text = menu.Text('caption1', self.text, (105, 125, 128), True, (self.tileSize, self.tileSize), True, ((self.tWidth-2)*self.tileSize, (self.tHeight-2)*self.tileSize,))
             self.image.blit(text.image, text.pos)
             self.image.set_alpha(128)
         
@@ -58,32 +58,32 @@ class SlotsHud(util.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         # Create the slots
-        self.sheildSlot = SlotHud((10, 610))
-        self.mainSlot1 = SlotHud((130, 610))
-        self.mainSlot2 = SlotHud((250, 610))
-        self.spellSlot1 = SlotHud((890, 610))
-        self.spellSlot2 = SlotHud((1020, 610))
-        self.spellSlot3 = SlotHud((1150, 610))
+        self.mainSlot1 = SlotHud((10, 610))
+        self.spellSlot1 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
+
+        self.healthHud = HeathHud(game, x = self.spellSlot1.rect.right + 15)
+        self.sanityHud = SanityHud(game, x = self.spellSlot1.rect.right + 15)
 
         # Add the slots
-        self.slots.add(self.sheildSlot)
         self.slots.add(self.mainSlot1)
-        self.slots.add(self.mainSlot2)
         self.slots.add(self.spellSlot1)
-        self.slots.add(self.spellSlot2)
-        self.slots.add(self.spellSlot3)
+
     def update(self):
         self.slots.update()
 
 class SlotHud(util.Sprite):
     def __init__(self, pos, **kwargs):
         pygame.sprite.Sprite.__init__(self)
+        
+        self.img_path = asset("ui/weapon_slot.png")
+        self.scale = 3/5
+        for k,v in kwargs.items():
+            self.__dict__[k] = v
 
         self.pos = pos
 
-        self.slotImg = pygame.image.load(asset("ui/weapon_slot.png"))
-        self.slotScale = 3/5
-        self.slotSize = pygame.Vector2(self.slotImg.get_size())*self.slotScale
+        self.slotImg = pygame.image.load(self.img_path)
+        self.slotSize = pygame.Vector2(self.slotImg.get_size())*self.scale
         self.slotImg = pygame.transform.scale(self.slotImg, (int(self.slotSize.x), int(self.slotSize.y)))
 
         self.image = self.renderBase()
@@ -101,9 +101,17 @@ class SlotHud(util.Sprite):
         self.render()
 
 class HeathHud(Hud):
-    def __init__(self, game):
+    """Good 'ol healthbar
+    """
+
+    def __init__(self, game, **kwargs):
+        self.x, self.y = 400, 640
+        for k,v, in kwargs.items():
+            self.__dict__[k] = v
+        
+        self.pos = (self.x, self.y)
         super().__init__(game)
-        self.rect = pygame.Rect(400, 680, 450, 20)
+        self.rect = pygame.Rect(*self.pos, 450, 20)
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.bgColor = colors.dark(colors.grey, 70)
         self.padX, self.padY = 4, 3
@@ -122,9 +130,13 @@ class HeathHud(Hud):
         self.render()
 
 class SanityHud(Hud):
-    def __init__(self, game):
+    def __init__(self, game, **kwargs):
+        self.x, self.y = 400, 680
+        for k,v, in kwargs.items():
+            self.__dict__[k] = v
+        self.pos = (self.x, self.y)
         super().__init__(game)
-        self.rect = pygame.Rect(400, 640, 450, 20)
+        self.rect = pygame.Rect(*self.pos, 450, 20)
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
         self.bgColor = colors.dark(colors.grey, 70)
         self.padX, self.padY = 4, 3

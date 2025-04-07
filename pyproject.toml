@@ -6,6 +6,9 @@ readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "moderngl>=5.12.0",
+    "numpy>=2.2.4",
+    "pillow>=11.1.0",
+    "pygame-ce>=2.5.3",
     "pytmx>=3.32",
 ]
 authors = ["LGgameLAB", "Ben Landon"]

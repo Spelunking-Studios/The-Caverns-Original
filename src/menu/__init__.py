@@ -6,7 +6,7 @@ from .menuItem import MenuItem
 from .settingSlider import SettingSlider
 from .text import Text
 
-def createFrame(width, height, tileSize = 32, bPalPath = asset('objects/dPallette2.png')):
+def createFrame(width, height, tileSize = 32, bPalPath = asset('objects/dialog-frame.png')):
     '''
     Create a GUI frame from a 3x3 tile pallet provided a given width and height.
     NOTE: The height and width are refering to # in tiles

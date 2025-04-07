@@ -1,6 +1,6 @@
 import pygame
 from stgs import fonts, asset
-import colors
+import src.util.colors as colors
 
 
 class Button(pygame.sprite.Sprite):

@@ -3,13 +3,13 @@
 
 ## Code
 * Shader integration
-    * add multipass code
+    * ~~add multipass code~~
     * make generic texture pass system
 * Inventory
     * Add magic system
-    * Make sure that saving and loading works
+    * ~~Make sure that saving and loading works~~
     * Change font
-    * Optimize? (very slow)
+    * ~~Optimize?(very slow)~~
 * HUD
     * Change health bar
     * Reduce weapon slots
@@ -37,7 +37,7 @@
 * Make enemy generators
     * Enemy spawn system
 * Sanity system
-    * light diminishes as sanity diminishes
+    * ~~light diminishes as sanity diminishes~~
     * white bar on screen
     * use the wiggle shader to create nausea
     * distort creatures and alter colors

@@ -3,7 +3,7 @@ import pygame
 from overlay import *
 from menu import *
 from stgs import *
-import colors
+import src.util.colors as colors
 
 class Menu:
     def __init__(self, game):
@@ -178,7 +178,7 @@ class Main(Menu):
 
         self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = winWidth / 2, winWidth / 2
 
-        swordImg = pygame.transform.scale(pygame.image.load(asset('title_sword.png')), (320, 320))
+        swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (320, 320))
         swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
         swordRect.centerx = winWidth/2
         text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
@@ -231,7 +231,7 @@ def main(game, loadingScreenOn = False):
     comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = winWidth/2
-    swordImg = pygame.transform.scale(pygame.image.load(asset('title_sword.png')), (400, 110))
+    swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (400, 110))
     swordRect = pygame.Rect(0, 180, swordImg.get_width(), swordImg.get_height())
     swordRect.centerx = winWidth/2
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))

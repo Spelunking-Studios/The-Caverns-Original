@@ -1,6 +1,6 @@
 import util
 import pygame
-import colors
+import src.util.colors as colors
 from menu import SettingSlider, Button, Text
 from stgs import winWidth, winHeight
 

@@ -14,7 +14,7 @@ class Dagger(Weapon):
         self.stats['attack'] = {
             "cooldown": 0.25,
             "damage": 3,
-            "critVariance": 2
+            "variance": 1,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
         self.stats['description'] = "Base dagger"
@@ -23,6 +23,8 @@ class Dagger(Weapon):
                 asset("items", "weapon", "dagger.png")
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
+
+        super().bruh_ben()
 
     def _attack(self, user):
         self._route_attack(user)
