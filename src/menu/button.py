@@ -20,6 +20,7 @@ class Button(pygame.sprite.Sprite):
     def __init__(self, game, pos, **kwargs):
         self.game = game
         self.onClick = False
+        self.onClickContext = False
         self.groups = []
         self.wh = (200, 60)
         self.colors = (colors.yellow, (255, 255, 255))
@@ -86,6 +87,12 @@ class Button(pygame.sprite.Sprite):
                     self.game.mixer.playFx('menu1')
                     if self.onClick:
                         self.onClick()
+                        if self.instaKill:
+                            self.kill()
+
+                    # For API compatability reasons
+                    if self.onClickContext:
+                        self.onClickContext(self)
                         if self.instaKill:
                             self.kill()
 
