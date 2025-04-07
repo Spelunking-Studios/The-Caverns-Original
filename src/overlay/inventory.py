@@ -1,6 +1,6 @@
 from .overlay import Overlay
 from menu import Button, Image, Text
-from stgs import winWidth, winHeight, fgen
+from stgs import winWidth, winHeight, fgen, fonts
 import src.util.colors as colors
 import menu
 import pygame
@@ -184,7 +184,7 @@ class InventoryOverlay(Overlay):
             # Create a label if the item is also the player's current wepon
             if item_id == player_equipped_weapon:
                 print("Player has", item_id, "equipped.")
-                font = fgen("ComicSansMS.ttf", 12)
+                font = fonts["label"]
                 Text(
                     font,
                     "Equipped",
@@ -351,7 +351,7 @@ class InventoryOverlay(Overlay):
     def render_tooltip(self, item_comp):
         """Render the tooltip for a given item component"""
         # Generate all of the fonts that are going to be used
-        title_font = fgen("PixelLove.ttf", 18)
+        title_font = fonts["title3"]
 
         # Render the text
         tooltip_title = title_font.render(
@@ -360,7 +360,7 @@ class InventoryOverlay(Overlay):
             (255, 255, 255)
         )
         tooltip_desc = menu.Text(
-            fgen("ComicSansMS.ttf", 12),
+            fonts["tooltip"],
             item_comp.tooltip[1],
             colors.white,
             True,

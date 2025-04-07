@@ -28,12 +28,12 @@ class Chest(util.Sprite):
         )
         self.image = pygame.image.load(asset("objects", "Chest.png"))
         self.inventory = Inventory()
-        self.inventory.deserialize(self.default_contents)
         self.last_interaction_time = 0
+        self.inventory.deserialize(self.default_contents)
 
     def update(self):
         pass
-    
+
     def interact(self):
         self.last_interaction_time = time()
         print("interacted!")
