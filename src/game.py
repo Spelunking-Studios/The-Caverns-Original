@@ -16,6 +16,7 @@ from fx import *
 from levels import *
 from menu import *
 import objects
+import prefabs
 from overlay import *
 from player import *
 from sfx import *
@@ -266,10 +267,10 @@ class Game:
                         s.kill()
 
             def died():
-                Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+                prefabs.RedButton(self, (400, 400), "Continue", cont)
                 def end():
                     self.end = True
-                Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
+                prefabs.RedButton(self, (400, 500), "Return to menu", end)
 
             FadeOut(self, speed = 2.5, alpha = 40, color = colors.dark(colors.red, 60), startDelay = 540, noKill = True, onEnd = died)
 
@@ -399,6 +400,12 @@ class Game:
             self.win.fill((0, 0, 0))
 
     def get_prefab(self, name):
+        # Look in objects module
         for k,v in objects.__dict__.items():
+            if k == name:
+                return v
+        
+        # Look in defined prefabs
+        for k,v in prefabs.__dict__.items():
             if k == name:
                 return v

@@ -2,6 +2,7 @@ import pygame
 from time import time
 from stgs import asset
 import util
+import items
 from inventory import Inventory
 
 
@@ -27,13 +28,22 @@ class Chest(util.Sprite):
             64, 64
         )
         self.image = pygame.image.load(asset("objects", "Chest.png"))
-        self.inventory = Inventory()
-        self.last_interaction_time = 0
-        self.inventory.deserialize(self.default_contents)
+        self.last_interact = 0
+
+        self.item = items.__dict__[self.item]
+        
+        self.opened = False
 
     def update(self):
         pass
 
     def interact(self):
-        self.last_interaction_time = time()
-        print("interacted!")
+        if now() - self.last_interact > 300:
+            if self.opened:
+                self.game.dialogueScreen.dialogueFromText("The chest is empty. . .")
+            else:
+                name = self.item.kind
+                self.game.dialogueScreen.dialogueFromText(f"You find a {name}")
+                self.opened = True
+
+        self.last_interact = now()

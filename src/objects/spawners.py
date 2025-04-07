@@ -14,7 +14,7 @@ class Spawner(util.Sprite):
         pygame.sprite.Sprite.__init__(self, self.groups)
         
         # Defaults
-        self.mob = None # Type of entity spawned
+        self.entity = None # Type of entity spawned
         self.rate = 5000 # Rate in milliseconds
 
         for k, v in kwargs.items():
@@ -26,6 +26,7 @@ class Spawner(util.Sprite):
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
         self.lastSpawn = now() # Tracks the last moment an enemy was summoned
+        self.entity = game.get_prefab(self.entity)()
 
 
     def update(self):

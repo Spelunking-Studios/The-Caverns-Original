@@ -68,6 +68,7 @@ class Player(util.Sprite):
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
+        self.last_interact = 0
         self.healDelay = 3
 
         self.mask = pygame.mask.from_surface(self.image, True)
@@ -171,12 +172,13 @@ class Player(util.Sprite):
                 # Only deal with entities that have images
                 if hasattr(entity, "image"):
                     # Determine the cooldown time
-                    cooldown = self.slot1.cooldown
+                    cooldown = 600
 
                     # Check for the collision
-                    if time() - entity.last_interaction_time >= cooldown:
+                    if now() - self.last_interact >= cooldown:
                         if pygame.sprite.collide_mask(self, entity):
                             entity.interact()
+                        self.last_interact = now()
 
             # Check for a hit with an enemy
             for e in enemies:
