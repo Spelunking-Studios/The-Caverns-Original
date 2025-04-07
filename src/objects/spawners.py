@@ -1,5 +1,6 @@
 import util
 import pygame
+import random
 from animations import *
 from stgs import *
 import enemies
@@ -26,7 +27,7 @@ class Spawner(util.Sprite):
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
         self.lastSpawn = now() # Tracks the last moment an enemy was summoned
-        self.entity = game.get_prefab(self.entity)()
+        self.entity = game.get_prefab(self.entity)
 
 
     def update(self):
@@ -35,6 +36,9 @@ class Spawner(util.Sprite):
     
     def spawn(self):
         pass
+
+        def random_position(self):
+            return (self.rect.x + self.rect.w*random.random(), self.rect.x + self.rect.w*random.random())
 
 def Spawner1(game, objT):
     return Spawner(game, objT, mob=enemies.zombie)

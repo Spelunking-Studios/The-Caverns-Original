@@ -68,7 +68,7 @@ class Player(util.Sprite):
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
-        self.last_interact = 0
+        self.interacted = False
         self.healDelay = 3
 
         self.mask = pygame.mask.from_surface(self.image, True)
@@ -153,12 +153,25 @@ class Player(util.Sprite):
             self.attackState = None
             self.game.mixer.playFx("swing")
         if self.animations.mode == "hit":
-            # Create a list of all close by interactables
-            interactables = self.game.groups.getProximitySprites(
-                self,
-                200,
-                groups=[self.game.groups.interactable]
-            )
+            if not self.interacted:
+                # Create a list of all close by interactables
+                interactables = self.game.groups.getProximitySprites(
+                    self,
+                    200,
+                    groups=[self.game.groups.interactable]
+                )
+
+                # Check for an interaction with an interactable
+                for entity in interactables:
+                    # Only deal with entities that have images
+                    if hasattr(entity, "image"):
+                        # Determine the cooldown time
+                        cooldown = 600
+
+                        # Check for the collision
+                        if pygame.sprite.collide_mask(self, entity):
+                            entity.interact()
+                            self.interacted = True
 
             # Create a list of all close by enemies
             enemies = self.game.groups.getProximitySprites(
@@ -167,18 +180,6 @@ class Player(util.Sprite):
                 groups=[self.game.groups.enemies]
             )
 
-            # Check for an interaction with an interactable
-            for entity in interactables:
-                # Only deal with entities that have images
-                if hasattr(entity, "image"):
-                    # Determine the cooldown time
-                    cooldown = 600
-
-                    # Check for the collision
-                    if now() - self.last_interact >= cooldown:
-                        if pygame.sprite.collide_mask(self, entity):
-                            entity.interact()
-                        self.last_interact = now()
 
             # Check for a hit with an enemy
             for e in enemies:
@@ -200,21 +201,8 @@ class Player(util.Sprite):
                                 dmg[0],
                                 dmg[1]
                             )
-                # else:
-                #     if self.collide(e, "circle"):
-                #         if pygame.time.get_ticks() - e.lastHit >= 260:
-                #             # Determine the amount of damage
-                #             dmg = self.slot1.get_attack_damage(self)
-                #
-                #             # Deal the damage
-                #             e.takeDamage(dmg[0])
-                #
-                #             # Make some nice particles
-                #             self.combatParts.particle(
-                #                 Vector2(e.rect.center),
-                #                 dmg[0],
-                #                 dmg[1]
-                #             )
+        else:
+            self.interacted = False
 
     def takeDamage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:

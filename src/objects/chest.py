@@ -1,6 +1,6 @@
 import pygame
 from time import time
-from stgs import asset
+from stgs import asset, now
 import util
 import items
 from inventory import Inventory
@@ -38,7 +38,8 @@ class Chest(util.Sprite):
         pass
 
     def interact(self):
-        if now() - self.last_interact > 300:
+        print("chest created")
+        if now() - self.last_interact > 900:
             if self.opened:
                 self.game.dialogueScreen.dialogueFromText("The chest is empty. . .")
             else:
@@ -46,4 +47,4 @@ class Chest(util.Sprite):
                 self.game.dialogueScreen.dialogueFromText(f"You find a {name}")
                 self.opened = True
 
-        self.last_interact = now()
+            self.last_interact = now()
