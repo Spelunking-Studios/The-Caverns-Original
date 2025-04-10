@@ -147,7 +147,8 @@ class Game:
     def run(self):
         loadSave("game.store")
         self.mixer.playMusic(sAsset('intro.wav'))
-        # self.menuLoop()
+        if not DEBUG:
+            self.menuLoop()
         self.map.loadFloor()
         self.mainLoop()
         self.mixer.stop()
@@ -207,12 +208,7 @@ class Game:
         self.renderDarkness()
 
         for sprite in self.hudLayer:
-            if isinstance(sprite, hud.SlotsHud):
-                for slotHud in sprite.slots:
-                    self.win.blit(slotHud.image, slotHud.rect)
-            else:
-                # self.win.blit(sprite.image, sprite.rect)
-                sprite.draw(self.win)
+            sprite.draw(self.win)
 
         for sprite in self.overlayer:
             try:

@@ -50,19 +50,18 @@ class StatHud(util.Sprite):
     def update(self):
         self.render()
 
-class SlotsHud(util.Sprite):
+class SlotsHud(Hud):
     def __init__(self, game, **kwargs):
-        self.groups = game.sprites, game.hudLayer
         self.game = game
         self.slots = pygame.sprite.Group()
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(game)
 
         # Create the slots
-        self.mainSlot1 = SlotHud((10, 610))
+        self.mainSlot1 = SlotHud((10, 610), scale=0.6)
         self.spellSlot1 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
 
-        self.healthHud = HeathHud(game, x = self.spellSlot1.rect.right + 15)
-        self.sanityHud = SanityHud(game, x = self.spellSlot1.rect.right + 15)
+        self.healthHud = HeathHud(game, x = self.spellSlot1.rect.right + 15)# + winWidth/2.5)
+        self.sanityHud = SanityHud(game, x = self.spellSlot1.rect.right + 15)# + winWidth/2.5)
 
         # Add the slots
         self.slots.add(self.mainSlot1)
@@ -71,12 +70,25 @@ class SlotsHud(util.Sprite):
     def update(self):
         self.slots.update()
 
+    def draw(self, ctx, transform=None):
+        
+        for slotHud in self.slots:
+            ctx.blit(slotHud.image, slotHud.rect)
+
+        # draw items in slots
+        img1 = pygame.transform.scale(
+                        self.game.player.slot1.renderable,
+                        self.mainSlot1.rect.size
+                    )
+        ctx.blit(img1, self.mainSlot1.rect.topleft)
+        ctx.blit(self.game.player.slot2.renderable, self.spellSlot1.rect.center)
+
 class SlotHud(util.Sprite):
     def __init__(self, pos, **kwargs):
         pygame.sprite.Sprite.__init__(self)
         
-        self.img_path = asset("ui/weapon_slot.png")
-        self.scale = 3/5
+        self.img_path = asset("ui/armor_slot.png")
+        self.scale = 1
         for k,v in kwargs.items():
             self.__dict__[k] = v
 
