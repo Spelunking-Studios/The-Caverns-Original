@@ -4,6 +4,8 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 from pygame.sprite import Group
 
+import pymunk
+
 pygame.init()
 import os
 import random
@@ -111,6 +113,7 @@ class Game:
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
         self.clock = pygame.time.Clock()
+        self.space = pymunk.Space()
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
 
@@ -143,6 +146,7 @@ class Game:
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
 
+
     ####  Determines how the run will function ####
     def run(self):
         loadSave("game.store")
@@ -167,21 +171,22 @@ class Game:
             
         """)
         while not self.end:
-            self.clock.tick(FPS)
+            dt = self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))
 
             # Updates Game
             self.runEvents()
-            self.update()
+            self.update(dt)
 
-    def update(self):
-        self.getFps()
-        self.getPause()
+    def update(self, dt):
+        self.get_fps()
+        self.get_pause()
         if self.pause:
             self.pSprites.update()
         elif self.inInventory:
             self.iSprites.update()
         else:
+            self.space.step(dt)
             self.sprites.update()
             self.layer3.update()
             self.checkHits()
@@ -233,7 +238,7 @@ class Game:
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
-        lightRect.center = self.cam.applyRect(self.player.moveRect).move(20, 20).topleft
+        lightRect.center = self.cam.applyRect(self.player.rect).center
         darkness.blit(self.player.lightSource, lightRect)
         for sprite in self.groups.lightSources:
             darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
@@ -319,7 +324,7 @@ class Game:
         if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
             self.toggleInventory()
 
-    def getFps(self):
+    def get_fps(self):
         self.currentFps = self.clock.get_fps()
         return self.currentFps
 
@@ -359,7 +364,7 @@ class Game:
         self.antialiasing = not self.antialiasing
         self.pauseScreen.load_components()
 
-    def getPause(self):
+    def get_pause(self):
         if pygame.time.get_ticks() - self.lastPause >= 60:
             if checkKey(keySet['pause']):
                 if self.pause:

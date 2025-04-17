@@ -108,10 +108,10 @@ class Room:
         self.points = 0
         self.loadTiled(start)
         if self.startSprite:
-            self.game.player.setPos(self.startSprite.rect.center, True)
+            self.game.player.set_position(self.startSprite.rect.center, True)
         else:
             print("There is no starting object")
-            self.game.player.setPos((self.width/2, self.height/2))
+            self.game.player.set_position((self.width/2, self.height/2))
 
     def loadTiled(self, start="Entrance"):
         """Load data from the tiled file"""
