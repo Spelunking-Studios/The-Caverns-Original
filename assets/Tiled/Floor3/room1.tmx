@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="42">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="70">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../floor1-features.tsx"/>
  <layer id="2" name="Tile Layer 2" width="60" height="48">
@@ -28,15 +28,7 @@
   <object id="14" name="Beetle" x="288" y="296">
    <point/>
   </object>
-  <object id="29" name="Wall" x="48.6667" y="38.6667" width="174" height="73.3333"/>
-  <object id="30" name="Wall" x="34.6667" y="111.333" width="80.3333" height="792.667"/>
-  <object id="31" name="Wall" x="44" y="901" width="102" height="129.5"/>
-  <object id="32" x="117.5" y="804" width="17.5" height="98.5"/>
-  <object id="33" name="Wall" x="102" y="1027.33" width="70.6667" height="60.6667"/>
-  <object id="34" name="Wall" x="174" y="1038.67" width="28.6667" height="163.333"/>
-  <object id="35" name="Wall" x="202" y="1072" width="30.6667" height="138.667"/>
-  <object id="36" name="Wall" x="232.667" y="1109.33" width="23.3333" height="123.333"/>
-  <object id="39" name="Chest" x="177.261" y="987.325">
+  <object id="39" name="Wall" x="177.261" y="987.325">
    <properties>
     <property name="default_contents" value="{&quot;items&quot;: {&quot;GreatSword&quot;: {&quot;items&quot;: [&quot;{\&quot;categories\&quot;: [\&quot;weapon\&quot;, \&quot;sword\&quot;], \&quot;description\&quot;: \&quot;Great sword\&quot;, \&quot;attack\&quot;: {\&quot;cooldown\&quot;: 3, \&quot;damage\&quot;: 21, \&quot;critVariance\&quot;: 7}}&quot;]}}}"/>
     <property name="item" value="Sword"/>
@@ -49,5 +41,45 @@
    </properties>
   </object>
   <object id="41" x="-463.643" y="684.064"/>
+  <object id="51" name="Wall" x="116" y="303.667">
+   <polygon points="0,0 1,18 -7.66667,21.6667 -11,33.6667 5.66667,47.3333 0.666667,76 -94.3333,66 -78,-16.6667"/>
+  </object>
+  <object id="52" name="Wall" x="118.167" y="382.5">
+   <polygon points="0,0 9,20.6667 -16.3333,98.3333 -1.66667,111.333 -10,165.667 -1.66667,178.667 -86.6667,160 -72,-8"/>
+  </object>
+  <object id="53" name="Wall" x="115.5" y="563.5">
+   <polygon points="0,0 1,18 -7.66667,21.6667 -11,33.6667 5.66667,47.3333 0.666667,76 -94.3333,66 -78,-16.6667"/>
+  </object>
+  <object id="57" name="Wall" x="131.333" y="835">
+   <polygon points="0,0 -6.33333,20 8.66667,28 8.33333,56.3333 20.3333,71 15.6667,146.333 -53.6667,155.333 -92.3333,-4.33333 -3.66667,0"/>
+  </object>
+  <object id="59" name="Wall" x="147" y="983.667">
+   <polygon points="0,0 20,4.66667 32.3333,50.6667 53.3333,67.6667 86,117.667 -18,157 -53.3333,12"/>
+  </object>
+  <object id="60" name="Wall" x="233.333" y="1104">
+   <polygon points="0,0 18.3333,6 45.3333,74 69,71 99.3333,107 65,169.333 -40.3333,77.3333"/>
+  </object>
+  <object id="61" name="Wall" x="330.5" y="1210">
+   <polygon points="0,0 18.5,1 99.5,34 160,79.5 180.5,71 221.5,85.5 207,152.5 -23,87"/>
+  </object>
+  <object id="62" name="Wall" x="553.5" y="1297.5">
+   <polygon points="0,0 107.5,-16 184,10 194,66.5 -4.5,76"/>
+  </object>
+  <object id="63" name="Wall" x="119" y="637.5">
+   <polygon points="0,0 6,16.5 -16.5,73.5 6,111 -81,103 -73,1"/>
+  </object>
+  <object id="64" name="Wall" x="124" y="750.667">
+   <polygon points="0,0 -8.33333,18 -3.66667,50.3333 11.3333,78 -91,71.3333 -79.6667,3.33333"/>
+  </object>
+  <object id="66" name="Wall" x="441.5" y="115">
+   <polygon points="0,0 16.5,3.5 28,-5.5 52.5,-4 68.5,12 91.5,2.5 132,28 152,47.5 163,49.5 176.5,48.5 193.5,63 215,55 221.5,56 215.5,69.5 233,80.5 248,78 271.5,92.5 281.5,114.5 300,115.5 313,128 322,139.5 324.5,150.5 322.5,157 323.5,174.5 335.5,186.5 343.5,190 349,191.5 353,199 354,204.5 357,209.5 364,216.5 374,220 382,219 387.5,221 379.5,241 390,242.5 393.5,245.5 404.5,255.727 471.833,227.667 306.5,-57.6667 -13.5,-99"/>
+  </object>
+  <object id="67" name="Wall" x="117.091" y="300.727">
+   <polygon points="0,0 -10.9091,-15.4545 -10.7273,-40.7273 2.54545,-64.5455 -15.8182,-80.3636 -12.7576,-107.394 9.90909,-153.061 0.242424,-178.061 17.2424,-183.394 41.2424,-178.061 53.5758,-196.061 71.2424,-192.061 72.9091,-186.061 94.9091,-182.061 104.242,-193.727 113.242,-231.061 108.576,-269.727 -92.4242,-273.394 -82.4242,-17.7273"/>
+  </object>
+  <object id="68" name="Wall" x="276.75" y="40">
+   <polygon points="0,0 13,60.75 92.5,86.5 111.75,76.75 138.25,80.75 150.25,64.25 157.25,66.5 160.25,75 164.25,74.75 150.75,-25.75"/>
+  </object>
+  <object id="69" name="Door" x="225.25" y="19.25" width="49.75" height="17.75"/>
  </objectgroup>
 </map>

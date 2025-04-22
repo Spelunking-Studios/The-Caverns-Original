@@ -20,14 +20,15 @@ class Sprite(pygame.sprite.Sprite):
 
     def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
         # Set up a body
-        self.body = pymunk.Body(mass)# body_type=pymunk.Body.KINEMATIC)
+        self.body = pymunk.Body(mass, 2)# body_type=pymunk.Body.KINEMATIC), 2
         self.body.position = pos
-        self.body.friction = 1
+        self.body.friction = 99
         
         # Attach a circular shape to the body
         self.shape = pymunk.Circle(self.body, radius, (0, 0))
-        self.shape.sensor = False
         self.shape.elasticity = 0
+        self.shape.friction = 1
+        self.shape.sensor = False
 
         self.game.space.add(self.body, self.shape)
         if vel_func:

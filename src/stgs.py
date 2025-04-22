@@ -17,7 +17,8 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = False
+DEBUG = True
+DEBUG_PHYSICS = False
 
 #### Establishes file paths ####
 try:

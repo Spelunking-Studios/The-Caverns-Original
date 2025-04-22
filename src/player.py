@@ -13,29 +13,7 @@ import stats
 from inventory import Inventory
 import items
 
-def player_movement(body, gravity, damping, dt):
-    keys = pygame.key.get_pressed()
-    dt = dt/1000
-    speed = 3
-    max_speed = 2000
-    damping = 0.85
 
-    vx, vy = body.velocity
-    vx *= damping
-    vy *= damping
-
-    if checkKey("up"):
-        vy -= speed*dt
-    if checkKey("down"):
-        vy += speed*dt
-    if checkKey("left"):
-        vx -= speed*dt
-    if checkKey("right"):
-        vx += speed*dt
-
-    body.velocity = vx, vy
-    if body.velocity.length > max_speed:
-        body.velocity.length = max_speed
 
 #### Player object ####
 class Player(util.Sprite):
@@ -117,7 +95,7 @@ class Player(util.Sprite):
         self.create_physics(
             100,
             self.width/2,
-            player_movement
+            self.player_movement
         )
         
         self.loadAnimations()
@@ -126,6 +104,29 @@ class Player(util.Sprite):
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
         self.animations.delay = 30
+
+    def player_movement(self, body, gravity, damping, dt):
+        keys = pygame.key.get_pressed()
+        speed = self.stats.speed*75
+        max_speed = self.stats.speed*100
+        damping = 0.85
+
+        vx, vy = body.velocity
+        vx *= damping
+        vy *= damping
+
+        if checkKey("up"):
+            vy -= speed*dt
+        if checkKey("down"):
+            vy += speed*dt
+        if checkKey("left"):
+            vx -= speed*dt
+        if checkKey("right"):
+            vx += speed*dt
+
+        body.velocity = vx, vy
+        if body.velocity.length > max_speed:
+            body.velocity.length = max_speed
 
     #### Updates player ####
     def update(self):

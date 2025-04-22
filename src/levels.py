@@ -145,6 +145,8 @@ class Room:
             #print(objT.name)
             objT.x, objT.y = objT.x * self.scale, objT.y * self.scale
             objT.width, objT.height = objT.width * self.scale, objT.height * self.scale
+            if hasattr(objT, "points"):
+                objT.points = [pygame.Vector2(p)*self.scale for p in objT.points]
             try:  # This is the auto registering system that allows the level to detect the name and type of Tiled Objects and generates Sprites out of them.
                 obj = objs.__dict__[objT.name]
                 if objT.name == start: # This is basically how we are going to start the player on the map. It looks for an object type that matches the start key and then uses it to place the player

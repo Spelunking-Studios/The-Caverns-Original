@@ -5,6 +5,7 @@ import pygame
 from pygame.sprite import Group
 
 import pymunk
+import pymunk.pygame_util
 
 pygame.init()
 import os
@@ -146,6 +147,8 @@ class Game:
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
 
+        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
+        self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
 
     ####  Determines how the run will function ####
     def run(self):
@@ -186,7 +189,7 @@ class Game:
         elif self.inInventory:
             self.iSprites.update()
         else:
-            self.space.step(dt)
+            self.space.step(1/FPS)
             self.sprites.update()
             self.layer3.update()
             self.checkHits()
@@ -221,6 +224,8 @@ class Game:
                     self.win.blit(sprite.image, sprite.rect)
             except AttributeError:
                 self.win.blit(sprite.image, sprite.rect)
+        if DEBUG_PHYSICS:
+            self.space.debug_draw(self.pymunk_options)
 
         if self.showFps:
             fpsText = fonts['caption1'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
@@ -246,7 +251,7 @@ class Game:
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
     def checkHits(self):
-        pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
+        # pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
         # for e, projs in pygame.sprite.groupcollide(self.groups.enemies, self.groups.pProjectiles, False, False).items():
         #     for p in projs:
         #         p.hit(e)
