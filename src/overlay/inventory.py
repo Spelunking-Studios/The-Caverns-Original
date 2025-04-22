@@ -1,6 +1,7 @@
 from .overlay import Overlay
+from .components import Tooltip
 from menu import Button, Image, Text
-from stgs import winWidth, winHeight, fgen, fonts
+from stgs import winWidth, winHeight, fonts
 import src.util.colors as colors
 import menu
 import pygame
@@ -289,8 +290,6 @@ class InventoryOverlay(Overlay):
         self.render_base()
         self.image.blit(self.base_image, (0, 0))
 
-        # Draw tooltip
-
         # If no time exists, set it
         if not self.tooltip_last:
             self.tooltip_last = time()
@@ -321,7 +320,12 @@ class InventoryOverlay(Overlay):
                     # If the mouse has been over the component long enough
                     # show the tooltip
                     if self.tooltip_ac >= 0.25:
-                        self.render_tooltip(item_comp)
+                        tooltip = Tooltip(*item_comp.tooltip, self.padding)
+
+                        tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
+                        tooltip_y_start = item_comp.rect.y
+
+                        tooltip.render(self.image, tooltip_x_start, tooltip_y_start)
 
                 # Update the tooltip key to match the now hovered image
                 self.tooltip_id = item_comp.ukey
@@ -347,54 +351,6 @@ class InventoryOverlay(Overlay):
         if self.current_tab == self.ITEMS_TAB:
             for item_comp in self.item_comps:
                 self.base_image.blit(item_comp.image, item_comp.rect)
-
-    def render_tooltip(self, item_comp):
-        """Render the tooltip for a given item component"""
-        # Generate all of the fonts that are going to be used
-        title_font = fonts["title3"]
-
-        # Render the text
-        tooltip_title = title_font.render(
-            item_comp.tooltip[0],
-            True,
-            (255, 255, 255)
-        )
-        tooltip_desc = menu.Text(
-            fonts["tooltip"],
-            item_comp.tooltip[1],
-            colors.white,
-            True,
-            multiline=True,
-            size=(self.maxToolTipSize - self.padding * 2, 900)
-        )
-
-        # Determine the size of the box we need
-        width = self.maxToolTipSize
-        height = tooltip_title.get_height() + tooltip_desc.last_rendered_y \
-            + self.padding * 3  # 3 to account for padding between title and desc
-
-        # Common values
-        title_y = item_comp.rect.y + self.padding
-        desc_y = title_y + tooltip_title.get_height() + self.padding
-        tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
-
-        # Draw the box
-        pygame.draw.rect(
-            self.image,
-            (40, 40, 40),
-            (
-                tooltip_x_start,
-                item_comp.rect.y,
-                width,
-                height
-            )
-        )
-
-        # Draw on the title
-        self.image.blit(tooltip_title, (tooltip_x_start + self.padding, title_y))
-
-        # Draw on the description
-        self.image.blit(tooltip_desc.image, (tooltip_x_start + self.padding, desc_y))
 
     def get_offset(self):
         """Get the position of the upper left corner of the overlay
