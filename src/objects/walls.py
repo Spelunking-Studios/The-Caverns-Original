@@ -40,10 +40,12 @@ class Wall(util.Sprite):
             for part in parts:
                 self.shape = pymunk.Poly(game.space.static_body, part)
                 self.shape.friction = 0.5
+                self.shape.collision_type = 1
                 self.game.space.add(self.shape)
         else:
             self.body.position = self.rect.center
             self.shape = pymunk.Poly.create_box(self.body, (objT.width, objT.height))
+            self.shape.collision_type = 1
 
             self.shape.friction = 0.5
             self.game.space.add(self.body, self.shape)

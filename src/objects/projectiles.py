@@ -30,10 +30,13 @@ class Projectile(util.Sprite):
         )
         self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
         self.rect.center = self.pos
-        # If you were thinking this should be on the then well . . .
-        # I did it here to be more precise
         # fx.Particles(self.game, self.rect, lifeSpan = 100, tickSpeed=20, size = 8)
         #     .setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
+
+    def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
+        super().create_physics(mass, radius, vel_func, pos)
+        self.shape.sensor = True
+        self.shape.collision_type = 3
 
     def update(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
@@ -42,6 +45,11 @@ class Projectile(util.Sprite):
             if hasattr(e, 'image'):
                 if pygame.sprite.collide_mask(self, e):
                     self.hit(e)
+
+    def move(self):
+        self.pos += self.dir * self.vel * self.game.dt() * 60
+        self.rect.center = self.pos
+        pass
 
     def hit(self, enemy=None):
         dmg = self.game.player.stats.attack()
@@ -70,6 +78,12 @@ class Fireball(Projectile):
         self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
         self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
         self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
+
+        self.create_physics(5, 4, self.fake_move)
+
+    def fake_move(self, body, *args):
+        body.position = tuple(self.pos)
+
 
     def update(self):
         super().update()

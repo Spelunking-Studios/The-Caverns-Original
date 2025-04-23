@@ -3,6 +3,8 @@ import pygame, pymunk
 from .camera import Cam
 from .display import Display
 from .fabrik import fabrik
+from .grouper import Grouper
+from .handler import Handler
 
 
 class Sprite(pygame.sprite.Sprite):
@@ -23,6 +25,7 @@ class Sprite(pygame.sprite.Sprite):
         self.body = pymunk.Body(mass, 2)# body_type=pymunk.Body.KINEMATIC), 2
         self.body.position = pos
         self.body.friction = 99
+        self.body.owner = self
         
         # Attach a circular shape to the body
         self.shape = pymunk.Circle(self.body, radius, (0, 0))
