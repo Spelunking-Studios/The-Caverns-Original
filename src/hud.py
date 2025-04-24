@@ -125,7 +125,7 @@ class HeathHud(Hud):
         super().__init__(game)
         self.rect = pygame.Rect(*self.pos, 450, 20)
         self.image = pygame.Surface(self.rect.size, pygame.SRCALPHA)
-        self.bgColor = colors.dark(colors.grey, 70)
+        self.bgColor = colors.deep_slate
         self.padX, self.padY = 4, 3
         self.render()
 
@@ -133,7 +133,7 @@ class HeathHud(Hud):
         self.image.fill(self.bgColor)
         pygame.draw.rect(
             self.image,
-            colors.green,#colors.light(colors.green, sin(pygame.time.get_ticks()*80)),
+            colors.light(colors.moss_green, sin(pygame.time.get_ticks()*80)),
             (self.padX, self.padY, (self.rect.width-self.padX*2)*(self.game.player.stats.health/self.game.player.stats.healthMax), self.rect.height-self.padY*2),
             0,
             5

@@ -45,6 +45,7 @@ class Projectile(util.Sprite):
             if hasattr(e, 'image'):
                 if pygame.sprite.collide_mask(self, e):
                     self.hit(e)
+                    break
 
     def move(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
@@ -91,7 +92,8 @@ class Fireball(Projectile):
         self.animations.update()
 
     def kill(self):
+        print("killed")
+        super().kill()
         self.particles.setLife(220)
         LightEffect(self.game, self.rect)
         self.light.kill()
-        super().kill()

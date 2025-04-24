@@ -21,23 +21,37 @@ class Sprite(pygame.sprite.Sprite):
         super().__init__(*args)
 
     def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
-        # Set up a body
+        # Set up a body and shape for the player to interact with 
+        # the physics engine
+        #
+
         self.body = pymunk.Body(mass, 2)# body_type=pymunk.Body.KINEMATIC), 2
         self.body.position = pos
         self.body.friction = 99
         self.body.owner = self
         
+        # Independent shape function for optional override
+        # Default creates a circle with supplied radius
+        self.create_shape(radius)
+
+        self.game.space.add(self.body, self.shape)
+
+        # The velocity function (vel_func) overrides the normal
+        # velocity calculation of the engine with one the entity 
+        # supplies
+        if vel_func:
+            self.body.velocity_func = vel_func
+
+    def create_shape(self, radius, pos = (0, 0)):
         # Attach a circular shape to the body
         self.shape = pymunk.Circle(self.body, radius, (0, 0))
         self.shape.elasticity = 0
         self.shape.friction = 1
         self.shape.sensor = False
 
-        self.game.space.add(self.body, self.shape)
-        if vel_func:
-            self.body.velocity_func = vel_func
 
     def set_position(self, pos, centered = False):
+        # Adaptable way to set an entity's position
         if hasattr(self, "body"):
             self.body.position = pos
             if centered:

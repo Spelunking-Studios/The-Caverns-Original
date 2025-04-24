@@ -1,4 +1,13 @@
 class Handler:
+    """Object to handle collision interactions
+
+    collision groups:
+
+    1 - Walls
+    2 - Player
+    3 - Projectiles
+    4 - Enemies
+    """
     def __init__(self, game):
         self.game = game
         self.space = game.space
@@ -6,6 +15,9 @@ class Handler:
         self.create_handlers()
 
     def create_handlers(self):
+        # set up collision handlers here
+        # use collision groups in docstring
+
         projectile_hit_walls = self.space.add_collision_handler(1, 3)
         projectile_hit_walls.begin = kill
 

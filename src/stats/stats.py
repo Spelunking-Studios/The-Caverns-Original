@@ -37,7 +37,7 @@ class PlayerStats(Stats):
                 sanity=50,
                 sanityMax=50,
                 strength=0,
-                speed=20,
+                speed=29,
                 attack_variance=1,
                 attack_speed=400, # This is a delay in milliseconds
                 defense=15,

@@ -68,7 +68,7 @@ class Enemy(util.Sprite):
         self.lastAttack = now()
         self.attackDelay = 1
         self.width, self.height = 64, 64
-        self.lastHit = 0
+        self.last_hit = 0
         self.image = pygame.Surface((self.width, self.height))
         self.origImage = self.image.copy()
         self.animations = Animation(self)
@@ -124,12 +124,12 @@ class Enemy(util.Sprite):
                 return True
         
         return False
-    def takeDamage(self, damage):
+    def take_damage(self, damage):
         self.health -= damage
         self.animations.fx(HurtEffect(self))
         self.game.mixer.playFx('hit1')
 
-        self.lastHit = pygame.time.get_ticks()
+        self.last_hit = pygame.time.get_ticks()
     def attemptToDealDamage(self):
         """Attempt to deal damage to the player"""
         mPos = pygame.Vector2(self.game.player.rect.center)
