@@ -117,9 +117,9 @@ def light(color, *args):
     returnCol = []
     for val in col2:
         if args:
-            returnCol.append(val+args[0])
+            returnCol.append(max(min(val+args[0], 255), 0))
         else:
-            returnCol.append(val*2)
+            returnCol.append(max(min(val*2, 255),0))
 
     return tuple(returnCol)
 

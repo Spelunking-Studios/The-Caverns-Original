@@ -131,10 +131,16 @@ class HeathHud(Hud):
 
     def render(self):
         self.image.fill(self.bgColor)
+        percent =  self.game.player.stats.health/self.game.player.stats.healthMax
+        color = colors.moss_green
+        glow_range = 5
+        if percent < 0.3:
+            color = colors.vintage_wine    
+            glow_range = 30
         pygame.draw.rect(
             self.image,
-            colors.light(colors.moss_green, sin(pygame.time.get_ticks()*80)),
-            (self.padX, self.padY, (self.rect.width-self.padX*2)*(self.game.player.stats.health/self.game.player.stats.healthMax), self.rect.height-self.padY*2),
+            colors.light(color, sin(pygame.time.get_ticks()/100)*glow_range),
+            (self.padX, self.padY, (self.rect.width-self.padX*2)*(percent), self.rect.height-self.padY*2),
             0,
             5
         )

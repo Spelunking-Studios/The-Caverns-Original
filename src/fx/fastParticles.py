@@ -1,5 +1,5 @@
 import pygame
-import stgs
+from stgs import *
 import util 
 
 class ParticleController(util.Sprite):
@@ -33,6 +33,15 @@ class ParticleController(util.Sprite):
         else:
             self.step()
             self.add_particle()
+
+    def step(self):
+        for p in self.particles:
+            p[2] *= 0.97 # Decrease size
+            p[1] += p[4] # Add Velocity Y
+            p[0] += p[3] # Add Velocity X
+            p[4] += 0.3  # Add acceleration
+            if p[1] >= HEIGHT:
+                self.particles.remove(p)
     
     def add_particle(self):
         self.particles.append([0, 0, 0, 0, 0])

@@ -150,6 +150,7 @@ class Player(util.Sprite):
             self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
 
         self.rect.center = self.body.position
+        self.particleFx.update()
 
     def checkActions(self):
         # Get the current time
