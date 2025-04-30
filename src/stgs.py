@@ -47,6 +47,7 @@ SHOWFPS = True
 #### FPS BOIS ####
 FPS = 60
 
+
 #### Volumes ####
 musicVolume = 1
 fxVolume = 1
@@ -103,6 +104,9 @@ else:
     winFlags =   pygame.HWSURFACE | pygame.DOUBLEBUF 
 
 iconPath = asset('logo.jpeg')
+
+#### Cursor ####
+CURSOR = asset("ui/cursor-3.png")
 
 #### Anti-Aliasing on text ####
 aalias = True
