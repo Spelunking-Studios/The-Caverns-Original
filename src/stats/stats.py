@@ -37,10 +37,10 @@ class PlayerStats(Stats):
                 sanity=50,
                 sanityMax=50,
                 strength=0,
-                speed=15,
-                attack_damage=0,
+                speed=29,
                 attack_variance=1,
                 attack_speed=400, # This is a delay in milliseconds
+                defense=15,
                 crit=5, # This is a percent out of 100 (make sure its an integer)
                 critBonus = 200, # This is a percent
                 )

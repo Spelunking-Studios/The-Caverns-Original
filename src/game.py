@@ -4,6 +4,9 @@ os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
 import pygame
 from pygame.sprite import Group
 
+import pymunk
+import pymunk.pygame_util
+
 pygame.init()
 import os
 import random
@@ -23,58 +26,6 @@ from sfx import *
 from util import *
 import menus
 import hud
-
-
-class Grouper:
-    '''A class to control and manipulate multiple groups (pygame.group.Group)
-    of game objects that is mainly designed for in code control'''
-
-    def __init__(self):
-        """Contains helpful groups for organizing different types of sprites"""
-        # Create sprite groups here
-        self.enemies = Group()
-        self.lightSources = Group()
-        self.colliders = Group()
-        self.interactable = Group()  # Sprites that can be interacted with
-        self.pProjectiles = Group()  # Player Projectiles
-        self.eProjectiles = Group()  # Enemy Projectiles
-
-    def getProximitySprites(self, sprite, proximity=300, groups=[]):
-        """Returns a list of sprites that fall within the specified proximity\
-        to the specified sprite.
-
-        Arguments:
-        ----------
-        sprite: The sprite that the proximity will be around
-        proximity (default=300): The max distance from the sprite another\
-        sprite can be
-        groups (default=[]): The groups in which entities can be
-        found
-        """
-        groups = groups if isinstance(groups, list) else [groups]
-        returnList = []
-
-        for group in groups:
-            for ent in group:
-                ent_center = pygame.Vector2(ent.rect.center)
-                sprite_center = pygame.Vector2(sprite.rect.center)
-                dist = ent_center.distance_to(sprite_center)
-                if dist <= proximity:
-                    returnList.append(ent)
-
-        return returnList
-
-    def clearAll(self):
-        for g in self.allGroups():
-            g.empty()
-
-    def killAll(self):
-        for g in self.allGroups():
-            for s in g:
-                s.kill()
-
-    def allGroups(self):
-        return [self.__dict__[g] for g in self.__dict__ if isinstance(self.__dict__[g], Group)]
 
 
 #### Game object ####
@@ -111,6 +62,7 @@ class Game:
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
         self.clock = pygame.time.Clock()
+        self.space = pymunk.Space()
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
 
@@ -121,6 +73,7 @@ class Game:
         self.inInventory = False
 
         self.groups = Grouper()
+        self.handler = Handler(self)
         self.sprites = Group()
         # Pause Sprites
         self.pSprites = Group()
@@ -142,6 +95,9 @@ class Game:
         self.slots = hud.SlotsHud(self)
         self.updateT = pygame.time.get_ticks()
         self.cam = Cam(self, winWidth, winHeight)
+
+        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
+        self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
 
     ####  Determines how the run will function ####
     def run(self):
@@ -167,21 +123,22 @@ class Game:
             
         """)
         while not self.end:
-            self.clock.tick(FPS)
+            dt = self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))
 
             # Updates Game
             self.runEvents()
-            self.update()
+            self.update(dt)
 
-    def update(self):
-        self.getFps()
-        self.getPause()
+    def update(self, dt):
+        self.get_fps()
+        self.get_pause()
         if self.pause:
             self.pSprites.update()
         elif self.inInventory:
             self.iSprites.update()
         else:
+            self.space.step(1/FPS)
             self.sprites.update()
             self.layer3.update()
             self.checkHits()
@@ -216,6 +173,8 @@ class Game:
                     self.win.blit(sprite.image, sprite.rect)
             except AttributeError:
                 self.win.blit(sprite.image, sprite.rect)
+        if DEBUG_PHYSICS:
+            self.space.debug_draw(self.pymunk_options)
 
         if self.showFps:
             fpsText = fonts['caption1'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
@@ -233,7 +192,7 @@ class Game:
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
-        lightRect.center = self.cam.applyRect(self.player.moveRect).move(20, 20).topleft
+        lightRect.center = self.cam.applyRect(self.player.rect).center
         darkness.blit(self.player.lightSource, lightRect)
         for sprite in self.groups.lightSources:
             darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
@@ -241,7 +200,7 @@ class Game:
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
     def checkHits(self):
-        pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
+        # pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
         # for e, projs in pygame.sprite.groupcollide(self.groups.enemies, self.groups.pProjectiles, False, False).items():
         #     for p in projs:
         #         p.hit(e)
@@ -319,7 +278,7 @@ class Game:
         if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
             self.toggleInventory()
 
-    def getFps(self):
+    def get_fps(self):
         self.currentFps = self.clock.get_fps()
         return self.currentFps
 
@@ -359,7 +318,7 @@ class Game:
         self.antialiasing = not self.antialiasing
         self.pauseScreen.load_components()
 
-    def getPause(self):
+    def get_pause(self):
         if pygame.time.get_ticks() - self.lastPause >= 60:
             if checkKey(keySet['pause']):
                 if self.pause:

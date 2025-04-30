@@ -14,6 +14,7 @@ from inventory import Inventory
 import items
 
 
+
 #### Player object ####
 class Player(util.Sprite):
     '''The Player Object'''
@@ -89,6 +90,13 @@ class Player(util.Sprite):
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
+
+        # Load physics
+        self.create_physics(
+            100,
+            self.width/2,
+            self.player_movement
+        )
         
         self.loadAnimations()
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
@@ -96,6 +104,29 @@ class Player(util.Sprite):
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
         self.animations.delay = 30
+
+    def player_movement(self, body, gravity, damping, dt):
+        keys = pygame.key.get_pressed()
+        speed = self.stats.speed*75
+        max_speed = self.stats.speed*100
+        damping = 0.85
+
+        vx, vy = body.velocity
+        vx *= damping
+        vy *= damping
+
+        if checkKey("up"):
+            vy -= speed*dt
+        if checkKey("down"):
+            vy += speed*dt
+        if checkKey("left"):
+            vx -= speed*dt
+        if checkKey("right"):
+            vx += speed*dt
+
+        body.velocity = vx, vy
+        if body.velocity.length > max_speed:
+            body.velocity.length = max_speed
 
     #### Updates player ####
     def update(self):
@@ -105,7 +136,6 @@ class Player(util.Sprite):
             if self.stats.health < 50:
                 self.stats.health += 0.1 * (50 - self.stats.health)
             self.healthAccumulator = 0
-        self.move()
         self.setAngle()
         self.checkActions()
         self.animations.update()
@@ -114,10 +144,13 @@ class Player(util.Sprite):
             self.cursor.update()
 
         # Testing Sanity
-        self.stats.sanity = max(4, self.stats.sanity-0.01)
+        self.stats.sanity = max(4, self.stats.sanity-0.003)
         if self.stats.sanity < self.stats.sanityMax/2:
             self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
             self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+
+        self.rect.center = self.body.position
+        self.particleFx.update()
 
     def checkActions(self):
         # Get the current time
@@ -237,52 +270,6 @@ class Player(util.Sprite):
     def spin(self):
         self.angle += self.spinSpeed
 
-    #### Move Physics ####
-    def move(self):
-        # Apply motion based on user input
-        if joystickEnabled:
-            self.vel.x += self.speed*getJoy1().get_axis(0)* self.game.dt()
-            self.vel.y += self.speed*getJoy1().get_axis(1)* self.game.dt()
-        else:
-            if checkKey('pRight'):
-                self.vel.x += self.speed*self.game.dt()
-            if checkKey('pLeft'):
-                self.vel.x -= self.speed*self.game.dt()
-            if checkKey('pUp'):
-                self.vel.y -= self.speed*self.game.dt()
-            if checkKey('pDown'):
-                self.vel.y += self.speed*self.game.dt()
-        # Limit
-        lim = self.speedLim * self.game.dt2()
-        if self.vel.length() > 0.1: # We can't limit a 0 vector 
-            self.vel.scale_to_length(max(-lim,min(self.vel.length(),lim)))
-
-            self.moveRect.x += round(self.vel.x)
-            collide = self.collideCheck()
-            if collide:
-                if self.vel.x > 0:
-                    self.moveRect.right = collide.left
-                else:
-                    self.moveRect.left = collide.right
-                self.vel.x = 0
-
-            self.moveRect.y += round(self.vel.y)
-            collide = self.collideCheck()
-            if collide:
-                if self.vel.y > 0:
-                    self.moveRect.bottom = collide.top
-                else:
-                    self.moveRect.top = collide.bottom
-                self.vel.y = 0
-
-            self.particleFx.hide = False
-        else:
-            self.vel = Vector2(0, 0)
-            self.particleFx.hide = True
-
-        self.rect.center = self.moveRect.center
-        self.vel = self.vel * self.drag
-
     #### Collide checker for player ####
     def collideCheck(self):
         returnVal = False
@@ -299,14 +286,6 @@ class Player(util.Sprite):
     def maskCollide(self, rect2):
         r2 = rect2
         return self.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.moveRect.x,r2.y-self.moveRect.y))
-
-    def setPos(self, tup, center=False):
-        self.vel = Vector2(0, 0)
-        if center:
-            self.moveRect.center = tup
-        else:
-            self.moveRect.topleft = tup
-        self.rect = self.moveRect.copy()
 
     def getAttackMask(self):
         img2 = self.image.copy()
