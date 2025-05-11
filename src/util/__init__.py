@@ -4,7 +4,7 @@ from .camera import Cam
 from .display import Display
 from .fabrik import fabrik
 from .grouper import Grouper
-from .handler import Handler
+from .collisions import Handler
 
 
 class Sprite(pygame.sprite.Sprite):

@@ -30,6 +30,7 @@ class Beetle(SimpleEnemy):
 
         self.angle = -135
         self.chain = SimpleChain(game, self, 3, [15, 18])
+        # self.chain = PhysicsChain(game, self, 3, 20)
         self.chain.pos = self.pos
         self.last_ouch = 0
 
@@ -44,8 +45,6 @@ class Beetle(SimpleEnemy):
         ]
         
         self.rect = pygame.Rect(0, 0, 20, 20)
-
-        self.create_physics(50, 4, self.move)
 
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
@@ -76,7 +75,7 @@ class Beetle(SimpleEnemy):
         for a in self.animations:
             a.update()
 
-    def move(self, *args):
+    def head_movement(self, body, *args):
         old_vel = self.vel.copy()
         if self.pos.distance_to(self.game.player.rect.center) > self.attack_range:
             self.vel = (self.game.player.rect.center - self.pos).normalize()*self.speed
@@ -84,7 +83,7 @@ class Beetle(SimpleEnemy):
             self.vel.scale_to_length(min(self.vel.length(), self.speed))
             self.pos += self.vel
         self.angle = self.vel.as_polar()[1]
-        self.body.position = tuple(self.pos)
+        self.body.velocity = tuple(self.vel)
 
     def update_legs(self):
         i=0
