@@ -30,7 +30,7 @@ class Beetle(SimpleEnemy):
 
         self.angle = -135
         self.chain = SimpleChain(game, self, 3, [15, 18])
-        # self.chain = PhysicsChain(game, self, 3, 20)
+        self.chain = util.Chain(game, self, 3, 20)
         self.chain.pos = self.pos
         self.last_ouch = 0
 
