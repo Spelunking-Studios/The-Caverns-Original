@@ -91,9 +91,10 @@ class Player(util.Sprite):
         # Load physics
         self.create_physics(
             100,
-            self.width/2,
+            self.width*0.4,
             self.player_movement
         )
+        # self.body.mass = 30000
         
         self.loadAnimations()
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))

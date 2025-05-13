@@ -19,6 +19,7 @@ LOADING_TEXT = [
 LOADING_SCREEN_SHOWN_BEFORE = False
 DEBUG = True
 DEBUG_PHYSICS = False
+DEBUG_RENDER = False
 
 #### Establishes file paths ####
 try:
