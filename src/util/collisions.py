@@ -7,6 +7,12 @@ class Handler:
     2 - Player
     3 - Projectiles
     4 - Enemies
+
+    This is going to be different than the weapon collisions and 
+    projectile on enemy collisions which will instead use 
+    collision masks for pixel perfect collisions.
+
+    This integrates with the physics engine
     """
     def __init__(self, game):
         self.game = game

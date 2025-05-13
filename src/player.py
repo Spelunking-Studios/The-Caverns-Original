@@ -24,9 +24,6 @@ class Player(util.Sprite):
         # Modifiers
         self.hitCooldown = 200
         self.vel = Vector2(0, 0)
-        self.speed = 90
-        self.speedLim = 7
-        self.drag = 0.85
         self.damage = 10
         self.roomBound = True
         self.imgSheet = {"default": asset('player', 'samplePlayer.png'), 'hit':asset('player', 'playerHit1.png'), 'wand':asset('player', 'playerHit1.png')}
@@ -94,9 +91,10 @@ class Player(util.Sprite):
         # Load physics
         self.create_physics(
             100,
-            self.width/2,
+            self.width*0.4,
             self.player_movement
         )
+        # self.body.mass = 30000
         
         self.loadAnimations()
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
