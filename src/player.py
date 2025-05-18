@@ -90,7 +90,7 @@ class Player(util.Sprite):
 
         # Load physics
         self.create_physics(
-            100,
+            self.stats.strength*10,
             self.width*0.4,
             self.player_movement
         )
@@ -225,6 +225,8 @@ class Player(util.Sprite):
 
                             # Deal the damage
                             e.take_damage(dmg[0])
+                            if True: # Add a condition for knockback
+                                e.take_knockback(self)
 
                             # Make some nice particles
                             self.combatParts.particle(
