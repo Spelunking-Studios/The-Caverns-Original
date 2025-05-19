@@ -38,6 +38,10 @@ class SimpleEnemy(util.Sprite):
         if self.health <= 0:
             self.kill()
 
+    def take_knockback(self, other):
+        pass
+
+
     def kill(self):
         super().kill()
         # Will eventually implement a blood splatter effect when killing enemies
@@ -176,3 +180,6 @@ class Enemy(util.Sprite):
         if int(vec1.x) == int(vec2.x) and int(vec1.y) == int(vec2.y):
             return True
         return False
+
+    def take_knockback(self, other):
+        pass

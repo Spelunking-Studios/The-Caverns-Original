@@ -13,7 +13,7 @@ class Dagger(Weapon):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
             "cooldown": 0.25,
-            "damage": 3,
+            "damage": 0,
             "variance": 1,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]

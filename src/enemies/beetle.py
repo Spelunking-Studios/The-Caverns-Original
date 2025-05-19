@@ -20,7 +20,7 @@ class Beetle(SimpleEnemy):
         self.health = 40
         
         self.vel = Vec(2,0)
-        self.speed = 500
+        self.speed = 700
         self.rot_speed = 0.03
 
         self.attack_range = 25
@@ -29,7 +29,7 @@ class Beetle(SimpleEnemy):
 
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(game, 3, (objT.x, objT.y), 9, 12, self.head_movement)
+        self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
 
@@ -145,23 +145,28 @@ class Beetle(SimpleEnemy):
             self.image.blit(imgs[i], Vec(rects[i].topleft) - rects[0].topleft)
         
         if DEBUG_RENDER:
-            try:
+            if not isinstance(self.feet[0], int):
                 for f in self.feet:
-                    pygame.draw.circle(surf, util.white, tuple(f), 2)
+                    f = pygame.Rect(*f, 1, 1)
+                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
 
                 for f in self.leg_mounts:
-                    pygame.draw.circle(surf, util.white, tuple(f), 2)
-            except:
-                pass
+                    f = pygame.Rect(*f, 1, 1)
+                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
 
     def take_damage(self, dmg):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
 
+    def take_knockback(self, player):
+        head = self.chain.balls[0].body
+        diff = Vec(head.position) - Vec(player.body.position)
+        diff.scale_to_length(50000)
+        # for b in self.chain.balls:
+        #     b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+
     def kill(self):
         super().kill()
         self.chain.kill()
-
-
-

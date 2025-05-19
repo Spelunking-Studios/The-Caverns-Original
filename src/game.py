@@ -63,7 +63,7 @@ class Game:
         self.joystickDisabled = joystickDisabled
         self.clock = pygame.time.Clock()
         self.space = pymunk.Space()
-        self.space.damping = 0.02
+        self.space.damping = 0.0002
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
 
