@@ -29,7 +29,7 @@ class Beetle(SimpleEnemy):
 
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(game, 3, (objT.x, objT.y), 9, 12, self.head_movement)
+        self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
 
@@ -161,9 +161,11 @@ class Beetle(SimpleEnemy):
 
     def take_knockback(self, player):
         head = self.chain.balls[0].body
-        diff = Vec(player.body.position) - Vec(head.position)
-        diff.scale_to_length(90000)
-        head.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        diff = Vec(head.position) - Vec(player.body.position)
+        diff.scale_to_length(50000)
+        # for b in self.chain.balls:
+        #     b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
 
     def kill(self):
         super().kill()
