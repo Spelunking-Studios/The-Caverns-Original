@@ -180,3 +180,6 @@ class Enemy(util.Sprite):
         if int(vec1.x) == int(vec2.x) and int(vec1.y) == int(vec2.y):
             return True
         return False
+
+    def take_knockback(self, other):
+        pass
