@@ -300,38 +300,39 @@ class InventoryOverlay(Overlay):
 
         # Search through all of the item components till we find
         # the one that is being hovered over
-        for item_comp in self.item_comps:
-            if not isinstance(item_comp, Image):
-                continue
+        if self.current_tab == self.ITEMS_TAB:
+            for item_comp in self.item_comps:
+                if not isinstance(item_comp, Image):
+                    continue
 
-            # Check to see if the mouse is over the component
-            over = item_comp.rect.collidepoint(mpos)
+                # Check to see if the mouse is over the component
+                over = item_comp.rect.collidepoint(mpos)
 
-            if over:
-                # Check to see if we are still hovering over the same image
-                if self.tooltip_id == item_comp.ukey or not self.tooltip_id:
-                    # Add to accumulator and update the last time
-                    self.tooltip_ac += time() - self.tooltip_last
-                    self.tooltip_last = time()
+                if over:
+                    # Check to see if we are still hovering over the same image
+                    if self.tooltip_id == item_comp.ukey or not self.tooltip_id:
+                        # Add to accumulator and update the last time
+                        self.tooltip_ac += time() - self.tooltip_last
+                        self.tooltip_last = time()
 
-                    # Mark the found flag (since we did find it)
-                    found = True
+                        # Mark the found flag (since we did find it)
+                        found = True
 
-                    # If the mouse has been over the component long enough
-                    # show the tooltip
-                    if self.tooltip_ac >= 0.25:
-                        tooltip = Tooltip(*item_comp.tooltip, self.padding)
+                        # If the mouse has been over the component long enough
+                        # show the tooltip
+                        if self.tooltip_ac >= 0.25:
+                            tooltip = Tooltip(*item_comp.tooltip, self.padding)
 
-                        tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
-                        tooltip_y_start = item_comp.rect.y
+                            tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
+                            tooltip_y_start = item_comp.rect.y
 
-                        tooltip.render(self.image, tooltip_x_start, tooltip_y_start)
+                            tooltip.render(self.image, tooltip_x_start, tooltip_y_start)
 
-                # Update the tooltip key to match the now hovered image
-                self.tooltip_id = item_comp.ukey
+                    # Update the tooltip key to match the now hovered image
+                    self.tooltip_id = item_comp.ukey
 
-                # We found what we are looking for so why continue
-                break
+                    # We found what we are looking for so why continue
+                    break
 
         # If nothing could be found, clear the accumulator
         if not found:
