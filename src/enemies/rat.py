@@ -22,9 +22,9 @@ class Rat(Enemy):
         self.rand = random.randrange(0, 360, 45)
         
         if not ratImage:
-            ratImage = pygame.image.load(asset("enemies", "rat", "rat.png")).convert_alpha()
+            ratImage = pygame.image.load(asset("enemies", "rat", "rat2.png")).convert_alpha()
         
-        self.image = pygame.transform.scale(ratImage, (self.width, self.height))
+        self.image = ratImage#pygame.transform.scale(ratImage, (self.width, self.height))
         self.origImage = self.image.copy()
         self.rect = pygame.Rect(objT.x, objT.y, self.width, self.height)
     def move(self):

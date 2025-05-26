@@ -8,7 +8,6 @@ import src.stats as stats
 from .enemy import SimpleEnemy
 from src import util
 from src.animationsNew import Animator, HurtFx
-from .chain import SimpleChain
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
@@ -21,14 +20,16 @@ class Beetle(SimpleEnemy):
         self.health = 40
         
         self.vel = Vec(2,0)
-        self.speed = 2
+        self.speed = 700
+        self.rot_speed = 0.03
 
         self.attack_range = 25
 
         self.make_legs()
 
         self.angle = -135
-        self.chain = SimpleChain(game, self, 3, [15, 18])
+        # self.chain = SimpleChain(game, self, 3, [15, 18])
+        self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
 
@@ -47,7 +48,7 @@ class Beetle(SimpleEnemy):
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
         self.feet = [0 for i in range(6)]
-        self.feet_dist_x = 13
+        self.feet_dist_x = 1
         self.feet_dist_y = 11
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
         self.legs = [Leg(11) if i % 2 else Leg(-11) for i in range(6)]
@@ -56,33 +57,36 @@ class Beetle(SimpleEnemy):
         self.legs[2].radius = 5
         for l in self.legs:
             l.color = (143, 200, 215)
-            l.speed = self.vel.length()*2
+            l.speed = self.vel.length()**2
         self.offset = Vec(-15, 0)
         self.phase_offset = 15
         self.phases = [True, False, False, True, True, False]
-        self.travel = 2.5
+        self.travel = 2.2
         
     def update(self):
         super().update()
-        self.move()
-        self.rect.center = self.pos
-        self.chain.pos = self.pos
+        # self.move()
+        # self.rect.center = self.body.position
         self.chain.update()
         self.update_legs()
         
         for a in self.animations:
             a.update()
 
-    def move(self):
-        if self.pos.distance_to(self.game.player.rect.center) > self.attack_range:
-            self.vel = (self.game.player.rect.center - self.pos).normalize()*self.speed
-            self.pos += self.vel
-        self.angle = self.vel.as_polar()[1]
-
+    def head_movement(self, body, gravity, damping, dt):
+        old_vel = Vec(body.velocity)
+        pos = Vec(body.position)
+        if pos.distance_to(self.game.player.rect.center) > self.attack_range:
+            vel = (self.game.player.rect.center - pos).normalize()*self.speed
+            vel = old_vel.lerp(vel, self.rot_speed)
+            vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
+            self.angle = vel.as_polar()[1]
+            body.velocity = tuple(vel)
 
     def update_legs(self):
         i=0
-        for c in self.chain.chain:
+        for c in self.chain.get_points():
+            c = Vec(c)
             angle = self.angle if i == 0 else self.chain.chain_angles[int(i/2)] + 180
             # Distance from center of segment
             dist = Vec(1, 0).rotate(angle)*10
@@ -110,13 +114,13 @@ class Beetle(SimpleEnemy):
         for l in self.legs:
             l.draw(surf, transform)
 
-
+        chain_points = self.chain.get_points()
         rects = []
         imgs = []
         for i in range(len(self.images)):
             angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
             image = pygame.transform.rotate(self.animations[i].get_image(), angle)
-            rect = image.get_rect(center = self.chain.chain[i])
+            rect = image.get_rect(center = chain_points[i])
 
             surf.blit(image, transform(rect))
             
@@ -139,11 +143,30 @@ class Beetle(SimpleEnemy):
 
         for i in range(len(imgs)):
             self.image.blit(imgs[i], Vec(rects[i].topleft) - rects[0].topleft)
+        
+        if DEBUG_RENDER:
+            if not isinstance(self.feet[0], int):
+                for f in self.feet:
+                    f = pygame.Rect(*f, 1, 1)
+                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
+
+                for f in self.leg_mounts:
+                    f = pygame.Rect(*f, 1, 1)
+                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
 
     def take_damage(self, dmg):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
 
+    def take_knockback(self, player):
+        head = self.chain.balls[0].body
+        diff = Vec(head.position) - Vec(player.body.position)
+        diff.scale_to_length(50000)
+        # for b in self.chain.balls:
+        #     b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
 
-
+    def kill(self):
+        super().kill()
+        self.chain.kill()

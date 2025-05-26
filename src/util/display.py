@@ -1,7 +1,7 @@
 import pygame
 import moderngl
 from src.shaders import ShaderManager, Shader
-from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, iconPath
+from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, CURSOR, iconPath
 
 
 class Display:
@@ -20,6 +20,12 @@ class Display:
             Shader(self, "blank.frag"),
             # Shader(self, "lightning.frag", {"time": 0})
         ])
+
+
+        self.cursor = pygame.image.load(CURSOR) if CURSOR else False
+        self.cursor = pygame.transform.scale(self.cursor, (16, 16))
+        if CURSOR:
+            pygame.mouse.set_visible(False)
 
     def getFullScreen(self):
         keys = pygame.key.get_pressed()
@@ -43,11 +49,14 @@ class Display:
         self.getFullScreen()
         self.display.fill((0, 0, 0))
         self.display.blit(window, self.get_offset())
+        if self.cursor:
+            self.display.blit(self.cursor, pygame.mouse.get_pos())
         frame_texture = self.get_frame() # Convert display to shader texture
         self.shaderManager.apply(frame_texture)
         self.ctx.screen.use()
         self.ctx.clear()
         self.shaderManager.render()
+
 
         pygame.display.flip()
         frame_texture.release()

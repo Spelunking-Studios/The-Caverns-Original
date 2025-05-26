@@ -17,7 +17,9 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = False
+DEBUG = True
+DEBUG_PHYSICS = False
+DEBUG_RENDER = False
 
 #### Establishes file paths ####
 try:
@@ -45,6 +47,7 @@ SHOWFPS = True
 
 #### FPS BOIS ####
 FPS = 60
+
 
 #### Volumes ####
 musicVolume = 1
@@ -103,6 +106,9 @@ else:
 
 iconPath = asset('logo.jpeg')
 
+#### Cursor ####
+CURSOR = asset("ui/cursor-3.png")
+
 #### Anti-Aliasing on text ####
 aalias = True
 
@@ -113,10 +119,10 @@ keySet = {
     'toggleCam': pygame.K_o,
     'map': pygame.K_m,
     'interact':pygame.K_SPACE,
-    'pRight': [pygame.K_RIGHT, pygame.K_d],
-    'pLeft': [pygame.K_LEFT, pygame.K_a],
-    'pUp': [pygame.K_UP, pygame.K_w],
-    'pDown':[pygame.K_DOWN, pygame.K_s],
+    'right': [pygame.K_RIGHT, pygame.K_d],
+    'left': [pygame.K_LEFT, pygame.K_a],
+    'up': [pygame.K_UP, pygame.K_w],
+    'down':[pygame.K_DOWN, pygame.K_s],
     'fullScreen': pygame.K_f,
     'pause': pygame.K_p,
     "inventory": pygame.K_TAB

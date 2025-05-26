@@ -14,6 +14,7 @@ class Wand(Weapon):
             "cooldown": 0.8,
             "damage": 20,
             "variance": 1,
+            "ranged": True,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
         self.stats['description'] = "Base dagger"
@@ -29,9 +30,8 @@ class Wand(Weapon):
         self._route_attack(user)
 
     def _player_attack(self, player):
-        player.attackState = "attack"
+        # player.attackState = "attack"
     
-        # if now - self.lastAttack >= self.player.stats.atkSpeed+self.attackDelay:
         player.animations.setMode('wand')
+        # Launches fireball
         player.game.get_prefab("Fireball")(player.game)
-        # self.lastAttack = now

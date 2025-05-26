@@ -4,7 +4,6 @@ import numpy as np
 from pygame import Vector2 as Vec
 from src.stgs import *
 from src.util.fabrik import fabrik
-from .chain import SimpleChain
 
 class Leg:
     """A spider leg driven by inverse kinematics
