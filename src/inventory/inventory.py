@@ -7,7 +7,6 @@ class Inventory:
         self._registry = {
             "items": {}
         }
-         
 
     def add_item(self, item):
         """Add an item to the inventory"""

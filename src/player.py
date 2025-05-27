@@ -150,6 +150,12 @@ class Player(util.Sprite):
         self.rect.center = self.body.position
         self.particleFx.update()
 
+    def get_attack_damage(self):
+        return self.slot1.stats["attack"]["damage"]
+
+    def get_attack_cooldown(self):
+        return self.slot1.stats["attack"]["cooldown"]
+
     def checkActions(self):
         # Get the current time
         now = pygame.time.get_ticks()

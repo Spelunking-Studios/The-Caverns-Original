@@ -1,6 +1,7 @@
 from .overlay import Overlay
 from .components import Tooltip
 from menu import Button, Image, Text
+import stgs
 from stgs import winWidth, winHeight, fonts
 import src.util.colors as colors
 import menu
@@ -31,15 +32,17 @@ class InventoryOverlay(Overlay):
         self.last_change_time = 0
         self.change_delay = 0.5
         self.item_comps = pygame.sprite.Group()
+        self.stats_comps = pygame.sprite.Group()
 
         self.tooltip_last = None
         self.tooltip_ac = 0
         self.tooltip_id = None
 
         # Tabs
-        self.tabs = ["items_btn", "magik_btn"]
+        self.tabs = ["items_btn", "stats_btn"]
         self.current_tab = 0
         self.ITEMS_TAB = 0
+        self.STATS_TAB = 1
 
         self.load_comps()
 
@@ -74,11 +77,11 @@ class InventoryOverlay(Overlay):
             inactiveTabColor=(20, 20, 20),
             onClickContext=self.tabBtnClickHandler
         )
-        self.magik_btn = Button(
+        self.stats_btn = Button(
             self.game,
             (320, 60),
             center=True,
-            text="Magik",
+            text="Stats",
             groups=[self.comps],
             colors=[(20, 20, 20), (50, 50, 50)],
             textColors=((100, 100, 100), (100, 100, 100)),
@@ -87,6 +90,60 @@ class InventoryOverlay(Overlay):
             activeTabColor=(30, 30, 30),
             inactiveTabColor=(20, 20, 20),
             onClickContext=self.tabBtnClickHandler
+        )
+
+        # Load stats components
+        Text(
+            "3",
+            "Statistics",
+            colors.white,
+            stgs.aalias,
+            pos=(535, 100),
+            groups=[self.stats_comps]
+        )
+        Text(
+            "menu1",
+            "Health: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 150),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Health: {self.game.player.health}"
+        )
+        Text(
+            "menu1",
+            "Strength: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 175),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Strength: {self.game.player.stats.strength}"
+        )
+        Text(
+            "menu1",
+            "Speed: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 200),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Speed: {self.game.player.stats.speed}"
+        )
+        Text(
+            "menu1",
+            "Armor: Placeholder",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 225),
+            groups=[self.stats_comps],
+        )
+        Text(
+            "menu1",
+            "Critical Hit Chance: +0% (Placeholder)",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 250),
+            groups=[self.stats_comps],
+            # update_hook=lambda: f"Critical Hit Chance: {self.game.player.stats.crit}%"
         )
 
         self.set_current_tab(0)
@@ -251,6 +308,14 @@ class InventoryOverlay(Overlay):
                 self.last_poll_time = time()
             self.comps.update()
             self.item_comps.update()
+            self.stats_comps.update()
+
+            # Stats components are special because they can track variables
+            if self.current_tab == self.STATS_TAB:
+                for comp in self.stats_comps:
+                    if getattr(comp, "update_hook", None):
+                        comp.setText(comp.update_hook())
+
             self.render()
             self.just_active = False
 
@@ -348,10 +413,12 @@ class InventoryOverlay(Overlay):
         for comp in self.comps:
             self.base_image.blit(comp.image, comp.rect)
 
-        # Draw items
         if self.current_tab == self.ITEMS_TAB:
             for item_comp in self.item_comps:
                 self.base_image.blit(item_comp.image, item_comp.rect)
+        elif self.current_tab == self.STATS_TAB:
+            for component in self.stats_comps:
+                self.base_image.blit(component.image, component.rect)
 
     def get_offset(self):
         """Get the position of the upper left corner of the overlay
