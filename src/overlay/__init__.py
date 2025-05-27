@@ -1,3 +1,4 @@
+from . import components
 from .overlay import Overlay
 from .pause import PauseOverlay
 from .map import MapOverlay
@@ -20,5 +21,6 @@ __all__ = [
     "MapOverlay",
     "DialogueOverlay",
     "InventoryOverlay",
-    "transparent_rect"
+    "transparent_rect",
+    "components"
 ]

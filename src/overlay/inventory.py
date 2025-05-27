@@ -1,6 +1,8 @@
 from .overlay import Overlay
+from .components import Tooltip
 from menu import Button, Image, Text
-from stgs import winWidth, winHeight, fgen, fonts
+import stgs
+from stgs import winWidth, winHeight, fonts
 import src.util.colors as colors
 import menu
 import pygame
@@ -30,15 +32,17 @@ class InventoryOverlay(Overlay):
         self.last_change_time = 0
         self.change_delay = 0.5
         self.item_comps = pygame.sprite.Group()
+        self.stats_comps = pygame.sprite.Group()
 
         self.tooltip_last = None
         self.tooltip_ac = 0
         self.tooltip_id = None
 
         # Tabs
-        self.tabs = ["items_btn", "magik_btn"]
+        self.tabs = ["items_btn", "stats_btn"]
         self.current_tab = 0
         self.ITEMS_TAB = 0
+        self.STATS_TAB = 1
 
         self.load_comps()
 
@@ -73,11 +77,11 @@ class InventoryOverlay(Overlay):
             inactiveTabColor=(20, 20, 20),
             onClickContext=self.tabBtnClickHandler
         )
-        self.magik_btn = Button(
+        self.stats_btn = Button(
             self.game,
             (320, 60),
             center=True,
-            text="Magik",
+            text="Stats",
             groups=[self.comps],
             colors=[(20, 20, 20), (50, 50, 50)],
             textColors=((100, 100, 100), (100, 100, 100)),
@@ -86,6 +90,60 @@ class InventoryOverlay(Overlay):
             activeTabColor=(30, 30, 30),
             inactiveTabColor=(20, 20, 20),
             onClickContext=self.tabBtnClickHandler
+        )
+
+        # Load stats components
+        Text(
+            "3",
+            "Statistics",
+            colors.white,
+            stgs.aalias,
+            pos=(535, 100),
+            groups=[self.stats_comps]
+        )
+        Text(
+            "menu1",
+            "Health: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 150),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Health: {self.game.player.health}"
+        )
+        Text(
+            "menu1",
+            "Strength: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 175),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Strength: {self.game.player.stats.strength}"
+        )
+        Text(
+            "menu1",
+            "Speed: -1",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 200),
+            groups=[self.stats_comps],
+            update_hook=lambda: f"Speed: {self.game.player.stats.speed}"
+        )
+        Text(
+            "menu1",
+            "Armor: Placeholder",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 225),
+            groups=[self.stats_comps],
+        )
+        Text(
+            "menu1",
+            "Critical Hit Chance: +0% (Placeholder)",
+            colors.white,
+            stgs.aalias,
+            pos=(500, 250),
+            groups=[self.stats_comps],
+            # update_hook=lambda: f"Critical Hit Chance: {self.game.player.stats.crit}%"
         )
 
         self.set_current_tab(0)
@@ -250,6 +308,14 @@ class InventoryOverlay(Overlay):
                 self.last_poll_time = time()
             self.comps.update()
             self.item_comps.update()
+            self.stats_comps.update()
+
+            # Stats components are special because they can track variables
+            if self.current_tab == self.STATS_TAB:
+                for comp in self.stats_comps:
+                    if getattr(comp, "update_hook", None):
+                        comp.setText(comp.update_hook())
+
             self.render()
             self.just_active = False
 
@@ -289,8 +355,6 @@ class InventoryOverlay(Overlay):
         self.render_base()
         self.image.blit(self.base_image, (0, 0))
 
-        # Draw tooltip
-
         # If no time exists, set it
         if not self.tooltip_last:
             self.tooltip_last = time()
@@ -301,33 +365,39 @@ class InventoryOverlay(Overlay):
 
         # Search through all of the item components till we find
         # the one that is being hovered over
-        for item_comp in self.item_comps:
-            if not isinstance(item_comp, Image):
-                continue
+        if self.current_tab == self.ITEMS_TAB:
+            for item_comp in self.item_comps:
+                if not isinstance(item_comp, Image):
+                    continue
 
-            # Check to see if the mouse is over the component
-            over = item_comp.rect.collidepoint(mpos)
+                # Check to see if the mouse is over the component
+                over = item_comp.rect.collidepoint(mpos)
 
-            if over:
-                # Check to see if we are still hovering over the same image
-                if self.tooltip_id == item_comp.ukey or not self.tooltip_id:
-                    # Add to accumulator and update the last time
-                    self.tooltip_ac += time() - self.tooltip_last
-                    self.tooltip_last = time()
+                if over:
+                    # Check to see if we are still hovering over the same image
+                    if self.tooltip_id == item_comp.ukey or not self.tooltip_id:
+                        # Add to accumulator and update the last time
+                        self.tooltip_ac += time() - self.tooltip_last
+                        self.tooltip_last = time()
 
-                    # Mark the found flag (since we did find it)
-                    found = True
+                        # Mark the found flag (since we did find it)
+                        found = True
 
-                    # If the mouse has been over the component long enough
-                    # show the tooltip
-                    if self.tooltip_ac >= 0.25:
-                        self.render_tooltip(item_comp)
+                        # If the mouse has been over the component long enough
+                        # show the tooltip
+                        if self.tooltip_ac >= 0.25:
+                            tooltip = Tooltip(*item_comp.tooltip, self.padding)
 
-                # Update the tooltip key to match the now hovered image
-                self.tooltip_id = item_comp.ukey
+                            tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
+                            tooltip_y_start = item_comp.rect.y
 
-                # We found what we are looking for so why continue
-                break
+                            tooltip.render(self.image, tooltip_x_start, tooltip_y_start)
+
+                    # Update the tooltip key to match the now hovered image
+                    self.tooltip_id = item_comp.ukey
+
+                    # We found what we are looking for so why continue
+                    break
 
         # If nothing could be found, clear the accumulator
         if not found:
@@ -343,58 +413,12 @@ class InventoryOverlay(Overlay):
         for comp in self.comps:
             self.base_image.blit(comp.image, comp.rect)
 
-        # Draw items
         if self.current_tab == self.ITEMS_TAB:
             for item_comp in self.item_comps:
                 self.base_image.blit(item_comp.image, item_comp.rect)
-
-    def render_tooltip(self, item_comp):
-        """Render the tooltip for a given item component"""
-        # Generate all of the fonts that are going to be used
-        title_font = fonts["title3"]
-
-        # Render the text
-        tooltip_title = title_font.render(
-            item_comp.tooltip[0],
-            True,
-            (255, 255, 255)
-        )
-        tooltip_desc = menu.Text(
-            fonts["tooltip"],
-            item_comp.tooltip[1],
-            colors.white,
-            True,
-            multiline=True,
-            size=(self.maxToolTipSize - self.padding * 2, 900)
-        )
-
-        # Determine the size of the box we need
-        width = self.maxToolTipSize
-        height = tooltip_title.get_height() + tooltip_desc.last_rendered_y \
-            + self.padding * 3  # 3 to account for padding between title and desc
-
-        # Common values
-        title_y = item_comp.rect.y + self.padding
-        desc_y = title_y + tooltip_title.get_height() + self.padding
-        tooltip_x_start = item_comp.rect.x + item_comp.rect.width + 5
-
-        # Draw the box
-        pygame.draw.rect(
-            self.image,
-            (40, 40, 40),
-            (
-                tooltip_x_start,
-                item_comp.rect.y,
-                width,
-                height
-            )
-        )
-
-        # Draw on the title
-        self.image.blit(tooltip_title, (tooltip_x_start + self.padding, title_y))
-
-        # Draw on the description
-        self.image.blit(tooltip_desc.image, (tooltip_x_start + self.padding, desc_y))
+        elif self.current_tab == self.STATS_TAB:
+            for component in self.stats_comps:
+                self.base_image.blit(component.image, component.rect)
 
     def get_offset(self):
         """Get the position of the upper left corner of the overlay
