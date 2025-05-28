@@ -182,6 +182,7 @@ class InventoryOverlay(Overlay):
         # Setup the loop
         ix = 0
         iy = 0
+        item_wrap_limit = 5
 
         # Loop over each item
         for item_id in self.iitems:
@@ -252,7 +253,7 @@ class InventoryOverlay(Overlay):
                 )
 
             # Update positioning variables
-            if ix + 1 > 2:
+            if ix + 1 > item_wrap_limit:
                 ix = 0
                 iy += 1
             else:

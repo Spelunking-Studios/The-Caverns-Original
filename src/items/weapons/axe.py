@@ -1,26 +1,24 @@
 from ..weapon import Weapon
-from stgs import asset
 import pygame
+from stgs import asset
 
 
-class Dagger(Weapon):
-    """Represents the base dagger"""
-
-    kind = "Dagger"
+class Axe(Weapon):
+    kind = "Axe"
 
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
-            "cooldown": 0.2,
-            "damage": 5,
+            "cooldown": 0.8,
+            "damage": 20,
             "variance": 1,
         }
-        self.stats['categories'] = self.base_categories + ["dagger"]
-        self.stats['description'] = "Base dagger"
+        self.stats['categories'] = self.base_categories + ["axe"]
+        self.stats['description'] = "Axe"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "dagger.png")
+                asset("items", "weapon", "axe.png")
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
 
