@@ -1,6 +1,7 @@
 import pygame
 import util
 from src.stgs import *
+from util import Spritesheet
 
 class Animator:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####

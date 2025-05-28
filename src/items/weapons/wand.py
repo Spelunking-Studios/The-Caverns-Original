@@ -24,7 +24,7 @@ class Wand(Weapon):
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
         print("kyle was here")
-        super().bruh_ben()
+        super().make_description()
 
     def _attack(self, user):
         self._route_attack(user)

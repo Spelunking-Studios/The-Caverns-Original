@@ -7,5 +7,5 @@ from .grouper import Grouper
 from .collisions import Handler
 from .sprite import Sprite
 from .colors import *
-
+from .spritesheet import Spritesheet
 from .physics import Chain, Ball

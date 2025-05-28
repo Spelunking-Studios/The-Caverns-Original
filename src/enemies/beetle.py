@@ -24,6 +24,7 @@ class Beetle(SimpleEnemy):
         self.rot_speed = 0.03
 
         self.attack_range = 25
+        self.debug_render = []
 
         self.make_legs()
 
@@ -154,6 +155,12 @@ class Beetle(SimpleEnemy):
                     f = pygame.Rect(*f, 1, 1)
                     pygame.draw.circle(surf, util.white, transform(f).center, 2)
 
+            if self.debug_render:
+                a = self.game.cam.applyVec(self.debug_render[0])
+                b = self.game.cam.applyVec(self.debug_render[1])
+
+                pygame.draw.line(surf, util.white, a, b)
+
     def take_damage(self, dmg):
         super().take_damage(dmg)
         for a in self.animations:
@@ -162,6 +169,7 @@ class Beetle(SimpleEnemy):
     def take_knockback(self, player):
         head = self.chain.balls[0].body
         diff = Vec(head.position) - Vec(player.body.position)
+        self.debug_render = [head.position, player.body.position]
         diff.scale_to_length(50000)
         # for b in self.chain.balls:
         #     b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))

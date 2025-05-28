@@ -17,6 +17,9 @@ class Cam:
     def applyRect(self, rect):
         return rect.move(self.camera.topleft)
 
+    def applyVec(self, vec):
+        return vec + self.camera.topleft
+
     def toggleTarget(self):
         if self.target == self.game.player:
             self.target = self.game.level.door

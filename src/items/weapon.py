@@ -14,8 +14,8 @@ class Weapon(Item):
             "cooldown": 1
         }
 
-    def bruh_ben(self):
-        # Gives item statistics easy access :)
+    def make_description(self):
+        # Gives item statistics easy access
         for k, v in self.stats["attack"].items():
             self.__dict__[k] = v
 

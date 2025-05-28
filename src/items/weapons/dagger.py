@@ -24,11 +24,10 @@ class Dagger(Weapon):
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
 
-        super().bruh_ben()
+        super().make_description()
 
     def _attack(self, user):
         self._route_attack(user)
-        print("Dagger action")
 
     def _player_attack(self, player):
         player.attackState = "attack"
