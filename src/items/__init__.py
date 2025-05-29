@@ -1,5 +1,5 @@
 from .item import Item
 from .weapon import Weapon
-from .weapons import Dagger, Sword, GreatSword, Wand
+from .weapons import Dagger, Sword, GreatSword, Wand, Axe
 
-__all__ = ["Item", "Weapon", "Sword", "GreatSword", "Dagger"]
+__all__ = ["Item", "Weapon", "Sword", "GreatSword", "Dagger", "Axe", "Wand"]

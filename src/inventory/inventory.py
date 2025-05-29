@@ -1,5 +1,5 @@
 import json
-from items import Item, Weapon, Sword, Dagger, GreatSword
+from items import Item, Weapon, Sword, Dagger, GreatSword, Axe
 
 
 class Inventory:
@@ -51,7 +51,7 @@ class Inventory:
 
     def deserialize(self, s):
         """Loads the serialized string into the current object"""
-        allowed_items = [Item, Weapon, Sword, GreatSword, Dagger]
+        allowed_items = [Item, Weapon, Sword, GreatSword, Dagger, Axe]
 
         data = json.loads(s)
 

@@ -76,20 +76,22 @@ class SlotsHud(Hud):
             ctx.blit(slotHud.image, slotHud.rect)
 
         # draw items in slots
-        img1 = pygame.transform.scale(
-                        self.game.player.slot1.renderable,
-                        self.mainSlot1.rect.size
-                    )
-        ctx.blit(img1, self.mainSlot1.rect.topleft)
+        size = pygame.math.Vector2(self.mainSlot1.rect.size) * 0.75
+        img1 = pygame.transform.scale(self.game.player.slot1.renderable, size)
+        ctx.blit(img1, (
+            self.mainSlot1.rect.left + size[0] * 0.18,
+            self.mainSlot1.rect.top + size[1] * 0.17
+        ))
         ctx.blit(self.game.player.slot2.renderable, self.spellSlot1.rect.center)
+
 
 class SlotHud(util.Sprite):
     def __init__(self, pos, **kwargs):
         pygame.sprite.Sprite.__init__(self)
-        
+
         self.img_path = asset("ui/armor_slot.png")
         self.scale = 1
-        for k,v in kwargs.items():
+        for k, v in kwargs.items():
             self.__dict__[k] = v
 
         self.pos = pos

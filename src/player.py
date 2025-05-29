@@ -39,9 +39,11 @@ class Player(util.Sprite):
             self.sword = items.Sword()
             self.great_sword = items.GreatSword()
             self.dagger = items.Dagger()
+            self.axe = items.Axe()
             self.inventory.add_item(self.sword)
             self.inventory.add_item(self.great_sword)
             self.inventory.add_item(self.dagger)
+            self.inventory.add_item(self.axe)
             self.slot1 = self.sword
             self.slot2 = self.great_sword
         else:
