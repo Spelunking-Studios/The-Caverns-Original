@@ -4,10 +4,11 @@ import math
 import numpy as np
 from pygame import Vector2 as Vec
 from src.stgs import *
+import src.fx as fx
 import src.stats as stats
 from .enemy import SimpleEnemy
 from src import util
-from src.animationsNew import Animator, HurtFx
+from src.animations import Animator, HurtFx
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
@@ -33,6 +34,7 @@ class Beetle(SimpleEnemy):
         self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
+        self.particles = fx.SlowGlowParticles(self.game)
 
         names = ["head", "body", "butt"]
         self.images = [
@@ -70,6 +72,7 @@ class Beetle(SimpleEnemy):
         # self.rect.center = self.body.position
         self.chain.update()
         self.update_legs()
+        self.particles.update_position(self.rect.center)
         
         for a in self.animations:
             a.update()
@@ -178,3 +181,4 @@ class Beetle(SimpleEnemy):
     def kill(self):
         super().kill()
         self.chain.kill()
+        self.particles.kill()

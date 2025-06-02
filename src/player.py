@@ -55,7 +55,7 @@ class Player(util.Sprite):
                 self.slot1 = self.inventory.get_item(equipped_weapon)
         self.slot2 = items.Wand()
         self.groups = [game.sprites, game.layer2]
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
 
         self.game = game
         self.image = pygame.image.load(image)

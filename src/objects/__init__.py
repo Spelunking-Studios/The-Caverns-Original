@@ -2,6 +2,7 @@ from .doors import Entrance, Entrance2, Door, Teleporter
 from .walls import Wall
 from .chest import Chest
 from .projectiles import Fireball
+from .lights import LightEffect
 
 __all__ = [
     "Chest",

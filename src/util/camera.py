@@ -20,6 +20,9 @@ class Cam:
     def applyVec(self, vec):
         return vec + self.camera.topleft
 
+    def applyTuple(self, tup):
+        return tup[0] + self.camera.topleft[0], tup[1] + self.camera.topleft[1]
+
     def toggleTarget(self):
         if self.target == self.game.player:
             self.target = self.game.level.door

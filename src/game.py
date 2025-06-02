@@ -190,14 +190,15 @@ class Game:
 
         # self.win.blit(self.player.getAttackMask(), (0, 0))
 
+    
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
         lightRect.center = self.cam.applyRect(self.player.rect).center
         darkness.blit(self.player.lightSource, lightRect)
         for sprite in self.groups.lightSources:
-            darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
-
+            darkness.blit(sprite.image, self.cam.apply(sprite))
+        
         self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
 
     def checkHits(self):
