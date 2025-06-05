@@ -112,22 +112,22 @@ class BasicAnimation:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
 
-class HurtFx(util.Sprite):
-    def __init__(self, duration = 300):
-        pygame.sprite.Sprite.__init__(self)
-        self.start = pygame.time.get_ticks()
-        self.duration = duration
-
-    def update(self, image, restoreImage = None):
-        time = pygame.time.get_ticks() - self.start
-        if time < self.duration:
-            darkness = min(255, max(0, round(255 * (time/self.duration))))
-            image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
-        else:
-            # Restore image
-            if restoreImage:
-                image = restoreImage
-            self.kill()
+# class HurtFx(util.Sprite):
+#     def __init__(self, duration = 300):
+#         pygame.sprite.Sprite.__init__(self)
+#         self.start = pygame.time.get_ticks()
+#         self.duration = duration
+#
+#     def update(self, image, restoreImage = None):
+#         time = pygame.time.get_ticks() - self.start
+#         if time < self.duration:
+#             darkness = min(255, max(0, round(255 * (time/self.duration))))
+#             image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
+#         else:
+#             # Restore image
+#             if restoreImage:
+#                 image = restoreImage
+#             self.kill()
 
 class Animator:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####

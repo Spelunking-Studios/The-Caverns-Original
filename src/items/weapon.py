@@ -19,7 +19,7 @@ class Weapon(Item):
         for k, v in self.stats["attack"].items():
             self.__dict__[k] = v
 
-        self.stats['description'] += "\n\n"+'\n'.join(f"{k}: {v}" for k, v in self.stats["attack"].items())
+        self.stats['description'] += "\n\n"+'\n'.join(f"{k}: {self.stats["attack"][k]}" for k in list(filter(lambda x: x[0:1] != "_", self.stats["attack"])) )
 
     def _route_attack(self, user):
         if (

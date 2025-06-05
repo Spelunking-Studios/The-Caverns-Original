@@ -25,7 +25,7 @@ class ParticleController(util.Sprite):
 
     def __init__(self, game):
         self.game = game
-        super().__init__((game.sprites, game.layer3))
+        super().__init__((game.sprites, game.groups.particle_emitters, game.layer3))
 
         self.particles = []
         self.position = (0, 0)
@@ -53,6 +53,9 @@ class ParticleController(util.Sprite):
     
     def add_particle(self):
         self.particles.append([0, 0, 0, 0, 0])
+
+    def get_batch_size(self):
+        return len(self.particles)
 
     def draw(self, surf, transform=None):
         x, y = self.position
@@ -125,8 +128,21 @@ class FlameParticles(GlowParticles):
         self.particles.append([0, 0, 1, random.random()-0.5, random.random()-0.5, util.peach_rose, 3])
 
 class SlowGlowParticles(GlowParticles):
-    def __init__(self, game):
+    def __init__(self, game, **kwargs):
+        self.delay = 10
+        self.last_particle = 0
+        self.bright = False
         super().__init__(game)
+        self.dump(kwargs)
+
+    def update(self):
+        if now() - self.start_time >= self.lifespan:
+            self.kill()
+        else:
+            self.step()
+            if now() - self.last_particle > self.delay:
+                self.add_particle()
+                self.last_particle = now()
 
     def step(self):
         for p in self.particles:
@@ -160,7 +176,17 @@ class SlowGlowParticles(GlowParticles):
         x, y = self.position
         for p in self.particles:
             pygame.draw.circle(surf, p[5], transform((p[0] + x, p[1] + y)), p[2])
+            
+            if self.bright:
+                # Glow Effect
+                r = p[2]*2
+                
+                surf.blit(self.glow_surface( 
+                            r, 
+                            (int(p[5][0]*self.glow_brightness), int(p[5][1]*self.glow_brightness), int(p[5][2]*self.glow_brightness))
+                         ),
+                         transform( (p[0] + x - r, p[1] + y - r) ),
+                         special_flags = pygame.BLEND_RGB_ADD
+                        )
 
-
-
-        
+            

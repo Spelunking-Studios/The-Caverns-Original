@@ -14,7 +14,7 @@ class Dagger(Weapon):
         self.stats['attack'] = {
             "cooldown": 0.2,
             "damage": 5,
-            "variance": 1,
+            "_variance": 1,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
         self.stats['description'] = "Base dagger"

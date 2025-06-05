@@ -62,6 +62,7 @@ class Projectile(util.Sprite):
 
 
 class Fireball(Projectile):
+    light_img = pygame.image.load(asset("objects/light1.png"))
     def __init__(self, game):
         mPos = pygame.Vector2(game.get_mouse_pos()) - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(
@@ -78,7 +79,7 @@ class Fireball(Projectile):
         self.rect.center = self.pos
         self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
         self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
-        self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
+        self.light = LightSource(game, self.rect, source_img=self.light_img, default_size=True)
 
         self.create_physics(5, 4, self.fake_move)
 
@@ -95,7 +96,7 @@ class Fireball(Projectile):
         print("killed")
         super().kill()
         self.particles.setLife(220)
-        LightEffect(self.game, self.rect)
+        LightEffect(self.game, self.rect, source_img=self.light_img, default_size=True, lifespan=220)
         self.light.kill()
 
 class ThrowingKnife(Projectile):

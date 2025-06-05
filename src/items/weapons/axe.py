@@ -12,7 +12,7 @@ class Axe(Weapon):
         self.stats['attack'] = {
             "cooldown": 0.8,
             "damage": 20,
-            "variance": 1,
+            "_variance": 1,
         }
         self.stats['categories'] = self.base_categories + ["axe"]
         self.stats['description'] = "Axe"

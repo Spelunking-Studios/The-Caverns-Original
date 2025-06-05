@@ -12,16 +12,16 @@ from src.animations import Animator, HurtFx
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
-    """A spider sprite with cool top down movement
+    """A beetle-looking sprite with cool top down movement
     """
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
 
-        self.health = 40
+        self.health = 100
         
         self.vel = Vec(2,0)
-        self.speed = 700
+        self.speed = 1700
         self.rot_speed = 0.03
 
         self.attack_range = 25
@@ -34,7 +34,7 @@ class Beetle(SimpleEnemy):
         self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
-        self.particles = fx.SlowGlowParticles(self.game)
+        # self.particles = fx.SlowGlowParticles(self.game)
 
         names = ["head", "body", "butt"]
         self.images = [
@@ -47,6 +47,12 @@ class Beetle(SimpleEnemy):
         ]
         
         self.rect = pygame.Rect(0, 0, 20, 20)
+        
+        # Used for managing the state of the beetle
+        #
+        # Creep - The beetle is walking toward the player
+        #
+        self.state = "searching"
 
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
@@ -60,7 +66,7 @@ class Beetle(SimpleEnemy):
         self.legs[2].radius = 5
         for l in self.legs:
             l.color = (143, 200, 215)
-            l.speed = self.vel.length()**2
+            l.speed = self.speed/300
         self.offset = Vec(-15, 0)
         self.phase_offset = 15
         self.phases = [True, False, False, True, True, False]
@@ -72,20 +78,28 @@ class Beetle(SimpleEnemy):
         # self.rect.center = self.body.position
         self.chain.update()
         self.update_legs()
-        self.particles.update_position(self.rect.center)
+        # self.particles.update_position(self.rect.center)
         
         for a in self.animations:
             a.update()
-
+    
+    def get_state(self):
+        match self.state:
+            case "creep":
+                pass
+            case "searching":
+                pos = self.chain.balls[0].position
+                
     def head_movement(self, body, gravity, damping, dt):
-        old_vel = Vec(body.velocity)
-        pos = Vec(body.position)
-        if pos.distance_to(self.game.player.rect.center) > self.attack_range:
-            vel = (self.game.player.rect.center - pos).normalize()*self.speed
-            vel = old_vel.lerp(vel, self.rot_speed)
-            vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
-            self.angle = vel.as_polar()[1]
-            body.velocity = tuple(vel)
+        if self.state == "creep":
+            old_vel = Vec(body.velocity)
+            pos = Vec(body.position)
+            if pos.distance_to(self.game.player.rect.center) > self.attack_range:
+                vel = (self.game.player.rect.center - pos).normalize()*self.speed
+                vel = old_vel.lerp(vel, self.rot_speed)
+                vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
+                self.angle = vel.as_polar()[1]
+                body.velocity = tuple(vel)
 
     def update_legs(self):
         i=0
@@ -173,12 +187,12 @@ class Beetle(SimpleEnemy):
         head = self.chain.balls[0].body
         diff = Vec(head.position) - Vec(player.body.position)
         self.debug_render = [head.position, player.body.position]
-        diff.scale_to_length(50000)
-        # for b in self.chain.balls:
-        #     b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
-        self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        diff.scale_to_length(20000)
+        for b in self.chain.balls:
+            b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
+        # self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
 
     def kill(self):
         super().kill()
         self.chain.kill()
-        self.particles.kill()
+        # self.particles.kill()
