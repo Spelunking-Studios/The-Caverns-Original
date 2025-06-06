@@ -1,10 +1,11 @@
-from ..weapon import Weapon
 import pygame
-from stgs import asset
+from stgs import *
+from items import Weapon
+    
+class ThrowingKnives(Weapon):
+    '''Pretty self explanatory'''
 
-
-class Axe(Weapon):
-    kind = "Axe"
+    kind = "projectile"
 
     def __init__(self):
         super().__init__()
@@ -13,20 +14,23 @@ class Axe(Weapon):
             "cooldown": 0.8,
             "damage": 20,
             "_variance": 1,
-            "_weight": 25
+            "_ranged": True,
         }
-        self.stats['categories'] = self.base_categories + ["axe"]
-        self.stats['description'] = "Axe"
+        self.stats['categories'] = self.base_categories + ["throwing_knives"]
+        self.stats['description'] = "A dangerous set of knives waiting to be tossed"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "axe.png")
+                asset("items", "weapon", "throwing_knives.png")
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
-
         super().make_description()
 
     def _attack(self, user):
         self._route_attack(user)
 
     def _player_attack(self, player):
-        player.attackState = "attack"
+        # player.attackState = "attack"
+    
+        player.animations.setMode('wand')
+        # Launches fireball
+        player.game.get_prefab("Fireball")(player.game)

@@ -1,3 +1,4 @@
+import random
 from pygame.math import Vector2
 import pygame
 import math
@@ -12,7 +13,7 @@ from src.animations import Animator, HurtFx
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
-    """A beetle-looking sprite with cool top down movement
+    """A spider sprite with cool top down movement
     """
 
     def __init__(self, game, objT):
@@ -53,6 +54,8 @@ class Beetle(SimpleEnemy):
         # Creep - The beetle is walking toward the player
         #
         self.state = "searching"
+        self.pause = 0
+        self.get_wander_destination()
 
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
@@ -78,6 +81,7 @@ class Beetle(SimpleEnemy):
         # self.rect.center = self.body.position
         self.chain.update()
         self.update_legs()
+        self.get_state()
         # self.particles.update_position(self.rect.center)
         
         for a in self.animations:
@@ -88,18 +92,41 @@ class Beetle(SimpleEnemy):
             case "creep":
                 pass
             case "searching":
-                pos = self.chain.balls[0].position
+                pos = self.chain.balls[0].body.position
+                if util.distance_squared(pos, self.game.player.body.position) < 20000:
+                    self.state = "creep"
+                if self.pause <= 0:
+                    if util.distance_squared(pos, self.wander_destination) < 1800:
+                        self.pause = 60
+                        self.get_wander_destination()
+                self.pause -= 1
+
+    def get_wander_destination(self):
+        # Finds a suitable place for the beetle to wander to
+        level_w, level_h = self.game.map.floor.room.rect.size
+        self.wander_destination = (random.random()*level_w, random.random()*level_h)
                 
     def head_movement(self, body, gravity, damping, dt):
-        if self.state == "creep":
-            old_vel = Vec(body.velocity)
-            pos = Vec(body.position)
-            if pos.distance_to(self.game.player.rect.center) > self.attack_range:
-                vel = (self.game.player.rect.center - pos).normalize()*self.speed
-                vel = old_vel.lerp(vel, self.rot_speed)
-                vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
-                self.angle = vel.as_polar()[1]
-                body.velocity = tuple(vel)
+        match self.state:
+            case "creep":
+                old_vel = Vec(body.velocity)
+                pos = body.position
+                if util.distance(pos, self.game.player.rect.center) > self.attack_range:
+                    vel = (self.game.player.rect.center - Vec(pos)).normalize()*self.speed
+                    vel = old_vel.lerp(vel, self.rot_speed)
+                    vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
+                    self.angle = vel.as_polar()[1]
+                    body.velocity = tuple(vel)
+            case "searching":
+                old_vel = Vec(body.velocity)
+                pos = body.position
+                if util.distance(pos, self.wander_destination) > 50:
+                    vel = (self.wander_destination - Vec(pos)).normalize()*self.speed*0.4
+                    vel = old_vel.lerp(vel, self.rot_speed)
+                    vel.scale_to_length(min(vel.length(), self.speed*dt*2))
+                    self.angle = vel.as_polar()[1]
+                    body.velocity = tuple(vel)
+
 
     def update_legs(self):
         i=0
@@ -187,7 +214,7 @@ class Beetle(SimpleEnemy):
         head = self.chain.balls[0].body
         diff = Vec(head.position) - Vec(player.body.position)
         self.debug_render = [head.position, player.body.position]
-        diff.scale_to_length(20000)
+        diff.scale_to_length(head.mass*20*player.slot1._weight)
         for b in self.chain.balls:
             b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
         # self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))

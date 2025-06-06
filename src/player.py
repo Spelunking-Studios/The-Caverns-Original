@@ -44,6 +44,8 @@ class Player(util.Sprite):
             self.inventory.add_item(self.great_sword)
             self.inventory.add_item(self.dagger)
             self.inventory.add_item(self.axe)
+            self.inventory.add_item(items.Mace())
+            self.inventory.add_item(items.ThrowingKnives())
             self.slot1 = self.sword
             self.slot2 = self.great_sword
         else:

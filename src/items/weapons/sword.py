@@ -14,7 +14,8 @@ class Sword(Weapon):
         self.stats["attack"] = {
             "cooldown": 0.4,
             "damage": 10,
-            "_variance": 1
+            "_variance": 2,
+            "_weight": 10 
         }
         self.stats["categories"] = self.base_categories + ["sword"]
         self.stats["description"] = "The sword given to you by your father on your 13th birthday. Your name is engraved upon it"
