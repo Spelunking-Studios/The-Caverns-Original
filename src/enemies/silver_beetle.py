@@ -31,7 +31,7 @@ class SilverBeetle(Beetle):
 
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
+        self.chain = util.Chain(game, 4, (objT.x, objT.y), 14, 19, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         # self.particles = fx.SlowGlowParticles(self.game)
@@ -59,18 +59,19 @@ class SilverBeetle(Beetle):
         self.leg_mounts = [0 for i in range(8)]
         self.feet = [0 for i in range(8)]
         self.feet_dist_x = 1
-        self.feet_dist_y = 11
+        self.feet_dist_y = 20
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
-        self.legs = [Leg(11) if i % 2 else Leg(-11) for i in range(6)]
+        self.leg_length = 22
+        self.legs = [Leg(self.leg_length) if i % 2 else Leg(-self.leg_length) for i in range(8)]
         self.legs[0].radius = 5
         self.legs[1].radius = 5
         self.legs[2].radius = 5
         self.legs[3].radius = 5
         for l in self.legs:
-            l.color = (143, 200, 215)
+            l.color = util.stone_grey
             l.speed = self.speed/300
-        self.offset = Vec(-15, 0)
+        self.offset = Vec(-25, 0)
         self.phase_offset = 15
         self.phases = [True, False, False, True, True, False, False, True]
-        self.travel = 2.2
+        self.travel = 3.2
  

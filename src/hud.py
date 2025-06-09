@@ -57,15 +57,15 @@ class SlotsHud(Hud):
         super().__init__(game)
 
         # Create the slots
-        self.mainSlot1 = SlotHud((10, 610), scale=0.6)
-        self.spellSlot1 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
+        self.slot1 = SlotHud((10, 610), scale=0.6)
+        self.slot2 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
 
-        self.healthHud = HeathHud(game, x = self.spellSlot1.rect.right + 15)# + winWidth/2.5)
-        self.sanityHud = SanityHud(game, x = self.spellSlot1.rect.right + 15)# + winWidth/2.5)
+        self.healthHud = HeathHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
+        self.sanityHud = SanityHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
 
         # Add the slots
-        self.slots.add(self.mainSlot1)
-        self.slots.add(self.spellSlot1)
+        self.slots.add(self.slot1)
+        self.slots.add(self.slot2)
 
     def update(self):
         self.slots.update()
@@ -76,14 +76,17 @@ class SlotsHud(Hud):
             ctx.blit(slotHud.image, slotHud.rect)
 
         # draw items in slots
-        size = pygame.math.Vector2(self.mainSlot1.rect.size) * 0.75
-        img1 = pygame.transform.scale(self.game.player.slot1.renderable, size)
+        size = pygame.math.Vector2(self.slot1.rect.size) #* 0.75
+        # img1 = pygame.transform.scale(self.game.player.slot1.renderable, size)
+        img1 = self.game.player.slot1.renderable
         ctx.blit(img1, (
-            self.mainSlot1.rect.left + size[0] * 0.18,
-            self.mainSlot1.rect.top + size[1] * 0.17
+            self.slot1.rect.left + size[0] * 0.18,
+            self.slot1.rect.top + size[1] * 0.17
         ))
-        ctx.blit(self.game.player.slot2.renderable, self.spellSlot1.rect.center)
-
+        ctx.blit(self.game.player.slot2.renderable, (
+            self.slot2.rect.left + size[0] * 0.18,
+            self.slot2.rect.top + size[1] * 0.17
+        ))
 
 class SlotHud(util.Sprite):
     def __init__(self, pos, **kwargs):

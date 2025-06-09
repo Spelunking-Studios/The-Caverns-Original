@@ -58,11 +58,12 @@ class PlayerAnimation:
 class BasicAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     cache = {}
-    def __init__(self, sprite):
+    def __init__(self, sprite, **kwargs):
         self.sprite = sprite
         self.framex = 0
         self.delay = 120
         self.scalex, self.scaley = 1,1
+        self.angle = 0
         self.imgSheet = sprite.imgSheet
         self.mode = 'main'
         self.lastTick = pygame.time.get_ticks()
@@ -78,6 +79,9 @@ class BasicAnimation:
 
         self.tileSize = self.imgSheet[self.mode].height
 
+        for k, v in kwargs.items():
+            self.__dict__[k] = v
+
     def getFirstFrame(self):
         return self.imgSheet[self.mode].get_image(0, 0, self.tileSize, self.tileSize)
 
@@ -90,6 +94,8 @@ class BasicAnimation:
         self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
         if not self.scalex == 1 or not self.scaley == 1:
             self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))
+        if self.angle != 0:
+            self.rotate_center()
         self.applyFx()
 
     def scale(self, x, y=None):
@@ -111,6 +117,11 @@ class BasicAnimation:
         else:
             print(f"mode {mode} does not exist for this sprite")
         self.tileSize = self.imgSheet[self.mode].height
+
+    def rotate_center(self):
+        # Rotates sprite about the center
+        self.sprite.image = pygame.transform.rotate(self.sprite.image, self.angle)
+        self.sprite.rect = self.sprite.image.get_rect(center = self.sprite.rect.center)
 
 # class HurtFx(util.Sprite):
 #     def __init__(self, duration = 300):

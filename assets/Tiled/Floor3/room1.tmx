@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="71">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="72">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../floor1-features.tsx"/>
  <layer id="2" name="Tile Layer 2" width="60" height="48">
@@ -35,7 +35,7 @@
    </properties>
    <point/>
   </object>
-  <object id="40" name="Spawner" x="334.431" y="602.99" width="483.912" height="516.848">
+  <object id="40" name="Spawner" x="253.098" y="281.657" width="502.579" height="814.181">
    <properties>
     <property name="entity" value="Beetle"/>
    </properties>
@@ -82,6 +82,9 @@
   </object>
   <object id="69" name="Door" x="225.25" y="19.25" width="49.75" height="17.75"/>
   <object id="70" name="Rat" x="605.104" y="374.588">
+   <point/>
+  </object>
+  <object id="71" name="SilverBeetle" x="466.5" y="386.5">
    <point/>
   </object>
  </objectgroup>

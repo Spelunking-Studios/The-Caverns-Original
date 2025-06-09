@@ -209,6 +209,7 @@ class Beetle(SimpleEnemy):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
+        self.state = "creep"
 
     def take_knockback(self, player):
         head = self.chain.balls[0].body

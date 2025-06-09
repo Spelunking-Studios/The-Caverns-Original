@@ -11,7 +11,7 @@ class ThrowingKnives(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
-            "cooldown": 0.8,
+            "cooldown": 0.3,
             "damage": 20,
             "_variance": 1,
             "_ranged": True,
@@ -30,7 +30,7 @@ class ThrowingKnives(Weapon):
 
     def _player_attack(self, player):
         # player.attackState = "attack"
-    
         player.animations.setMode('wand')
+
         # Launches fireball
-        player.game.get_prefab("Fireball")(player.game)
+        player.game.get_prefab("ThrowingKnife")(player.game)
