@@ -52,7 +52,7 @@ class PlayerStats(Stats):
             dmg = self.player.slot1.damage + self.strength/5
         else:
             dmg = self.player.slot2.damage + self.strength/5
-        atkVar = self.attack_variance + self.player.slot1.variance
+        atkVar = self.attack_variance + self.player.slot1._variance
         if randint(0, 100) <= self.crit:
             crit = True
             damage = randint(max(0, int((dmg-atkVar)*(self.critBonus/100))), int((dmg+atkVar)*(self.critBonus/100)))

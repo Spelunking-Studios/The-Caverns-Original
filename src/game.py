@@ -190,15 +190,21 @@ class Game:
 
         # self.win.blit(self.player.getAttackMask(), (0, 0))
 
+    
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
         lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
+        # darkness.fill((0,0,0))
         lightRect.center = self.cam.applyRect(self.player.rect).center
         darkness.blit(self.player.lightSource, lightRect)
         for sprite in self.groups.lightSources:
-            darkness.blit(sprite.sourceImg, self.cam.apply(sprite))
+            darkness.blit(sprite.image, self.cam.apply(sprite))
 
-        self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_MULT)
+        
+        self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+
+    def count_particles(self):
+        print(sum(p.get_batch_size() for p in self.groups.particle_emitters))
 
     def checkHits(self):
         # pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)

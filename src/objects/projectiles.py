@@ -62,8 +62,9 @@ class Projectile(util.Sprite):
 
 
 class Fireball(Projectile):
+    light_img = pygame.image.load(asset("objects/light1.png"))
     def __init__(self, game):
-        mPos = pygame.Vector2(game.get_mouse_pos()) - pygame.Vector2(game.cam.apply(game.player).center)
+        mPos = game.get_mouse_pos() - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(
             game,
             game.player.rect.center,
@@ -78,7 +79,7 @@ class Fireball(Projectile):
         self.rect.center = self.pos
         self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
         self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
-        self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
+        self.light = LightSource(game, self.rect, source_img=self.light_img, default_size=True)
 
         self.create_physics(5, 4, self.fake_move)
 
@@ -95,22 +96,26 @@ class Fireball(Projectile):
         print("killed")
         super().kill()
         self.particles.setLife(220)
-        LightEffect(self.game, self.rect)
+        LightEffect(self.game, self.rect, source_img=self.light_img, default_size=True, lifespan=220)
         self.light.kill()
 
 class ThrowingKnife(Projectile):
     def __init__(self, game):
-        mPos = pygame.Vector2(game.get_mouse_pos()) - pygame.Vector2(game.cam.apply(game.player).center)
+        mPos = game.get_mouse_pos() - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(
             game,
             game.player.rect.center,
             mPos,
             groups=(game.sprites, game.layer2, game.groups.pProjectiles)
         )
-        self.imgSheet = {'main': asset('player/fireball.png')}
-        self.animations = BasicAnimation(self)
-        self.animations.delay = 30
+        self.imgSheet = {'main': asset('player/knife.png')}
+        try:
+            angle = math.degrees(math.atan2(-mPos.y, mPos.x))
+        except ValueError:
+            angle = 0
+        self.animations = BasicAnimation(self, angle = angle-90)
         self.image = self.animations.getFirstFrame()
+        self.animations.rotate_center()
 
         self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
         self.rect.center = self.pos
@@ -123,11 +128,10 @@ class ThrowingKnife(Projectile):
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
 
-
     def update(self):
         super().update()
         self.light.rect.center = self.rect.center
-        self.animations.update()
+        # self.animations.update()
 
     def kill(self):
         print("killed")

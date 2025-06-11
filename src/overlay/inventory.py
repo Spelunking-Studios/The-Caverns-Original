@@ -262,7 +262,7 @@ class InventoryOverlay(Overlay):
         # Regenerate the base image with the new items
         self.render_base()
 
-    def handle_item_click(self, caller):
+    def handle_item_click(self, caller, type=0):
         # Load info about the item
         item_id = caller.iitem
         entry = self.game.player.inventory._registry["items"].get(

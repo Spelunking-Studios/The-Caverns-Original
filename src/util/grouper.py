@@ -17,6 +17,7 @@ class Grouper:
         self.interactable = Group()  # Sprites that can be interacted with
         self.pProjectiles = Group()  # Player Projectiles
         self.eProjectiles = Group()  # Enemy Projectiles
+        self.particle_emitters = Group()
 
     def getProximitySprites(self, sprite, proximity=300, groups=[]):
         """Returns a list of sprites that fall within the specified proximity\

@@ -13,6 +13,14 @@ class Sprite(pygame.sprite.Sprite):
     def __init__(self, *args):
         super().__init__(*args)
 
+    def dump(self, *args):
+        # Takes dictionaries and assigns variables
+        # Useful for assigning or loading attributes
+        for a in args:
+            for k, v in a.items():
+                self.__dict__[k] = v
+
+
     def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
         # Set up a body and shape for the player to interact with 
         # the physics engine
