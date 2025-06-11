@@ -19,6 +19,21 @@ class Beetle(SimpleEnemy):
     def __init__(self, game, objT):
         super().__init__(game, objT)
 
+        self.set_stats() 
+        self.make_legs()
+        self.make_body()
+
+
+        
+        # Used for managing the state of the beetle
+        #
+        # Creep - The beetle is walking toward the player
+        #
+        self.state = "searching"
+        self.pause = 0
+        self.get_wander_destination()
+
+    def set_stats(self):
         self.health = 100
         
         self.vel = Vec(2,0)
@@ -28,11 +43,10 @@ class Beetle(SimpleEnemy):
         self.attack_range = 25
         self.debug_render = []
 
-        self.make_legs()
-
+    def make_body(self):
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(game, 3, (objT.x, objT.y), 8.4, 12, self.head_movement)
+        self.chain = util.Chain(self.game, 3, (self.objT.x, self.objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         # self.particles = fx.SlowGlowParticles(self.game)
@@ -48,14 +62,6 @@ class Beetle(SimpleEnemy):
         ]
         
         self.rect = pygame.Rect(0, 0, 20, 20)
-        
-        # Used for managing the state of the beetle
-        #
-        # Creep - The beetle is walking toward the player
-        #
-        self.state = "searching"
-        self.pause = 0
-        self.get_wander_destination()
 
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
@@ -64,9 +70,6 @@ class Beetle(SimpleEnemy):
         self.feet_dist_y = 11
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
         self.legs = [Leg(11) if i % 2 else Leg(-11) for i in range(6)]
-        self.legs[0].radius = 5
-        self.legs[1].radius = 5
-        self.legs[2].radius = 5
         for l in self.legs:
             l.color = (143, 200, 215)
             l.speed = self.speed/300

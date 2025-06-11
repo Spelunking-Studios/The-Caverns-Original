@@ -18,6 +18,7 @@ class SilverBeetle(Beetle):
     def __init__(self, game, objT):
         super().__init__(game, objT)
 
+    def set_stats(self):
         self.health = 150
         
         self.vel = Vec(2,0)
@@ -26,12 +27,11 @@ class SilverBeetle(Beetle):
 
         self.attack_range = 25
         self.debug_render = []
-
-        self.make_legs()
-
+    
+    def make_body(self):
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(game, 4, (objT.x, objT.y), 14, 19, self.head_movement)
+        self.chain = util.Chain(self.game, 4, (self.objT.x, self.objT.y), 13, 19, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         # self.particles = fx.SlowGlowParticles(self.game)
@@ -48,12 +48,6 @@ class SilverBeetle(Beetle):
         ]
         
         self.rect = pygame.Rect(0, 0, 20, 20)
-        
-        # Used for managing the state of the beetle
-        #
-        # Creep - The beetle is walking toward the player
-        #
-        self.state = "searching"
 
     def make_legs(self):
         self.leg_mounts = [0 for i in range(8)]
@@ -63,10 +57,6 @@ class SilverBeetle(Beetle):
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
         self.leg_length = 22
         self.legs = [Leg(self.leg_length) if i % 2 else Leg(-self.leg_length) for i in range(8)]
-        self.legs[0].radius = 5
-        self.legs[1].radius = 5
-        self.legs[2].radius = 5
-        self.legs[3].radius = 5
         for l in self.legs:
             l.color = util.stone_grey
             l.speed = self.speed/300

@@ -65,6 +65,7 @@ class Chain(Sprite):
             self.chain_angles[i] = Vec(delta).as_polar()[1]
 
     def kill(self):
+        print("okay")
         for b in self.balls:
             self.game.space.remove(*b.objects())
         for j in self.joints:

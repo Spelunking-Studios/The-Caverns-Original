@@ -15,6 +15,7 @@ class SimpleEnemy(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.sprites, game.groups.enemies, game.layer2
+        self.objT = objT
         self.lID = objT.id
         self.pos = pygame.Vector2(objT.x, objT.y)
 

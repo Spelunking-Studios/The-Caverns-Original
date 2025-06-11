@@ -12,7 +12,7 @@ class ThrowingKnives(Weapon):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
             "cooldown": 0.3,
-            "damage": 20,
+            "damage": 7,
             "_variance": 1,
             "_ranged": True,
         }
