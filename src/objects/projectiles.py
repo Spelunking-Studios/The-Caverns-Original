@@ -3,7 +3,7 @@ import util
 import src.util.colors as colors
 import math
 import fx
-from stgs import asset
+from stgs import asset, now
 from .lights import LightSource, LightEffect
 from animations import BasicAnimation
 
@@ -93,7 +93,6 @@ class Fireball(Projectile):
         self.animations.update()
 
     def kill(self):
-        print("killed")
         super().kill()
         self.particles.setLife(220)
         LightEffect(self.game, self.rect, source_img=self.light_img, default_size=True, lifespan=220)
@@ -124,6 +123,10 @@ class ThrowingKnife(Projectile):
         self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
 
         self.create_physics(5, 4, self.fake_move)
+        
+
+        self.lifespan = 600
+        self.created = now()
 
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
@@ -131,10 +134,12 @@ class ThrowingKnife(Projectile):
     def update(self):
         super().update()
         self.light.rect.center = self.rect.center
+        if now() - self.created >= self.lifespan:
+            self.kill()
         # self.animations.update()
 
     def kill(self):
-        print("killed")
+        # Play sound
         super().kill()
-        LightEffect(self.game, self.rect)
+        # LightEffet(self.game, self.rect)
         self.light.kill()

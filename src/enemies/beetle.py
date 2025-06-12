@@ -31,6 +31,7 @@ class Beetle(SimpleEnemy):
         #
         self.state = "searching"
         self.pause = 0
+        self.last_attack = 0
         self.get_wander_destination()
 
     def set_stats(self):
@@ -40,7 +41,7 @@ class Beetle(SimpleEnemy):
         self.speed = 1700
         self.rot_speed = 0.03
 
-        self.attack_range = 25
+        self.attack_range = 50 
         self.debug_render = []
 
     def make_body(self):
@@ -92,17 +93,18 @@ class Beetle(SimpleEnemy):
     
     def get_state(self):
         match self.state:
-            case "creep":
+            case "aggro":
                 pass
             case "searching":
                 pos = self.chain.balls[0].body.position
                 if util.distance_squared(pos, self.game.player.body.position) < 20000:
-                    self.state = "creep"
+                    self.state = "aggro"
                 if self.pause <= 0:
                     if util.distance_squared(pos, self.wander_destination) < 1800:
                         self.pause = 60
                         self.get_wander_destination()
                 self.pause -= 1
+
 
     def get_wander_destination(self):
         # Finds a suitable place for the beetle to wander to
@@ -111,7 +113,7 @@ class Beetle(SimpleEnemy):
                 
     def head_movement(self, body, gravity, damping, dt):
         match self.state:
-            case "creep":
+            case "aggro":
                 old_vel = Vec(body.velocity)
                 pos = body.position
                 if util.distance(pos, self.game.player.rect.center) > self.attack_range:
@@ -120,15 +122,19 @@ class Beetle(SimpleEnemy):
                     vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
                     self.angle = vel.as_polar()[1]
                     body.velocity = tuple(vel)
+                else:
+                    self.state = "attack"
             case "searching":
                 old_vel = Vec(body.velocity)
                 pos = body.position
                 if util.distance(pos, self.wander_destination) > 50:
-                    vel = (self.wander_destination - Vec(pos)).normalize()*self.speed*0.4
-                    vel = old_vel.lerp(vel, self.rot_speed)
-                    vel.scale_to_length(min(vel.length(), self.speed*dt*2))
+                    vel = (self.wander_destination - Vec(pos)).normalize()*self.speed*dt*2
                     self.angle = vel.as_polar()[1]
                     body.velocity = tuple(vel)
+            case "attack":
+                print("bite")
+                if util.distance(body.position, self.game.player.rect.center) > self.attack_range:
+                    self.state = "aggro"
 
 
     def update_legs(self):
@@ -212,7 +218,7 @@ class Beetle(SimpleEnemy):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
-        self.state = "creep"
+        self.state = "aggro"
 
     def take_knockback(self, player):
         head = self.chain.balls[0].body

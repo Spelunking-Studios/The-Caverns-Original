@@ -250,6 +250,7 @@ def saveData(file, game):
     # Serialize the player's inventory
     player = game.player
     player_inventory = player.inventory.serialize()
+    saveDict["GAME_STATE"]["progress"] = game.progress
     saveDict["GAME_STATE"]["player_inventory"] = player_inventory
     saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
     saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)

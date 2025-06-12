@@ -58,14 +58,14 @@ class SlotsHud(Hud):
 
         # Create the slots
         self.slot1 = SlotHud((10, 610), scale=0.6)
-        self.slot2 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
+        self.slot2 = SlotHud((118, 610), scale = 0.6)
+        self.slot3 = SlotHud((65, 510), scale = 0.6)
 
         self.healthHud = HeathHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
         self.sanityHud = SanityHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
 
         # Add the slots
-        self.slots.add(self.slot1)
-        self.slots.add(self.slot2)
+        self.slots.add(self.slot1, self.slot2, self.slot3)
 
     def update(self):
         self.slots.update()

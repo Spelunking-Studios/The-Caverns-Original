@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="72">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="60" height="48" tilewidth="32" tileheight="32" infinite="0" nextlayerid="5" nextobjectid="74">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../floor1-features.tsx"/>
  <layer id="2" name="Tile Layer 2" width="60" height="48">
@@ -86,6 +86,9 @@
   </object>
   <object id="71" name="SilverBeetle" x="466.5" y="386.5">
    <point/>
+  </object>
+  <object id="73" name="Wall" x="223.636" y="30.7273">
+   <polygon points="0,0 -16.1818,-1.27273 -13.6364,-35.2727 79.4545,-30.5455 76.7273,8.18182 55.6364,8.18182 52.1818,-13.4545 -2.36364,-12.5455"/>
   </object>
  </objectgroup>
 </map>
