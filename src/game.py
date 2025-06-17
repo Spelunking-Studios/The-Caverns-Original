@@ -124,6 +124,11 @@ class Game:
             You are alone                                    
             
         """)
+
+        # Run pre-first frame loading
+        for sprite in self.sprites:
+            sprite.start()
+
         while not self.end:
             dt = self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))

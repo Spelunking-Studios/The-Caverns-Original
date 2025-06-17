@@ -15,6 +15,7 @@ from .leg import Leg
 class SilverBeetle(Beetle):
     """A metallic beetle. High defensive but low speed"""
 
+    challenge_rating = 2
     def __init__(self, game, objT):
         super().__init__(game, objT)
 

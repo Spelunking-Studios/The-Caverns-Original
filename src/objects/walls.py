@@ -17,6 +17,10 @@ def is_clockwise(points):
     return area > 0
 
 class Wall(util.Sprite):
+    '''
+    Wall object. Has a collision type of 1. Relies on the pymunk static_body object. 
+    Supports infinite vertices
+    '''
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.groups.colliders, game.layer1 if DEBUG else game.groups.colliders
@@ -25,7 +29,8 @@ class Wall(util.Sprite):
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
         self.body = pymunk.Body(body_type=pymunk.Body.STATIC)
-
+        
+        self.shapes = []
         if "points" in objT.__dict__:
             # If the shape is a polygon we take the points and fix them
             points = []
@@ -38,10 +43,11 @@ class Wall(util.Sprite):
             # Decomposes complex polygons to pymunk friendly ones
             parts = pymunk.autogeometry.convex_decomposition(points, 0.2)
             for part in parts:
-                self.shape = pymunk.Poly(game.space.static_body, part)
-                self.shape.friction = 0.5
-                self.shape.collision_type = 1
-                self.game.space.add(self.shape)
+                shape = pymunk.Poly(game.space.static_body, part)
+                shape.friction = 0.5
+                shape.collision_type = 1
+                self.game.space.add(shape)
+                self.shapes.append(shape)
             self.game.space.add(self.body)
         else:
             self.body.position = self.rect.center
@@ -65,3 +71,11 @@ class Wall(util.Sprite):
     def draw(self, ctx, transform):
         if DEBUG_PHYSICS:
              pygame.draw.rect(ctx, colors.white, transform(self.rect))
+
+    def kill(self):
+        for shape in self.shapes:
+            try:
+                self.game.space.remove(shape)
+            except AssertionError:
+                print("Error: wall shape not in space")
+        return super().kill()

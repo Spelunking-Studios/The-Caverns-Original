@@ -18,6 +18,7 @@ class Grouper:
         self.pProjectiles = Group()  # Player Projectiles
         self.eProjectiles = Group()  # Enemy Projectiles
         self.particle_emitters = Group()
+        self.zones = Group() # Zones where enemies can spawn
 
     def getProximitySprites(self, sprite, proximity=300, groups=[]):
         """Returns a list of sprites that fall within the specified proximity\

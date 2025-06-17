@@ -13,9 +13,9 @@ class GreatSword(Weapon):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
             "cooldown": 3,
-            "damage": 21,
+            "damage": 210,
             "_variance": 1,
-            "_weight": 20
+            "_weight": 920
         }
         self.stats["categories"] = self.base_categories + ["sword"]
         self.stats["description"] = "Great sword"

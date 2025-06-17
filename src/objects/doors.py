@@ -22,9 +22,10 @@ class Door(util.Sprite):
             self.__dict__[k] = v
         for k, v in objT.properties.items():
             self.__dict__[k] = v
+
     
     def update(self):
-        if self.rect.colliderect(self.game.player.moveRect):
+        if self.rect.colliderect(self.game.player.rect):
             self.game.pause = True
             def func():
                 self.game.unPause()

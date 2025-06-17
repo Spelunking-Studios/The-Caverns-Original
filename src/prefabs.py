@@ -1,6 +1,7 @@
 from menu import *
 from items import *
 from objects import *
+import util
 
 class RedButton(Button):
     def __init__(self, game, pos, text, func):
@@ -12,5 +13,5 @@ class RedButton(Button):
                          onClick = func, 
                          instaKill = True, 
                          center = True, 
-                         colors = (colors.orangeRed, colors.white))
+                         colors = (util.orangeRed, util.white))
 

@@ -16,7 +16,7 @@ class Mace(Weapon):
             "damage": 8,
             "crit": 0.25,
             "_variance": 4,
-            "_weight": 150
+            "_weight": 25
         }
         self.stats["categories"] = self.base_categories + ["mace"]
         self.stats["description"] = "A very heavy mace. The spiked head has begun to rust from the blood of countless victims"

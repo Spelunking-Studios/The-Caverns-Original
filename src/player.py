@@ -132,12 +132,13 @@ class Player(util.Sprite):
 
     #### Updates player ####
     def update(self):
-        if time() - self.lastTimeTookDamage > self.healDelay:
-            self.healthAccumulator += self.game.dt()
-        if self.healthAccumulator > 1:
-            if self.stats.health < 50:
-                self.stats.health += 0.1 * (50 - self.stats.health)
-            self.healthAccumulator = 0
+        # Health regeneration code
+        # if time() - self.lastTimeTookDamage > self.healDelay:
+        #     self.healthAccumulator += self.game.dt()
+        # if self.healthAccumulator > 1:
+        #     if self.stats.health < 50:
+        #         self.stats.health += 0.1 * (50 - self.stats.health)
+        #     self.healthAccumulator = 0
         self.setAngle()
         self.checkActions()
         self.animations.update()

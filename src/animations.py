@@ -143,9 +143,9 @@ class BasicAnimation:
 class Animator:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     cache = {}
-    def __init__(self, img_sheet):
+    def __init__(self, img_sheet, delay = 120):
         self.framex = 0
-        self.delay = 120
+        self.delay = delay
         self.scalex, self.scaley = 1,1
         self.img_sheet = img_sheet
         for k,v in self.img_sheet.items():
@@ -165,6 +165,8 @@ class Animator:
         self.tile_size = self.img_sheet[self.mode].height
         self.image = pygame.Surface((self.tile_size, self.tile_size))
         self.image.convert_alpha() 
+        # Called when the animation reaches the end
+        self.callback = None
 
     def getFirstFrame(self):
         return self.img_sheet[self.mode].get_image(0, 0, self.tile_size, self.tile_size)
@@ -178,6 +180,8 @@ class Animator:
                 self.last_tick = pygame.time.get_ticks()
                 if self.framex > int(self.img_sheet[self.mode].width - self.tile_size):
                     self.framex = 0
+                    if self.callback:
+                        self.callback()
             self.image = self.img_sheet[self.mode].get_image(self.framex, 0, self.tile_size, self.tile_size)
             if not self.scalex == 1 and not self.scaley == 1:
                 self.image = pygame.transform.scale(self.sprite.image, (self.tile_size*self.scalex, self.tile_size*self.scaley))
