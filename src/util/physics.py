@@ -33,6 +33,7 @@ class Chain(Sprite):
         self.link_distance = link_distance
         self.chain_angles = [0 for i in range(self.length)]
         self.controller = controller
+        self.ball_weight = 300
 
         self.dump(kwargs)
 
@@ -42,7 +43,7 @@ class Chain(Sprite):
         x, y = self.pos
         self.balls = []
         for i in range(self.length):
-            ball = Ball(self.ball_radius ,(x + i*self.link_distance, y + i*self.link_distance), 300)
+            ball = Ball(self.ball_radius ,(x + i*self.link_distance, y + i*self.link_distance), self.ball_weight)
             if self.controller and i == 0:
                 ball.body.velocity_func = self.controller
             self.balls.append(ball)
@@ -65,7 +66,6 @@ class Chain(Sprite):
             self.chain_angles[i] = Vec(delta).as_polar()[1]
 
     def kill(self):
-        print("okay")
         for b in self.balls:
             self.game.space.remove(*b.objects())
         for j in self.joints:

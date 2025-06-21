@@ -59,10 +59,7 @@ class Wall(util.Sprite):
 
         self.color = (255, 255, 255)
         self.targetObj = "Entrance"
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
+        self.dump(kwargs, objT.properties) 
 
         if DEBUG:
             self.image = pygame.Surface((self.rect.width, self.rect.height))

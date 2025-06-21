@@ -20,10 +20,7 @@ class Nest(util.Sprite):
         self.include_standard = True
         self.include_silver = False
 
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
+        self.dump(kwargs, objT.properties) 
 
         if self.include_standard:
             self.creatures.append(Beetle)
@@ -33,8 +30,6 @@ class Nest(util.Sprite):
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
         self.loaded = False
-        print("A nest was born")
-
 
     def update(self):
         if not self.loaded:

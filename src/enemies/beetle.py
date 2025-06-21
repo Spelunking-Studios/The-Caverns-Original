@@ -10,7 +10,7 @@ import src.stats as stats
 from src.scripts import get_random_zone_position
 from .enemy import SimpleEnemy
 from src import util
-from src.animations import Animator, HurtFx
+from src.animations import Animator, GlowFx, HurtFx
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
@@ -66,12 +66,13 @@ class Beetle(SimpleEnemy):
         ]
         self.images_attack = pygame.image.load(asset("enemies/beetle/beetle_" + names[0] + "_attack.png"))
         self.animations = [
-            Animator({"static": self.images_idle[0], "attack": self.images_attack}, 40),
+            Animator({"static": self.images_idle[0], "attack": self.images_attack}, 30),
             Animator({"static": self.images_idle[1]}),
             Animator({"static": self.images_idle[2]}),
         ]
         # Makes it so the end of the animation triggers damage being dealt to the player
         self.animations[0].callback = self.deal_damage
+
         self.rect = pygame.Rect(0, 0, 20, 20)
 
     def make_legs(self):
@@ -104,11 +105,15 @@ class Beetle(SimpleEnemy):
     def get_state(self):
         match self.state:
             case "aggro":
-                pass
+                pos = self.chain.balls[0].body.position
+                if util.distance_squared(pos, self.game.player.body.position) > 1000000:
+                    self.state = "searching"
+                    for a in self.animations:
+                        a.clear_fx()
             case "searching":
                 pos = self.chain.balls[0].body.position
                 if util.distance_squared(pos, self.game.player.body.position) < 20000:
-                    self.state = "aggro"
+                    self.aggravate()
                 if self.pause <= 0:
                     if util.distance_squared(pos, self.wander_destination) < 2400:
                         self.pause = 60
@@ -179,6 +184,10 @@ class Beetle(SimpleEnemy):
             self.leg_mounts[i] = leg_mount
             self.feet[i] = foot
             i += 1
+
+    def glow(self):
+        for a in self.animations:
+            a.fx(GlowFx(2000000000, (143, 200, 215) ,strength=0.15, speed=16))
     
     def deal_damage(self):
         pos = self.chain.balls[0].body.position
@@ -198,14 +207,15 @@ class Beetle(SimpleEnemy):
         rects = []
         imgs = []
         for i in range(len(self.animations)):
-            angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
-            image = pygame.transform.rotate(self.animations[i].get_image(), angle)
-            rect = image.get_rect(center = chain_points[i])
+            if not self.animations[i].hide:
+                angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
+                image = pygame.transform.rotate(self.animations[i].get_image(), angle)
+                rect = image.get_rect(center = chain_points[i])
 
-            surf.blit(image, transform(rect))
-            
-            rects.append(rect)
-            imgs.append(image)
+                surf.blit(image, transform(rect))
+                
+                rects.append(rect)
+                imgs.append(image)
 
         # The draw function is quite intensive because as well as finding the screen position
         # It needs to create an image for the sprite because the game relies on mask 
@@ -240,12 +250,16 @@ class Beetle(SimpleEnemy):
 
                 pygame.draw.line(surf, util.white, a, b)
 
+    def aggravate(self):
+        if not self.state == "aggro":
+            self.state = "aggro"
+            # self.glow()
+
     def take_damage(self, dmg):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
-        self.state = "aggro"
-
+        self.aggravate()
     def take_knockback(self, player):
         head = self.chain.balls[0].body
         diff = Vec(head.position) - Vec(player.body.position)

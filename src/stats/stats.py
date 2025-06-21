@@ -32,12 +32,12 @@ class Stats:
 class PlayerStats(Stats):
     def __init__(self, player):
         super().__init__(
-                health=50,
-                healthMax=50,
+                health=30,
+                healthMax=30,
                 sanity=50,
                 sanityMax=50,
                 strength=10,
-                speed=29,
+                speed=40,
                 attack_variance=1,
                 attack_speed=400, # This is a delay in milliseconds
                 defense=15,

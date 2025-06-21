@@ -13,11 +13,7 @@ class Zone(util.Sprite):
         self.groups = game.sprites, game.groups.zones
         pygame.sprite.Sprite.__init__(self, self.groups)
         
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
-        
+        self.dump(kwargs, objT.properties) 
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
@@ -27,7 +23,7 @@ class Zone(util.Sprite):
 
 
     def random_position(self):
-        return (self.rect.x + self.rect.w*random.random(), self.rect.y + self.rect.h*random.random())
+        return (random.uniform(self.rect.left, self.rect.right), random.uniform(self.rect.top, self.rect.bottom))
     
     # def draw(self, surf, transform):
     #     pygame.draw.rect(surf, (200, 0, 0), transform(self.rect), 6)

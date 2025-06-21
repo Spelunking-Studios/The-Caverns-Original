@@ -7,7 +7,7 @@ import objects as objs
 import os
 
 class GameMap:
-    def __init__(self, game, index=2):
+    def __init__(self, game, index=0):
         self.game = game
         self.floors = [
             Floor(game, "Floor1"),

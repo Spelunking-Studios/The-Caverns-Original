@@ -1,5 +1,6 @@
 import util
 import pygame
+import math
 from stgs import *
 from util import Spritesheet
 
@@ -143,7 +144,7 @@ class BasicAnimation:
 class Animator:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####
     cache = {}
-    def __init__(self, img_sheet, delay = 120):
+    def __init__(self, img_sheet, delay = 120, **kwargs):
         self.framex = 0
         self.delay = delay
         self.scalex, self.scaley = 1,1
@@ -167,6 +168,11 @@ class Animator:
         self.image.convert_alpha() 
         # Called when the animation reaches the end
         self.callback = None
+        self.hide = False
+
+        for k,v in kwargs.items():
+            self.__dict__[k] = v
+
 
     def getFirstFrame(self):
         return self.img_sheet[self.mode].get_image(0, 0, self.tile_size, self.tile_size)
@@ -196,7 +202,14 @@ class Animator:
     
     def fx(self, fx):
         self.image_effects.add(fx)
-    
+
+    def clear_fx(self, fx_type=None):
+        if fx_type:
+            #add support for removing fx of certain type
+            pass
+        else:
+            self.image_effects.empty() 
+
     def set_mode(self, mode="default"):
         if mode in self.img_sheet:
             self.mode = mode
@@ -229,6 +242,38 @@ class HurtFx(util.Sprite):
         time = now() - self.start
         darkness = min(255, max(0, round(255 * (time/self.duration))))
         image.fill((255, darkness, darkness), special_flags = pygame.BLEND_MULT)
+
+
+class GlowFx(util.Sprite):
+    def __init__(self, duration = 300, color = None, **kwargs):
+        super().__init__()
+        self.start = now()
+        self.duration = duration
+        self.speed = 8
+        self.strength = 0.5
+        self.color = color
+
+        self.dump(kwargs)
+
+    def update(self):
+        time = now() - self.start
+        if time > self.duration:
+            self.kill()
+
+    def get_color(self):
+        time = now() - self.start
+        magic = math.sin(time/1000*self.speed)
+        if self.color:
+            return util.scale_rgb(self.color, (magic+1)*self.strength)
+            # return util.light(self.color, (magic-1)*50)
+        else:
+            darkness = min(255, max(0, round(255 * magic)))
+            return (darkness, darkness, darkness)
+
+    def apply(self, image):
+        image.fill(self.get_color(), special_flags = pygame.BLEND_ADD)
+
+
 
 
 

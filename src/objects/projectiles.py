@@ -14,8 +14,8 @@ class Projectile(util.Sprite):
         self.game = game
         self.offset = 0
         self.vel = 10
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
+
+        self.dump(kwargs)
 
         pygame.sprite.Sprite.__init__(self, self.groups)
 
