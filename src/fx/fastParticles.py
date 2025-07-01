@@ -1,9 +1,9 @@
 import pygame
 import random
 from pygame import Vector2 as Vec
-from stgs import *
-import util 
-import objects
+from src.stgs import *
+from src import util
+from src import objects
 
 class ParticleController(util.Sprite):
     """A basic class that controls a set of particles designed

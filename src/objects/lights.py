@@ -1,10 +1,7 @@
-import util
-import random
-
-import fx
+from src import util
 import pygame
-from animations import *
-from stgs import *
+from src.animations import *
+from src.stgs import *
 
 
 class LightSource(util.Sprite):

@@ -1,5 +1,5 @@
 import pygame
-from stgs import aalias, fonts
+from src.stgs import aalias, fonts
 
 
 class Text(pygame.sprite.Sprite):

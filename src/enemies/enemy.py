@@ -1,14 +1,14 @@
 import math
 import random
 from time import time
-import fx
+from src import fx
 import pygame
-import util
-from animations import *
-from objects import *
-from player import *
-from stgs import *
-from effects import HurtEffect
+from src import util
+from src.animations import *
+from src.objects import *
+from src.player import *
+from src.stgs import *
+from src.effects import HurtEffect
 
 class SimpleEnemy(util.Sprite):
     """Base enemy class"""

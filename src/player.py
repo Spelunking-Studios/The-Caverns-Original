@@ -1,18 +1,17 @@
-import util
+from src import util
 import math
 from time import time
 
 import pygame
 from pygame import Vector2
-from animations import *
-from objects import Wall, Chest
-from stgs import *
-from overlay import transparent_rect
-import fx
-import stats
-from inventory import Inventory
-import items
-
+from src.animations import *
+from src.objects import Wall, Chest
+from src.stgs import *
+from src.overlay import transparent_rect
+from src import fx
+from src import stats
+from src.inventory import Inventory
+from src import items
 
 
 #### Player object ####

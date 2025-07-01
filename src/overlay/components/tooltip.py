@@ -1,6 +1,6 @@
 import pygame
-import stgs
-from menu import Text
+from src import stgs
+from src.menu import Text
 
 
 class Tooltip:

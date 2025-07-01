@@ -1,7 +1,4 @@
-import util
-import pygame
 from random import randint
-import objects
 
 
 class Stats:

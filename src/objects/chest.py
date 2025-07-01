@@ -1,9 +1,7 @@
 import pygame
-from time import time
-from stgs import asset, now
-import util
-import items
-from inventory import Inventory
+from src.stgs import asset, now
+from src import util
+from src import items
 
 
 class Chest(util.Sprite):

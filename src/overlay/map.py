@@ -1,6 +1,6 @@
-import util
+from src import util
 import pygame
-from stgs import winWidth, winHeight, asset, checkKey
+from src.stgs import winWidth, winHeight, asset, checkKey
 
 
 class MapOverlay(util.Sprite):

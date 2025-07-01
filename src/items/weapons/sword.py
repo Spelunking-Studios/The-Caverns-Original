@@ -1,6 +1,6 @@
 from ..weapon import Weapon
 import pygame
-from stgs import asset
+from src.stgs import asset
 
 
 class Sword(Weapon):

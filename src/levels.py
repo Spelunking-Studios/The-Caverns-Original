@@ -1,10 +1,11 @@
 # from xml.dom.pulldom import parseString
 import pygame
 import pytmx
-from stgs import *
-import enemies
-import objects as objs
+from .stgs import *
+from src import enemies
+from src import objects as objs
 import os
+
 
 class GameMap:
     def __init__(self, game, index=2):

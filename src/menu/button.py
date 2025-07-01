@@ -1,5 +1,5 @@
 import pygame
-from stgs import fonts, asset
+from src.stgs import fonts, asset
 import src.util.colors as colors
 
 

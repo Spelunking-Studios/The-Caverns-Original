@@ -1,10 +1,9 @@
 from .overlay import Overlay
 from .components import Tooltip
-from menu import Button, Image, Text
-import stgs
-from stgs import winWidth, winHeight, fonts
+from src.menu import Button, Image, Text
+from src import stgs
+from src.stgs import winWidth, winHeight, fonts
 import src.util.colors as colors
-import menu
 import pygame
 from time import time
 

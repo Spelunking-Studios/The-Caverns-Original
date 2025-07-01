@@ -1,6 +1,6 @@
-import util
 import pygame
-from stgs import *
+from src.stgs import *
+
 
 try:
     pygame.mixer.init()

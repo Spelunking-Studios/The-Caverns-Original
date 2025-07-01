@@ -1,5 +1,5 @@
 from array import array
-from src.stgs import asset
+from ..stgs import asset
 
 class Shader:
     vert_shader = '''

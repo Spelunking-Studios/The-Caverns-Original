@@ -1,5 +1,5 @@
 from ..weapon import Weapon
-from stgs import asset
+from src.stgs import asset
 import pygame
 
 

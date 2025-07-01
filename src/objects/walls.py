@@ -1,11 +1,10 @@
-import random
-import util
-import fx
-import pygame, pymunk
+from src import util
+import pygame
+import pymunk
 import pymunk.autogeometry
-from pygame import Vector2 as Vec
-from animations import *
-from stgs import *
+from src.animations import *
+from src.stgs import *
+
 
 def is_clockwise(points):
     """Return True if the polygon is wound clockwise."""

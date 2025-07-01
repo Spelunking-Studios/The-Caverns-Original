@@ -1,10 +1,10 @@
 import random
 
-import fx
-import util
+from src import fx
+from src import util
 import pygame
-from animations import *
-from stgs import *
+from src.animations import *
+from src.stgs import *
    
 class Door(util.Sprite):
     color = (255, 255, 255)
