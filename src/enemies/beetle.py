@@ -159,6 +159,7 @@ class Beetle(SimpleEnemy):
                 if util.distance(body.position, self.game.player.rect.center) > self.attack_range:
                     self.state = "aggro"
                     self.animations[0].set_mode("static")
+                    self.animations[0].framex = 0
 
 
     def update_legs(self):

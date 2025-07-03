@@ -36,26 +36,32 @@ class Player(util.Sprite):
             ########################
             # This is just for now #
             ########################
-            self.sword = items.Sword()
-            self.great_sword = items.GreatSword()
-            self.dagger = items.Dagger()
-            self.axe = items.Axe()
-            self.inventory.add_item(self.sword)
-            self.inventory.add_item(self.great_sword)
-            self.inventory.add_item(self.dagger)
-            self.inventory.add_item(self.axe)
-            self.inventory.add_item(items.Mace())
-            self.inventory.add_item(items.ThrowingKnives())
-            self.slot1 = self.sword
-            self.slot2 = self.great_sword
+            if DEBUG:
+                self.sword = items.Sword()
+                self.great_sword = items.GreatSword()
+                self.dagger = items.Dagger()
+                self.axe = items.Axe()
+                self.inventory.add_item(self.sword)
+                self.inventory.add_item(self.great_sword)
+                self.inventory.add_item(self.dagger)
+                self.inventory.add_item(self.axe)
+                self.inventory.add_item(items.Mace())
+                self.inventory.add_item(items.ThrowingKnives())
+                self.slot1 = self.sword
+                self.slot2 = self.great_sword
+            else:
+                self.slot1 = None
         else:
             self.inventory.deserialize(saved_inventory)
 
             if equipped_weapon is None:
-                self.slot1 = None
+                self.slot1 = items.Dagger()
             else:
                 self.slot1 = self.inventory.get_item(equipped_weapon)
-        self.slot2 = items.Wand()
+        if DEBUG:
+            self.slot2 = items.Wand()
+        else:
+            self.slot2 = None
         self.groups = [game.sprites, game.layer2]
         super().__init__(self.groups)
 
@@ -147,10 +153,10 @@ class Player(util.Sprite):
             self.cursor.update()
 
         # Testing Sanity
-        self.stats.sanity = max(4, self.stats.sanity-0.003)
-        if self.stats.sanity < self.stats.sanityMax/2:
-            self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
-            self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+        # self.stats.sanity = max(4, self.stats.sanity-0.003)
+        # if self.stats.sanity < self.stats.sanityMax/2:
+        #     self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
+        #     self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
 
         self.rect.center = self.body.position
         self.particleFx.update()
@@ -183,10 +189,12 @@ class Player(util.Sprite):
             action2 = pressed_buttons[2]
 
         if action1:
-            self.slot1.action(self)
+            if self.slot1:
+                self.slot1.action(self)
             self.last_action = 1
         elif action2:
-            self.slot2.action(self)
+            if self.slot2:
+                self.slot2.action(self)
             self.last_action = 2
 
     def weaponCollisions(self):
@@ -265,7 +273,7 @@ class Player(util.Sprite):
         mPos.x -= pPos.centerx ## Finds the x and y relativity between the mouse and player and then calculates the offset
         mPos.y -= pPos.centery
         try:
-            self.angle = math.degrees(math.atan2(-mPos.normalize().y, mPos.normalize().x))
+            self.angle = math.degrees(math.atan2(-mPos.y, mPos.x))
         except ValueError:
             self.angle = 0
         self.angle -= 90

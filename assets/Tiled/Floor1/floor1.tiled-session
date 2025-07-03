@@ -1,0 +1,135 @@
+{
+    "Map/SizeTest": {
+        "height": 4300,
+        "width": 2
+    },
+    "activeFile": "",
+    "expandedProjectPaths": [
+    ],
+    "file.lastUsedOpenFilter": "All Files (*)",
+    "fileStates": {
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/Caverns Floor 1.tsx": {
+            "scaleInDock": 1
+        },
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features-walls.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 0.75
+        },
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features.tsx": {
+            "scaleInDock": 1,
+            "scaleInEditor": 1
+        },
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/tilesets/floor1-features.tsx": {
+            "scaleInEditor": 1
+        },
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/walls.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 1357.5757575757577,
+                "y": 1271.2121212121212
+            }
+        },
+        "room1.tmx": {
+            "expandedObjectLayers": [
+                5,
+                3,
+                4,
+                6
+            ],
+            "scale": 1,
+            "selectedLayer": 3,
+            "viewCenter": {
+                "x": 3080.5,
+                "y": 2403.5
+            }
+        },
+        "room2.tmx": {
+            "expandedObjectLayers": [
+                5,
+                7,
+                4,
+                6
+            ],
+            "scale": 0.33,
+            "selectedLayer": 6,
+            "viewCenter": {
+                "x": 2331.818181818182,
+                "y": 1877.272727272727
+            }
+        },
+        "room3.tmx": {
+            "expandedObjectLayers": [
+                7,
+                3,
+                8,
+                6
+            ],
+            "scale": 0.75,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 893.9999999999999,
+                "y": 665.9999999999999
+            }
+        },
+        "room4.tmx": {
+            "expandedObjectLayers": [
+                4
+            ],
+            "scale": 0.33,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 995.4545454545453,
+                "y": 956.060606060606
+            }
+        },
+        "room5.tmx": {
+            "scale": 1,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 473.5,
+                "y": 492.5
+            }
+        },
+        "tutorial.tmx": {
+            "expandedObjectLayers": [
+                5,
+                3,
+                6
+            ],
+            "scale": 1,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1481.5,
+                "y": 456.5
+            }
+        }
+    },
+    "last.externalTilesetPath": "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/tilesets",
+    "last.imagePath": "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled",
+    "map.height": 50,
+    "map.lastUsedFormat": "tmx",
+    "map.layerDataFormat": "1",
+    "map.width": 50,
+    "openFiles": [
+    ],
+    "project": "floor1.tiled-project",
+    "property.type": "bool",
+    "recentFiles": [
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/tilesets/floor1-features.tsx",
+        "room5.tmx",
+        "room2.tmx",
+        "room1.tmx",
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features.tsx",
+        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features-walls.tsx",
+        "room3.tmx"
+    ],
+    "tileset.lastUsedFormat": "tsx",
+    "tileset.tileSize": {
+        "height": 128,
+        "width": 128
+    }
+}

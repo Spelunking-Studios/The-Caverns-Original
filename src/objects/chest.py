@@ -50,6 +50,7 @@ class Chest(util.Sprite):
             else:
                 name = self.item.kind
                 self.game.dialogueScreen.dialogueFromText(f"You find a {name}")
+                self.game.player.inventory.add_item(self.item())
                 self.opened = True
                 self.game.toggleInventory()
 

@@ -55,9 +55,9 @@ class Game:
         #pygame.display.set_icon(pygame.image.load(iconPath))
         self.display = Display()
         self.win = pygame.Surface((winWidth, winHeight))
-        self.lastPause = pygame.time.get_ticks()
-        self.lastReset = pygame.time.get_ticks()
-        self.lastCamTog = pygame.time.get_ticks()
+        self.lastPause = now()
+        self.lastReset = now()
+        self.lastCamTog = now()
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
@@ -95,7 +95,7 @@ class Game:
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
-        self.updateT = pygame.time.get_ticks()
+        self.updateT = now()
         self.cam = Cam(self, winWidth, winHeight)
 
         self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
@@ -228,7 +228,7 @@ class Game:
                     self.cam.target = self.player
                     self.pause = False
                     self.groups.enemies.empty()
-                    self.map.switchLevel('cave1')
+                    self.map.loadFloor()
                     # self.player.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:
@@ -283,9 +283,9 @@ class Game:
                     else:
                         self.quit()
 
-        if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
+        if now() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
-            self.lastCamTog = pygame.time.get_ticks()
+            self.lastCamTog = now()
 
         # Inventory
         if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
@@ -332,7 +332,7 @@ class Game:
         self.pauseScreen.load_components()
 
     def get_pause(self):
-        if pygame.time.get_ticks() - self.lastPause >= 60:
+        if now() - self.lastPause >= 160:
             if checkKey(keySet['pause']):
                 if self.pause:
                     self.unPause()
@@ -340,7 +340,7 @@ class Game:
                     self.pause = True
                     self.pauseScreen.activate()
 
-                self.lastPause = pygame.time.get_ticks()
+                self.lastPause = now()
 
     def getSprBylID(self, lID):
         for sprite in self.sprites:

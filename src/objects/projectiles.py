@@ -50,11 +50,10 @@ class Projectile(util.Sprite):
     def move(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
-        pass
 
     def hit(self, enemy=None):
         dmg = self.game.player.stats.attack()
-        if enemy is not None:
+        if enemy:
             enemy.take_damage(dmg[0])
             self.game.player.combatParts.particle(self.pos, dmg[0], dmg[1])
 
@@ -85,7 +84,6 @@ class Fireball(Projectile):
 
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
-
 
     def update(self):
         super().update()
@@ -124,7 +122,6 @@ class ThrowingKnife(Projectile):
 
         self.create_physics(5, 4, self.fake_move)
         
-
         self.lifespan = 600
         self.created = now()
 
