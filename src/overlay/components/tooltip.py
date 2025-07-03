@@ -1,6 +1,7 @@
 import pygame
-import stgs
-from menu import Text
+from src import stgs
+from src import util
+from src.menu import Text
 
 
 class Tooltip:
@@ -14,11 +15,11 @@ class Tooltip:
 
     def render(self, target, offset_x, offset_y):
         # Render the title and desc
-        title = self.title_font.render(self.title, stgs.aalias, stgs.colors.white)
+        title = self.title_font.render(self.title, stgs.aalias, util.colors.white)
         desc = Text(
             self.desc_font,
             self.desc,
-            stgs.colors.white,
+            util.colors.white,
             stgs.aalias,
             multiline=True,
             size=(self.maxToolTipSize - self.padding * 2, 900)

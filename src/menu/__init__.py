@@ -1,5 +1,5 @@
 import pygame
-from stgs import asset
+from src.stgs import asset
 from .button import Button, ImageButton
 from .image import Image
 from .menuItem import MenuItem

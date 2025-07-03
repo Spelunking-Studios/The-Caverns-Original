@@ -1,8 +1,8 @@
-import util
+from src import util
 import pygame
 import src.util.colors as colors
-from menu import SettingSlider, Button, Text
-from stgs import winWidth, winHeight
+from src.menu import SettingSlider, Button, Text
+from src.stgs import winWidth, winHeight
 
 
 class PauseOverlay(util.Sprite):

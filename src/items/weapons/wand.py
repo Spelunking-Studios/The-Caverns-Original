@@ -1,7 +1,8 @@
 import pygame
-from stgs import *
-from items import Weapon
-    
+from src.stgs import *
+from src.items import Weapon
+
+
 class Wand(Weapon):
     '''A magic wielding wand'''
 

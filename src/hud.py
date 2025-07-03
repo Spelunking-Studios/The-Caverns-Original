@@ -1,22 +1,24 @@
-import util
+from src import util
 import pygame
-from stgs import *
-import menu
-from menu import createFrame
-import overlay
-import menu
+from src.stgs import *
+from src import menu
+from src.menu import createFrame
 import src.util.colors as colors
-from math import sin 
+from math import sin
+
 
 class Hud(util.Sprite):
     def __init__(self, game):
         self.groups = game.sprites, game.hudLayer
         self.game = game
         pygame.sprite.Sprite.__init__(self, self.groups)
+
     def render(self):
         pass
+
     def update(self):
         self.render()
+
 
 class StatHud(util.Sprite):
     def __init__(self, game, **kwargs):

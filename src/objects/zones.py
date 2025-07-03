@@ -1,8 +1,8 @@
-import util
+from src import util
 import pygame
 import random
-from stgs import *
-import enemies
+from src.stgs import *
+import src.enemies
 
 class Zone(util.Sprite):
     '''

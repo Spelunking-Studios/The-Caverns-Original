@@ -1,8 +1,8 @@
-import util
+from src import util
 import pygame
-from overlay import *
-from menu import *
-from stgs import *
+from src.overlay import *
+from src.menu import *
+from src.stgs import *
 import src.util.colors as colors
 
 class Menu:

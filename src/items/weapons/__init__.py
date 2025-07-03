@@ -6,4 +6,6 @@ from .axe import Axe
 from .mace import Mace
 from .throwing_knives import ThrowingKnives
 
-__all__ = ["Dagger", "Sword", "GreatSword", "Axe", "Wand"]
+__all__ = [
+    "Dagger", "Sword", "GreatSword", "Axe", "Wand", "Mace", "ThrowingKnives"
+]

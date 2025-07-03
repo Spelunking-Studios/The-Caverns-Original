@@ -1,5 +1,5 @@
 import json
-from items import Item, Weapon, Sword, Dagger, GreatSword, Axe, Mace, ThrowingKnives
+from src.items import Item, Weapon, Sword, Dagger, GreatSword, Axe, Mace, ThrowingKnives
 
 
 class Inventory:

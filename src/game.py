@@ -12,20 +12,20 @@ import os
 import random
 import sys
 
-from stgs import loadSave, saveFile
+from .stgs import loadSave, saveFile
 loadSave(saveFile)
-from stgs import *
-from fx import *
-from levels import *
-from menu import *
-import objects
-import prefabs
-from overlay import *
-from player import *
-from sfx import *
-from util import *
-import menus
-import hud
+from .stgs import *
+from .fx import *
+from .levels import *
+from .menu import *
+from . import objects
+from . import prefabs
+from .overlay import *
+from .player import *
+from .sfx import *
+from .util import *
+from . import menus
+from . import hud
 
 
 #### Game object ####

@@ -1,8 +1,7 @@
-import util
+from src import util
 import pygame
-import math
-from stgs import *
-from util import Spritesheet
+from src.stgs import *
+from src.util import Spritesheet
 
 
 class PlayerAnimation:

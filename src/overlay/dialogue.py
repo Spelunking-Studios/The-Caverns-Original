@@ -1,7 +1,7 @@
-import util
+from src import util
 import pygame
-from stgs import winWidth, winHeight, checkKey, asset, fonts
-from menu import createFrame
+from src.stgs import winWidth, winHeight, checkKey, asset, fonts
+from src.menu import createFrame
 import src.util.colors as colors
 
 

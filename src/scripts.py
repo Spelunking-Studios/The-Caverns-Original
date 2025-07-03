@@ -1,6 +1,6 @@
 import pygame
 import random
-import util
+import src.util
 
 # def get_random_zone_position(game):
 #

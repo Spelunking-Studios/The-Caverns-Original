@@ -1,7 +1,6 @@
 import os
 import sys
 import pygame
-import util.colors as colors
 import math
 import pickle
 

@@ -1,5 +1,5 @@
-import util
-from stgs import *
+from src import util
+from src.stgs import *
 #from animations import animation
 import src.util.colors as colors
 import random

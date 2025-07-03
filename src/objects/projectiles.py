@@ -1,11 +1,11 @@
 import pygame
-import util
+from src import util
 import src.util.colors as colors
 import math
-import fx
-from stgs import asset, now
+from src import fx
+from src.stgs import asset
 from .lights import LightSource, LightEffect
-from animations import BasicAnimation
+from src.animations import BasicAnimation
 
 
 class Projectile(util.Sprite):

@@ -1,9 +1,5 @@
-import util
-import pygame
 from random import randint
-import objects
-from stgs import *
-
+from src.stgs import *
 
 class Stats:
     def __init__(self, **kwargs):

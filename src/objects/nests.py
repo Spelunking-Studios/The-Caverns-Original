@@ -1,6 +1,6 @@
 import pygame
-from stgs import *
-import util
+from src.stgs import *
+from src import util
 import random
 from src.enemies import Beetle, SilverBeetle
 from src.scripts import get_random_zone_position
