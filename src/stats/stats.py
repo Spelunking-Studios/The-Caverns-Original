@@ -32,8 +32,8 @@ class PlayerStats(Stats):
             super().__init__(
                     health=30,
                     healthMax=30,
-                    sanity=50,
-                    sanityMax=50,
+                    stamina=50,
+                    staminaMax=50,
                     strength=10,
                     speed=60,
                     attack_variance=1,
@@ -46,10 +46,10 @@ class PlayerStats(Stats):
             super().__init__(
                     health=30,
                     healthMax=30,
-                    sanity=50,
-                    sanityMax=50,
+                    stamina=50,
+                    staminaMax=50,
                     strength=10,
-                    speed=95,
+                    speed=30,
                     attack_variance=1,
                     attack_speed=400, # This is a delay in milliseconds
                     defense=15,

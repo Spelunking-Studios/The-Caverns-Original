@@ -200,22 +200,24 @@ def main(game, loadingScreenOn = False):
         tti = 0
         ti = 1
         for t in LOADING_TEXT:
-            loadingText.append(Text(
+            text = Text(
                 "2",
                 t,
-                colors.orangeRed,
+                colors.rgba(colors.orangeRed, 50),
                 game.antialiasing,
                 (10, 10 * ti)
-            ))
+            )
+            text.image.set_alpha(0)
+            loadingText.append(text)
             loadingText[tti].rect.centerx = winWidth / 2
             ti += 4
             tti += 1
         loadingLinesShowed = 1
-        loadingLinesTimings = [0.05, 0.1, 0.017, 0.015, 0.015, 0.015, 0.015]
+        loadingLinesTimings = [0.005, 0.005, 0.005, 0.005, 0.005, 0.005, 0.005]
         tmmbt = "Skip"
         if not lssb:
             tmmbt = "Continue"
-        toMainMenuButton = Button(game, (0, winHeight - 100), text = tmmbt, center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton = ImageButton(game, (0, winHeight - 100), text = tmmbt, center = True, colors = (colors.yellow, colors.white))
         toMainMenuButton.rect.centerx = winWidth / 2
     else:
         toMainMenuButton.clicked = True
@@ -297,6 +299,7 @@ def main(game, loadingScreenOn = False):
         else:
             for i in range(int(loadingLinesShowed)):
                 game.win.blit(loadingText[i].image, loadingText[i])
+                loadingText[i].image.set_alpha(min(255, loadingText[i].image.get_alpha()+1))
             if loadingLinesShowed <= len(loadingText):
                 loadingLinesShowed += loadingLinesTimings[int(loadingLinesShowed)] #0.05
             toMainMenuButton.update()

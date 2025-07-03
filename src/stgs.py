@@ -122,6 +122,7 @@ keySet = {
     'left': [pygame.K_LEFT, pygame.K_a],
     'up': [pygame.K_UP, pygame.K_w],
     'down':[pygame.K_DOWN, pygame.K_s],
+    'sprint':[pygame.KMOD_SHIFT, pygame.K_LSHIFT],
     'fullScreen': pygame.K_f,
     'pause': pygame.K_p,
     "inventory": pygame.K_TAB

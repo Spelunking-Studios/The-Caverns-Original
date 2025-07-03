@@ -11,15 +11,8 @@
         "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/Caverns Floor 1.tsx": {
             "scaleInDock": 1
         },
-        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features-walls.tsx": {
-            "scaleInDock": 1,
-            "scaleInEditor": 0.75
-        },
         "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/floor1-features.tsx": {
             "scaleInDock": 1,
-            "scaleInEditor": 1
-        },
-        "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/tilesets/floor1-features.tsx": {
             "scaleInEditor": 1
         },
         "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/walls.tmx": {
@@ -29,69 +22,58 @@
             "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1357.5757575757577,
+                "x": 1359.090909090909,
                 "y": 1271.2121212121212
             }
         },
         "room1.tmx": {
             "expandedObjectLayers": [
-                5,
                 3,
-                4,
-                6
+                5,
+                6,
+                4
             ],
-            "scale": 1,
-            "selectedLayer": 3,
+            "scale": 0.75,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 3080.5,
-                "y": 2403.5
+                "x": 1234.6666666666665,
+                "y": 1371.3333333333333
             }
         },
         "room2.tmx": {
             "expandedObjectLayers": [
-                5,
-                7,
+                6,
                 4,
-                6
+                5,
+                7
             ],
             "scale": 0.33,
-            "selectedLayer": 6,
+            "selectedLayer": 4,
             "viewCenter": {
-                "x": 2331.818181818182,
-                "y": 1877.272727272727
+                "x": 1953.0303030303028,
+                "y": 2125.757575757576
             }
         },
         "room3.tmx": {
             "expandedObjectLayers": [
-                7,
-                3,
+                6,
                 8,
-                6
+                7,
+                3
             ],
-            "scale": 0.75,
-            "selectedLayer": 5,
+            "scale": 0.33,
+            "selectedLayer": 7,
             "viewCenter": {
-                "x": 893.9999999999999,
-                "y": 665.9999999999999
+                "x": 977.2727272727273,
+                "y": 1631.8181818181818
             }
         },
         "room4.tmx": {
-            "expandedObjectLayers": [
-                4
-            ],
-            "scale": 0.33,
-            "selectedLayer": 5,
+            "scale": 0.5,
+            "selectedLayer": 3,
             "viewCenter": {
-                "x": 995.4545454545453,
-                "y": 956.060606060606
-            }
-        },
-        "room5.tmx": {
-            "scale": 1,
-            "selectedLayer": 0,
-            "viewCenter": {
-                "x": 473.5,
-                "y": 492.5
+                "x": 2530,
+                "y": 1189
             }
         },
         "tutorial.tmx": {

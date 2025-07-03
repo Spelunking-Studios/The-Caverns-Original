@@ -2,7 +2,7 @@ from src import util
 import math
 from time import time
 
-import pygame
+import pygame, pymunk
 from pygame import Vector2
 from src.animations import *
 from src.objects import Wall, Chest
@@ -49,7 +49,7 @@ class Player(util.Sprite):
                 self.slot1 = self.sword
                 self.slot2 = self.great_sword
             else:
-                self.slot1 = None
+                self.slot1 = items.Dagger()
         else:
             self.inventory.deserialize(saved_inventory)
 
@@ -75,6 +75,7 @@ class Player(util.Sprite):
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
+        self.using_stamina = False
         self.interacted = False
         self.healDelay = 3
 
@@ -113,37 +114,39 @@ class Player(util.Sprite):
         self.animations.delay = 30
 
     def player_movement(self, body, gravity, damping, dt):
-        keys = pygame.key.get_pressed()
         speed = self.stats.speed*75
         max_speed = self.stats.speed*100
         damping = 0.85
 
-        vx, vy = body.velocity
-        vx *= damping
-        vy *= damping
-
+        vx, vy = 0, 0
+        
+        self.using_stamina = False
+        if self.stats.stamina > 1 and checkKey("sprint"):
+            speed *= 1.5
+            self.stats.stamina -= 0.2
+            self.using_stamina = True
         if checkKey("up"):
-            vy -= speed*dt
+            vy -= 1
         if checkKey("down"):
-            vy += speed*dt
+            vy += 1
         if checkKey("left"):
-            vx -= speed*dt
+            vx -= 1
         if checkKey("right"):
-            vx += speed*dt
+            vx += 1
+        if not (vx, vy) == (0, 0):
+            vxy = pymunk.Vec2d(vx, vy)
+            vxy = vxy.normalized()*speed*dt
+            body.velocity += vxy
+        body.velocity *= damping
 
-        body.velocity = vx, vy
-        if body.velocity.length > max_speed:
-            body.velocity.length = max_speed
+        # if body.velocity.length > max_speed*dt:
+        #     body.velocity = body.velocity.normalized()*max_speed*dt
 
     #### Updates player ####
     def update(self):
         # Health regeneration code
-        # if time() - self.lastTimeTookDamage > self.healDelay:
-        #     self.healthAccumulator += self.game.dt()
-        # if self.healthAccumulator > 1:
-        #     if self.stats.health < 50:
-        #         self.stats.health += 0.1 * (50 - self.stats.health)
-        #     self.healthAccumulator = 0
+        if not self.using_stamina and self.stats.stamina < 50:
+            self.stats.stamina += self.game.dt() * 0.1 * (50 - self.stats.stamina)
         self.setAngle()
         self.checkActions()
         self.animations.update()

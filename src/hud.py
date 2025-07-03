@@ -183,7 +183,7 @@ class StaminaHud(Hud):
             transform(self.rect),
         )
         x, y = self.rect.topleft
-        percent = self.game.player.stats.sanity/self.game.player.stats.sanityMax
+        percent = self.game.player.stats.stamina/self.game.player.stats.staminaMax
         rect = pygame.Rect(x + self.padX, y + self.padY, (self.rect.width-self.padX*2)*(percent), self.rect.height-self.padY*2)
         pygame.draw.rect(
             ctx,
