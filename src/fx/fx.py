@@ -144,7 +144,7 @@ class PlayerParticles(Particles):
     def __init__(self, game, entity):
         self.entity = entity
         super().__init__(game, entity, size = 6, dirRange=(140, 220), tickSpeed=80)
-        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=entity.vel.length()/-1.1, size=(15,15), shrink=0.5, life=200)
+        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=0, size=(15,15), shrink=0.5, life=200)
         self.step = 90
 
     def update(self):
@@ -153,24 +153,23 @@ class PlayerParticles(Particles):
   
     def addParticles(self):
         if len(self.particles) < self.size and pygame.time.get_ticks() - self.lastParticle >= self.tickSpeed:
-            try:
-                dir = self.entity.vel.normalize()
+            if self.entity.body.velocity.length > 1:
+                dir = pygame.Vector2(self.entity.body.velocity).normalize()
+
                 pos = pygame.Vector2(self.entityRect.center)
                 pos += dir.rotate(self.step) * 10
                 self.step*=-1
                 dir.rotate_ip(random.randint(self.dirRange[0], self.dirRange[1]))
                 self.particles.add(self.particleType(self.game, dir, pos, self.particleKwargs))
                 self.lastParticle = pygame.time.get_ticks()
-            except:
-              pass
  
 class CombatParticles(Particles):
     def __init__(self, game, entity):
         self.entity = entity
         super().__init__(game, entity, dirRange=(140, 220), tickSpeed=80, particleType=NumParticle)
-        self.partColor = colors.rgba(colors.white, 120)
+        self.partColor = colors.rgba(colors.white, 150)
         self.critColor = colors.yellow
-        self.setParticleKwargs(color=self.partColor, speed=2, size=(40,40), shrink=0.5, life=600, groups = game.layer2)
+        self.setParticleKwargs(color=self.partColor, speed=2, size=(40,40), shrink=0.3, life=600, groups = game.layer2)
         self.particleType = NumParticle
         self.step = 90
 

@@ -18,14 +18,13 @@ from src import items
 class Player(util.Sprite):
     '''The Player Object'''
     #### Player Initializations ####
-    def __init__(self, game, image, saved_inventory=None, equipped_weapon=None, **kwargs):
+    def __init__(self, game, saved_inventory=None, equipped_weapon=None, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
         self.hitCooldown = 200
-        self.vel = Vector2(0, 0)
         self.damage = 10
         self.roomBound = True
-        self.imgSheet = {"default": asset('player', 'samplePlayer.png'), 'hit':asset('player', 'playerHit1.png'), 'wand':asset('player', 'playerHit1.png')}
+        self.imgSheet = {"default": asset('player', 'player.png'), 'run': asset('player', 'player_running.png'), 'hit':asset('player', 'player_hitting.png'), 'wand':asset('player', 'playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
@@ -65,7 +64,8 @@ class Player(util.Sprite):
         super().__init__(self.groups)
 
         self.game = game
-        self.image = pygame.image.load(image)
+        self.loadAnimations()
+        self.image = self.animations.getFirstFrame()
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
@@ -106,12 +106,10 @@ class Player(util.Sprite):
         )
         # self.body.mass = 30000
         
-        self.loadAnimations()
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
 
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
-        self.animations.delay = 30
 
     def player_movement(self, body, gravity, damping, dt):
         speed = self.stats.speed*75
@@ -137,6 +135,8 @@ class Player(util.Sprite):
             vxy = pymunk.Vec2d(vx, vy)
             vxy = vxy.normalized()*speed*dt
             body.velocity += vxy
+            if not self.animations.mode == "hit":
+                self.animations.setMode("run")
         body.velocity *= damping
 
         # if body.velocity.length > max_speed*dt:
@@ -201,7 +201,7 @@ class Player(util.Sprite):
 
     def weaponCollisions(self):
         if self.attackState == "attack":
-            self.animations.setMode("hit")
+            self.animations.setMode("hit", 30)
             self.attackState = None
             self.game.mixer.playFx("swing")
         if self.animations.mode == "hit":
@@ -258,13 +258,14 @@ class Player(util.Sprite):
         else:
             self.interacted = False
 
-    def takeDamage(self, damage):
+    def take_damage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
+            print("ouch")
             self.lastTimeTookDamage = time()
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
-            self.animations.fx(HurtFx())
+            # self.animations.fx(HurtFx())
 
     def setAngle(self):
         if joystickEnabled:

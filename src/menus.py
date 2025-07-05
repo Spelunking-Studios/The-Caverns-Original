@@ -37,7 +37,7 @@ class CompendiumMenu(Menu):
         super().__init__(game)
         
         #MenuItem(game, (x, y), asset(''), desc='', text=''),
-        self.returnButton = Button(game, (winWidth-240, 70), text="Return", center = True, groups = [self.comps, self.layer1])
+        self.returnButton = ImageButton(game, (winWidth-240, 70), text="Return", center = True, groups = [self.comps, self.layer1])
         self.comps.add([Text('description1', "descText", colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)])
         self.comps.add([Text('main-title1', TITLE,  colors.yellow, game.antialiasing, (30,winHeight - 70), False)])
         self.layer1.add([c for c in self.comps if c not in self.layer1])
@@ -54,7 +54,7 @@ class CompendiumMenu(Menu):
 class SettingsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.returnButton = Button(
+        self.returnButton = ImageButton(
             game,
             (winWidth-240, 70),
             text = "Return",
@@ -73,21 +73,21 @@ class SettingsMenu(Menu):
             (100, 500),
             addGroups = [self.comps, self.layer1]
         )
-        fpsButton = Button(
+        fpsButton = ImageButton(
             game,
             (800, 250),
             text = 'Toggle FPS', 
             onClick = game.toggleFps,
             groups = [self.comps, self.layer1],
         )
-        aaliasButton = Button(
+        aaliasButton = ImageButton(
             game,
             (800, 330),
             text = 'Toggle Anti - Aliasing',
             onClick = game.toggleAalias,
             groups = [self.comps, self.layer1],
         )
-        joystickButton = Button(
+        joystickButton = ImageButton(
             game,
             (800, 530),
             text = 'Joystick Disable',
@@ -144,7 +144,7 @@ class SettingsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.returnButton = Button(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.returnButton = ImageButton(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
         menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
             Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
             Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
@@ -171,10 +171,10 @@ class CreditsMenu(Menu):
 class Main(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.startButton = Button(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), groups = [self.comps, self.layer1])
-        self.settingsButton = Button(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
-        self.instructionsButton = Button(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60), groups = [self.comps, self.layer1])
-        self.creditsButton = Button(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.startButton = ImageButton(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), groups = [self.comps, self.layer1])
+        self.settingsButton = ImageButton(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.instructionsButton = ImageButton(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60), groups = [self.comps, self.layer1])
+        self.creditsButton = ImageButton(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
 
         self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = winWidth / 2, winWidth / 2
 
@@ -191,7 +191,7 @@ def main(game, loadingScreenOn = False):
     if loadingScreenOn:
         game.loadingScreenShownBefore = True
         # Loading screen
-        toMainMenuButton = Button(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton = ImageButton(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
         toMainMenuButton.rect.centerx = winWidth / 2
         loadingScreenBGSurface = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
         loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
@@ -313,7 +313,7 @@ def main(game, loadingScreenOn = False):
         game.display.update(game.win)
 
 def gameOver(game):
-    restartButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    restartButton = ImageButton(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
     buttons = pygame.sprite.Group(restartButton)
     while True:
         game.clock.tick(FPS)
@@ -339,7 +339,7 @@ def gameOver(game):
         game.display.update(game.win)
 
 def victoryLoop(game):
-    menuButton = Button(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    menuButton = ImageButton(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
     buttons = pygame.sprite.Group(menuButton)
     game.mixer.playFx('yay')
     while True:

@@ -35,7 +35,7 @@ class PlayerStats(Stats):
                     stamina=50,
                     staminaMax=50,
                     strength=10,
-                    speed=60,
+                    speed=120,
                     attack_variance=1,
                     attack_speed=400, # This is a delay in milliseconds
                     defense=15,

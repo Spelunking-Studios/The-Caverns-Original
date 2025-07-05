@@ -32,7 +32,7 @@ class SimpleEnemy(util.Sprite):
         self.game.mixer.playFx('hit1')
 
     def deal_damage(self):
-        self.game.player.stats.health -= 4
+        self.game.player.take_damage(4)
 
     def update(self):
         if self.health <= 0:

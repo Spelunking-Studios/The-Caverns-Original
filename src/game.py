@@ -84,7 +84,6 @@ class Game:
         print(globals()["GAME_STATE"].get("player_equipped_weapon", None))
         self.player = Player(
             self,
-            asset('player/samplePlayer.png'),
             globals()["GAME_STATE"].get("player_inventory", None),
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
@@ -121,9 +120,11 @@ class Game:
             You enter the dark cave at the top of Mount Gorngeil. 
             You hear your footsteps reverberate off the walls that seem to wind endlessly into the depths.
                                                                                                
-            You are alone                                    
+            You are alone             ....press space                                   
             
         """)
+
+        self.mixer.playMusic(sAsset('intro.wav'))
 
         # Run pre-first frame loading
         for sprite in self.sprites:

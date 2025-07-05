@@ -9,7 +9,7 @@ class PlayerAnimation:
     def __init__(self, sprite):
         self.sprite = sprite
         self.framex = 0
-        self.delay = 120
+        self.delay = 50
         self.scalex, self.scaley = 1,1
         self.imgSheet = sprite.imgSheet
         self.mode = "default"
@@ -40,6 +40,9 @@ class PlayerAnimation:
             self.scalex, self.scaley = x,x
         else:
             self.scalex, self.scaley = x,y
+
+    def getFirstFrame(self):
+        return self.imgSheet[self.mode].get_image(0, 0, self.tileSize, self.tileSize)
         
     def applyFx(self):
         for fx in self.imageEffects:
@@ -48,12 +51,15 @@ class PlayerAnimation:
     def fx(self, fx):
         self.imageEffects.add(fx)
     
-    def setMode(self, mode="default"):
-        if mode in self.imgSheet:
-            self.mode = mode
-        else:
-            print(f"mode {mode} does not exist for this sprite")
-        self.tileSize = self.imgSheet[self.mode].height
+    def setMode(self, mode="default", delay=60):
+        if not self.mode == mode:
+            if mode in self.imgSheet:
+                self.mode = mode
+            else:
+                print(f"mode {mode} does not exist for this sprite")
+            self.tileSize = self.imgSheet[self.mode].height
+            self.framex = 0
+            self.delay = delay
 
 class BasicAnimation:
     #### Intializes first by grabbing sprite, sprite imgsheet data, and calculating a dir str ####

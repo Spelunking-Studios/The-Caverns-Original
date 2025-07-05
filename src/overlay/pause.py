@@ -1,7 +1,7 @@
 from src import util
 import pygame
 import src.util.colors as colors
-from src.menu import SettingSlider, Button, Text
+from src.menu import SettingSlider, Button, ImageButton, Text
 from src.stgs import winWidth, winHeight
 
 
@@ -42,7 +42,7 @@ class PauseOverlay(util.Sprite):
         self.audioSlider2.image.set_colorkey((0, 0, 0))
 
         # FPS Button
-        self.fpsButton = Button(
+        self.fpsButton = ImageButton(
             self.game,
             (800, 250),
             text='Toggle FPS',
@@ -53,7 +53,7 @@ class PauseOverlay(util.Sprite):
         )
 
         # Anti-Alias Button
-        self.aaliasButton = Button(
+        self.aaliasButton = ImageButton(
             self.game,
             (800, 330),
             text='Toggle Anti - Aliasing',
@@ -64,7 +64,7 @@ class PauseOverlay(util.Sprite):
         )
 
         # Return Button
-        Button(
+        ImageButton(
             self.game,
             (350, 550),
             groups=[self.components],
@@ -80,7 +80,7 @@ class PauseOverlay(util.Sprite):
                 'title2', 'Paused',
                 colors.orangeRed,
                 self.game.antialiasing,
-                (self.rect.width/2.4, 10)
+                (self.rect.width/2.3, 15)
             ),
             Text(
                 'title1', 'Audio Control',
