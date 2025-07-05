@@ -30,35 +30,31 @@ class Player(util.Sprite):
         self.healthAccumulator = 0
         self.inventory = Inventory()
 
-        if saved_inventory is None:
-            ########################
-            # This is just for now #
-            ########################
-            if DEBUG:
-                self.sword = items.Sword()
-                self.great_sword = items.GreatSword()
-                self.dagger = items.Dagger()
-                self.axe = items.Axe()
-                self.inventory.add_item(self.sword)
-                self.inventory.add_item(self.great_sword)
-                self.inventory.add_item(self.dagger)
-                self.inventory.add_item(self.axe)
-                self.inventory.add_item(items.Mace())
-                self.inventory.add_item(items.ThrowingKnives())
-                self.slot1 = self.sword
-                self.slot2 = self.great_sword
-            else:
-                self.slot1 = items.Dagger()
-        else:
-            self.inventory.deserialize(saved_inventory)
-
-            if equipped_weapon is None:
-                self.slot1 = items.Dagger()
-            else:
-                self.slot1 = self.inventory.get_item(equipped_weapon)
+        
         if DEBUG:
+            self.sword = items.Sword()
+            self.great_sword = items.GreatSword()
+            self.dagger = items.Dagger()
+            self.axe = items.Axe()
+            self.inventory.add_item(self.sword)
+            self.inventory.add_item(self.great_sword)
+            self.inventory.add_item(self.dagger)
+            self.inventory.add_item(self.axe)
+            self.inventory.add_item(items.Mace())
+            self.inventory.add_item(items.ThrowingKnives())
+            self.slot1 = self.sword
             self.slot2 = items.Wand()
         else:
+            if saved_inventory is None:
+                # What you start the game with
+                self.slot1 = items.Dagger()
+            else:
+                self.inventory.deserialize(saved_inventory)
+
+                if equipped_weapon is None:
+                    self.slot1 = items.Dagger()
+                else:
+                    self.slot1 = self.inventory.get_item(equipped_weapon)
             self.slot2 = None
         self.groups = [game.sprites, game.layer2]
         super().__init__(self.groups)
@@ -120,7 +116,7 @@ class Player(util.Sprite):
         
         self.using_stamina = False
         if self.stats.stamina > 1 and checkKey("sprint"):
-            speed *= 1.5
+            speed *= self.stats.sprint_multiplier
             self.stats.stamina -= 0.2
             self.using_stamina = True
         if checkKey("up"):

@@ -15,6 +15,8 @@ class Chest(util.Sprite):
         ]
         pygame.sprite.Sprite.__init__(self, self.groups)
 
+        self.game_id = None
+
         for k, v in kwargs.items():
             self.__dict__[k] = v
         for k, v in objT.properties.items():
@@ -38,6 +40,12 @@ class Chest(util.Sprite):
         self.shape.friction = 0.5
         self.game.space.add(self.body, self.shape)
 
+        if not self.game_id:
+            self.game_id = self.id
+        
+        if self.game_id in game.progress["chests_opened"]:
+            self.opened = True
+
     def update(self):
         pass
 
@@ -49,6 +57,7 @@ class Chest(util.Sprite):
                 name = self.item.kind
                 self.game.dialogueScreen.dialogueFromText(f"You find a {name}")
                 self.game.player.inventory.add_item(self.item())
+                self.game.progress["chests_opened"].append(self.game_id)
                 self.opened = True
                 self.game.toggleInventory()
 

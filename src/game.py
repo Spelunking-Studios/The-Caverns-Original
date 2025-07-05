@@ -87,7 +87,9 @@ class Game:
             globals()["GAME_STATE"].get("player_inventory", None),
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
-        self.progress = globals()["GAME_STATE"].get("progress", {})
+        self.progress = globals()["GAME_STATE"].get("progress", {
+            "chests_opened": []
+        })
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         # self.mapScreen = MapOverlay(self)

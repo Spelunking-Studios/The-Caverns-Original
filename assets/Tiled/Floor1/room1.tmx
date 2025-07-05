@@ -143,7 +143,7 @@
   </object>
  </objectgroup>
  <objectgroup id="6" name="object">
-  <object id="18" name="Chest" x="2970" y="2394">
+  <object id="18" name="Chest" x="2883" y="1377">
    <properties>
     <property name="game_id" value="chest_room_1"/>
     <property name="item" value="Sword"/>

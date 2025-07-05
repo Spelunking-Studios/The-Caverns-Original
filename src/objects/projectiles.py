@@ -3,7 +3,7 @@ from src import util
 import src.util.colors as colors
 import math
 from src import fx
-from src.stgs import asset
+from src.stgs import asset, now
 from .lights import LightSource, LightEffect
 from src.animations import BasicAnimation
 

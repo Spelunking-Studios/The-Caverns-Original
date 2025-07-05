@@ -41,6 +41,7 @@ class PlayerStats(Stats):
                     defense=15,
                     crit=5, # This is a percent out of 100 (make sure its an integer)
                     critBonus = 200, # This is a percent
+                    sprint_multiplier = 2
                     )
         else:
             super().__init__(
@@ -55,6 +56,7 @@ class PlayerStats(Stats):
                     defense=15,
                     crit=5, # This is a percent out of 100 (make sure its an integer)
                     critBonus = 200, # This is a percent
+                    sprint_multiplier = 2
                     )
         self.player = player
         self.inventory = player.inventory
