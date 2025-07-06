@@ -25,8 +25,7 @@ IS_COMPILED = False
 try:
     PATH = __nuitka_binary_dir     # Tries to see if the project is built
     IS_COMPILED = True
-    print("project is built")
-except AttributeError:
+except NameError:
     PATH = os.path.dirname(os.path.realpath(__file__))
     # Path to the asset folder
     ASSETSPATH = os.path.join(PATH, '../assets')

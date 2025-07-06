@@ -12,7 +12,7 @@ class GameMap:
         self.game = game
         self.floors = [
             Floor(game, "Floor1"),
-            Floor(game, "Floor2"),
+            # Floor(game, "Floor2"),
             Floor(game, "Floor3"),
         ]
         self.index = index
