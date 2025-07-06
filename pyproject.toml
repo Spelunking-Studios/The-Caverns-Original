@@ -18,6 +18,7 @@ authors = ["LGgameLAB", "Ben Landon"]
 dev = [
     "flake8>=7.1.2",
     "flameprof>=0.4",
+    "nuitka>=2.7.11",
     "pep8-naming>=0.14.1",
 ]
 
