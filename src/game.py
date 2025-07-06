@@ -55,9 +55,9 @@ class Game:
         #pygame.display.set_icon(pygame.image.load(iconPath))
         self.display = Display()
         self.win = pygame.Surface((winWidth, winHeight))
-        self.lastPause = pygame.time.get_ticks()
-        self.lastReset = pygame.time.get_ticks()
-        self.lastCamTog = pygame.time.get_ticks()
+        self.lastPause = now()
+        self.lastReset = now()
+        self.lastCamTog = now()
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
@@ -72,6 +72,7 @@ class Game:
         self.end = False
         self.pause = False
         self.inInventory = False
+        self.points = 0
 
         self.groups = Grouper()
         self.handler = Handler(self)
@@ -84,17 +85,19 @@ class Game:
         print(globals()["GAME_STATE"].get("player_equipped_weapon", None))
         self.player = Player(
             self,
-            asset('player/samplePlayer.png'),
             globals()["GAME_STATE"].get("player_inventory", None),
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
+        self.progress = globals()["GAME_STATE"].get("progress", {
+            "chests_opened": []
+        })
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
-        self.updateT = pygame.time.get_ticks()
+        self.updateT = now()
         self.cam = Cam(self, winWidth, winHeight)
 
         self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
@@ -103,7 +106,6 @@ class Game:
     ####  Determines how the run will function ####
     def run(self):
         loadSave("game.store")
-        self.mixer.playMusic(sAsset('intro.wav'))
         if not DEBUG:
             self.menuLoop()
         self.map.loadFloor()
@@ -117,12 +119,21 @@ class Game:
     #### Main game loop ####
     def mainLoop(self):
         self.dialogueScreen.dialogueFromText("""
-            You enter the dark cave at the top of Mount Gorngeil. 
-            You hear your footsteps reverberate off the walls that seem to wind endlessly into the depths.
-                                                                                               
-            You are alone                                    
+            Welcome to the caverns demo
+            WASD to move, left click to attack, shift to sprint, tab for inventory
+                         ....press space                                   
             
         """)
+        # self.dialogueScreen.dialogueFromText("""
+        #     There are weapons hidden in chests. Try to find them all. Beware the creatures
+        # """)
+
+        self.mixer.playMusic(sAsset('Adventure-Piano.mp3'))
+
+        # Run pre-first frame loading
+        for sprite in self.sprites:
+            sprite.start()
+
         while not self.end:
             dt = self.clock.tick(FPS)
             self.refresh()  # asset('objects/shocking.jpg'))
@@ -222,7 +233,7 @@ class Game:
                     self.cam.target = self.player
                     self.pause = False
                     self.groups.enemies.empty()
-                    self.map.switchLevel('cave1')
+                    self.map.loadFloor()
                     # self.player.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:
@@ -249,6 +260,7 @@ class Game:
             sprite.kill()
         for sprite in self.pSprites:
             sprite.kill()
+        self.groups.killAll()
         self.new()
         self.run()
 
@@ -277,9 +289,9 @@ class Game:
                     else:
                         self.quit()
 
-        if pygame.time.get_ticks() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
+        if now() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
-            self.lastCamTog = pygame.time.get_ticks()
+            self.lastCamTog = now()
 
         # Inventory
         if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
@@ -326,7 +338,7 @@ class Game:
         self.pauseScreen.load_components()
 
     def get_pause(self):
-        if pygame.time.get_ticks() - self.lastPause >= 60:
+        if now() - self.lastPause >= 160:
             if checkKey(keySet['pause']):
                 if self.pause:
                     self.unPause()
@@ -334,7 +346,7 @@ class Game:
                     self.pause = True
                     self.pauseScreen.activate()
 
-                self.lastPause = pygame.time.get_ticks()
+                self.lastPause = now()
 
     def getSprBylID(self, lID):
         for sprite in self.sprites:
@@ -343,6 +355,7 @@ class Game:
         return False
 
     def menuLoop(self):
+        self.mixer.playMusic(sAsset('intro.wav'))
         menus.main(self, True)
 
     def victoryLoop(self):

@@ -12,10 +12,11 @@ class Mace(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
-            "cooldown": 2.2,
-            "damage": 20,
+            "cooldown": 0.4,
+            "damage": 8,
+            "crit": 0.25,
             "_variance": 4,
-            "_weight": 50
+            "_weight": 25
         }
         self.stats["categories"] = self.base_categories + ["mace"]
         self.stats["description"] = "A very heavy mace. The spiked head has begun to rust from the blood of countless victims"

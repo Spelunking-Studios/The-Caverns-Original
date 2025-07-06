@@ -31,6 +31,9 @@ class SimpleEnemy(util.Sprite):
         self.health -= dmg
         self.game.mixer.playFx('hit1')
 
+    def deal_damage(self):
+        self.game.player.take_damage(4)
+
     def update(self):
         if self.health <= 0:
             self.kill()
@@ -39,6 +42,10 @@ class SimpleEnemy(util.Sprite):
         pass
 
     def kill(self):
+        if hasattr(self, "challenge_rating"):
+            self.game.points += 10*self.challenge_rating
+        else:
+            self.game.points += 5
         super().kill()
         # Will eventually implement a blood splatter effect when killing enemies
         # self.game.blood_splatter()

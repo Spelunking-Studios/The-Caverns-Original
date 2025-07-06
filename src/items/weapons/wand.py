@@ -14,7 +14,7 @@ class Wand(Weapon):
         self.stats['attack'] = {
             "cooldown": 0.8,
             "damage": 20,
-            "variance": 1,
+            "_variance": 1,
             "ranged": True,
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
@@ -33,6 +33,6 @@ class Wand(Weapon):
     def _player_attack(self, player):
         # player.attackState = "attack"
     
-        player.animations.setMode('wand')
+        # player.animations.setMode('wand')
         # Launches fireball
         player.game.get_prefab("Fireball")(player.game)

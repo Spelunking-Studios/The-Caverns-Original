@@ -16,6 +16,7 @@ class ThrowingKnives(Weapon):
             "damage": 7,
             "_variance": 1,
             "_ranged": True,
+            "_range": True,
         }
         self.stats['categories'] = self.base_categories + ["throwing_knives"]
         self.stats['description'] = "A dangerous set of knives waiting to be tossed"

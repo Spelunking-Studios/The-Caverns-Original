@@ -16,7 +16,7 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = True
+DEBUG = False
 DEBUG_PHYSICS = False
 DEBUG_RENDER = False
 IS_COMPILED = False
@@ -25,15 +25,16 @@ IS_COMPILED = False
 try:
     PATH = __nuitka_binary_dir     # Tries to see if the project is built
     IS_COMPILED = True
+    print("project is built")
 except AttributeError:
     PATH = os.path.dirname(os.path.realpath(__file__))
+    # Path to the asset folder
+    ASSETSPATH = os.path.join(PATH, '../assets')
 
-# Path to the asset folder
-ASSETSPATH = os.path.join(PATH, '../assets')
 
 # Gets file for saving settings in game. Every variable set here is default. Clearing the settings
 # file should load everything as default.
-# TODO: Use IS_COMPILED instead once a cross-paltform local app storage thing is figured out
+# TODO: Use IS_COMPILED instead once a cross-platform local app storage thing is figured out
 if True:  # Checks if game is running from local path or has gamedata stored in appdata
     saveFile = os.path.join(PATH, '../game.store')
 else:
@@ -126,6 +127,7 @@ keySet = {
     'left': [pygame.K_LEFT, pygame.K_a],
     'up': [pygame.K_UP, pygame.K_w],
     'down':[pygame.K_DOWN, pygame.K_s],
+    'sprint':[pygame.K_RSHIFT, pygame.K_LSHIFT, pygame.K_SPACE],
     'fullScreen': pygame.K_f,
     'pause': pygame.K_p,
     "inventory": pygame.K_TAB
@@ -186,15 +188,19 @@ def checkKey(move):
 if __name__ != '__main__':
     fonts = {
         'title1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 42),
-        'main-title1': pygame.font.Font(fAsset('PixelLove.ttf'), 68),
+        # Used in credits screen
+        'main-title1': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 68),
         'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
         '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
+        # Used for inventory stats
         '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
         'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
-        'title2': pygame.font.Font(fAsset('PixelLove.ttf'), 40),
+        'title2': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 52),
         'title3': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 20),
+        # Used in inventory and pause menu
         'caption1': pygame.font.Font(fAsset('Darinia.ttf'), 20),
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
+        # Used for damage particles
         'effect2': pygame.font.Font(fAsset('Darinia.ttf'), 18),
         'gameover': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
@@ -253,6 +259,7 @@ def saveData(file, game):
     # Serialize the player's inventory
     player = game.player
     player_inventory = player.inventory.serialize()
+    saveDict["GAME_STATE"]["progress"] = game.progress
     saveDict["GAME_STATE"]["player_inventory"] = player_inventory
     saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
     saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)

@@ -3,7 +3,7 @@ from src import util
 import src.util.colors as colors
 import math
 from src import fx
-from src.stgs import asset
+from src.stgs import asset, now
 from .lights import LightSource, LightEffect
 from src.animations import BasicAnimation
 
@@ -14,8 +14,8 @@ class Projectile(util.Sprite):
         self.game = game
         self.offset = 0
         self.vel = 10
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
+
+        self.dump(kwargs)
 
         pygame.sprite.Sprite.__init__(self, self.groups)
 
@@ -50,11 +50,10 @@ class Projectile(util.Sprite):
     def move(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
-        pass
 
     def hit(self, enemy=None):
         dmg = self.game.player.stats.attack()
-        if enemy is not None:
+        if enemy:
             enemy.take_damage(dmg[0])
             self.game.player.combatParts.particle(self.pos, dmg[0], dmg[1])
 
@@ -86,14 +85,12 @@ class Fireball(Projectile):
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
 
-
     def update(self):
         super().update()
         self.light.rect.center = self.rect.center
         self.animations.update()
 
     def kill(self):
-        print("killed")
         super().kill()
         self.particles.setLife(220)
         LightEffect(self.game, self.rect, source_img=self.light_img, default_size=True, lifespan=220)
@@ -124,6 +121,9 @@ class ThrowingKnife(Projectile):
         self.light = LightSource(game, self.rect, img=asset("objects/light1.png"))
 
         self.create_physics(5, 4, self.fake_move)
+        
+        self.lifespan = 600
+        self.created = now()
 
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
@@ -131,10 +131,12 @@ class ThrowingKnife(Projectile):
     def update(self):
         super().update()
         self.light.rect.center = self.rect.center
+        if now() - self.created >= self.lifespan:
+            self.kill()
         # self.animations.update()
 
     def kill(self):
-        print("killed")
+        # Play sound
         super().kill()
-        LightEffect(self.game, self.rect)
+        # LightEffet(self.game, self.rect)
         self.light.kill()

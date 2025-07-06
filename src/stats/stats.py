@@ -1,5 +1,5 @@
 from random import randint
-
+from src.stgs import *
 
 class Stats:
     def __init__(self, **kwargs):
@@ -28,19 +28,36 @@ class Stats:
 
 class PlayerStats(Stats):
     def __init__(self, player):
-        super().__init__(
-                health=50,
-                healthMax=50,
-                sanity=50,
-                sanityMax=50,
-                strength=10,
-                speed=29,
-                attack_variance=1,
-                attack_speed=400, # This is a delay in milliseconds
-                defense=15,
-                crit=5, # This is a percent out of 100 (make sure its an integer)
-                critBonus = 200, # This is a percent
-                )
+        if DEBUG:
+            super().__init__(
+                    health=30,
+                    healthMax=30,
+                    stamina=50,
+                    staminaMax=50,
+                    strength=10,
+                    speed=120,
+                    attack_variance=1,
+                    attack_speed=400, # This is a delay in milliseconds
+                    defense=15,
+                    crit=5, # This is a percent out of 100 (make sure its an integer)
+                    critBonus = 200, # This is a percent
+                    sprint_multiplier = 2
+                    )
+        else:
+            super().__init__(
+                    health=30,
+                    healthMax=30,
+                    stamina=50,
+                    staminaMax=50,
+                    strength=10,
+                    speed=30,
+                    attack_variance=1,
+                    attack_speed=400, # This is a delay in milliseconds
+                    defense=15,
+                    crit=5, # This is a percent out of 100 (make sure its an integer)
+                    critBonus = 200, # This is a percent
+                    sprint_multiplier = 2
+                    )
         self.player = player
         self.inventory = player.inventory
 
@@ -49,7 +66,8 @@ class PlayerStats(Stats):
             dmg = self.player.slot1.damage + self.strength/5
         else:
             dmg = self.player.slot2.damage + self.strength/5
-        atkVar = self.attack_variance + self.player.slot1._variance
+        variance = self.player.slot1._variance if self.player.last_action == 1 else self.player.slot2._variance
+        atkVar = self.attack_variance + variance
         if randint(0, 100) <= self.crit:
             crit = True
             damage = randint(max(0, int((dmg-atkVar)*(self.critBonus/100))), int((dmg+atkVar)*(self.critBonus/100)))

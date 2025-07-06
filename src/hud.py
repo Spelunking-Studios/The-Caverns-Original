@@ -41,7 +41,8 @@ class StatHud(util.Sprite):
     def render(self):
         s = self.game.player.stats
         hp = "RGB(120,20,0)"+ str(int(s.health)) if s.health < s.healthMax/2.5 else int(s.health)
-        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {self.game.player.slot1.damage}\nCritical = {s.crit}%"
+        dmg = self.game.player.slot1.damage if self.game.player.slot1 else "N/A"
+        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {dmg}\nCritical = {s.crit}%"
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
@@ -60,14 +61,16 @@ class SlotsHud(Hud):
 
         # Create the slots
         self.slot1 = SlotHud((10, 610), scale=0.6)
-        self.slot2 = SlotHud((130, 610), img_path = asset("ui/magic_slot.png"), scale = 0.64)
+        self.slot2 = SlotHud((118, 610), scale = 0.6)
+        self.slot3 = SlotHud((65, 510), scale = 0.6)
 
-        self.healthHud = HeathHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
-        self.sanityHud = SanityHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
+        self.healthHud = HeathHud(game)# + winWidth/2.5)
+        self.staminaHud = StaminaHud(game)# + winWidth/2.5)
+        self.healthHud.rect.right = winWidth - 10
+        self.staminaHud.rect.right = winWidth - 10
 
         # Add the slots
-        self.slots.add(self.slot1)
-        self.slots.add(self.slot2)
+        self.slots.add(self.slot1, self.slot2, self.slot3)
 
     def update(self):
         self.slots.update()
@@ -80,15 +83,18 @@ class SlotsHud(Hud):
         # draw items in slots
         size = pygame.math.Vector2(self.slot1.rect.size) #* 0.75
         # img1 = pygame.transform.scale(self.game.player.slot1.renderable, size)
-        img1 = self.game.player.slot1.renderable
-        ctx.blit(img1, (
-            self.slot1.rect.left + size[0] * 0.18,
-            self.slot1.rect.top + size[1] * 0.17
-        ))
-        ctx.blit(self.game.player.slot2.renderable, (
-            self.slot2.rect.left + size[0] * 0.18,
-            self.slot2.rect.top + size[1] * 0.17
-        ))
+        slot1 = self.game.player.slot1
+        slot2 = self.game.player.slot2
+        if slot1:
+            ctx.blit(slot1.renderable, (
+                self.slot1.rect.left + size[0] * 0.18,
+                self.slot1.rect.top + size[1] * 0.17
+            ))
+        if slot2:
+            ctx.blit(slot2.renderable, (
+                self.slot2.rect.left + size[0] * 0.18,
+                self.slot2.rect.top + size[1] * 0.17
+            ))
 
 class SlotHud(util.Sprite):
     def __init__(self, pos, **kwargs):
@@ -154,7 +160,7 @@ class HeathHud(Hud):
     def update(self):
         self.render()
 
-class SanityHud(Hud):
+class StaminaHud(Hud):
     def __init__(self, game, **kwargs):
         self.x, self.y = 400, 680
         for k,v, in kwargs.items():
@@ -179,7 +185,8 @@ class SanityHud(Hud):
             transform(self.rect),
         )
         x, y = self.rect.topleft
-        rect = pygame.Rect(x + self.padX, y + self.padY, (self.rect.width-self.padX*2)*(self.game.player.stats.sanity/self.game.player.stats.sanityMax), self.rect.height-self.padY*2)
+        percent = self.game.player.stats.stamina/self.game.player.stats.staminaMax
+        rect = pygame.Rect(x + self.padX, y + self.padY, (self.rect.width-self.padX*2)*(percent), self.rect.height-self.padY*2)
         pygame.draw.rect(
             ctx,
             colors.white,#colors.light(colors.green, sin(pygame.time.get_ticks()*80)),

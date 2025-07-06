@@ -13,6 +13,9 @@ class Sprite(pygame.sprite.Sprite):
     def __init__(self, *args):
         super().__init__(*args)
 
+    def start(self):
+        pass
+
     def dump(self, *args):
         # Takes dictionaries and assigns variables
         # Useful for assigning or loading attributes

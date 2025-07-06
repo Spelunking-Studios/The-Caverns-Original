@@ -2,7 +2,7 @@ from src import util
 import math
 from time import time
 
-import pygame
+import pygame, pymunk
 from pygame import Vector2
 from src.animations import *
 from src.objects import Wall, Chest
@@ -18,23 +18,20 @@ from src import items
 class Player(util.Sprite):
     '''The Player Object'''
     #### Player Initializations ####
-    def __init__(self, game, image, saved_inventory=None, equipped_weapon=None, **kwargs):
+    def __init__(self, game, saved_inventory=None, equipped_weapon=None, **kwargs):
         '''Loads most of the heavy data for the player here'''
         # Modifiers
         self.hitCooldown = 200
-        self.vel = Vector2(0, 0)
         self.damage = 10
         self.roomBound = True
-        self.imgSheet = {"default": asset('player', 'samplePlayer.png'), 'hit':asset('player', 'playerHit1.png'), 'wand':asset('player', 'playerHit1.png')}
+        self.imgSheet = {"default": asset('player', 'player.png'), 'run': asset('player', 'player_running.png'), 'hit':asset('player', 'player_hitting.png'), 'wand':asset('player', 'playerHit1.png')}
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
         self.inventory = Inventory()
 
-        if saved_inventory is None:
-            ########################
-            # This is just for now #
-            ########################
+        
+        if DEBUG:
             self.sword = items.Sword()
             self.great_sword = items.GreatSword()
             self.dagger = items.Dagger()
@@ -46,20 +43,26 @@ class Player(util.Sprite):
             self.inventory.add_item(items.Mace())
             self.inventory.add_item(items.ThrowingKnives())
             self.slot1 = self.sword
-            self.slot2 = self.great_sword
+            self.slot2 = items.Wand()
         else:
-            self.inventory.deserialize(saved_inventory)
-
-            if equipped_weapon is None:
-                self.slot1 = None
+            if saved_inventory is None:
+                # What you start the game with
+                self.slot1 = items.Dagger()
+                self.inventory.add_item(self.slot1)
             else:
-                self.slot1 = self.inventory.get_item(equipped_weapon)
-        self.slot2 = items.Wand()
+                self.inventory.deserialize(saved_inventory)
+
+                if equipped_weapon:
+                    self.slot1 = self.inventory.get_item(equipped_weapon)
+                else:
+                    self.slot1 = items.Dagger()
+            self.slot2 = None
         self.groups = [game.sprites, game.layer2]
         super().__init__(self.groups)
 
         self.game = game
-        self.image = pygame.image.load(image)
+        self.loadAnimations()
+        self.image = self.animations.getFirstFrame()
         self.imgSrc = self.image.copy()
         self.rect = pygame.Rect(0, 0, self.width, self.height)
         self.moveRect = self.rect.copy()
@@ -69,6 +72,7 @@ class Player(util.Sprite):
         self.lastHit = 0
         self.lastAttack = 0
         self.lastTimeTookDamage = 0
+        self.using_stamina = False
         self.interacted = False
         self.healDelay = 3
 
@@ -99,44 +103,47 @@ class Player(util.Sprite):
         )
         # self.body.mass = 30000
         
-        self.loadAnimations()
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
 
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
-        self.animations.delay = 30
 
     def player_movement(self, body, gravity, damping, dt):
-        keys = pygame.key.get_pressed()
         speed = self.stats.speed*75
         max_speed = self.stats.speed*100
         damping = 0.85
 
-        vx, vy = body.velocity
-        vx *= damping
-        vy *= damping
-
+        vx, vy = 0, 0
+        
+        self.using_stamina = False
+        if self.stats.stamina > 1 and checkKey("sprint"):
+            speed *= self.stats.sprint_multiplier
+            self.stats.stamina -= 0.2
+            self.using_stamina = True
         if checkKey("up"):
-            vy -= speed*dt
+            vy -= 1
         if checkKey("down"):
-            vy += speed*dt
+            vy += 1
         if checkKey("left"):
-            vx -= speed*dt
+            vx -= 1
         if checkKey("right"):
-            vx += speed*dt
+            vx += 1
+        if not (vx, vy) == (0, 0):
+            vxy = pymunk.Vec2d(vx, vy)
+            vxy = vxy.normalized()*speed*dt
+            body.velocity += vxy
+            if not self.animations.mode == "hit":
+                self.animations.setMode("run")
+        body.velocity *= damping
 
-        body.velocity = vx, vy
-        if body.velocity.length > max_speed:
-            body.velocity.length = max_speed
+        # if body.velocity.length > max_speed*dt:
+        #     body.velocity = body.velocity.normalized()*max_speed*dt
 
     #### Updates player ####
     def update(self):
-        if time() - self.lastTimeTookDamage > self.healDelay:
-            self.healthAccumulator += self.game.dt()
-        if self.healthAccumulator > 1:
-            if self.stats.health < 50:
-                self.stats.health += 0.1 * (50 - self.stats.health)
-            self.healthAccumulator = 0
+        # Health regeneration code
+        if not self.using_stamina and self.stats.stamina < 50:
+            self.stats.stamina += self.game.dt() * 0.1 * (50 - self.stats.stamina)
         self.setAngle()
         self.checkActions()
         self.animations.update()
@@ -145,10 +152,10 @@ class Player(util.Sprite):
             self.cursor.update()
 
         # Testing Sanity
-        self.stats.sanity = max(4, self.stats.sanity-0.003)
-        if self.stats.sanity < self.stats.sanityMax/2:
-            self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
-            self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+        # self.stats.sanity = max(4, self.stats.sanity-0.003)
+        # if self.stats.sanity < self.stats.sanityMax/2:
+        #     self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
+        #     self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
 
         self.rect.center = self.body.position
         self.particleFx.update()
@@ -181,15 +188,17 @@ class Player(util.Sprite):
             action2 = pressed_buttons[2]
 
         if action1:
-            self.slot1.action(self)
+            if self.slot1:
+                self.slot1.action(self)
             self.last_action = 1
         elif action2:
-            self.slot2.action(self)
+            if self.slot2:
+                self.slot2.action(self)
             self.last_action = 2
 
     def weaponCollisions(self):
         if self.attackState == "attack":
-            self.animations.setMode("hit")
+            self.animations.setMode("hit", 30)
             self.attackState = None
             self.game.mixer.playFx("swing")
         if self.animations.mode == "hit":
@@ -246,13 +255,14 @@ class Player(util.Sprite):
         else:
             self.interacted = False
 
-    def takeDamage(self, damage):
+    def take_damage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
+            print("ouch")
             self.lastTimeTookDamage = time()
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.game.mixer.playFx('pHit')
-            self.animations.fx(HurtFx())
+            # self.animations.fx(HurtFx())
 
     def setAngle(self):
         if joystickEnabled:
@@ -263,7 +273,7 @@ class Player(util.Sprite):
         mPos.x -= pPos.centerx ## Finds the x and y relativity between the mouse and player and then calculates the offset
         mPos.y -= pPos.centery
         try:
-            self.angle = math.degrees(math.atan2(-mPos.normalize().y, mPos.normalize().x))
+            self.angle = math.degrees(math.atan2(-mPos.y, mPos.x))
         except ValueError:
             self.angle = 0
         self.angle -= 90
@@ -273,7 +283,7 @@ class Player(util.Sprite):
         if not angle:
             angle = self.angle
         self.image = pygame.transform.rotate(self.image, angle)
-        self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
+        self.rect = self.image.get_rect(center = self.rect.center)
         self.mask = pygame.mask.from_surface(self.image, True)
 
     def spin(self):

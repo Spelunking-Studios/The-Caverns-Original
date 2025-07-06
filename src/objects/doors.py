@@ -18,13 +18,10 @@ class Door(util.Sprite):
         self.targetRoom = 'room1-floor1'
         self.targetObj = "entrance"
 
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
+        self.dump(kwargs, objT.properties) 
     
     def update(self):
-        if self.rect.colliderect(self.game.player.moveRect):
+        if self.rect.colliderect(self.game.player.rect):
             self.game.pause = True
             def func():
                 self.game.unPause()
@@ -41,8 +38,7 @@ class Entrance(util.Sprite):
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
+        self.dump(kwargs, objT.properties) 
 
 def Entrance1(game, objT):
     return Entrance(game, objT)

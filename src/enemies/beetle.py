@@ -7,14 +7,17 @@ from pygame import Vector2 as Vec
 from src.stgs import *
 import src.fx as fx
 import src.stats as stats
+from src.scripts import get_random_zone_position
 from .enemy import SimpleEnemy
 from src import util
-from src.animations import Animator, HurtFx
+from src.animations import Animator, GlowFx, HurtFx
 from .leg import Leg
 
 class Beetle(SimpleEnemy):
     """A spider sprite with cool top down movement
     """
+    
+    challenge_rating = 1
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
@@ -31,7 +34,13 @@ class Beetle(SimpleEnemy):
         #
         self.state = "searching"
         self.pause = 0
-        self.get_wander_destination()
+        self.attack_delay = 400
+        self.last_attack = 0
+        self.wander_destination = None
+
+    def start(self):
+        if self.wander_destination == None:
+            self.get_wander_destination()
 
     def set_stats(self):
         self.health = 100
@@ -40,7 +49,7 @@ class Beetle(SimpleEnemy):
         self.speed = 1700
         self.rot_speed = 0.03
 
-        self.attack_range = 25
+        self.attack_range = 50 
         self.debug_render = []
 
     def make_body(self):
@@ -52,15 +61,18 @@ class Beetle(SimpleEnemy):
         # self.particles = fx.SlowGlowParticles(self.game)
 
         names = ["head", "body", "butt"]
-        self.images = [
+        self.images_idle = [
            pygame.image.load(asset("enemies/beetle/beetle_" + name + ".png")) for name in names 
         ]
+        self.images_attack = pygame.image.load(asset("enemies/beetle/beetle_" + names[0] + "_attack.png"))
         self.animations = [
-            Animator({"static": self.images[0]}),
-            Animator({"static": self.images[1]}),
-            Animator({"static": self.images[2]}),
+            Animator({"static": self.images_idle[0], "attack": self.images_attack}, 30),
+            Animator({"static": self.images_idle[1]}),
+            Animator({"static": self.images_idle[2]}),
         ]
-        
+        # Makes it so the end of the animation triggers damage being dealt to the player
+        self.animations[0].callback = self.deal_damage
+
         self.rect = pygame.Rect(0, 0, 20, 20)
 
     def make_legs(self):
@@ -80,10 +92,10 @@ class Beetle(SimpleEnemy):
         
     def update(self):
         super().update()
+        self.update_legs()
         # self.move()
         # self.rect.center = self.body.position
         self.chain.update()
-        self.update_legs()
         self.get_state()
         # self.particles.update_position(self.rect.center)
         
@@ -92,26 +104,37 @@ class Beetle(SimpleEnemy):
     
     def get_state(self):
         match self.state:
-            case "creep":
-                pass
+            case "aggro":
+                pos = self.chain.balls[0].body.position
+                if util.distance_squared(pos, self.game.player.body.position) > 1000000:
+                    self.state = "searching"
+                    for a in self.animations:
+                        a.clear_fx()
             case "searching":
                 pos = self.chain.balls[0].body.position
                 if util.distance_squared(pos, self.game.player.body.position) < 20000:
-                    self.state = "creep"
+                    self.aggravate()
                 if self.pause <= 0:
-                    if util.distance_squared(pos, self.wander_destination) < 1800:
+                    if util.distance_squared(pos, self.wander_destination) < 2400:
                         self.pause = 60
                         self.get_wander_destination()
                 self.pause -= 1
+            case "attack":
+                if now() - self.last_attack > self.attack_delay:
+                    self.animations[0].set_mode("attack")
+                else:
+                    self.animations[0].set_mode("static")
+
 
     def get_wander_destination(self):
         # Finds a suitable place for the beetle to wander to
-        level_w, level_h = self.game.map.floor.room.rect.size
-        self.wander_destination = (random.random()*level_w, random.random()*level_h)
-                
+        # level_w, level_h = self.game.map.floor.room.rect.size
+        # self.wander_destination = (random.random()*level_w, random.random()*level_h)
+        self.wander_destination = get_random_zone_position(self.game)
+                    
     def head_movement(self, body, gravity, damping, dt):
         match self.state:
-            case "creep":
+            case "aggro":
                 old_vel = Vec(body.velocity)
                 pos = body.position
                 if util.distance(pos, self.game.player.rect.center) > self.attack_range:
@@ -120,15 +143,23 @@ class Beetle(SimpleEnemy):
                     vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
                     self.angle = vel.as_polar()[1]
                     body.velocity = tuple(vel)
+                else:
+                    self.state = "attack"
             case "searching":
                 old_vel = Vec(body.velocity)
                 pos = body.position
                 if util.distance(pos, self.wander_destination) > 50:
-                    vel = (self.wander_destination - Vec(pos)).normalize()*self.speed*0.4
-                    vel = old_vel.lerp(vel, self.rot_speed)
-                    vel.scale_to_length(min(vel.length(), self.speed*dt*2))
-                    self.angle = vel.as_polar()[1]
-                    body.velocity = tuple(vel)
+                    vel = (self.wander_destination - Vec(pos)).normalize()
+                    # This code make sure the beetle doesn't turn its head too fast otherwise the legs 
+                    # start growing random lengths
+                    old_angle_vec = Vec(1, 0).rotate(self.angle)
+                    self.angle = old_angle_vec.lerp(vel, 0.15).as_polar()[1]
+                    body.velocity = tuple(vel*self.speed*dt*2)
+            case "attack":
+                if util.distance(body.position, self.game.player.rect.center) > self.attack_range:
+                    self.state = "aggro"
+                    self.animations[0].set_mode("static")
+                    self.animations[0].framex = 0
 
 
     def update_legs(self):
@@ -155,6 +186,17 @@ class Beetle(SimpleEnemy):
             self.feet[i] = foot
             i += 1
 
+    def glow(self):
+        for a in self.animations:
+            a.fx(GlowFx(2000000000, (143, 200, 215) ,strength=0.15, speed=16))
+    
+    def deal_damage(self):
+        pos = self.chain.balls[0].body.position
+        if util.distance(pos, self.game.player.body.position) < self.attack_range:
+            super().deal_damage()
+            self.last_attack = now()
+            self.animations[0].framex = 0
+
     def get_colliders(self, type="circle"):
         return self.chain.get_colliders(type)
 
@@ -165,15 +207,16 @@ class Beetle(SimpleEnemy):
         chain_points = self.chain.get_points()
         rects = []
         imgs = []
-        for i in range(len(self.images)):
-            angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
-            image = pygame.transform.rotate(self.animations[i].get_image(), angle)
-            rect = image.get_rect(center = chain_points[i])
+        for i in range(len(self.animations)):
+            if not self.animations[i].hide:
+                angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
+                image = pygame.transform.rotate(self.animations[i].get_image(), angle)
+                rect = image.get_rect(center = chain_points[i])
 
-            surf.blit(image, transform(rect))
-            
-            rects.append(rect)
-            imgs.append(image)
+                surf.blit(image, transform(rect))
+                
+                rects.append(rect)
+                imgs.append(image)
 
         # The draw function is quite intensive because as well as finding the screen position
         # It needs to create an image for the sprite because the game relies on mask 
@@ -208,12 +251,16 @@ class Beetle(SimpleEnemy):
 
                 pygame.draw.line(surf, util.white, a, b)
 
+    def aggravate(self):
+        if not self.state == "aggro":
+            self.state = "aggro"
+            # self.glow()
+
     def take_damage(self, dmg):
         super().take_damage(dmg)
         for a in self.animations:
             a.fx(HurtFx())
-        self.state = "creep"
-
+        self.aggravate()
     def take_knockback(self, player):
         head = self.chain.balls[0].body
         diff = Vec(head.position) - Vec(player.body.position)

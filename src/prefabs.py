@@ -3,7 +3,6 @@ from src.items import *
 from src.objects import *
 from src.util import colors
 
-
 class RedButton(Button):
     def __init__(self, game, pos, text, func):
 
