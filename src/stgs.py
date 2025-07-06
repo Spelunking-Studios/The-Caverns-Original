@@ -19,11 +19,12 @@ LOADING_SCREEN_SHOWN_BEFORE = False
 DEBUG = False
 DEBUG_PHYSICS = False
 DEBUG_RENDER = False
+IS_COMPILED = False
 
 #### Establishes file paths ####
 try:
-    PATH = sys._MEIPASS     # Tries to see if the project is built
-    ASSETSPATH = os.path.join(PATH, 'assets')
+    PATH = __nuitka_binary_dir     # Tries to see if the project is built
+    IS_COMPILED = True
     print("project is built")
 except AttributeError:
     PATH = os.path.dirname(os.path.realpath(__file__))
@@ -31,17 +32,18 @@ except AttributeError:
     ASSETSPATH = os.path.join(PATH, '../assets')
 
 
-#### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
-if PATH == os.path.dirname(os.path.realpath(__file__)): #Checks if game is running from local path or has gamedata stored in appdata
+# Gets file for saving settings in game. Every variable set here is default. Clearing the settings
+# file should load everything as default.
+# TODO: Use IS_COMPILED instead once a cross-platform local app storage thing is figured out
+if True:  # Checks if game is running from local path or has gamedata stored in appdata
     saveFile = os.path.join(PATH, '../game.store')
 else:
-    saveFile = os.path.join(PATH, '../game.store')
-    # saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store') # Gets save file from appdata
-    # try:
-    #     with open(saveFile, 'r') as b:
-    #         b.close()       # Just Checks if the file exists
-    # except FileNotFoundError:
-    #     os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
+    saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store')
+    try:
+        with open(saveFile, 'r') as b:
+            b.close()       # Just Checks if the file exists
+    except FileNotFoundError:
+        os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
 CAMLIMIT = False

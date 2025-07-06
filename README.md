@@ -22,3 +22,20 @@ and simply run the main file.
 ```bash
 uv run main.py
 ```
+
+## Building with Nuitka
+
+Make sure you have nuitka installed in uv's virtual environment:
+
+```
+uv sync
+```
+
+Then run nuitka:
+
+```
+uv run nuitka --mode=standalone --include-data-dir=assets=assets --lto=no main.py
+```
+
+The generated stuff is in `main.dist`. For now, the entire folder needs to be copied to test it.
+If possible, perhaps exploring the `--mode=onefile` option would help.
