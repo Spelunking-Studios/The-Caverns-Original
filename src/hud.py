@@ -64,8 +64,10 @@ class SlotsHud(Hud):
         self.slot2 = SlotHud((118, 610), scale = 0.6)
         self.slot3 = SlotHud((65, 510), scale = 0.6)
 
-        self.healthHud = HeathHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
-        self.staminaHud = StaminaHud(game, x = self.slot2.rect.right + 15)# + winWidth/2.5)
+        self.healthHud = HeathHud(game)# + winWidth/2.5)
+        self.staminaHud = StaminaHud(game)# + winWidth/2.5)
+        self.healthHud.rect.right = winWidth - 10
+        self.staminaHud.rect.right = winWidth - 10
 
         # Add the slots
         self.slots.add(self.slot1, self.slot2, self.slot3)

@@ -13,8 +13,9 @@ class Chest(util.Sprite):
             game.groups.colliders,  # So the player will collide
             game.groups.interactable  # So the player can interact with it
         ]
-        pygame.sprite.Sprite.__init__(self, self.groups)
-
+        super().__init__(self.groups)
+        
+        self.id = objT.id
         self.game_id = None
 
         for k, v in kwargs.items():

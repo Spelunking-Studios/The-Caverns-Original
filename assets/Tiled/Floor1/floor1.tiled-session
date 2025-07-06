@@ -28,30 +28,30 @@
         },
         "room1.tmx": {
             "expandedObjectLayers": [
-                3,
                 5,
-                6,
-                4
+                3,
+                4,
+                6
             ],
-            "scale": 0.75,
-            "selectedLayer": 4,
+            "scale": 0.33,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 1234.6666666666665,
-                "y": 1371.3333333333333
+                "x": 2707.575757575758,
+                "y": 1301.5151515151515
             }
         },
         "room2.tmx": {
             "expandedObjectLayers": [
                 7,
                 5,
-                6,
-                4
+                4,
+                6
             ],
-            "scale": 1,
+            "scale": 0.125,
             "selectedLayer": 4,
             "viewCenter": {
-                "x": 2343.5,
-                "y": 2419.5
+                "x": 1076,
+                "y": -228
             }
         },
         "room3.tmx": {

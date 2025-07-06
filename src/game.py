@@ -72,6 +72,7 @@ class Game:
         self.end = False
         self.pause = False
         self.inInventory = False
+        self.points = 0
 
         self.groups = Grouper()
         self.handler = Handler(self)
@@ -105,7 +106,6 @@ class Game:
     ####  Determines how the run will function ####
     def run(self):
         loadSave("game.store")
-        self.mixer.playMusic(sAsset('intro.wav'))
         if not DEBUG:
             self.menuLoop()
         self.map.loadFloor()
@@ -119,14 +119,16 @@ class Game:
     #### Main game loop ####
     def mainLoop(self):
         self.dialogueScreen.dialogueFromText("""
-            You enter the dark cave at the top of Mount Gorngeil. 
-            You hear your footsteps reverberate off the walls that seem to wind endlessly into the depths.
-                                                                                               
-            You are alone             ....press space                                   
+            Welcome to the caverns demo
+            WASD to move, left click to attack, shift to sprint, tab for inventory
+                         ....press space                                   
             
         """)
+        # self.dialogueScreen.dialogueFromText("""
+        #     There are weapons hidden in chests. Try to find them all. Beware the creatures
+        # """)
 
-        self.mixer.playMusic(sAsset('intro.wav'))
+        self.mixer.playMusic(sAsset('Adventure-Piano.mp3'))
 
         # Run pre-first frame loading
         for sprite in self.sprites:
@@ -258,6 +260,7 @@ class Game:
             sprite.kill()
         for sprite in self.pSprites:
             sprite.kill()
+        self.groups.killAll()
         self.new()
         self.run()
 
@@ -352,6 +355,7 @@ class Game:
         return False
 
     def menuLoop(self):
+        self.mixer.playMusic(sAsset('intro.wav'))
         menus.main(self, True)
 
     def victoryLoop(self):

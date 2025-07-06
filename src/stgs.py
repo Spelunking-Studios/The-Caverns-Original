@@ -23,22 +23,25 @@ DEBUG_RENDER = False
 #### Establishes file paths ####
 try:
     PATH = sys._MEIPASS     # Tries to see if the project is built
+    ASSETSPATH = os.path.join(PATH, 'assets')
+    print("project is built")
 except AttributeError:
     PATH = os.path.dirname(os.path.realpath(__file__))
+    # Path to the asset folder
+    ASSETSPATH = os.path.join(PATH, '../assets')
 
-# Path to the asset folder
-ASSETSPATH = os.path.join(PATH, '../assets')
 
 #### Gets file for saving settings in game. Every variable set here is default. Clearing the settings file should load everything as default. ####
 if PATH == os.path.dirname(os.path.realpath(__file__)): #Checks if game is running from local path or has gamedata stored in appdata
     saveFile = os.path.join(PATH, '../game.store')
 else:
-    saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store') # Gets save file from appdata
-    try:
-        with open(saveFile, 'r') as b:
-            b.close()       # Just Checks if the file exists
-    except FileNotFoundError:
-        os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
+    saveFile = os.path.join(PATH, '../game.store')
+    # saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store') # Gets save file from appdata
+    # try:
+    #     with open(saveFile, 'r') as b:
+    #         b.close()       # Just Checks if the file exists
+    # except FileNotFoundError:
+    #     os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
 CAMLIMIT = False
@@ -122,7 +125,7 @@ keySet = {
     'left': [pygame.K_LEFT, pygame.K_a],
     'up': [pygame.K_UP, pygame.K_w],
     'down':[pygame.K_DOWN, pygame.K_s],
-    'sprint':[pygame.KMOD_SHIFT, pygame.K_LSHIFT],
+    'sprint':[pygame.K_RSHIFT, pygame.K_LSHIFT, pygame.K_SPACE],
     'fullScreen': pygame.K_f,
     'pause': pygame.K_p,
     "inventory": pygame.K_TAB

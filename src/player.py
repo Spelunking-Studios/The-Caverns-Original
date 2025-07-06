@@ -48,13 +48,14 @@ class Player(util.Sprite):
             if saved_inventory is None:
                 # What you start the game with
                 self.slot1 = items.Dagger()
+                self.inventory.add_item(self.slot1)
             else:
                 self.inventory.deserialize(saved_inventory)
 
-                if equipped_weapon is None:
-                    self.slot1 = items.Dagger()
-                else:
+                if equipped_weapon:
                     self.slot1 = self.inventory.get_item(equipped_weapon)
+                else:
+                    self.slot1 = items.Dagger()
             self.slot2 = None
         self.groups = [game.sprites, game.layer2]
         super().__init__(self.groups)
@@ -282,7 +283,7 @@ class Player(util.Sprite):
         if not angle:
             angle = self.angle
         self.image = pygame.transform.rotate(self.image, angle)
-        self.rect = self.image.get_rect(center = self.image.get_rect(center = self.rect.center).center)
+        self.rect = self.image.get_rect(center = self.rect.center)
         self.mask = pygame.mask.from_surface(self.image, True)
 
     def spin(self):
