@@ -23,7 +23,7 @@ and simply run the main file.
 uv run main.py
 ```
 
-## Building with Nuitka
+## Building to an Executable
 
 Make sure you have nuitka installed in uv's virtual environment:
 
@@ -31,11 +31,21 @@ Make sure you have nuitka installed in uv's virtual environment:
 uv sync
 ```
 
-Then run nuitka:
+Then use the build script for your operating system:
 
 ```
-uv run nuitka --mode=standalone --include-data-dir=assets=assets --lto=no main.py
+# Windows
+.\build.bat
+
+# Linux
+./build.sh
 ```
 
-The generated stuff is in `main.dist`. For now, the entire folder needs to be copied to test it.
-If possible, perhaps exploring the `--mode=onefile` option would help.
+The compiled output is located in the `main.dist` folder with intermediary build artifacts in `main.build`.
+
+## Generating a Microsoft Installer
+
+1. Make sure you have [Inno Setup](https://jrsoftware.org/isinfo.php) installed
+2. In a termianl, cd to the root of the project
+3. Run `iscc .\the-caverns-installer.iss`
+4. The generated installer file will be in the `dist` folder
