@@ -3,6 +3,7 @@ import sys
 import pygame
 import math
 import pickle
+import platform
 
 
 TITLE = "The Caverns"
@@ -23,26 +24,34 @@ IS_COMPILED = False
 
 #### Establishes file paths ####
 try:
-    PATH = __nuitka_binary_dir     # Tries to see if the project is built
+    PATH = __nuitka_binary_dir  # noqa # type: ignore
     IS_COMPILED = True
 except NameError:
-    PATH = os.path.dirname(os.path.realpath(__file__))
-    # Path to the asset folder
-    ASSETSPATH = os.path.join(PATH, '../assets')
+    PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+
+# Path to the asset folder
+ASSETSPATH = os.path.join(PATH, 'assets')
 
 
 # Gets file for saving settings in game. Every variable set here is default. Clearing the settings
 # file should load everything as default.
-# TODO: Use IS_COMPILED instead once a cross-platform local app storage thing is figured out
-if True:  # Checks if game is running from local path or has gamedata stored in appdata
-    saveFile = os.path.join(PATH, '../game.store')
+if not IS_COMPILED:  # Checks if game is running from local path or has gamedata stored in appdata
+    saveFile = os.path.join(PATH, 'game.store')
 else:
-    saveFile = os.path.join(os.getenv('APPDATA'), 'theCaverns', 'game.store')
+    directory = os.path.join(os.getenv('APPDATA'), 'theCaverns')
+    if platform.system() == "Linux":
+        directory = os.path.join(
+            os.environ.get("XDG_CONFIG_DIR", os.environ["HOME"] + "/.config"),
+            "The Caverns"
+        )
+
+    saveFile = os.path.join(directory, 'game.store')
+
     try:
         with open(saveFile, 'r') as b:
             b.close()       # Just Checks if the file exists
     except FileNotFoundError:
-        os.mkdir(os.path.join(os.getenv('APPDATA'), 'theCaverns'))
+        os.mkdir(directory)
 
 #### Either centers the player no matter what (False) or doesn't scroll over the boundary of the level (True and preferred) ####
 CAMLIMIT = False
