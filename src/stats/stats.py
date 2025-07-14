@@ -30,8 +30,8 @@ class PlayerStats(Stats):
     def __init__(self, player):
         if DEBUG:
             super().__init__(
-                    health=30,
-                    healthMax=30,
+                    health=230,
+                    healthMax=230,
                     stamina=50,
                     staminaMax=50,
                     strength=10,

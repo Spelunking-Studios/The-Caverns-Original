@@ -25,7 +25,11 @@ class LightSource(util.Sprite):
         self.dump(kwargs)        
 
         if self.default_size:
-            self.image = self.source_img.copy().convert_alpha()
+            w = self.source_img.get_width()
+            if not w in self.cache:
+                self.cache[w] = self.source_img.convert_alpha()
+                print("caching")
+            self.image = self.cache[w]
         else:
             self.resize_wh(self.rect.w)
         self.rect = self.image.get_rect(center=self.rect.center)

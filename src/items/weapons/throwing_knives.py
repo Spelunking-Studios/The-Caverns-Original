@@ -32,7 +32,6 @@ class ThrowingKnives(Weapon):
 
     def _player_attack(self, player):
         # player.attackState = "attack"
-        player.animations.setMode('wand')
 
         # Launches fireball
         player.game.get_prefab("ThrowingKnife")(player.game)

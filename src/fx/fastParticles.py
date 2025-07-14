@@ -68,20 +68,24 @@ class GlowParticles(ParticleController):
     """Glowing particles that fall to the bottom of the screen
     """
 
-    def __init__(self, game, position=(0, 0)):
+    def __init__(self, game, **kwargs):
         super().__init__(game)
-        self.position = position
+        self.position = (0, 0)
         self.particle_size = 5
         self.color = (255, 255, 255)
         self.glow_brightness = 0.3 
+        self.speed = 3
+
+        self.dump(kwargs)
 
 
     def add_particle(self):
-        self.particles.append([ 0, 
-                                0, 
+        x, y = self.position
+        self.particles.append([ x, 
+                                y, 
                                 self.particle_size,
-                                (random.random()-0.5)*3,
-                                -(random.random())*5,
+                                (random.random()-0.5)*self.speed,
+                                (random.random()-0.5)*self.speed,
                                 self.color
                               ])
 
@@ -94,8 +98,9 @@ class GlowParticles(ParticleController):
         return surf
     
     def draw(self, surf, transform = lambda x: x):
+        #optional offset
+        x, y = 0, 0
         transform = self.game.cam.applyTuple
-        x, y = self.position
         for p in self.particles:
             pygame.draw.circle(surf, p[5], transform((p[0] + x, p[1] + y)), p[2])
             
@@ -128,53 +133,65 @@ class FlameParticles(GlowParticles):
         self.particles.append([0, 0, 1, random.random()-0.5, random.random()-0.5, util.peach_rose, 3])
 
 class SlowGlowParticles(GlowParticles):
+    light_img = pygame.image.load(asset("objects/light6.png"))
     def __init__(self, game, **kwargs):
-        self.delay = 10
+        self.light_img.convert()
         self.last_particle = 0
         self.bright = False
+        self.speed = 2
         super().__init__(game)
+        self.particle_size = 5
+        self.delay = 70
         self.dump(kwargs)
 
     def update(self):
+        self.step()
         if now() - self.start_time >= self.lifespan:
-            self.kill()
+            if self.on_finish:
+                self.on_finish()
+                self.on_finish = None
+            if now() - self.start_time >= self.lifespan*2:
+                self.kill()
         else:
-            self.step()
             if now() - self.last_particle > self.delay:
                 self.add_particle()
                 self.last_particle = now()
 
     def step(self):
         for p in self.particles:
-            p[2] += 0.1 # increase size
+            p[2] = max(p[2]-0.01, 0) # increase size
             p[1] += p[4] # Add Velocity Y
             p[0] += p[3] # Add Velocity X
             p[4] += 0.0  # Add acceleration
             p[5] = util.dark(p[5], 1) # Color
-            x, y = self.position
+            x, y = 0, 0#self.position
             p[6].resize_wh(p[2]*8, p[2]*8)
             p[6].rect.width = p[2]*8
             p[6].rect.height = p[2]*8
             p[6].rect.center = (p[0]+x, p[1]+ y)
             p[7] += 1
-            if p[1] >= winHeight or p[7] > 100:
+            if p[7] > 100 or p[2] <= 0:
                 p[6].kill()
                 self.particles.remove(p)
     
     def add_particle(self):
-        self.particles.append([ 0, 
-                                0, 
+        x, y = self.position
+        self.particles.append([ x, 
+                                y, 
                                 self.particle_size,
-                                (random.random()-0.5)*3,
-                                -(random.random())*5,
+                                (random.random()-0.5)*self.speed,
+                                (random.random()-0.5)*self.speed,
                                 self.color,
-                                objects.LightEffect(self.game, pygame.Rect(0, 0, 10, 10)), 
+                                objects.LightEffect(self.game, pygame.Rect(0, 0, 10, 10), source_img = self.light_img), 
                                 0
                               ])
+
     def draw(self, surf, transform = lambda x: x):
         transform = self.game.cam.applyTuple
-        x, y = self.position
+        x, y = 0, 0#self.position
         for p in self.particles:
+            # print(transform((p[0] + x, p[1] + y)))
+            # print(p[5])
             pygame.draw.circle(surf, p[5], transform((p[0] + x, p[1] + y)), p[2])
             
             if self.bright:

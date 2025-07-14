@@ -46,7 +46,8 @@ class PlayerAnimation:
         
     def applyFx(self):
         for fx in self.imageEffects:
-            fx.update(self.sprite.image)
+            fx.update()
+            fx.apply(self.sprite.image)
     
     def fx(self, fx):
         self.imageEffects.add(fx)
@@ -112,7 +113,8 @@ class BasicAnimation:
         
     def applyFx(self):
         for fx in self.imageEffects:
-            fx.update(self.sprite.image)
+            fx.update()
+            fx.apply(self.sprite.image)
     
     def fx(self, fx):
         self.imageEffects.add(fx)
@@ -168,16 +170,17 @@ class Animator:
         #         self.img_sheet[k] = Spritesheet(v)
         #     self.cache[type(sprite)] = self.img_sheet
 
-        self.tile_size = self.img_sheet[self.mode].height
-        self.image = pygame.Surface((self.tile_size, self.tile_size))
-        self.image.convert_alpha() 
         # Called when the animation reaches the end
-        self.callback = None
+        self.callbacks = {}
         self.hide = False
+        self.transforms = []
 
         for k,v in kwargs.items():
             self.__dict__[k] = v
 
+        self.tile_size = self.img_sheet[self.mode].height
+        self.image = pygame.Surface((self.tile_size, self.tile_size))
+        self.image.convert_alpha() 
 
     def getFirstFrame(self):
         return self.img_sheet[self.mode].get_image(0, 0, self.tile_size, self.tile_size)
@@ -191,11 +194,13 @@ class Animator:
                 self.last_tick = pygame.time.get_ticks()
                 if self.framex > int(self.img_sheet[self.mode].width - self.tile_size):
                     self.framex = 0
-                    if self.callback:
-                        self.callback()
+                    if self.mode in self.callbacks:
+                        self.callbacks[self.mode]()
             self.image = self.img_sheet[self.mode].get_image(self.framex, 0, self.tile_size, self.tile_size)
             if not self.scalex == 1 and not self.scaley == 1:
                 self.image = pygame.transform.scale(self.sprite.image, (self.tile_size*self.scalex, self.tile_size*self.scaley))
+        for t in self.transforms:
+            self.image = t(self.image)
         self.update_fx()
 
     def scale(self, x, y=None):
@@ -204,6 +209,11 @@ class Animator:
     def update_fx(self):
         for fx in self.image_effects:
             fx.update()
+
+    # Used to have functions call at the end of animation
+    # Ex. Beetle monching, boombug exploding
+    def set_callback(self, mode, callback):
+        self.callbacks[mode] = callback
     
     def fx(self, fx):
         self.image_effects.add(fx)
@@ -216,11 +226,13 @@ class Animator:
             self.image_effects.empty() 
 
     def set_mode(self, mode="default"):
-        if mode in self.img_sheet:
-            self.mode = mode
-        else:
-            print(f"mode {mode} does not exist for this sprite")
-        self.tile_size = self.img_sheet[self.mode].height
+        if not self.mode == mode:
+            if mode in self.img_sheet:
+                self.mode = mode
+            else:
+                print(f"mode {mode} does not exist for this sprite")
+            self.framex = 0
+            self.tile_size = self.img_sheet[self.mode].height
 
     def get_image(self):
         img = self.image.copy()

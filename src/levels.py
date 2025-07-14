@@ -161,8 +161,16 @@ class Room:
                 try:
                     enemy = enemies.__dict__[objT.name]
                     self.sprites.add(enemy(self.game, objT))
-                except KeyError:
-                    print(f"Tiled Object {objT.name} is not defined")
+                except KeyError as k:
+                    print(f"Tiled Object {objT.name} is not defined (or it has a keyerror {k}")
+
+    def blit(self, img, pos, center=False):
+        # This abstraction exists if we were to ever need to define multiple layers
+        # for the room for parallax etc.
+        if center:
+            self.image.blit(img, img.get_rect(center=pos).topleft)
+        else:
+            self.image.blit(img, pos)
     
     def getObjById(self, id):
         for obj in self.tiledData.objects:

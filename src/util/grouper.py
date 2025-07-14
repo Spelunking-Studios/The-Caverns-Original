@@ -11,6 +11,7 @@ class Grouper:
 
         #### Create sprite groups here ####
 
+        self.players = Group()
         self.enemies = Group()
         self.lightSources = Group()
         self.colliders = Group()

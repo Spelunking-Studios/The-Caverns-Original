@@ -57,7 +57,7 @@ class Player(util.Sprite):
                 else:
                     self.slot1 = items.Dagger()
             self.slot2 = None
-        self.groups = [game.sprites, game.layer2]
+        self.groups = [game.sprites, game.layer2, game.groups.players]
         super().__init__(self.groups)
 
         self.game = game
@@ -75,12 +75,15 @@ class Player(util.Sprite):
         self.using_stamina = False
         self.interacted = False
         self.healDelay = 3
+        self.light_size = 1000
+        self.darkened_size = 500
+        self.dark_recovery_speed = 3
 
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
-        self.lightImg = pygame.image.load(asset('objects', 'light2.png'))
+        self.lightImg = pygame.image.load(asset('objects', 'light4.png')).convert_alpha()
         self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
-        self.lightScale.scale_to_length(1000)
+        self.lightScale.scale_to_length(self.light_size)
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
@@ -142,8 +145,8 @@ class Player(util.Sprite):
     #### Updates player ####
     def update(self):
         # Health regeneration code
-        if not self.using_stamina and self.stats.stamina < 50:
-            self.stats.stamina += self.game.dt() * 0.1 * (50 - self.stats.stamina)
+        if not self.using_stamina and self.stats.stamina < self.stats.staminaMax:
+            self.stats.stamina += self.game.dt() * 0.1 * (self.stats.staminaMax - self.stats.stamina)
         self.setAngle()
         self.checkActions()
         self.animations.update()
@@ -156,6 +159,8 @@ class Player(util.Sprite):
         # if self.stats.sanity < self.stats.sanityMax/2:
         #     self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
         #     self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+
+        
 
         self.rect.center = self.body.position
         self.particleFx.update()
@@ -261,8 +266,9 @@ class Player(util.Sprite):
             self.lastTimeTookDamage = time()
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
+            self.lightScale.scale_to_length(self.darkened_size)
             self.game.mixer.playFx('pHit')
-            # self.animations.fx(HurtFx())
+            self.animations.fx(HurtFx())
 
     def setAngle(self):
         if joystickEnabled:
@@ -313,6 +319,21 @@ class Player(util.Sprite):
         img2.blit(cutHole, cutHole.get_rect(center=self.image.get_rect().center), special_flags=pygame.BLEND_MULT)
         self.mask = pygame.mask.from_surface(img2)
         #return img2
+
+    def draw_darkness(self, ctx, transform=None):
+        if transform:
+            dark = self.lightScale.length()
+            if dark < 1000:
+                self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y)))
+                self.lightScale.scale_to_length(dark + self.dark_recovery_speed)
+
+            light = self.lightSource
+            lightRect = pygame.Rect(0, 0, light.get_width(), light.get_height())
+            lightRect.center = transform(self.rect).center
+            ctx.blit(light, lightRect)
+
+    def kill(self):
+        pass
 
 
 class Cursor:

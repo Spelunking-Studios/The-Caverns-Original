@@ -204,15 +204,15 @@ class Game:
     
     def renderDarkness(self):
         darkness = pygame.Surface((winWidth, winWidth))
-        lightRect = pygame.Rect(0, 0, self.player.lightSource.get_width(), self.player.lightSource.get_height())
-        # darkness.fill((0,0,0))
-        lightRect.center = self.cam.applyRect(self.player.rect).center
-        darkness.blit(self.player.lightSource, lightRect)
+        darkness.fill((255,255,255))
+        self.player.draw_darkness(darkness, self.cam.applyRect)
         for sprite in self.groups.lightSources:
             darkness.blit(sprite.image, self.cam.apply(sprite))
 
+        # print(len(self.groups.lightSources))
+
         
-        self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_RGBA_MULT)
+        self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_RGB_SUB)
 
     def count_particles(self):
         print(sum(p.get_batch_size() for p in self.groups.particle_emitters))
@@ -227,6 +227,7 @@ class Game:
             self.mixer.playFx('pHit')
             self.hudLayer.update()
             self.pause = True
+            saveData(saveFile, self)
 
             def cont():
                 if True:

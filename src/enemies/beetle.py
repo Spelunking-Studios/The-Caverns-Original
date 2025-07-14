@@ -19,23 +19,24 @@ class Beetle(SimpleEnemy):
     
     challenge_rating = 1
 
+    splatter_img = pygame.image.load(asset("enemies/splat_blue.png"))
+
     def __init__(self, game, objT):
         super().__init__(game, objT)
-
-        self.set_stats() 
-        self.make_legs()
-        self.make_body()
-
-
         
         # Used for managing the state of the beetle
         #
         # Creep - The beetle is walking toward the player
         #
         self.state = "searching"
-        self.pause = 0
-        self.attack_delay = 400
         self.last_attack = 0
+        self.pause = 0
+        self.set_stats() 
+        self.make_legs()
+        self.make_body()
+
+
+        
         self.wander_destination = None
 
     def start(self):
@@ -50,6 +51,8 @@ class Beetle(SimpleEnemy):
         self.rot_speed = 0.03
 
         self.attack_range = 50 
+        self.alert_radius = 200
+        self.attack_delay = 400
         self.debug_render = []
 
     def make_body(self):
@@ -58,7 +61,7 @@ class Beetle(SimpleEnemy):
         self.chain = util.Chain(self.game, 3, (self.objT.x, self.objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
-        # self.particles = fx.SlowGlowParticles(self.game)
+        self.particles = None
 
         names = ["head", "body", "butt"]
         self.images_idle = [
@@ -71,7 +74,7 @@ class Beetle(SimpleEnemy):
             Animator({"static": self.images_idle[2]}),
         ]
         # Makes it so the end of the animation triggers damage being dealt to the player
-        self.animations[0].callback = self.deal_damage
+        self.animations[0].set_callback("attack", self.deal_damage)
 
         self.rect = pygame.Rect(0, 0, 20, 20)
 
@@ -106,6 +109,10 @@ class Beetle(SimpleEnemy):
         match self.state:
             case "aggro":
                 pos = self.chain.balls[0].body.position
+                if not self.particles:
+                    self.particles = fx.SlowGlowParticles(self.game, color = (143, 200, 215), lifespan=800)
+                    self.particles.on_finish = self.alert_others
+                self.particles.position = pos
                 if util.distance_squared(pos, self.game.player.body.position) > 1000000:
                     self.state = "searching"
                     for a in self.animations:
@@ -137,13 +144,12 @@ class Beetle(SimpleEnemy):
             case "aggro":
                 old_vel = Vec(body.velocity)
                 pos = body.position
-                if util.distance(pos, self.game.player.rect.center) > self.attack_range:
-                    vel = (self.game.player.rect.center - Vec(pos)).normalize()*self.speed
-                    vel = old_vel.lerp(vel, self.rot_speed)
-                    vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
-                    self.angle = vel.as_polar()[1]
-                    body.velocity = tuple(vel)
-                else:
+                vel = (self.game.player.rect.center - Vec(pos)).normalize()*self.speed
+                vel = old_vel.lerp(vel, self.rot_speed)
+                vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
+                self.angle = vel.as_polar()[1]
+                body.velocity = tuple(vel)
+                if util.distance(pos, self.game.player.rect.center) < self.attack_range:
                     self.state = "attack"
             case "searching":
                 old_vel = Vec(body.velocity)
@@ -160,7 +166,6 @@ class Beetle(SimpleEnemy):
                     self.state = "aggro"
                     self.animations[0].set_mode("static")
                     self.animations[0].framex = 0
-
 
     def update_legs(self):
         i=0
@@ -189,6 +194,10 @@ class Beetle(SimpleEnemy):
     def glow(self):
         for a in self.animations:
             a.fx(GlowFx(2000000000, (143, 200, 215) ,strength=0.15, speed=16))
+
+    def alert_others(self):
+        for e in self.game.groups.getProximitySprites(self, self.alert_radius, groups=[self.game.groups.enemies]):
+            e.state = "aggro"
     
     def deal_damage(self):
         pos = self.chain.balls[0].body.position
@@ -270,7 +279,13 @@ class Beetle(SimpleEnemy):
             b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
         # self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
 
+    def splat(self):
+        # play kill sound
+        self.game.map.floor.room.blit(self.splatter_img, self.rect.center, True)
+
     def kill(self):
         super().kill()
+        self.splat()
         self.chain.kill()
-        # self.particles.kill()
+        if self.particles:
+            self.particles.kill()

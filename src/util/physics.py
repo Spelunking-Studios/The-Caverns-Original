@@ -15,7 +15,7 @@ class Ball(Sprite):
         self.body.position = pos
         self.shape = pymunk.Circle(self.body, radius, (0, 0))
         self.shape.friction = 0.5
-        self.shape.collision_type = 1
+        self.shape.collision_type = 3
 
     def objects(self):
         return self.body, self.shape
