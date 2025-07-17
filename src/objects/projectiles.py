@@ -9,6 +9,7 @@ from src.animations import BasicAnimation
 
 
 class Projectile(util.Sprite):
+    collision_type = 3
     def __init__(self, game, pos, target, **kwargs):
         self.groups = game.sprites, game.layer2
         self.game = game
@@ -18,7 +19,7 @@ class Projectile(util.Sprite):
         self.target_group = self.game.groups.enemies
         self.dump(kwargs)
 
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
 
         self.image = pygame.image.load(asset("player/s1.png"))
 
@@ -35,18 +36,18 @@ class Projectile(util.Sprite):
         #     .setParticleKwargs(speed=1.5, shrink=0.4, life=140, color=colors.orangeRed)
 
     def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
-        super().create_physics(mass, radius, vel_func, pos)
+        super().create_physics(mass, radius, vel_func, pos, self.collision_type)
         self.shape.sensor = True
-        self.shape.collision_type = 3
+        self.shape.collision_type = self.collision_type 
 
     def update(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
         self.rect.center = self.pos
-        for e in self.game.groups.getProximitySprites(self, 600, self.target_group):
-            if hasattr(e, 'image'):
-                if pygame.sprite.collide_mask(self, e):
-                    self.hit(e)
-                    break
+        # for e in self.game.groups.getProximitySprites(self, 600, self.target_group):
+        #     if hasattr(e, 'image'):
+        #         if pygame.sprite.collide_mask(self, e):
+        #             self.hit(e)
+        #             break
 
     def move(self):
         self.pos += self.dir * self.vel * self.game.dt() * 60
@@ -100,13 +101,13 @@ class Fireball(Projectile):
 class EnemyFireball(Projectile):
     light_img = pygame.image.load(asset("objects/light5.png"))
     def __init__(self, game, pos, target):
-        mPos = game.get_mouse_pos() - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(
             game,
             pos,
             target,
             groups=(game.sprites, game.layer2, game.groups.eProjectiles),
-            target_group = game.groups.players
+            target_group = game.groups.players,
+            collision_type = 5
             
         )
         self.imgSheet = {'main': asset('player/fireball.png')}
@@ -142,6 +143,55 @@ class EnemyFireball(Projectile):
             enemy.take_damage(dmg)
 
         self.kill()
+
+class EnemyDart(Projectile):
+    light_img = pygame.image.load(asset("objects/light5.png"))
+    def __init__(self, game, pos, target):
+        super().__init__(
+            game,
+            pos,
+            target,
+            groups=(game.sprites, game.layer2, game.groups.eProjectiles),
+            target_group = game.groups.players,
+            collision_type = 5
+        )
+        try:
+            angle = math.degrees(math.atan2(-target.y, target.x))
+        except ValueError:
+            angle = 0
+        self.imgSheet = {'main': asset('enemies/dart.png')}
+        self.animations = BasicAnimation(self, angle = angle)
+        self.animations.delay = 30
+        self.image = self.animations.getFirstFrame()
+        self.damage = 10
+        self.rect = pygame.Rect(0, 0, self.image.get_width(), self.image.get_height())
+        self.rect.center = self.pos
+        # self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
+        # self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
+        # self.light = LightSource(game, self.rect, source_img=self.light_img, default_size=True)
+
+        self.create_physics(5, 4, self.fake_move)
+
+    def fake_move(self, body, *args):
+        body.position = tuple(self.pos)
+
+    def update(self):
+        super().update()
+        # self.light.rect.center = self.rect.center
+        self.animations.update()
+
+    def kill(self):
+        super().kill()
+        # self.particles.setLife(220)
+        # LightEffect(self.game, self.rect, source_img=self.light_img, default_size=True, lifespan=220)
+        # self.light.kill()
+
+    def hit(self, enemy=None):
+        dmg = self.damage
+        if enemy:
+            enemy.take_damage(dmg)
+        self.kill()
+
 
 class ThrowingKnife(Projectile):
 

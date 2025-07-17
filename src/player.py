@@ -102,7 +102,9 @@ class Player(util.Sprite):
         self.create_physics(
             self.stats.strength*10,
             self.width*0.4,
-            self.player_movement
+            self.player_movement,
+            (0, 0),
+            2
         )
         # self.body.mass = 30000
         

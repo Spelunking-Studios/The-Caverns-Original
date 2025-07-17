@@ -10,6 +10,7 @@ class Sprite(pygame.sprite.Sprite):
     All functions aside from __init__ are optional for 
     function
     """
+    collision_type = None
     def __init__(self, *args):
         super().__init__(*args)
 
@@ -24,10 +25,13 @@ class Sprite(pygame.sprite.Sprite):
                 self.__dict__[k] = v
 
 
-    def create_physics(self, mass, radius, vel_func = None, pos = (0, 0)):
+    def create_physics(self, mass, radius, vel_func = None, pos = (0, 0), collision_type = None):
         # Set up a body and shape for the player to interact with 
         # the physics engine
         #
+        if collision_type:
+            self.collision_type = collision_type
+
 
         self.body = pymunk.Body(mass, 2)# body_type=pymunk.Body.KINEMATIC), 2
         self.body.position = pos
@@ -52,6 +56,8 @@ class Sprite(pygame.sprite.Sprite):
         self.shape.elasticity = 0
         self.shape.friction = 1
         self.shape.sensor = False
+        if self.collision_type:
+            self.shape.collision_type = self.collision_type
 
 
     def set_position(self, pos, centered = False):

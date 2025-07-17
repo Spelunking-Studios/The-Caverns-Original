@@ -47,6 +47,7 @@ class Floor:
     def __init__(self, game, folder="Floor1"):
         """Basic initialization of props"""
         self.game = game
+        self.name = folder
         self.folderPath = tAsset(folder)
         # Finds the path of every room in the floor folder
         self.roomPaths =  []
@@ -181,3 +182,6 @@ class Room:
     def clearSprites(self):
         for s in self.sprites:
             s.kill()
+
+    def get_id(self):
+        return self.floor.name + "/" + self.name

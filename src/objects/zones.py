@@ -11,7 +11,7 @@ class Zone(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.sprites, game.groups.zones
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
         
         self.dump(kwargs, objT.properties) 
         self.lID = objT.id

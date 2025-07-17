@@ -1,7 +1,7 @@
 # 𝕿𝖍𝖊 𝕮𝖆𝖛𝖊𝖗𝖓𝖘   
 ### A Pygame Game
 
-An exploration ARPG with fantasy D&D elements.
+A top down dungeon crawler ARPG with loadout options and terrifying creatures
 
 Uses Tiled level designer.
 https://www.mapeditor.org/

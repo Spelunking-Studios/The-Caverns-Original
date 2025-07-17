@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="96" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="96">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="96" height="55" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="97">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../tilesets/floor1-features.tsx"/>
  <layer id="1" name="floor" width="96" height="55">
@@ -176,7 +176,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="6" name="zones" visible="0">
+ <objectgroup id="6" name="zones">
   <object id="80" name="Zone" x="1319" y="625" width="111" height="156"/>
   <object id="81" name="Zone" x="1585" y="464" width="108" height="167"/>
   <object id="82" name="Zone" x="1438" y="587" width="144" height="64"/>
@@ -189,6 +189,8 @@
   <object id="89" name="Nest" x="638" y="126">
    <properties>
     <property name="challenge_rating" type="int" value="30"/>
+    <property name="include_boom" type="bool" value="true"/>
+    <property name="include_red" type="bool" value="true"/>
     <property name="include_silver" type="bool" value="true"/>
     <property name="include_standard" type="bool" value="true"/>
    </properties>

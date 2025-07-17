@@ -9,13 +9,15 @@ class Ball(Sprite):
     """
     Creates a ball like object
     """
-    def __init__(self, radius = 10, pos = (20, 20), mass=100, moment=100):
+    def __init__(self, owner, radius = 10, pos = (20, 20), mass=100, moment=100):
         super()
+        self.owner = owner
         self.body = pymunk.Body(mass, moment)
         self.body.position = pos
+        self.body.owner = owner
         self.shape = pymunk.Circle(self.body, radius, (0, 0))
         self.shape.friction = 0.5
-        self.shape.collision_type = 3
+        self.shape.collision_type = 4
 
     def objects(self):
         return self.body, self.shape
@@ -25,8 +27,9 @@ class Chain(Sprite):
     Creates a chain of balls. Acts as a controller and accepts
     an optional velocity function for the first chain link
     """
-    def __init__(self, game, length, pos, radius, link_distance, controller=None, **kwargs):
+    def __init__(self, game, owner, length, pos, radius, link_distance, controller=None, **kwargs):
         self.game = game
+        self.owner = owner
         self.length = length
         self.pos = pos
         self.ball_radius = radius
@@ -34,6 +37,7 @@ class Chain(Sprite):
         self.chain_angles = [0 for i in range(self.length)]
         self.controller = controller
         self.ball_weight = 300
+        self.collision_type = 4
 
         self.dump(kwargs)
 
@@ -43,7 +47,7 @@ class Chain(Sprite):
         x, y = self.pos
         self.balls = []
         for i in range(self.length):
-            ball = Ball(self.ball_radius ,(x + i*self.link_distance, y + i*self.link_distance), self.ball_weight)
+            ball = Ball(self.owner, self.ball_radius ,(x + i*self.link_distance, y + i*self.link_distance), self.ball_weight)
             if self.controller and i == 0:
                 ball.body.velocity_func = self.controller
             self.balls.append(ball)

@@ -8,7 +8,8 @@ import src.util.colors as colors
 class DialogueOverlay(util.Sprite):
     def __init__(self, game):
         self.game = game
-        pygame.sprite.Sprite.__init__(self, game.overlayer)
+        self.fade_in_time = 1400
+        super().__init__( game.overlayer)
         self.components = pygame.sprite.Group()
         self.text = []
         self.active = True
@@ -55,8 +56,9 @@ class DialogueOverlay(util.Sprite):
             pass
 
     def render(self):
+        self.image.fill((0,0,0,0))
         for comp in self.components:
-            self.image.blit(comp.image, comp.rect)
+            comp.draw(self.image)
 
     def dialogueFromNpc(self, npc):
         self.activate()
@@ -68,18 +70,23 @@ class DialogueOverlay(util.Sprite):
         for t in text:
             self.components.add(Dialogue(self.game, t))
 
+    def draw(self, ctx, transform = None):
+        super().draw(ctx, transform)
+
 class Dialogue(util.Sprite):
     def __init__(self, game, text, **kwargs):
-        self.groups = game.sprites, game.overlayer
+        self.groups = game.sprites
         self.game = game
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.height = 8
         self.tileSize = 32
+        self.scale = 0
         self.text = text
         self.rect = pygame.Rect(
             0, winHeight - self.height * self.tileSize,
             winWidth, self.height * self.tileSize
         )
+        self.fade_in_time = 200
         self.textColor = colors.white
         self.lastInteract = pygame.time.get_ticks()
         self.aalias = True
@@ -124,8 +131,14 @@ class Dialogue(util.Sprite):
 
     def update(self):
         now = pygame.time.get_ticks()
+        diff = now - self.lastInteract
+        if diff < self.fade_in_time:
+            self.scale = round(diff/self.fade_in_time, 2)
+        else:
+            self.scale = 1
         if len(self.rendText.images) > 1:
-            if checkKey("interact") and now-self.lastInteract > 200:
+            
+            if checkKey("interact") and diff > 200:
                 if self.rendText.index+1 >= len(self.rendText.images):
                     self.finished = True
                 else:
@@ -134,6 +147,17 @@ class Dialogue(util.Sprite):
                 self.lastInteract = now
         else:
             self.finished = True
+
+    def draw(self, ctx, transform=None):
+        if self.scale != 1:
+            temp = self.image.copy()
+            self.image = pygame.transform.scale_by(self.image, self.scale)
+            self.rect = self.image.get_rect(center=self.rect.center)
+            super().draw(ctx, transform)
+            self.image = temp.copy()
+            self.rect = self.image.get_rect(center=self.rect.center)
+        else:
+            super().draw(ctx, transform)
 
 
 class DialogueText:

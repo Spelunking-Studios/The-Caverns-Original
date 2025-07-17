@@ -6,14 +6,14 @@ from src.items import Weapon
 class ThrowingKnives(Weapon):
     '''Pretty self explanatory'''
 
-    kind = "projectile"
+    kind = "throwing knives"
 
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
             "cooldown": 0.3,
-            "damage": 7,
+            "damage": 4,
             "_variance": 1,
             "_ranged": True,
             "_range": True,

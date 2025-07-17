@@ -89,7 +89,8 @@ class Game:
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
         self.progress = globals()["GAME_STATE"].get("progress", {
-            "chests_opened": []
+            "chests_opened": [],
+            "events_triggered": []
         })
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
@@ -180,11 +181,11 @@ class Game:
             sprite.draw(self.win)
 
         for sprite in self.overlayer:
-            try:
+            if hasattr(sprite, "active"):
                 if sprite.active:
-                    self.win.blit(sprite.image, sprite.rect)
-            except AttributeError:
-                self.win.blit(sprite.image, sprite.rect)
+                    sprite.draw(self.win)
+            # except AttributeError:
+            # self.win.blit(sprite.image, sprite.rect)
         if DEBUG_PHYSICS:
             self.space.debug_draw(self.pymunk_options)
 

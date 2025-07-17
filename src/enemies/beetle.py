@@ -50,7 +50,8 @@ class Beetle(SimpleEnemy):
         self.speed = 1700
         self.rot_speed = 0.03
 
-        self.attack_range = 50 
+        # The ranges are distances squared
+        self.attack_range = 2500 
         self.alert_radius = 200
         self.attack_delay = 400
         self.debug_render = []
@@ -58,7 +59,7 @@ class Beetle(SimpleEnemy):
     def make_body(self):
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(self.game, 3, (self.objT.x, self.objT.y), 8.4, 12, self.head_movement)
+        self.chain = util.Chain(self.game, self, 3, (self.objT.x, self.objT.y), 8.4, 12, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         self.particles = None
@@ -117,6 +118,9 @@ class Beetle(SimpleEnemy):
                     self.state = "searching"
                     for a in self.animations:
                         a.clear_fx()
+
+                if util.distance_squared(pos, self.game.player.rect.center) < self.attack_range:
+                    self.state = "attack"
             case "searching":
                 pos = self.chain.balls[0].body.position
                 if util.distance_squared(pos, self.game.player.body.position) < 20000:
@@ -149,8 +153,6 @@ class Beetle(SimpleEnemy):
                 vel.scale_to_length(min(vel.length(), self.speed*dt*1000))
                 self.angle = vel.as_polar()[1]
                 body.velocity = tuple(vel)
-                if util.distance(pos, self.game.player.rect.center) < self.attack_range:
-                    self.state = "attack"
             case "searching":
                 old_vel = Vec(body.velocity)
                 pos = body.position
@@ -162,7 +164,7 @@ class Beetle(SimpleEnemy):
                     self.angle = old_angle_vec.lerp(vel, 0.15).as_polar()[1]
                     body.velocity = tuple(vel*self.speed*dt*2)
             case "attack":
-                if util.distance(body.position, self.game.player.rect.center) > self.attack_range:
+                if util.distance_squared(body.position, self.game.player.rect.center) > self.attack_range:
                     self.state = "aggro"
                     self.animations[0].set_mode("static")
                     self.animations[0].framex = 0
@@ -201,7 +203,7 @@ class Beetle(SimpleEnemy):
     
     def deal_damage(self):
         pos = self.chain.balls[0].body.position
-        if util.distance(pos, self.game.player.body.position) < self.attack_range:
+        if util.distance_squared(pos, self.game.player.body.position) < self.attack_range:
             super().deal_damage()
             self.last_attack = now()
             self.animations[0].framex = 0

@@ -38,7 +38,7 @@ class FireBeetle(Beetle):
         self.speed = 1400
         self.rot_speed = 0.03
 
-        self.attack_range = 250
+        self.attack_range = 62500
         self.aggro_range = 75000
         self.attack_delay = 1800
         self.debug_render = []
@@ -46,12 +46,12 @@ class FireBeetle(Beetle):
     def make_body(self):
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(self.game, 4, (self.objT.x, self.objT.y), 13, 19, self.head_movement)
+        self.chain = util.Chain(self.game, self, 4, (self.objT.x, self.objT.y), 13, 19, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         # self.particles = fx.SlowGlowParticles(self.game)
 
-        names = ["head", "torso2", "torso1", "butt"]
+        names = ["head", "torso1", "torso2", "butt"]
         self.images = [
            pygame.image.load(asset("enemies/fire beetle/" + name + ".png")) for name in names 
         ]
@@ -88,6 +88,9 @@ class FireBeetle(Beetle):
                     self.state = "searching"
                     for a in self.animations:
                         a.clear_fx()
+
+                if util.distance_squared(pos, self.game.player.rect.center) < self.attack_range:
+                    self.state = "attack"
             case "searching":
                 if util.distance_squared(pos, self.game.player.body.position) < self.aggro_range:
                     self.aggravate()

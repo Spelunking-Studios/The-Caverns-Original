@@ -1,12 +1,11 @@
-from animations import *
-from stgs import *
-import util
+from src.stgs import *
+from src import util
 
 class ClassName(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.sprites, game.layer1
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
         
         self.dump(kwargs, objT.properties) 
         self.lID = objT.id

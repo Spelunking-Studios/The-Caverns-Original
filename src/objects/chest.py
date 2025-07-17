@@ -42,7 +42,7 @@ class Chest(util.Sprite):
         self.game.space.add(self.body, self.shape)
 
         if not self.game_id:
-            self.game_id = self.id
+            self.game_id = self.game.map.floor.room.get_id() + "/" + str(self.id)
         
         if self.game_id in game.progress["chests_opened"]:
             self.opened = True
