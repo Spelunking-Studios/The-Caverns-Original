@@ -216,7 +216,8 @@ if __name__ != '__main__':
         'dialogue': pygame.font.Font(fAsset("gothic-pixel-font.ttf"), 52),
         # 'dialogue': pygame.font.Font(fAsset("PixelderFuthark.ttf"), 52),
         'tooltip': fgen("Darinia.ttf", 12),#fgen("ComicSansMS.ttf", 12)
-        'label': fgen("Darinia.ttf", 12)
+        'label': fgen("Darinia.ttf", 12),
+        'label+': fgen("Darinia.ttf", 14)
     }
 
 
