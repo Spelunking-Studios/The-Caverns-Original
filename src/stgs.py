@@ -210,6 +210,8 @@ if __name__ != '__main__':
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
         # Used for damage particles
         'effect2': pygame.font.Font(fAsset('Darinia.ttf'), 18),
+        # Used for enemy name with mouse hover
+        'hover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 12),
         'gameover': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),

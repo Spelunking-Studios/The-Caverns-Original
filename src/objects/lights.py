@@ -5,14 +5,14 @@ from src.stgs import *
 
 
 class LightSource(util.Sprite):
-    source_img = pygame.image.load(asset("objects/light2.png"))
+    source_img = pygame.image.load(asset("objects/light5.png"))
     cache = {}
 
     # objT may also be a Rect()
 
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites, game.groups.lightSources
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
         self.game = game
         self.default_size = False
         if not isinstance(objT, pygame.Rect):

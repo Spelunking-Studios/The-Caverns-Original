@@ -10,6 +10,7 @@ from .beetle import Beetle
 from src import util
 from src.animations import Animator, HurtFx
 from .leg import Leg
+from src.util import print_stats
 
 
 class RockCreature(Beetle):
@@ -19,7 +20,8 @@ class RockCreature(Beetle):
     splatter_img = pygame.image.load(asset("enemies/splat_brown.png"))
     def __init__(self, game, objT):
         super().__init__(game, objT)
-
+    
+    @print_stats
     def set_stats(self):
         self.health = 75
         

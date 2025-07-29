@@ -57,9 +57,11 @@ def hit_enemy(arbiter, space, data):
 
         if shape.collision_type == 4:
             enemy = shape.body.owner
-
-    projectile.hit(enemy)
-    return True
+    if enemy:
+        projectile.hit(enemy)
+        return True
+    else:
+        return False
 
 def hit_player(arbiter, space, data):
     projectile, player = None, None

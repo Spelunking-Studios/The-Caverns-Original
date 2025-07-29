@@ -10,6 +10,7 @@ from .beetle import Beetle
 from src import util
 from src.animations import Animator, HurtFx
 from .leg import Leg
+from src.util import print_stats
 
 
 class FireBeetle(Beetle):
@@ -30,13 +31,15 @@ class FireBeetle(Beetle):
             super().head_movement(body, gravity, damping, dt)
     def __init__(self, game, objT):
         super().__init__(game, objT)
-
+    
+    @print_stats
     def set_stats(self):
         self.health = 150
         
         self.vel = Vec(2,0)
         self.speed = 1400
         self.rot_speed = 0.03
+        self.damage = 4
 
         self.attack_range = 62500
         self.aggro_range = 75000

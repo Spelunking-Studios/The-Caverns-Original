@@ -94,6 +94,7 @@ class Game:
         })
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
+        self.hoverOverlay = HoverOverlay(self)
         # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
@@ -119,12 +120,12 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        self.dialogueScreen.dialogueFromText("""
-            Welcome to the caverns demo
-            WASD to move, left click to attack, shift to sprint, tab for inventory
-                         ....press space                                   
-            
-        """)
+        # self.dialogueScreen.dialogueFromText("""
+        #     Welcome to the caverns demo
+        #     WASD to move, left click to attack, shift to sprint, tab for inventory
+        #                  ....press space                                   
+        #
+        # """)
         # self.dialogueScreen.dialogueFromText("""
         #     There are weapons hidden in chests. Try to find them all. Beware the creatures
         # """)
@@ -289,7 +290,7 @@ class Game:
                     if self.display.fullScreen:
                         self.display.toggle_fullscreen()
                     else:
-                        self.quit()
+                        self.toggle_pause()
 
         if now() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
             self.toggleCam()
@@ -339,16 +340,20 @@ class Game:
         self.antialiasing = not self.antialiasing
         self.pauseScreen.load_components()
 
-    def get_pause(self):
+    def toggle_pause(self):
         if now() - self.lastPause >= 160:
-            if checkKey(keySet['pause']):
-                if self.pause:
-                    self.unPause()
-                else:
-                    self.pause = True
-                    self.pauseScreen.activate()
+            if self.pause:
+                self.unPause()
+            else:
+                self.pause = True
+                self.pauseScreen.activate()
 
-                self.lastPause = now()
+            self.lastPause = now()
+
+
+    def get_pause(self):
+        if checkKey(keySet['pause']):
+            self.toggle_pause()
 
     def getSprBylID(self, lID):
         for sprite in self.sprites:

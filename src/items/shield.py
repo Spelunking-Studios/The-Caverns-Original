@@ -1,18 +1,13 @@
-from ..weapon import Weapon
-import pygame
-from src.stgs import asset
+from .item import Item
 
-
-class Axe(Weapon):
-    kind = "Axe"
+class Shield(Item):
+    kind = "Shield"
 
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['attack'] = {
-            "cooldown": 0.8,
-            "damage": 20,
-            "_variance": 1,
+            "defense": 2,
             "_weight": 25
         }
         self.stats['categories'] = self.base_categories + ["axe"]
@@ -25,5 +20,6 @@ class Axe(Weapon):
 
         super().make_description()
 
-    def _player_attack(self, player):
-        player.attackState = "attack"
+    def action(self, user):
+        super().action(user)
+        user.attackState = "shield"

@@ -508,6 +508,9 @@
             "scaleInDock": 1,
             "scaleInEditor": 1
         },
+        "Caverns Floor 1.tsx": {
+            "dynamicWrapping": false
+        },
         "Floor1/room0.tmx": {
             "scale": 0.3742091049382716,
             "selectedLayer": 2,
@@ -517,11 +520,14 @@
             }
         },
         "Floor1/room1.tmx": {
-            "scale": 1,
-            "selectedLayer": 1,
+            "expandedObjectLayers": [
+                5
+            ],
+            "scale": 0.33,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 949,
-                "y": 874
+                "x": 1819.6969696969695,
+                "y": 1328.7878787878788
             }
         },
         "Floor1/room2.tmx": {
@@ -549,11 +555,35 @@
             }
         },
         "Floor1/room5.tmx": {
+            "expandedObjectLayers": [
+                8
+            ],
             "scale": 0.5,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1248,
+                "y": 649
+            }
+        },
+        "Floor1/room6.tmx": {
+            "scale": 0.33,
             "selectedLayer": 1,
             "viewCenter": {
-                "x": 1022,
-                "y": 852
+                "x": 996.9696969696971,
+                "y": 753.030303030303
+            }
+        },
+        "Floor1/room7.tmx": {
+            "expandedObjectLayers": [
+                4,
+                5,
+                6
+            ],
+            "scale": 0.33,
+            "selectedLayer": 5,
+            "viewCenter": {
+                "x": 1166.6666666666665,
+                "y": 786.3636363636364
             }
         },
         "Project0-tileset1.tsx": {
@@ -610,6 +640,17 @@
         },
         "swordcon-basic.tsx": {
             "scaleInDock": 1
+        },
+        "walls.tmx": {
+            "expandedObjectLayers": [
+                2
+            ],
+            "scale": 0.33,
+            "selectedLayer": 1,
+            "viewCenter": {
+                "x": 969.6969696969696,
+                "y": 907.5757575757576
+            }
         }
     },
     "frame.defaultDuration": 201,
@@ -618,9 +659,9 @@
         "/media/ben/405F-AFA0/Code/The-Caverns/assets/Tiled/Floor1/room0.tmx"
     ],
     "map.fixedSize": true,
-    "map.height": 32,
+    "map.height": 60,
     "map.lastUsedFormat": "tmx",
-    "map.layerDataFormat": null,
+    "map.layerDataFormat": "1",
     "map.orientation": 1,
     "map.renderOrder": 0,
     "map.tileHeight": 32,
@@ -630,9 +671,10 @@
         "Floor1/room1.tmx"
     ],
     "project": "The Caverns.tiled-project",
-    "property.type": "string",
+    "property.type": "bool",
     "recentFiles": [
         "Floor1/room1.tmx",
+        "walls.tmx",
         "Floor1/room2.tmx",
         "Floor1/room3.tmx",
         "Floor1/room4.tmx",
@@ -642,8 +684,7 @@
         "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room1-floor1.tmx",
         "/media/ben/405F-AFA0/Code/tmp/The-Caverns/assets/Tiled/Floor1/room2-floor1.tmx",
         "cave3.tmx",
-        "cave2.tmx",
-        "cave1.tmx"
+        "cave2.tmx"
     ],
     "tileset.embedInMap": false,
     "tileset.lastUsedFormat": "tsx",

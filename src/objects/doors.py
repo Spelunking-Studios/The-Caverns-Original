@@ -11,7 +11,7 @@ class Door(util.Sprite):
 
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites
-        pygame.sprite.Sprite.__init__(self, self.groups)
+        super().__init__(self.groups)
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
         self.game = game

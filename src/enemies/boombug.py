@@ -7,6 +7,7 @@ from src import util
 from src import fx
 from .enemy import SimpleEnemy
 
+from src.util import print_stats
 
 class BoomBug(SimpleEnemy):
     """A very small and quick bug that catches you by 
@@ -21,7 +22,8 @@ class BoomBug(SimpleEnemy):
         self.set_stats() 
         self.create_body()
         self.create_physics(500, 5, self.movement, (objT.x, objT.y))
-
+    
+    @print_stats
     def set_stats(self):
         self.health = 8
         self.speed = 800

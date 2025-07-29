@@ -27,8 +27,5 @@ class Sword(Weapon):
 
         super().make_description()
     
-    def _attack(self, user):
-        self._route_attack(user)
-
     def _player_attack(self, player):
         player.attackState = "attack"

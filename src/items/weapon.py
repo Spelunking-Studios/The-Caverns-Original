@@ -38,7 +38,7 @@ class Weapon(Item):
         \x1b[0m")
 
     def _attack(self, user):
-        self._route_attack()
+        self._route_attack(user)
 
     def get_attack_damage(self, user):
         return self.stats["attack"]["damage"], randint(0, 5) == 0

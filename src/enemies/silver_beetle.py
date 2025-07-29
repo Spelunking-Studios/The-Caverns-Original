@@ -9,6 +9,7 @@ import src.stats as stats
 from .beetle import Beetle
 from src import util
 from src.animations import Animator, HurtFx
+from src.util import print_stats
 from .leg import Leg
 
 class SilverBeetle(Beetle):
@@ -30,12 +31,14 @@ class SilverBeetle(Beetle):
     def __init__(self, game, objT):
         super().__init__(game, objT)
 
+    @print_stats
     def set_stats(self):
         self.health = 150
         
         self.vel = Vec(2,0)
         self.speed = 1400
         self.rot_speed = 0.03
+        self.damage = 4
 
         # The ranges are distances squared3
         # For ranged creatures, attack range means when they fire

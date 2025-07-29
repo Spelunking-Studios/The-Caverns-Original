@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="104" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="80">
+<map version="1.11" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="104" height="80" tilewidth="32" tileheight="32" infinite="0" nextlayerid="9" nextobjectid="90">
  <tileset firstgid="1" source="../Caverns Floor 1.tsx"/>
  <tileset firstgid="1025" source="../tilesets/floor1-features.tsx"/>
  <layer id="1" name="floor" width="104" height="80">
@@ -144,7 +144,7 @@
   <object id="78" name="Zone" x="358" y="451" width="573" height="262"/>
  </objectgroup>
  <objectgroup id="6" name="object">
-  <object id="18" name="Chest" x="3065" y="2344">
+  <object id="18" name="Chest" x="3058" y="2255">
    <properties>
     <property name="game_id" value="chest_room_1"/>
     <property name="item" value="Sword"/>
@@ -165,9 +165,24 @@
     <property name="text" value="Strewn across the floors are the remnants of fellow men. Their bodies appear to have wasted quickly, their death only recent"/>
    </properties>
   </object>
+  <object id="87" name="DialogueEvent" x="2807" y="2329" width="446" height="27">
+   <properties>
+    <property name="repeatable" type="bool" value="false"/>
+    <property name="text" value="You arrive at the entrance of a large cave. You are alone"/>
+   </properties>
+  </object>
+  <object id="88" name="DialogueEvent" x="3037" y="2488" width="75" height="27">
+   <properties>
+    <property name="repeatable" type="bool" value="true"/>
+    <property name="text" value="The narrow passage leads back to face of the mountain. A bitter breeze reminds you of the task at hand"/>
+   </properties>
+  </object>
+  <object id="89" name="Fungus" x="2836" y="2112">
+   <point/>
+  </object>
  </objectgroup>
  <objectgroup id="5" name="doors">
-  <object id="13" name="Entrance" x="3074" y="2465">
+  <object id="13" name="Entrance" x="3069" y="2438">
    <point/>
   </object>
   <object id="41" name="Door" x="613" y="288" width="48" height="17">

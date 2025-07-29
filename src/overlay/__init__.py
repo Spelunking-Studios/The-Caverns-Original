@@ -4,6 +4,7 @@ from .pause import PauseOverlay
 from .map import MapOverlay
 from .dialogue import DialogueOverlay
 from .inventory import InventoryOverlay
+from .hover import HoverOverlay
 
 import pygame
 pygame.font.init()
@@ -20,6 +21,7 @@ __all__ = [
     "PauseOverlay",
     "MapOverlay",
     "DialogueOverlay",
+    "HoverOverlay",
     "InventoryOverlay",
     "transparent_rect",
     "components"

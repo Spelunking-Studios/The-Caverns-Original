@@ -75,6 +75,7 @@ class GlowParticles(ParticleController):
         self.color = (255, 255, 255)
         self.glow_brightness = 0.3 
         self.speed = 3
+        self.on_finish = None
 
         self.dump(kwargs)
 

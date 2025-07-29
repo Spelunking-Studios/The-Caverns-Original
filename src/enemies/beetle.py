@@ -7,6 +7,7 @@ from pygame import Vector2 as Vec
 from src.stgs import *
 import src.fx as fx
 import src.stats as stats
+from src.util import print_stats
 from src.scripts import get_random_zone_position
 from .enemy import SimpleEnemy
 from src import util
@@ -42,19 +43,31 @@ class Beetle(SimpleEnemy):
     def start(self):
         if self.wander_destination == None:
             self.get_wander_destination()
-
+    
+    
+    @print_stats        
     def set_stats(self):
         self.health = 100
         
         self.vel = Vec(2,0)
         self.speed = 1700
         self.rot_speed = 0.03
+        self.damage = 4
 
         # The ranges are distances squared
         self.attack_range = 2500 
         self.alert_radius = 200
         self.attack_delay = 400
         self.debug_render = []
+    
+    def upgrade_stats(self, multiplier=1.5):
+        self.health *= multiplier
+        self.speed *= multiplier
+        self.attack_range *= multiplier
+        self.alert_radius *= multiplier
+        self.attack_delay /= multiplier
+
+
 
     def make_body(self):
         self.angle = -135
@@ -78,7 +91,7 @@ class Beetle(SimpleEnemy):
         self.animations[0].set_callback("attack", self.deal_damage)
 
         self.rect = pygame.Rect(0, 0, 20, 20)
-
+    
     def make_legs(self):
         self.leg_mounts = [0 for i in range(6)]
         self.feet = [0 for i in range(6)]
@@ -247,7 +260,7 @@ class Beetle(SimpleEnemy):
             self.image.blit(imgs[i], Vec(rects[i].topleft) - rects[0].topleft)
         
         if DEBUG_RENDER:
-            if not isinstance(self.feet[0], int):
+            if hasattr(self, "feet") and not isinstance(self.feet[0], int):
                 for f in self.feet:
                     f = pygame.Rect(*f, 1, 1)
                     pygame.draw.circle(surf, util.white, transform(f).center, 2)

@@ -131,11 +131,15 @@ class Dialogue(util.Sprite):
 
     def update(self):
         now = pygame.time.get_ticks()
+
+        # Little zoom in effect
         diff = now - self.lastInteract
         if diff < self.fade_in_time:
             self.scale = round(diff/self.fade_in_time, 2)
         else:
             self.scale = 1
+
+        # The actual 
         if len(self.rendText.images) > 1:
             
             if checkKey("interact") and diff > 200:

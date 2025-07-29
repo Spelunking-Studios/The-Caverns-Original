@@ -1,4 +1,6 @@
 import pygame, pymunk, random
+import os
+from src.stgs import *
 
 from .camera import Cam
 from .display import Display
@@ -22,3 +24,27 @@ class ObjT:
             self.__dict__[k] = v
 
         self.properties = self.__dict__
+
+def print_stats(func):
+    if DEBUG:
+        output = "stats.txt"
+        if os.path.isfile(output):
+            os.remove(output)
+        class temp:
+            pass
+        cache = [] 
+        def func_new(arg):
+            if not arg.__class__.__name__  in cache:
+                func(temp)
+                with open(output, "+a") as file:
+                    file.write("-----" + arg.__class__.__name__ + "-----\n")
+                    for k,v in temp.__dict__.items():
+                        if k[0:1] != "_":
+                            file.write("* " + str(k) + ": " + str(v) +"\n")
+                    file.write("\n\n")
+                cache.append(arg.__class__.__name__)
+            func(arg)
+        return func_new
+    else:
+        return func
+

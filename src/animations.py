@@ -51,7 +51,12 @@ class PlayerAnimation:
     
     def fx(self, fx):
         self.imageEffects.add(fx)
-    
+
+    def get_mask(self, name):
+        img = self.imgSheet[name].get_image(self.framex, 0, self.tileSize, self.tileSize)
+        img = self.sprite.rot_image(img)
+        return pygame.mask.from_surface(img, True)
+
     def setMode(self, mode="default", delay=60):
         if not self.mode == mode:
             if mode in self.imgSheet:
@@ -179,7 +184,7 @@ class Animator:
             self.__dict__[k] = v
 
         self.tile_size = self.img_sheet[self.mode].height
-        self.image = pygame.Surface((self.tile_size, self.tile_size))
+        self.image = self.getFirstFrame()#pygame.Surface((self.tile_size, self.tile_size))
         self.image.convert_alpha() 
 
     def getFirstFrame(self):

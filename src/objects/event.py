@@ -8,6 +8,7 @@ class Event(util.Sprite):
         self.game_id = None
         self.id = objT.id
         self.triggered = False
+        self.repeatable = False
         super().__init__(self.groups)
         
         self.dump(kwargs, objT.properties) 
@@ -20,9 +21,14 @@ class Event(util.Sprite):
             self.triggered = True
 
     def update(self):
-        if not self.triggered:
+        if self.repeatable or not self.triggered:
             if self.rect.colliderect(self.game.player.rect):
-                self.trigger()
+                if not self.triggered:
+                    self.trigger()
+                    self.last_triggered = now()
+            else:
+                self.triggered = False    # This logic makes it act like a pressure plate
+                # Can only be triggered again when you leave and come back
 
     def save(self):
         self.game.progress["events_triggered"].append(self.game_id)

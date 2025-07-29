@@ -19,10 +19,12 @@ class SimpleEnemy(util.Sprite):
         self.lID = objT.id
         self.pos = pygame.Vector2(objT.x, objT.y)
         self.particles = None
+        self.collision_type = 4
 
         self.last_hit = 0
         
         self.health = 40
+        self.damage = 4
 
         self.dump(kwargs, objT.properties)
         super().__init__(self.groups)
@@ -32,8 +34,8 @@ class SimpleEnemy(util.Sprite):
         self.health -= dmg
         self.game.mixer.playFx('hit1')
 
-    def deal_damage(self, dmg=4):
-        self.game.player.take_damage(dmg)
+    def deal_damage(self):
+        self.game.player.take_damage(self.damage)
 
     def update(self):
         if self.health <= 0:

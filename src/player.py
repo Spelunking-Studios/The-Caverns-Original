@@ -24,7 +24,12 @@ class Player(util.Sprite):
         self.hitCooldown = 200
         self.damage = 10
         self.roomBound = True
-        self.imgSheet = {"default": asset('player', 'player.png'), 'run': asset('player', 'player_running.png'), 'hit':asset('player', 'player_hitting.png'), 'wand':asset('player', 'playerHit1.png')}
+        self.imgSheet = {"default": asset('player', 'player.png'), 
+                         'run': asset('player', 'player_running.png'), 
+                         'hit':asset('player', 'player_hitting.png'), 
+                         'hit_mask':asset('player', 'player_hitting_mask.png'), 
+                         'wand':asset('player', 'playerHit1.png')
+                         }
         self.width, self.height = 42, 42
         self.health = 50
         self.healthAccumulator = 0
@@ -87,6 +92,8 @@ class Player(util.Sprite):
         self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
+        self.healthParts = fx.CombatParticles(game, self)
+        self.healthParts.partColor = util.green
 
         self.attackState = None
         # Checks whether player used right or left click last 
@@ -156,12 +163,6 @@ class Player(util.Sprite):
         if joystickEnabled:
             self.cursor.update()
 
-        # Testing Sanity
-        # self.stats.sanity = max(4, self.stats.sanity-0.003)
-        # if self.stats.sanity < self.stats.sanityMax/2:
-        #     self.lightScale.scale_to_length(self.stats.sanity/(self.stats.sanityMax/2)*1000)
-        #     self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
-
         
 
         self.rect.center = self.body.position
@@ -208,6 +209,8 @@ class Player(util.Sprite):
             self.animations.setMode("hit", 30)
             self.attackState = None
             self.game.mixer.playFx("swing")
+        if self.attackState == "shield":
+            self.animation.setMode("shield")
         if self.animations.mode == "hit":
             if not self.interacted:
                 # Create a list of all close by interactables
@@ -264,7 +267,6 @@ class Player(util.Sprite):
 
     def take_damage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
-            print("ouch")
             self.lastTimeTookDamage = time()
             self.stats.health -= damage
             self.lastHit = pygame.time.get_ticks()
@@ -288,14 +290,21 @@ class Player(util.Sprite):
         # self.rotCenter()
 
     def rotCenter(self, angle=False):
-        if not angle:
-            angle = self.angle
-        self.image = pygame.transform.rotate(self.image, angle)
+        self.image = self.rot_image(self.image, angle)
         self.rect = self.image.get_rect(center = self.rect.center)
-        self.mask = pygame.mask.from_surface(self.image, True)
+        if self.animations.mode == "hit":
+            self.mask = self.animations.get_mask("hit_mask")
+
+    def rot_image(self, img, angle=None):
+        angle = self.angle if not angle else angle
+        return pygame.transform.rotate(img, self.angle)
 
     def spin(self):
         self.angle += self.spinSpeed
+
+    def change_health(self, value):
+        self.stats.health += value
+        self.healthParts.particle(Vector2(self.rect.center), value, False)
 
     #### Collide checker for player ####
     def collideCheck(self):
@@ -310,24 +319,13 @@ class Player(util.Sprite):
 
         return returnVal
 
-    def maskCollide(self, rect2):
-        r2 = rect2
-        return self.mask.overlap(pygame.mask.Mask(r2.size, True), (r2.x-self.moveRect.x,r2.y-self.moveRect.y))
-
-    def getAttackMask(self):
-        img2 = self.image.copy()
-        img2.set_colorkey((0, 0, 0))
-        cutHole = transparent_rect((50, 50), 0)
-        img2.blit(cutHole, cutHole.get_rect(center=self.image.get_rect().center), special_flags=pygame.BLEND_MULT)
-        self.mask = pygame.mask.from_surface(img2)
-        #return img2
-
     def draw_darkness(self, ctx, transform=None):
         if transform:
             dark = self.lightScale.length()
+            wobble = math.sin(now()*0.003)*50
             if dark < 1000:
-                self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y)))
                 self.lightScale.scale_to_length(dark + self.dark_recovery_speed)
+            self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x+wobble), int(self.lightScale.y+wobble)))
 
             light = self.lightSource
             lightRect = pygame.Rect(0, 0, light.get_width(), light.get_height())
@@ -336,6 +334,10 @@ class Player(util.Sprite):
 
     def kill(self):
         pass
+
+    # def draw(self, ctx, transform):
+    #     super().draw(ctx, transform)
+    #     ctx.blit(self.mask.to_surface(), transform(self.rect))
 
 
 class Cursor:

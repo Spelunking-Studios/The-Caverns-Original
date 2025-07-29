@@ -6,11 +6,4 @@ from .lights import LightEffect
 from .zones import Zone
 from .nests import Nest
 from .event import Event, DialogueEvent
-__all__ = [
-    "Chest",
-    "Door",
-    "Entrance",
-    "Entrance2",
-    "Teleporter",
-    "Wall"
-]
+from .consumables import Fungus
