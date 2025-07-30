@@ -7,3 +7,4 @@ from .zones import Zone
 from .nests import Nest
 from .event import Event, DialogueEvent
 from .consumables import Fungus
+from .shield import Shield

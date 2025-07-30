@@ -66,7 +66,7 @@ class Wall(util.Sprite):
 
     def draw(self, ctx, transform):
         if DEBUG_PHYSICS:
-             pygame.draw.rect(ctx, colors.white, transform(self.rect))
+             pygame.draw.rect(ctx, util.white, transform(self.rect))
 
     def kill(self):
         for shape in self.shapes:

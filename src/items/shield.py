@@ -1,3 +1,5 @@
+import pygame
+from src.stgs import *
 from .item import Item
 
 class Shield(Item):
@@ -6,7 +8,7 @@ class Shield(Item):
     def __init__(self):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
-        self.stats['attack'] = {
+        self.stats['properties'] = {
             "defense": 2,
             "_weight": 25
         }
@@ -18,7 +20,6 @@ class Shield(Item):
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
 
-        super().make_description()
 
     def action(self, user):
         super().action(user)

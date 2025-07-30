@@ -5,7 +5,7 @@ from time import time
 import pygame, pymunk
 from pygame import Vector2
 from src.animations import *
-from src.objects import Wall, Chest
+from src.objects import Wall, Chest, Shield
 from src.stgs import *
 from src.overlay import transparent_rect
 from src import fx
@@ -48,7 +48,7 @@ class Player(util.Sprite):
             self.inventory.add_item(items.Mace())
             self.inventory.add_item(items.ThrowingKnives())
             self.slot1 = self.sword
-            self.slot2 = items.Wand()
+            self.slot2 = items.Shield()#items.Wand()
         else:
             if saved_inventory is None:
                 # What you start the game with
@@ -94,6 +94,7 @@ class Player(util.Sprite):
         self.combatParts = fx.CombatParticles(game, self)
         self.healthParts = fx.CombatParticles(game, self)
         self.healthParts.partColor = util.green
+        self.shield = Shield(game)
 
         self.attackState = None
         # Checks whether player used right or left click last 
@@ -210,7 +211,9 @@ class Player(util.Sprite):
             self.attackState = None
             self.game.mixer.playFx("swing")
         if self.attackState == "shield":
-            self.animation.setMode("shield")
+            # self.animations.setMode("shield")
+            self.shield.active = True
+            self.shield.update()
         if self.animations.mode == "hit":
             if not self.interacted:
                 # Create a list of all close by interactables

@@ -6,7 +6,6 @@ import pygame
 from src import util
 from src.animations import *
 from src.objects import *
-from src.player import *
 from src.stgs import *
 from src.effects import HurtEffect
 
