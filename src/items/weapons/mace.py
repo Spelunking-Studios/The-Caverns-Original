@@ -12,8 +12,8 @@ class Mace(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
-            "cooldown": 0.4,
-            "damage": 8,
+            "cooldown": 0.5,
+            "damage": 11,
             "crit": 0.25,
             "_variance": 4,
             "_weight": 25

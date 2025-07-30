@@ -110,7 +110,7 @@ def fgen(fn, s):
 
 
 #### Establishes window size ####
-winWidth, winHeight = 1280, 720#1920, 1080
+winWidth, winHeight = 1024, 768#1280, 720#1920, 1080
 if os.name == "nt":
     winFlags = pygame.OPENGL | pygame.HWSURFACE | pygame.DOUBLEBUF 
 else:

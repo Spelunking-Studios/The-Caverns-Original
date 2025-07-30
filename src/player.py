@@ -156,7 +156,7 @@ class Player(util.Sprite):
     def update(self):
         # Health regeneration code
         if not self.using_stamina and self.stats.stamina < self.stats.staminaMax:
-            self.stats.stamina += self.game.dt() * 0.1 * (self.stats.staminaMax - self.stats.stamina)
+            self.stats.stamina += self.game.dt() * 0.1 * (self.stats.staminaMax*2 - self.stats.stamina)
         self.setAngle()
         self.checkActions()
         self.animations.update()

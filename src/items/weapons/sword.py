@@ -12,8 +12,8 @@ class Sword(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
-            "cooldown": 0.4,
-            "damage": 10,
+            "cooldown": 0.3,
+            "damage": 9,
             "_variance": 2,
             "_weight": 10 
         }

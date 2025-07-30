@@ -6,7 +6,7 @@ from src.items import Weapon
 class ThrowingKnives(Weapon):
     '''Pretty self explanatory'''
 
-    kind = "throwing knives"
+    kind = "Throwing Knives"
 
     def __init__(self):
         super().__init__()

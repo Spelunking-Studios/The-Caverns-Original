@@ -1,12 +1,12 @@
 import pygame
 import moderngl
 from src.shaders import ShaderManager, Shader
-from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, CURSOR, iconPath
+from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, CURSOR, iconPath, DEBUG
 
 
 class Display:
     def __init__(self):
-        self.resolution = pygame.display.list_modes()[0]
+        self.resolution = pygame.display.get_desktop_sizes()[1]
         self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
@@ -26,6 +26,13 @@ class Display:
         self.cursor = pygame.transform.scale(self.cursor, (16, 16))
         if CURSOR:
             pygame.mouse.set_visible(False)
+
+        if DEBUG:
+            print(
+                pygame.display.get_wm_info(),
+                self.resolution,
+                pygame.display.get_desktop_sizes()
+            )
 
     def getFullScreen(self):
         keys = pygame.key.get_pressed()
