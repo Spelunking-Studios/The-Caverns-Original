@@ -16,11 +16,14 @@ class Shield(Item):
         self.stats['description'] = "Axe"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "axe.png")
+                asset("items", "weapon", "shield.png")
             ).convert_alpha()
         self.renderable = self._cache.get(self.cache_key, None)
 
 
     def action(self, user):
         super().action(user)
-        user.attackState = "shield"
+        user.shield.activate()
+
+    def unaction(self, user):
+        user.shield.deactivate()

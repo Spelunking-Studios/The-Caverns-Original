@@ -37,9 +37,9 @@ class CompendiumMenu(Menu):
         super().__init__(game)
         
         #MenuItem(game, (x, y), asset(''), desc='', text=''),
-        self.returnButton = ImageButton(game, (winWidth-240, 70), text="Return", center = True, groups = [self.comps, self.layer1])
-        self.comps.add([Text('description1', "descText", colors.yellow, game.antialiasing, (winWidth- 1200,winHeight - 340), True)])
-        self.comps.add([Text('main-title1', TITLE,  colors.yellow, game.antialiasing, (30,winHeight - 70), False)])
+        self.returnButton = ImageButton(game, (game.width()-240, 70), text="Return", center = True, groups = [self.comps, self.layer1])
+        self.comps.add([Text('description1', "descText", colors.yellow, game.antialiasing, (game.width()- 1200,game.height() - 340), True)])
+        self.comps.add([Text('main-title1', TITLE,  colors.yellow, game.antialiasing, (30,game.height() - 70), False)])
         self.layer1.add([c for c in self.comps if c not in self.layer1])
         self.run()
     
@@ -56,7 +56,7 @@ class SettingsMenu(Menu):
         super().__init__(game)
         self.returnButton = ImageButton(
             game,
-            (winWidth-240, 70),
+            (game.width()-240, 70),
             text = "Return",
             center = True,
             colors=(colors.yellow, colors.white),
@@ -124,6 +124,19 @@ class SettingsMenu(Menu):
                 (30,30)
             )
         ])
+        
+        i = 0
+        for mode in self.game.display.get_modes():
+            def passthrough(v):
+                return lambda : game.display.set_mode(v)
+            ImageButton(
+                game,
+                (100 + i*200, 630),
+                text = "Size: " + str(mode),
+                onClick = passthrough(mode),
+                groups = [self.comps, self.layer1],
+            )
+            i += 1
         self.audioSlider1.setRatio(game.mixer.musicVolume)
         self.audioSlider2.setRatio(game.mixer.fxVolume)
         self.run()
@@ -144,7 +157,7 @@ class SettingsMenu(Menu):
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.returnButton = ImageButton(game, (0, winHeight - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
+        self.returnButton = ImageButton(game, (0, game.height() - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
         menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
             Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
             Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
@@ -153,7 +166,7 @@ class CreditsMenu(Menu):
             Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
         ]
         # Pre-calculate half of the windows width because division is slow
-        halfWinWidth = winWidth / 2
+        halfWinWidth = game.width() / 2
         for item in menuItems:
             item.rect.centerx = halfWinWidth
         
@@ -176,14 +189,14 @@ class Main(Menu):
         self.instructionsButton = ImageButton(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60), groups = [self.comps, self.layer1])
         self.creditsButton = ImageButton(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.layer1])
 
-        self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = winWidth / 2, winWidth / 2
+        self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = game.width() / 2, game.width() / 2
 
         swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (320, 320))
         swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
-        swordRect.centerx = winWidth/2
+        swordRect.centerx = game.width()/2
         text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
         text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
-        text2.rect.centerx = winWidth/2
+        text2.rect.centerx = game.width()/2
 
 
 def main(game, loadingScreenOn = False):
@@ -191,8 +204,8 @@ def main(game, loadingScreenOn = False):
     if loadingScreenOn:
         game.loadingScreenShownBefore = True
         # Loading screen
-        toMainMenuButton = ImageButton(game, (0, winHeight - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
-        toMainMenuButton.rect.centerx = winWidth / 2
+        toMainMenuButton = ImageButton(game, (0, game.height() - 100), text = "Continue", center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton.rect.centerx = game.width() / 2
         loadingScreenBGSurface = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
         loadingScreenBGSurface.fill((50, 50, 50), loadingScreenBGSurface.get_rect(), special_flags=pygame.BLEND_RGBA_MIN)
     
@@ -209,7 +222,7 @@ def main(game, loadingScreenOn = False):
             )
             text.image.set_alpha(0)
             loadingText.append(text)
-            loadingText[tti].rect.centerx = winWidth / 2
+            loadingText[tti].rect.centerx = game.width() / 2
             ti += 4
             tti += 1
         loadingLinesShowed = 1
@@ -217,8 +230,8 @@ def main(game, loadingScreenOn = False):
         tmmbt = "Skip"
         if not lssb:
             tmmbt = "Continue"
-        toMainMenuButton = ImageButton(game, (0, winHeight - 100), text = tmmbt, center = True, colors = (colors.yellow, colors.white))
-        toMainMenuButton.rect.centerx = winWidth / 2
+        toMainMenuButton = ImageButton(game, (0, game.height() - 100), text = tmmbt, center = True, colors = (colors.yellow, colors.white))
+        toMainMenuButton.rect.centerx = game.width() / 2
     else:
         toMainMenuButton.clicked = True
 
@@ -227,23 +240,23 @@ def main(game, loadingScreenOn = False):
     instructionsButton = ImageButton(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
     creditsButton = ImageButton(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white))
 
-    settingsButton.rect.centerx = (winWidth / 2) - (settingsButton.rect.width / 2) - 10
-    creditsButton.rect.centerx = (winWidth / 2) + (creditsButton.rect.width / 2) + 10
+    settingsButton.rect.centerx = (game.width() / 2) - (settingsButton.rect.width / 2) - 10
+    creditsButton.rect.centerx = (game.width() / 2) + (creditsButton.rect.width / 2) + 10
 
     comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
-        c.rect.centerx = winWidth/2
+        c.rect.centerx = game.width()/2
     swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (400, 110))
     swordRect = pygame.Rect(0, 180, swordImg.get_width(), swordImg.get_height())
-    swordRect.centerx = winWidth/2
+    swordRect.centerx = game.width()/2
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
     # text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     title = pygame.image.load(asset("objects/TheCaverns2.png"))
     title.set_colorkey((255,255,255))
     titleRect = pygame.Rect(0, -80, title.get_width(), title.get_height())
-    titleRect.centerx = winWidth/2
+    titleRect.centerx = game.width()/2
     #text3 = Text('title2', 'Created by LGgameLAB (with help)', colors.orangeRed, game.antialiasing, (0, 110))
-    #text3.rect.centerx = winWidth/2
+    #text3.rect.centerx = game.width()/2
 
     #tv = 0
     while True:
@@ -255,7 +268,7 @@ def main(game, loadingScreenOn = False):
         #pygame.draw.rect(
         #    loadingScreenBGSurface,
         #    (0, 0, 0, tv),
-        #    (0, 0, winWidth, winHeight)
+        #    (0, 0, game.width(), game.height())
         #)
         game.refresh(loadingScreenBGSurface)
         
@@ -313,7 +326,7 @@ def main(game, loadingScreenOn = False):
         game.display.update(game.win)
 
 def gameOver(game):
-    restartButton = ImageButton(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    restartButton = ImageButton(game, (game.width()/2, game.height()/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
     buttons = pygame.sprite.Group(restartButton)
     while True:
         game.clock.tick(FPS)
@@ -339,7 +352,7 @@ def gameOver(game):
         game.display.update(game.win)
 
 def victoryLoop(game):
-    menuButton = ImageButton(game, (winWidth/2, winHeight/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
+    menuButton = ImageButton(game, (game.width()/2, game.height()/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
     buttons = pygame.sprite.Group(menuButton)
     game.mixer.playFx('yay')
     while True:
@@ -360,6 +373,6 @@ def victoryLoop(game):
         text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.win.blit(text2, (800, 70))
-        game.win.blit(text1, (winWidth/2 - text1.get_width()/2 ,30))
+        game.win.blit(text1, (game.width()/2 - text1.get_width()/2 ,30))
         
         game.display.update(game.win)

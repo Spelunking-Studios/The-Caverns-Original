@@ -1,6 +1,6 @@
 from src import util
 import pygame
-from src.stgs import winWidth, winHeight, checkKey, asset, fonts
+from src.stgs import checkKey, asset, fonts
 from src.menu import createFrame
 import src.util.colors as colors
 
@@ -13,9 +13,9 @@ class DialogueOverlay(util.Sprite):
         self.components = pygame.sprite.Group()
         self.text = []
         self.active = True
-        self.rect = pygame.Rect(0, 0, winWidth, winHeight)
+        self.rect = pygame.Rect(0, 0, self.game.width(), self.game.height())
         self.image = pygame.Surface(
-            (winWidth, winHeight),
+            (self.game.width(), self.game.height()),
             pygame.SRCALPHA
         ).convert_alpha()
         self.load_components()
@@ -83,8 +83,8 @@ class Dialogue(util.Sprite):
         self.scale = 0
         self.text = text
         self.rect = pygame.Rect(
-            0, winHeight - self.height * self.tileSize,
-            winWidth, self.height * self.tileSize
+            0, self.game.height() - self.height * self.tileSize,
+            self.game.width(), self.height * self.tileSize
         )
         self.fade_in_time = 200
         self.textColor = colors.white
@@ -102,10 +102,10 @@ class Dialogue(util.Sprite):
 
     def render(self):
         self.image = pygame.Surface(
-            (winWidth, self.height * self.tileSize),
+            (self.game.width(), self.height * self.tileSize),
             pygame.SRCALPHA
         )
-        self.baseImage = createFrame(winWidth/self.tileSize, self.height, self.tileSize, self.borderPalette)
+        self.baseImage = createFrame(self.game.width()/self.tileSize, self.height, self.tileSize, self.borderPalette)
         self.rendText = DialogueText(
             'dialogue',
             self.text,

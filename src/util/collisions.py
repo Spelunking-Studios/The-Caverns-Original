@@ -1,3 +1,5 @@
+PLAYER_GROUP = 1
+
 class Handler:
     """Object to handle collision interactions
 
@@ -8,6 +10,7 @@ class Handler:
     3 - Player Projectiles
     4 - Enemies
     5 - Enemy Projectiles
+    6 - Shield
 
     This is going to be different than the weapon collisions and 
     projectile on enemy collisions which will instead use 
@@ -20,6 +23,7 @@ class Handler:
         self.space = game.space
 
         self.create_handlers()
+        self.create_filters()
 
     def create_handlers(self):
         # set up collision handlers here
@@ -31,12 +35,18 @@ class Handler:
         enemy_projectile_hit_walls = self.space.add_collision_handler(1, 5)
         enemy_projectile_hit_walls.begin = kill
 
+        enemy_projectile_hit_walls = self.space.add_collision_handler(5, 6)
+        enemy_projectile_hit_walls.begin = kill
+
         projectiles_hit_enemies = self.space.add_collision_handler(4, 3)
         projectiles_hit_enemies.begin = hit_enemy
 
         projectiles_hit_player = self.space.add_collision_handler(2, 5)
         projectiles_hit_player.begin = hit_player
 
+    def create_filters(self):
+        # Make collision exclude each other here
+        pass
 
 
 

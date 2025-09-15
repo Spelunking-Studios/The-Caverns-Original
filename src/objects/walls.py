@@ -60,13 +60,12 @@ class Wall(util.Sprite):
         self.targetObj = "Entrance"
         self.dump(kwargs, objT.properties) 
 
-        if DEBUG:
-            self.image = pygame.Surface((self.rect.width, self.rect.height))
-            self.image.fill(self.color)
+        # if DEBUG:
+        #     self.image = pygame.Surface((self.rect.width, self.rect.height))
+        #     self.image.fill(self.color)
 
     def draw(self, ctx, transform):
-        if DEBUG_PHYSICS:
-             pygame.draw.rect(ctx, util.white, transform(self.rect))
+        pass
 
     def kill(self):
         for shape in self.shapes:

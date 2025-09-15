@@ -31,19 +31,19 @@ class Cam:
         
     def update(self):
         self.width, self.height = self.game.map.floor.room.width, self.game.map.floor.room.height
-        x = -self.target.rect.centerx + int(winWidth / 2)
-        y = -self.target.rect.centery + int(winHeight / 2)
+        x = -self.target.rect.centerx + int(self.game.width() / 2)
+        y = -self.target.rect.centery + int(self.game.height() / 2)
 
         # limit scrolling to map size
         if self.limit:
             x = min(0, x)  # left
             y = min(0, y)  # top
-            x = max(-(self.width - winWidth), x)  # right
-            y = max(-(self.height - winHeight), y)  # bottom
+            x = max(-(self.width - self.game.width()), x)  # right
+            y = max(-(self.height - self.game.height()), y)  # bottom
         
-        if self.width < winWidth:
-            x = (winWidth/2 - self.width/2)
-        if self.height < winHeight:
-            y = (winHeight/2 - self.height/2)
+        if self.width < self.game.width():
+            x = (self.game.width()/2 - self.width/2)
+        if self.height < self.game.height():
+            y = (self.game.height()/2 - self.height/2)
 
         self.camera = pygame.Rect(x, y, self.width, self.height)

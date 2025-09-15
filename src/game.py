@@ -53,8 +53,8 @@ class Game:
         self.antialiasing = aalias
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
-        self.display = Display()
-        self.win = pygame.Surface((winWidth, winHeight))
+        self.display = Display(self)
+        self.win = pygame.Surface(self.display.resolution)
         self.lastPause = now()
         self.lastReset = now()
         self.lastCamTog = now()
@@ -92,6 +92,9 @@ class Game:
             "chests_opened": [],
             "events_triggered": []
         })
+        if globals()["SETTINGS"].get("display_mode", False):
+            self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
+        self.display.set_mode
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         self.hoverOverlay = HoverOverlay(self)
@@ -100,7 +103,7 @@ class Game:
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
         self.updateT = now()
-        self.cam = Cam(self, winWidth, winHeight)
+        self.cam = Cam(self, self.width(), self.height())
 
         self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
         self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
@@ -162,6 +165,8 @@ class Game:
         self.render()
 
         self.display.update(self.win)
+        if DEBUG:
+            pygame.display.set_caption(TITLE + " " + str(self.currentFps))
 
     def render(self):
         self.win.blit(self.map.floor.room.image, self.cam.apply(self.map.floor.room))
@@ -191,7 +196,7 @@ class Game:
             self.space.debug_draw(self.pymunk_options)
 
         if self.showFps:
-            fpsText = fonts['caption1'].render(str(round(self.currentFps, 2)), self.antialiasing, (255, 255, 255))
+            fpsText = fonts['caption1'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
             self.win.blit(fpsText, (1100, 5))
         
         if joystickEnabled:
@@ -205,7 +210,7 @@ class Game:
 
     
     def renderDarkness(self):
-        darkness = pygame.Surface((winWidth, winWidth))
+        darkness = pygame.Surface((self.width(), self.height()))
         darkness.fill((255,255,255))
         self.player.draw_darkness(darkness, self.cam.applyRect)
         for sprite in self.groups.lightSources:
@@ -278,6 +283,15 @@ class Game:
         pygame.quit()
         sys.exit()
 
+    def width(self):
+        return self.win.get_width()
+
+    def height(self):
+        return self.win.get_height()
+
+    def size(self):
+        return self.width(), self.height()
+
     def runEvents(self):
         ## Catch all events here
         self.events = pygame.event.get()
@@ -301,7 +315,7 @@ class Game:
             self.toggleInventory()
 
     def get_fps(self):
-        self.currentFps = self.clock.get_fps()
+        self.currentFps = round(self.clock.get_fps(), 2)
         return self.currentFps
 
     def get_mouse_pos(self):
@@ -377,7 +391,7 @@ class Game:
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
         if bg:
-            self.win.blit(pygame.transform.scale(bg, (winWidth, winHeight)), (0, 0))
+            self.win.blit(pygame.transform.scale(bg, self.size()), (0, 0))
         else:
             self.win.fill((0, 0, 0))
 

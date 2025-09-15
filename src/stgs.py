@@ -17,8 +17,8 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = True
-DEBUG_PHYSICS = True
+DEBUG = False
+DEBUG_PHYSICS = False
 DEBUG_RENDER = False
 IS_COMPILED = False
 
@@ -249,6 +249,7 @@ def loadSave(file):
 
         # Init some rough defaults
         globals()["GAME_STATE"] = {}
+        globals()["SETTINGS"] = {}
 
 
 def saveData(file, game):
@@ -263,7 +264,8 @@ def saveData(file, game):
         'SHOWFPS': game.showFps,
         'joystickDisabled': game.joystickDisabled,
         "LOADING_SCREEN_SHOWN_BEFORE": game.loadingScreenShownBefore,
-        "GAME_STATE": {}
+        "GAME_STATE": {},
+        "SETTINGS": {'display_mode': game.display.get_mode()}
     }
 
     # Serialize the player's inventory

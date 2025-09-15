@@ -1,13 +1,14 @@
 import pygame
 import moderngl
 from src.shaders import ShaderManager, Shader
-from src.stgs import winWidth, winHeight, winFlags, keySet, now, TITLE, CURSOR, iconPath, DEBUG
+from src.stgs import winFlags, keySet, now, TITLE, CURSOR, iconPath, DEBUG
 
 
 class Display:
-    def __init__(self):
-        self.resolution = pygame.display.get_desktop_sizes()[1]
-        self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
+    def __init__(self, game):
+        self.game = game
+        self.resolution = self.get_modes()[0]
+        self.display = pygame.display.set_mode(self.resolution, winFlags)
         pygame.display.set_caption(TITLE)
         pygame.display.set_icon(pygame.image.load(iconPath))
         self.display.convert(32, pygame.RLEACCEL)
@@ -34,7 +35,7 @@ class Display:
                 pygame.display.get_desktop_sizes()
             )
 
-    def getFullScreen(self):
+    def get_fullscreen(self):
         keys = pygame.key.get_pressed()
         if now() - self.last_pressed_fullscreen > 200 and keys[keySet['fullScreen']]:
             self.last_pressed_fullscreen = now()
@@ -42,18 +43,16 @@ class Display:
 
     def toggle_fullscreen(self):
             if self.fullScreen:
-                self.display = pygame.display.set_mode((winWidth, winHeight), winFlags)
                 self.fullScreen = False
             else:
-                self.display = pygame.display.set_mode(self.resolution, winFlags)
                 self.fullScreen = True
-            #pygame.display.toggle_fullscreen()
+            pygame.display.toggle_fullscreen()
             pygame.display.set_icon(pygame.image.load(iconPath))
             self.new_context()
     
     def update(self, window):
         # See if the player toggles fullscreen
-        self.getFullScreen()
+        self.get_fullscreen()
         self.display.fill((0, 0, 0))
         self.display.blit(window, self.get_offset())
         if self.cursor:
@@ -63,7 +62,6 @@ class Display:
         self.ctx.screen.use()
         self.ctx.clear()
         self.shaderManager.render()
-
 
         pygame.display.flip()
         frame_texture.release()
@@ -76,8 +74,22 @@ class Display:
         return self.display.get_size()
 
     def get_offset(self):
-        offset =  pygame.Vector2((self.get_size()[0]-winWidth)/2, (self.get_size()[1]-winHeight)/2)
+        # offset =  pygame.Vector2((self.get_size()[0]-self.game.width())/2, (self.get_size()[1]-self.game.height())/2)
+        offset = (0, 0)
         return offset
+
+    def get_modes(self):
+        return pygame.display.get_desktop_sizes()
+
+    def get_mode(self):
+        return self.resolution
+
+    def set_mode(self, mode):
+        print(mode)
+        self.resolution = mode
+        self.display = pygame.display.set_mode(self.resolution, winFlags)
+        self.game.win = pygame.Surface(self.resolution)
+        self.new_context()
 
     def new_context(self):
         self.ctx = moderngl.create_context()

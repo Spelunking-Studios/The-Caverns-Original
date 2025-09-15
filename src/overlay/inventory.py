@@ -2,7 +2,7 @@ from .overlay import Overlay
 from .components import Tooltip
 from src.menu import Button, Image, Text
 from src import stgs
-from src.stgs import winWidth, winHeight, fonts
+from src.stgs import fonts
 import src.util.colors as colors
 import pygame
 from time import time
@@ -13,8 +13,8 @@ class InventoryOverlay(Overlay):
 
     def __init__(self, game):
         super().__init__(game)
-        self.width = winWidth
-        self.height = winHeight
+        self.width = self.game.width()
+        self.height = self.game.height()
         self.image = pygame.Surface(
             (self.width, self.height),
             pygame.SRCALPHA

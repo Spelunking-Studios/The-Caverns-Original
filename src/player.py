@@ -114,6 +114,7 @@ class Player(util.Sprite):
             (0, 0),
             2
         )
+        self.shape.filter = pymunk.ShapeFilter(group=util.collisions.PLAYER_GROUP)
         # self.body.mass = 30000
         
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
@@ -200,20 +201,18 @@ class Player(util.Sprite):
             if self.slot1:
                 self.slot1.action(self)
             self.last_action = 1
-        elif action2:
+        if action2:
             if self.slot2:
                 self.slot2.action(self)
-            self.last_action = 2
+        else:
+            if self.slot2:
+                self.slot2.unaction(self)
 
     def weaponCollisions(self):
         if self.attackState == "attack":
             self.animations.setMode("hit", 30)
             self.attackState = None
             self.game.mixer.playFx("swing")
-        if self.attackState == "shield":
-            # self.animations.setMode("shield")
-            self.shield.active = True
-            self.shield.update()
         if self.animations.mode == "hit":
             if not self.interacted:
                 # Create a list of all close by interactables

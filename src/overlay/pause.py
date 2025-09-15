@@ -2,7 +2,6 @@ from src import util
 import pygame
 import src.util.colors as colors
 from src.menu import SettingSlider, Button, ImageButton, Text
-from src.stgs import winWidth, winHeight
 
 
 class PauseOverlay(util.Sprite):
@@ -12,9 +11,9 @@ class PauseOverlay(util.Sprite):
         self.components = pygame.sprite.Group()
         self.text = []
         self.active = False
-        self.rect = pygame.Rect(0, 0, winWidth, winHeight)
+        self.rect = pygame.Rect(0, 0, self.game.width(), self.game.height())
         self.image = pygame.Surface(
-            (winWidth, winHeight),
+            (self.game.width(), self.game.height()),
             pygame.SRCALPHA
         ).convert_alpha()
         self.load_components()

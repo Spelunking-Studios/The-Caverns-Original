@@ -1,9 +1,11 @@
 from src import util
 import pygame
-from src.stgs import winWidth, winHeight, asset, checkKey, fonts
+from src.stgs import asset, checkKey, fonts
 
 
 class HoverOverlay(util.Sprite):
+    """Used to preview creature names"""
+
     def __init__(self, game):
         self.game = game
         pygame.sprite.Sprite.__init__(self, game.overlayer)
@@ -11,7 +13,6 @@ class HoverOverlay(util.Sprite):
         self.text = None
         self.render = None
         self.active = True
-        self.rect = pygame.Rect(0, 0, winWidth, winHeight)
         self.color = util.white
 
     def deactivate(self):

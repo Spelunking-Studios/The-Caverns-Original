@@ -42,7 +42,7 @@ class Beetle(SimpleEnemy):
 
     def start(self):
         if self.wander_destination == None:
-            self.get_wander_destination()
+            self.get_wander_destination(False)
     
     
     @print_stats        
@@ -55,7 +55,7 @@ class Beetle(SimpleEnemy):
         self.damage = 4
 
         # The ranges are distances squared
-        self.attack_range = 2500 
+        self.attack_range = 2000 
         self.alert_radius = 200
         self.attack_delay = 400
         self.debug_render = []
@@ -150,11 +150,19 @@ class Beetle(SimpleEnemy):
                     self.animations[0].set_mode("static")
 
 
-    def get_wander_destination(self):
+    def get_wander_destination(self, close = True):
         # Finds a suitable place for the beetle to wander to
         # level_w, level_h = self.game.map.floor.room.rect.size
         # self.wander_destination = (random.random()*level_w, random.random()*level_h)
         self.wander_destination = get_random_zone_position(self.game)
+        if close:
+            i = 0
+            pos = self.chain.balls[0].body.position
+            while util.distance(self.wander_destination, pos) > 300:
+                self.wander_destination = get_random_zone_position(self.game)
+                i += 1
+                if i == 10:
+                    break
                     
     def head_movement(self, body, gravity, damping, dt):
         match self.state:

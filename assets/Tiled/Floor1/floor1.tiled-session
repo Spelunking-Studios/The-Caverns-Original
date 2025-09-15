@@ -80,11 +80,30 @@
             }
         },
         "room5.tmx": {
-            "scale": 0.5,
+            "expandedObjectLayers": [
+                7
+            ],
+            "scale": 0.25,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 1622,
+                "y": 1418
+            }
+        },
+        "room6.tmx": {
+            "scale": 0.33,
             "selectedLayer": 0,
             "viewCenter": {
-                "x": 785,
-                "y": 795
+                "x": 989.3939393939395,
+                "y": 737.8787878787879
+            }
+        },
+        "room7.tmx": {
+            "scale": 0.25,
+            "selectedLayer": 4,
+            "viewCenter": {
+                "x": 582,
+                "y": 674
             }
         },
         "tutorial.tmx": {
@@ -112,6 +131,7 @@
     "project": "floor1.tiled-project",
     "property.type": "string",
     "recentFiles": [
+        "room6.tmx",
         "/home/luke/Documents/programming/python/The-Caverns-Original/assets/Tiled/tilesets/floor1-features.tsx",
         "room5.tmx",
         "room2.tmx",

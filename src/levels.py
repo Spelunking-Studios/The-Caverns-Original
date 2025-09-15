@@ -64,7 +64,7 @@ class Floor:
 
     def load(self):
         """Loads the floor (by default in the first room)"""
-        self.enterRoom("room1")
+        self.enterRoom("room5")
 
     def getRoomByName(self, name):
         for r in self.rooms:

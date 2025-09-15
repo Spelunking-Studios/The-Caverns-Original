@@ -1,6 +1,6 @@
 from src import util
 import pygame
-from src.stgs import winWidth, winHeight, asset, checkKey
+from src.stgs import asset, checkKey
 
 
 class MapOverlay(util.Sprite):
@@ -10,9 +10,9 @@ class MapOverlay(util.Sprite):
         self.components = pygame.sprite.Group()
         self.text = []
         self.active = False
-        self.rect = pygame.Rect(0, 0, winWidth, winHeight)
+        self.rect = pygame.Rect(0, 0, self.game.width(), self.game.height())
         self.image = pygame.Surface(
-            (winWidth, winHeight),
+            (self.game.width(), self.game.height()),
             pygame.SRCALPHA
         )
         self.load_components()
@@ -25,7 +25,7 @@ class MapOverlay(util.Sprite):
         self.mapImage = pygame.image.load(asset('gameMap.png'))
         self.mapImage = pygame.transform.scale(
             self.mapImage,
-            (int(winWidth), int(winHeight))
+            (int(self.game.width()), int(self.game.height()))
         ).convert_alpha()
 
     def activate(self):

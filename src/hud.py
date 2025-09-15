@@ -35,14 +35,14 @@ class StatHud(util.Sprite):
 
         pygame.sprite.Sprite.__init__(self, self.groups)
         self.baseImage =  createFrame(self.tWidth, self.tHeight, 32, self.border) if self.border else createFrame(self.tWidth, self.tHeight)
-        self.rect = pygame.Rect(winWidth-350, 40, self.tWidth*self.tileSize, self.tHeight*self.tileSize)
+        self.rect = pygame.Rect(self.game.width()-350, 40, self.tWidth*self.tileSize, self.tHeight*self.tileSize)
         self.render()
 
     def render(self):
         s = self.game.player.stats
         hp = "RGB(120,20,0)"+ str(int(s.health)) if s.health < s.healthMax/2.5 else int(s.health)
         dmg = self.game.player.slot1.damage if self.game.player.slot1 else "N/A"
-        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {s.speed}\nAttack Damage = {dmg}\nCritical = {s.crit}%"
+        newText = f"Health = {hp}\nStrength = {s.strength}\nSpeed = {round(s.speed)}\nAttack Damage = {dmg}\nCritical = {s.crit}%"
         if not newText == self.text:
             self.text = newText
             self.image = self.baseImage.copy()
@@ -64,11 +64,14 @@ class SlotsHud(Hud):
         self.slot2 = SlotHud((118, 610), scale = 0.6)
         self.slot3 = SlotHud((65, 510), scale = 0.6)
 
-        self.healthHud = HeathHud(game)# + winWidth/2.5)
-        self.staminaHud = StaminaHud(game)# + winWidth/2.5)
-        self.healthHud.rect.right = winWidth - 10
-        self.staminaHud.rect.right = winWidth - 10
+        self.healthHud = HeathHud(game)# + self.game.width()/2.5)
+        self.staminaHud = StaminaHud(game)# + self.game.width()/2.5)
 
+        # Positioning
+        self.healthHud.rect.right = self.game.width() - 10
+        self.staminaHud.rect.right = self.game.width() - 10
+        self.staminaHud.rect.bottom = self.game.height() - 25
+        self.healthHud.rect.bottom = self.staminaHud.rect.top - 20
         # Add the slots
         self.slots.add(self.slot1, self.slot2, self.slot3)
 
