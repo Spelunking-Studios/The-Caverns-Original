@@ -11,6 +11,22 @@ from time import time
 class InventoryOverlay(Overlay):
     _cached_images = {}
 
+    # Tabs
+    ITEMS_TAB= 0
+    STATS_TAB = 1
+
+    # UI
+    SLOT_WIDTH = 80
+    SLOT_HEIGHT = 90
+    SLOT_IMG_WIDTH = 64
+    SLOT_IMG_HEIGHT = 64
+    SLOT_OFFSET_X = 10
+    SLOT_OFFSET_Y = 30
+    SLOT_LABEL_PADDING = 2
+    SLOT_WRAP_LIMIT = 5
+    EQUIPMENT_ZONE_WIDTH = SLOT_WIDTH * 3
+    EQUIPMENT_LABELS = ["Neck", "Bracers", "Boots"]
+
     def __init__(self, game):
         super().__init__(game)
         self.width = self.game.width()
@@ -31,17 +47,16 @@ class InventoryOverlay(Overlay):
         self.last_change_time = 0
         self.change_delay = 0.5
         self.item_comps = pygame.sprite.Group()
+        self.equipment_comps = pygame.sprite.Group()
+        self.equipment_comp_bases = []
         self.stats_comps = pygame.sprite.Group()
 
         self.tooltip_last = None
         self.tooltip_ac = 0
         self.tooltip_id = None
 
-        # Tabs
         self.tabs = ["items_btn", "stats_btn"]
-        self.current_tab = 0
-        self.ITEMS_TAB = 0
-        self.STATS_TAB = 1
+        self.current_tab = self.ITEMS_TAB
 
         self.load_comps()
 
@@ -90,6 +105,14 @@ class InventoryOverlay(Overlay):
             inactiveTabColor=(20, 20, 20),
             onClickContext=self.tabBtnClickHandler
         )
+
+        # Base images for the equipment slots
+        self.equipment_comp_bases = [
+            pygame.Surface((64, 64), pygame.SRCALPHA),
+            pygame.Surface((64, 64), pygame.SRCALPHA),
+            pygame.Surface((64, 64), pygame.SRCALPHA)
+        ]
+        self.regenerate_equipment_comps()
 
         # Load stats components
         Text(
@@ -163,6 +186,33 @@ class InventoryOverlay(Overlay):
         tab_index = self.tabs.index(btn.text.lower() + "_btn")
         self.set_current_tab(tab_index)
 
+    def regenerate_equipment_comps(self):
+        slot_left = (self.width / 2 - 400) + self.SLOT_OFFSET_X + self.SLOT_WIDTH
+        for i, base in enumerate(self.equipment_comp_bases):
+            pos = (
+                slot_left,
+                (self.height / 2 - 300) + self.SLOT_OFFSET_Y + (self.SLOT_HEIGHT * i)
+            )
+            base.fill((0, 0, 0, 0))
+            Image(
+                base,
+                self.game,
+                pos,
+                groups=[self.equipment_comps]
+            )
+            label = Text(
+                fonts["label+"],
+                self.EQUIPMENT_LABELS[i],
+                colors.white,
+                stgs.aalias,
+                (pos[0], pos[1] + self.SLOT_LABEL_PADDING + self.SLOT_IMG_WIDTH),
+                groups=[self.equipment_comps]
+            )
+
+            # We have to do some shenanigans to center the label text
+            label.pos.x = pos[0] + (self.SLOT_IMG_WIDTH / 2) - (label.image.get_width() / 2)
+            label.setText(self.EQUIPMENT_LABELS[i])
+
     def poll_inventory(self):
         """Poll the inventory for items"""
         # Make a variable for convenience
@@ -181,7 +231,6 @@ class InventoryOverlay(Overlay):
         # Setup the loop
         ix = 0
         iy = 0
-        item_wrap_limit = 5
 
         # Loop over each item
         for item_id in self.iitems:
@@ -201,7 +250,7 @@ class InventoryOverlay(Overlay):
                 if item.renderable:
                     self._cached_images[item_id] = pygame.transform.scale(
                         item.renderable,
-                        (64, 64)
+                        (self.SLOT_IMG_WIDTH, self.SLOT_IMG_HEIGHT)
                     )
                 else:
                     # Print a warning message for devs
@@ -213,7 +262,7 @@ class InventoryOverlay(Overlay):
 
                     # Add a placeholder into the cache
                     self._cached_images[item_id] = pygame.Surface(
-                        (64, 64),
+                        (self.SLOT_IMG_WIDTH, self.SLOT_IMG_HEIGHT),
                         pygame.SRCALPHA
                     ).convert_alpha()
 
@@ -221,9 +270,10 @@ class InventoryOverlay(Overlay):
             imref = self._cached_images[item_id]
 
             # Create the image component
+            x_offsets = self.EQUIPMENT_ZONE_WIDTH + self.SLOT_OFFSET_X
             pos = (
-                (self.width / 2 - 400) + 10 + (80 * ix),
-                (self.height / 2 - 300) + 30 + (90 * iy)
+                (self.width / 2 - 400) + x_offsets + (self.SLOT_WIDTH * ix),
+                (self.height / 2 - 300) + self.SLOT_OFFSET_Y + (self.SLOT_HEIGHT * iy)
             )
             i = Image(
                 imref,
@@ -242,17 +292,18 @@ class InventoryOverlay(Overlay):
             # Create a label if the item is also the player's current wepon
             if item_id == player_equipped_weapon:
                 print("Player has", item_id, "equipped.")
-                font = fonts["label"]
-                Text(
-                    font,
+                label = Text(
+                    fonts["label"],
                     "Equipped",
                     (255, 255, 255),
-                    pos=(pos[0] + 6, pos[1] + 66),
+                    pos=(pos[0], pos[1] + self.SLOT_LABEL_PADDING + self.SLOT_IMG_HEIGHT),
                     groups=[self.item_comps]
                 )
+                label.pos.x = pos[0] + (self.SLOT_IMG_WIDTH / 2) - (label.image.get_width() / 2)
+                label.setText("Equipped")
 
             # Update positioning variables
-            if ix + 1 > item_wrap_limit:
+            if ix + 1 > self.SLOT_WRAP_LIMIT:
                 ix = 0
                 iy += 1
             else:
@@ -308,6 +359,7 @@ class InventoryOverlay(Overlay):
                 self.last_poll_time = time()
             self.comps.update()
             self.item_comps.update()
+            self.equipment_comps.update()
             self.stats_comps.update()
 
             # Stats components are special because they can track variables
@@ -416,6 +468,8 @@ class InventoryOverlay(Overlay):
         if self.current_tab == self.ITEMS_TAB:
             for item_comp in self.item_comps:
                 self.base_image.blit(item_comp.image, item_comp.rect)
+            for eq_slot in self.equipment_comps:
+                self.base_image.blit(eq_slot.image, eq_slot.rect)
         elif self.current_tab == self.STATS_TAB:
             for component in self.stats_comps:
                 self.base_image.blit(component.image, component.rect)
