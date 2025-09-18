@@ -334,8 +334,9 @@ class Player(util.Sprite):
             lightRect.center = transform(self.rect).center
             ctx.blit(light, lightRect)
 
-    def kill(self):
-        pass
+    def kill(self, *args):
+        if args:
+            super().kill()
 
     # def draw(self, ctx, transform):
     #     super().draw(ctx, transform)

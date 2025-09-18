@@ -78,6 +78,10 @@ class PlayerStats(Stats):
 
         return damage, crit
 
+    # Reset the stats after the player dies and is respawned in
+    def reset(self):
+        self.health = self.health.healthMax
+
 
 class Inventory:
     def __init__(self, *args, **kwargs):

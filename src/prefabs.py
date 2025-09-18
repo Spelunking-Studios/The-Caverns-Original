@@ -6,14 +6,16 @@ from src.util import colors, Sprite
 
 class RedButton(Button):
     def __init__(self, game, pos, text, func):
+        print("wtf")
 
         super().__init__(game,
-                         (400, 400),
+                         pos,
                          groups=[game.pSprites, game.overlayer],
                          text="Continue",
                          onClick=func,
                          instaKill=True,
                          center=True,
+                         active=True,
                          colors=(colors.orangeRed, colors.white))
 
 class Event(Sprite):

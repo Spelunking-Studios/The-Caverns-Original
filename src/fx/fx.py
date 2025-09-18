@@ -48,6 +48,7 @@ class FadeOut(util.Sprite):
 
     def end(self):   
         if self.onEnd and not self.ended:
+            print("why isnt the buttons showing")
             self.onEnd()
         if not self.noKill:
             self.kill()

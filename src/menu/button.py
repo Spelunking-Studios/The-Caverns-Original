@@ -1,9 +1,10 @@
 import pygame
 from src.stgs import fonts, asset
+from src.util import Sprite
 import src.util.colors as colors
 
 
-class Button(pygame.sprite.Sprite):
+class Button(Sprite):
     '''
     A menu object that that stores a clicked value when hovered over
 

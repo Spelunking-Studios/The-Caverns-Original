@@ -116,6 +116,7 @@ class Game:
         self.map.loadFloor()
         self.mainLoop()
         self.mixer.stop()
+        self.player.kill()
         if self.won:
             self.victoryLoop()
         else:
@@ -237,12 +238,13 @@ class Game:
             saveData(saveFile, self)
 
             def cont():
+                print("continuing the game")
                 if True:
                     self.cam.target = self.player
                     self.pause = False
                     self.groups.enemies.empty()
                     self.map.loadFloor()
-                    # self.player.reset()
+                    self.player.stats.reset()
                     self.fxLayer.empty()
                     for s in self.pSprites:
                         s.kill()
@@ -250,6 +252,7 @@ class Game:
             def died():
                 prefabs.RedButton(self, (400, 400), "Continue", cont)
                 def end():
+                    print("psych not continuing")
                     self.end = True
                 prefabs.RedButton(self, (400, 500), "Return to menu", end)
 

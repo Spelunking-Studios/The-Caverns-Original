@@ -128,7 +128,17 @@ class SettingsMenu(Menu):
         i = 0
         for mode in self.game.display.get_modes():
             def passthrough(v):
-                return lambda : game.display.set_mode(v)
+                def set_mode():
+                    game.display.set_mode(v)
+                    self.returnButton = ImageButton(
+                        game,
+                        (game.width()-240, 70),
+                        text = "Return",
+                        center = True,
+                        colors=(colors.yellow, colors.white),
+                        groups = [self.comps, self.layer1]
+                    )
+                return set_mode
             ImageButton(
                 game,
                 (100 + i*200, 630),
