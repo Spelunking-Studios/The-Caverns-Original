@@ -80,7 +80,7 @@ class PlayerStats(Stats):
 
     # Reset the stats after the player dies and is respawned in
     def reset(self):
-        self.health = self.health.healthMax
+        self.health = self.healthMax
 
 
 class Inventory:

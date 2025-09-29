@@ -32,6 +32,7 @@ class BoomBug(SimpleEnemy):
         self.charge_range = 800
         self.boom_range = 50
         self.boom_damage = 20
+        self.damage = self.boom_damage
         self.boom_power = 200000
 
     def create_body(self):
@@ -57,7 +58,7 @@ class BoomBug(SimpleEnemy):
 
     def boom(self):
 
-        super().deal_damage(self.boom_damage)
+        super().deal_damage()
 
         #calculate knockback
         diff = Vec(self.game.player.body.position) - Vec(self.body.position) 

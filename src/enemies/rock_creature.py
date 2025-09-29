@@ -33,6 +33,13 @@ class RockCreature(Beetle):
         self.attack_delay = 200
         self.aggro_range = 30000
         self.debug_render = []
+
+    def upgrade_stats(self, multiplier=1.5):
+        self.health *= multiplier
+        self.speed *= multiplier
+        self.attack_range *= multiplier
+        self.alert_radius *= multiplier
+        self.attack_delay /= multiplier
     
     def make_body(self):
         self.angle = -135

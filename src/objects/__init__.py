@@ -5,6 +5,6 @@ from .projectiles import Fireball, ThrowingKnife, EnemyFireball, EnemyDart
 from .lights import LightEffect
 from .zones import Zone
 from .nests import Nest
-from .event import Event, DialogueEvent
+from .event import Event, DialogueEvent, SavePoint
 from .consumables import Fungus
 from .shield import Shield

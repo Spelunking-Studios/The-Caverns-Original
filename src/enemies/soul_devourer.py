@@ -14,7 +14,7 @@ from src.util import print_stats
 
 
 class SoulDevourer(Beetle):
-    """A fiery beetle. Medium defensive high damage but low speed"""
+    """A black vicious beetle. Unpredictable and blindingly fast"""
 
     challenge_rating = 2
     splatter_img = pygame.image.load(asset("enemies/splat_red.png"))

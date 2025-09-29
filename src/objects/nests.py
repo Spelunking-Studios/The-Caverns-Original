@@ -30,9 +30,9 @@ class Nest(util.Sprite):
         if self.include_silver:
             self.creatures.append(SilverBeetle)
         if self.include_red:
-            self.creatures.append(FireBeetle)
+            self.creatures.append(FireBeele)
         if self.include_boom:
-            self.creatures.append(RockCreature)
+            self.creatures.append(BoomBug)
 
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)

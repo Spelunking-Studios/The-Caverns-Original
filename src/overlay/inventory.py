@@ -31,6 +31,7 @@ class InventoryOverlay(Overlay):
         super().__init__(game)
         self.width = self.game.width()
         self.height = self.game.height()
+        self.panel_width = 800
         self.image = pygame.Surface(
             (self.width, self.height),
             pygame.SRCALPHA
@@ -68,7 +69,7 @@ class InventoryOverlay(Overlay):
         """Loads all of the components"""
         self.exit_btn = Button(
             self.game,
-            (1020, 60),
+            (self.panel_width+92, 60),
             text="X",
             groups=[self.comps],
             center=True,
@@ -79,7 +80,7 @@ class InventoryOverlay(Overlay):
         )
         self.items_btn = Button(
             self.game,
-            (240, 60),
+            (self.get_offset()[0], 60),
             center=True,
             text="Items",
             groups=[self.comps],
@@ -93,7 +94,7 @@ class InventoryOverlay(Overlay):
         )
         self.stats_btn = Button(
             self.game,
-            (320, 60),
+            (self.get_offset()[0]+80, 60),
             center=True,
             text="Stats",
             groups=[self.comps],
@@ -459,7 +460,7 @@ class InventoryOverlay(Overlay):
         """Render the base surface of the inventory (no tooltips)"""
         # Draw BG
         self.base_image.fill((0, 0, 0, 127))
-        pygame.draw.rect(self.base_image, (15, 15, 15), (*self.get_offset(), 800, 600))
+        pygame.draw.rect(self.base_image, (15, 15, 15), (*self.get_offset(), self.panel_width, 600))
 
         # Draw non-item comps
         for comp in self.comps:

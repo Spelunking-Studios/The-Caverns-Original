@@ -509,7 +509,8 @@
             "scaleInEditor": 1
         },
         "Caverns Floor 1.tsx": {
-            "dynamicWrapping": false
+            "dynamicWrapping": false,
+            "scaleInDock": 1
         },
         "Floor1/room0.tmx": {
             "scale": 0.3742091049382716,
@@ -523,11 +524,11 @@
             "expandedObjectLayers": [
                 5
             ],
-            "scale": 0.33,
-            "selectedLayer": 6,
+            "scale": 0.295,
+            "selectedLayer": 5,
             "viewCenter": {
-                "x": 1819.6969696969695,
-                "y": 1328.7878787878788
+                "x": 2040.677966101695,
+                "y": 1154.2372881355932
             }
         },
         "Floor1/room2.tmx": {
@@ -639,6 +640,9 @@
             }
         },
         "swordcon-basic.tsx": {
+            "scaleInDock": 1
+        },
+        "tilesets/floor1-features.tsx": {
             "scaleInDock": 1
         },
         "walls.tmx": {

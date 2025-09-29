@@ -124,16 +124,6 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        # self.dialogueScreen.dialogueFromText("""
-        #     Welcome to the caverns demo
-        #     WASD to move, left click to attack, shift to sprint, tab for inventory
-        #                  ....press space                                   
-        #
-        # """)
-        # self.dialogueScreen.dialogueFromText("""
-        #     There are weapons hidden in chests. Try to find them all. Beware the creatures
-        # """)
-
         self.mixer.playMusic(sAsset('Adventure-Piano.mp3'))
 
         # Run pre-first frame loading

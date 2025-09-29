@@ -45,3 +45,24 @@ class DialogueEvent(Event):
         self.game.dialogueScreen.dialogueFromText(self.text)
         super().trigger()
 
+class SavePoint(Event):
+    fun_quotes = [
+        "You need a better sword",
+        "You conclude you are done with this shit",
+        "Sigh...",
+        "You stare at the holes in your armor",
+        "You read a note given to you by your father",
+        "You see at a drawing on the cave wall but quickly realize it is a figment of your insanity",
+    ]
+
+    def __init__(self, game, objT, **kwargs):
+        super().__init__(game, objT, **kwargs)
+        self.repeatable = True
+
+    def trigger(self):
+        quote = self.fun_quotes( random.randint(len(self.fun_quotes)) )
+
+        self.game.dialogueScreen.dialogueFromText("You think solemnly to yourself")
+        self.game.dialogueScreen.dialogueFromText(quote)
+        super().trigger()
+

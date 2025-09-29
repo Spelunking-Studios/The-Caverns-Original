@@ -11,7 +11,7 @@ class RedButton(Button):
         super().__init__(game,
                          pos,
                          groups=[game.pSprites, game.overlayer],
-                         text="Continue",
+                         text=text,
                          onClick=func,
                          instaKill=True,
                          center=True,
