@@ -7,3 +7,4 @@ from .fire_beetle import FireBeetle
 from .rock_creature import RockCreature
 from .boombug import BoomBug
 from .glow_tick import GlowTick
+from .bat import Bat, DemonBat

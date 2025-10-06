@@ -225,14 +225,15 @@ class Game:
             self.mixer.playFx('pHit')
             self.hudLayer.update()
             self.pause = True
-            saveData(saveFile, self)
+            self.save()
 
             def cont():
                 print("continuing the game")
                 if True:
                     self.cam.target = self.player
                     self.pause = False
-                    self.groups.enemies.empty()
+                    for e in self.groups.enemies:
+                        e.kill()
                     self.map.loadFloor()
                     self.player.stats.reset()
                     self.fxLayer.empty()
@@ -259,8 +260,10 @@ class Game:
     def reset(self):
         for sprite in self.sprites:
             sprite.kill()
+        self.sprites.empty()
         for sprite in self.pSprites:
             sprite.kill()
+        self.pSprites.empty()
         self.groups.killAll()
         self.new()
         self.run()
@@ -272,9 +275,13 @@ class Game:
         # Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
 
     def quit(self):
-        saveData(saveFile, self)
+        self.save()
         pygame.quit()
         sys.exit()
+
+    def save(self):
+        saveData(saveFile, self)
+
 
     def width(self):
         return self.win.get_width()

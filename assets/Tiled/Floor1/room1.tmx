@@ -141,7 +141,7 @@
   <object id="11" name="Nest" x="1587" y="816">
    <properties>
     <property name="challenge_rating" type="int" value="12"/>
-    <property name="include_boom" type="bool" value="true"/>
+    <property name="include_boom" type="bool" value="false"/>
     <property name="include_standard" type="bool" value="true"/>
    </properties>
    <point/>
@@ -165,7 +165,7 @@
    </properties>
    <point/>
   </object>
-  <object id="79" name="DialogueEvent" x="2755" y="1261" width="167" height="70">
+  <object id="79" name="DialogueEvent" x="2570" y="1151" width="167" height="70">
    <properties>
     <property name="text" value="Strewn across the floors are the remnants of fellow men. Their bodies appear to have wasted quickly, their death only recent"/>
    </properties>

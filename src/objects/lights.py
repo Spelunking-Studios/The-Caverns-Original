@@ -5,7 +5,10 @@ from src.stgs import *
 
 
 class LightSource(util.Sprite):
-    source_img = pygame.image.load(asset("objects/light5.png"))
+    source_imgs = [
+            pygame.image.load(asset("objects/light5.png")),
+            pygame.image.load(asset("objects/light8.png"))
+        ]
     cache = {}
 
     # objT may also be a Rect()
@@ -13,6 +16,7 @@ class LightSource(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites, game.groups.lightSources
         super().__init__(self.groups)
+        self.img_choice = 0
         self.game = game
         self.default_size = False
         if not isinstance(objT, pygame.Rect):
@@ -25,9 +29,9 @@ class LightSource(util.Sprite):
         self.dump(kwargs)        
 
         if self.default_size:
-            w = self.source_img.get_width()
+            w = self.source_imgs[self.img_choice].get_width()
             if not w in self.cache:
-                self.cache[w] = self.source_img.convert_alpha()
+                self.cache[w] = self.source_imgs[self.img_choice].convert_alpha()
                 print("caching")
             self.image = self.cache[w]
         else:
@@ -36,12 +40,12 @@ class LightSource(util.Sprite):
 
     def resize_scale(self, new_scale):
         w, h = self.rect.size
-        self.image = pygame.transform.scale(self.source_img, (int(w*new_scale), int(h*new_scale)))
+        self.image = pygame.transform.scale(self.source_imgs[self.img_choice], (int(w*new_scale), int(h*new_scale)))
 
     def resize_wh(self, w, h=False):
         w, h = int(w), int(w)
         if not w in self.cache:
-            self.cache[w] = pygame.transform.scale(self.source_img, (w, h))
+            self.cache[w] = pygame.transform.scale(self.source_imgs[self.img_choice], (w, h))
         self.image = self.cache[w]
 
 class LightEffect(LightSource):

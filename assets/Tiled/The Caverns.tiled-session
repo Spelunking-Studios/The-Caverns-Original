@@ -510,7 +510,7 @@
         },
         "Caverns Floor 1.tsx": {
             "dynamicWrapping": false,
-            "scaleInDock": 1
+            "scaleInDock": 0.5
         },
         "Floor1/room0.tmx": {
             "scale": 0.3742091049382716,
@@ -524,11 +524,11 @@
             "expandedObjectLayers": [
                 5
             ],
-            "scale": 0.295,
-            "selectedLayer": 5,
+            "scale": 1,
+            "selectedLayer": 6,
             "viewCenter": {
-                "x": 2040.677966101695,
-                "y": 1154.2372881355932
+                "x": 2690,
+                "y": 1450.5
             }
         },
         "Floor1/room2.tmx": {

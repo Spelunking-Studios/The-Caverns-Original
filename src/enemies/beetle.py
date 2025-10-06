@@ -4,6 +4,7 @@ import pygame
 import math
 import numpy as np
 from pygame import Vector2 as Vec
+import src
 from src.stgs import *
 import src.fx as fx
 import src.stats as stats
@@ -12,7 +13,7 @@ from src.scripts import get_random_zone_position
 from .enemy import SimpleEnemy
 from src import util
 from src.animations import Animator, GlowFx, HurtFx
-from .leg import Leg
+from .leg import Leg, ImageLeg
 
 class Beetle(SimpleEnemy):
     """A spider sprite with cool top down movement
@@ -98,7 +99,7 @@ class Beetle(SimpleEnemy):
         self.feet_dist_x = 1
         self.feet_dist_y = 11
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
-        self.legs = [Leg(11) if i % 2 else Leg(-11) for i in range(6)]
+        self.legs = [ImageLeg(11) if i % 2 else ImageLeg(-11) for i in range(6)]
         for l in self.legs:
             l.color = (143, 200, 215)
             l.speed = self.speed/300
@@ -305,6 +306,8 @@ class Beetle(SimpleEnemy):
     def splat(self):
         # play kill sound
         self.game.map.floor.room.blit(self.splatter_img, self.rect.center, True)
+        src.objects.LightSource(self.game, self.rect.scale_by(10), img_choice = 1, default_size=True)
+
 
     def kill(self):
         super().kill()

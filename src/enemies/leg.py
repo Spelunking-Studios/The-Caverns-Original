@@ -68,3 +68,18 @@ class Leg:
             prev = pygame.Rect(*self.points[i-1], 1, 1)
             cur = pygame.Rect(*self.points[i], 1, 1)
             pygame.draw.line(surf, self.color, transform(prev).topleft, transform(cur).topleft, 3)
+
+class ImageLeg(Leg):
+
+    image = pygame.image.load(asset("enemies/leg.png"))
+    def __init__(self, length):
+        super().__init__(length)
+
+    def draw(self, surf, transform=lambda x: x):
+        for i in range(1, len(self.points)):
+            p1, p2 = self.points[i-1], self.points[i]
+            center = p1.lerp(p2, 0.5)
+            angle = (p2-p1).as_polar()[1]
+            image = pygame.transform.rotate(self.image, -1*angle-90)
+            rect = image.get_rect(center = tuple(center))
+            surf.blit(image, transform(rect))

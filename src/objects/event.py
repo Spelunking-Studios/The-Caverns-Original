@@ -47,12 +47,12 @@ class DialogueEvent(Event):
 
 class SavePoint(Event):
     fun_quotes = [
-        "You need a better sword",
-        "You conclude you are done with this shit",
+        "and conclude need a better sword",
+        "and conclude you are done with this shit",
         "Sigh...",
-        "You stare at the holes in your armor",
-        "You read a note given to you by your father",
-        "You see at a drawing on the cave wall but quickly realize it is a figment of your insanity",
+        "as you stare at the holes in your armor",
+        "as you read a note given to you by your father",
+        "as you spot at a drawing on the cave wall but quickly realize it is a figment of your insanity",
     ]
 
     def __init__(self, game, objT, **kwargs):
@@ -65,4 +65,7 @@ class SavePoint(Event):
         self.game.dialogueScreen.dialogueFromText("You think solemnly to yourself")
         self.game.dialogueScreen.dialogueFromText(quote)
         super().trigger()
+        self.game.save()
+        self.game.dialogueScreen.dialogueFromText("Progress saved")
+
 
