@@ -194,8 +194,6 @@ class EnemyDart(Projectile):
 
 
 class ThrowingKnife(Projectile):
-
-    light_img = pygame.image.load(asset("objects/light5.png"))
     def __init__(self, game):
         mPos = game.get_mouse_pos() - pygame.Vector2(game.cam.apply(game.player).center)
         super().__init__(
@@ -217,7 +215,7 @@ class ThrowingKnife(Projectile):
         self.rect.center = self.pos
         # self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
         # self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
-        self.light = LightSource(game, self.rect, source_img=self.light_img)
+        self.light = LightSource(game, self.rect, power=0.4, radius=25)
 
         self.create_physics(5, 4, self.fake_move)
         
@@ -229,7 +227,7 @@ class ThrowingKnife(Projectile):
 
     def update(self):
         super().update()
-        self.light.rect.center = self.rect.center
+        self.light.pos = self.rect.center
         if now() - self.created >= self.lifespan:
             self.kill()
         # self.animations.update()

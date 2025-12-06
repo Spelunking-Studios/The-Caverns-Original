@@ -1,3 +1,4 @@
+import pygame
 from time import time
 import uuid
 
@@ -18,6 +19,7 @@ class Item:
             }
         }
         self.renderable = None
+        self.equipped = False
 
     def action(self, user):
         now = time()
@@ -29,6 +31,12 @@ class Item:
         ):
             self._attack(user)
             self.stats["use"]["last"] = now
+
+    def set_image(self, path):
+        if self.cache_key not in self._cache:
+            self._cache[self.cache_key] = pygame.image.load(
+                path
+            ).convert_alpha()
 
     def deserialize(self, o):
         self.stats = o
@@ -43,3 +51,12 @@ class Item:
         print("\x1b[93\
         WARNING: Base item was used, but it doesn't do anything.\
         \x1b[0m")
+
+    def get_categories(self):
+        return self.stats["categories"]
+
+    def equip(self, *args):
+        self.equipped = True
+
+    def unequip(self):
+        self.equipped = False

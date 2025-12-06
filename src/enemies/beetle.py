@@ -36,8 +36,10 @@ class Beetle(SimpleEnemy):
         self.set_stats() 
         self.make_legs()
         self.make_body()
-
-
+        
+        # Defines the lighting for the kill splat
+        self.splat_radius = 150
+        self.splat_power = 0.7
         
         self.wander_destination = None
 
@@ -303,10 +305,11 @@ class Beetle(SimpleEnemy):
             b.body.apply_impulse_at_local_point(tuple(diff), (0, 0))
         # self.chain.balls[-1].body.apply_impulse_at_local_point(tuple(diff), (0, 0))
 
-    def splat(self):
+    def splat(self, light=True):
         # play kill sound
         self.game.map.floor.room.blit(self.splatter_img, self.rect.center, True)
-        src.objects.LightSource(self.game, self.rect.scale_by(10), img_choice = 1, default_size=True)
+        if light:
+            src.objects.LightSource(self.game, self.rect, radius=self.splat_radius, power=self.splat_power)
 
 
     def kill(self):

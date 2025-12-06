@@ -64,7 +64,10 @@ class Floor:
 
     def load(self):
         """Loads the floor (by default in the first room)"""
-        self.enterRoom("room1")
+        if DEBUG:
+            self.enterRoom(DEBUG_STATE.room)
+        else:
+            self.enterRoom("room1")
 
     def getRoomByName(self, name):
         for r in self.rooms:
@@ -90,7 +93,7 @@ class Room:
         self.floor = floor
         self.game = floor.game
         self.filePath = filePath
-        self.scale = 2
+        self.scale = 1.5
 
         # Container for all the sprites corresponding to the room
         self.sprites = pygame.sprite.Group()

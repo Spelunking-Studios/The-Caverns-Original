@@ -2,51 +2,45 @@ from src import util
 import pygame
 from src.animations import *
 from src.stgs import *
+import pygame_light2d as pl2d
+
 
 
 class LightSource(util.Sprite):
-    source_imgs = [
-            pygame.image.load(asset("objects/light5.png")),
-            pygame.image.load(asset("objects/light8.png"))
-        ]
-    cache = {}
-
     # objT may also be a Rect()
 
     def __init__(self, game, objT, **kwargs):
         self.groups = game.sprites, game.groups.lightSources
-        super().__init__(self.groups)
         self.img_choice = 0
         self.game = game
-        self.default_size = False
+        self.radius = 450
+        self.power = 0.8
+        self.color = (255, 255, 255)
+
+        self.dump(kwargs)
+        super().__init__(self.groups)
         if not isinstance(objT, pygame.Rect):
             self.dump(objT.properties)
             self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
         else:
             self.rect = objT
 
-        self.pos = pygame.Vector2((self.rect.x, self.rect.y))
-        self.dump(kwargs)        
-
-        if self.default_size:
-            w = self.source_imgs[self.img_choice].get_width()
-            if not w in self.cache:
-                self.cache[w] = self.source_imgs[self.img_choice].convert_alpha()
-                print("caching")
-            self.image = self.cache[w]
-        else:
-            self.resize_wh(self.rect.w)
-        self.rect = self.image.get_rect(center=self.rect.center)
-
-    def resize_scale(self, new_scale):
-        w, h = self.rect.size
-        self.image = pygame.transform.scale(self.source_imgs[self.img_choice], (int(w*new_scale), int(h*new_scale)))
+        self.point_light = pl2d.PointLight(self.rect.center, power=self.power, radius=self.radius)
+        self.point_light.set_color(*self.color)
+        self.game.display.add_light(self.point_light)
+        self.pos = pygame.Vector2(self.rect.center)
 
     def resize_wh(self, w, h=False):
-        w, h = int(w), int(w)
-        if not w in self.cache:
-            self.cache[w] = pygame.transform.scale(self.source_imgs[self.img_choice], (w, h))
-        self.image = self.cache[w]
+        # self.light.size blah blah 
+        pass
+
+    def update(self):
+        self.point_light.position = self.game.cam.applyTuple(self.pos)
+        self.point_light.power = self.power 
+
+    def kill(self):
+        self.game.display.remove_light(self.point_light)
+        super().kill()
 
 class LightEffect(LightSource):
     '''A light source that dies out after a certain amount of time
@@ -55,13 +49,13 @@ class LightEffect(LightSource):
         self.lifespan = 900
         self.scale = 1
         self.init = now()
-        super().__init__(game, rect, img=asset("objects/light1.png"), **kwargs)
+        super().__init__(game, rect, **kwargs)
     
-        # if self.scale != 1:
-        #     self.resize(new_scale)
 
     def update(self):
+        super().update()
         if now()-self.init >= self.lifespan:
             self.kill()
+
 
 

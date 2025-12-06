@@ -12,6 +12,13 @@ class Hud(util.Sprite):
         self.groups = game.sprites, game.hudLayer
         self.game = game
         pygame.sprite.Sprite.__init__(self, self.groups)
+        self.active = True
+
+    def activate(self):
+        self.active = True
+
+    def deactivate(self):
+        self.active = False
 
     def render(self):
         pass
@@ -228,3 +235,27 @@ class StaminaHud(Hud):
         
 #     def update(self):
 #         self.render()
+
+class AlertHud(Hud):
+    image = pygame.image.load(asset("objects/arrow.png"))
+
+    def __init__(self, game, **kwargs):
+        super().__init__(game)
+        self.dump(kwargs)
+        self.active = False
+        self.distance = 200
+        self.min_distance = 140
+        self.image.convert_alpha()
+    
+    def draw(self, ctx, transform=lambda x:x):
+        rect = pygame.Rect(0, 0, *self.game.size())
+        if self.active:
+            for bat in self.game.groups.bats: 
+                if bat.charging:
+                    pos = pygame.Vector2(self.game.cam.applyRect(bat.rect).center)-rect.center
+                    if pos.magnitude() > self.min_distance:
+                        pos.clamp_magnitude_ip(self.distance)
+                        angle = -pos.as_polar()[1]-90
+                        img = pygame.transform.rotate(self.image, angle)
+                        pos += rect.center
+                        ctx.blit(img, img.get_rect(center=pos))

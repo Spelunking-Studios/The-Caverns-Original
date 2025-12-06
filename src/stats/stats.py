@@ -28,7 +28,7 @@ class Stats:
 
 class PlayerStats(Stats):
     def __init__(self, player):
-        if DEBUG:
+        if DEBUG and DEBUG_STATE.stats:
             super().__init__(
                     health=230,
                     healthMax=230,
@@ -82,45 +82,3 @@ class PlayerStats(Stats):
     def reset(self):
         self.health = self.healthMax
 
-
-class Inventory:
-    def __init__(self, *args, **kwargs):
-        self.slotMax = 5
-        self.slots = {}
-        self.slotFocus = 1
-        # self.sprite = sprite
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-
-        for x in range(1, self.slotMax+1):
-            try:
-                self.slots[x] = args[x-1]
-            except IndexError:
-                self.slots[x] = None
-
-    def setSlot(self, index, item=None):
-        if not index > self.slotMax:
-            self.slots[index] = item
-        self.slotFocus = index
-
-    def getSlot(self, index):
-        self.slotFocus = index
-        if not index > self.slotMax:
-            return self.slots[index]
-
-    def getIndex(self, item):
-        for k, v in self.slots.items():
-            if v == item:
-                return k
-        return None
-
-    def getCurrent(self):
-        return self.slots[self.slotFocus]
-
-    def expand(self, increase, *args):
-        for x in range(self.slotMax, self.slotMax+increase):
-            try:
-                self.slots[x] = args[x-self.slotMax]
-            except IndexError:
-                self.slots[x] = None
-        self.slotMax += increase

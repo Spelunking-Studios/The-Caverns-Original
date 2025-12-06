@@ -19,13 +19,15 @@ class Bat(SimpleEnemy):
 
     def __init__(self, game, objT):
         super().__init__(game, objT)
+        game.groups.bats.add(self)
 
         self.last_attack = 0
         self.attack_delay = 400
 
         self.set_stats() 
         self.create_body()
-
+        self.create_physics(10, 5, self.fake_move, self.rect.center, self.collision_type)
+        self.charging = False
 
         self.pos = Vec(self.rect.center)
         self.vel = Vec(0, 0)
@@ -65,6 +67,8 @@ class Bat(SimpleEnemy):
     def attack(self):
         super().deal_damage()
         
+    def fake_move(self, body, *args):
+        body.position = tuple(self.pos)
     def move(self):
         dt = self.game.dt()
         old_vel = self.vel.copy()
@@ -72,6 +76,9 @@ class Bat(SimpleEnemy):
             self.vel = (self.game.player.rect.center - self.pos).normalize()*self.speed
             self.vel = old_vel.lerp(self.vel, self.rot_speed)
             self.vel.scale_to_length(min(self.vel.length(), self.speed*dt*1000))
+            self.charging = True
+        else:
+            self.charging = False
 
         self.angle = self.vel.as_polar()[1]
         self.pos += self.vel
