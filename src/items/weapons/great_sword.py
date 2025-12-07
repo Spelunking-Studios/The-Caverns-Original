@@ -19,11 +19,9 @@ class GreatSword(Weapon):
         }
         self.stats["categories"] = self.base_categories + ["sword"]
         self.stats["description"] = "Great sword"
-        if self.cache_key not in self._cache:
-            self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "sword.png")
-            ).convert_alpha()
-        self.renderable = self._cache.get(self.cache_key, None)
+        self.set_image(
+            asset("items", "weapon", "sword.png")
+        )
 
         super().make_description()
 

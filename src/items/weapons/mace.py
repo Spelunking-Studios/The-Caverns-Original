@@ -20,11 +20,9 @@ class Mace(Weapon):
         }
         self.stats["categories"] = self.base_categories + ["mace"]
         self.stats["description"] = "A very heavy mace. The spiked head has begun to rust from the blood of countless victims"
-        if self.cache_key not in self._cache:
-            self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "mace.png")
-            ).convert_alpha()
-        self.renderable = self._cache.get(self.cache_key, None)
+        self.set_image(
+            asset("items", "weapon", "mace.png")
+        )
 
         super().make_description()
 

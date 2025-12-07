@@ -96,7 +96,7 @@ class Player(util.Sprite):
         self.angle = 0
         self.lightScale = pygame.Vector2(500, 500)
         self.lightScale.scale_to_length(self.light_size)
-        self.light = LightSource(self.game, pygame.Rect(0,0,20,20), groups=[game.sprites])
+        self.light = LightSource(game, pygame.Rect(0,0,20,20))
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
         self.healthParts = fx.CombatParticles(game, self)
@@ -139,7 +139,7 @@ class Player(util.Sprite):
         self.using_stamina = False
         if self.stats.stamina > 1 and checkKey("sprint"):
             speed *= self.stats.sprint_multiplier
-            self.stats.stamina -= 0.2
+            self.stats._stamina -= 0.2
             self.using_stamina = True
         if checkKey("up"):
             vy -= 1
@@ -164,18 +164,18 @@ class Player(util.Sprite):
     def update(self):
         # Health regeneration code
         if not self.using_stamina and self.stats.stamina < self.stats.staminaMax:
-            self.stats.stamina += self.game.dt() * 0.1 * (self.stats.staminaMax*2 - self.stats.stamina)
+            self.stats._stamina += self.game.dt() * 0.1 * (self.stats.staminaMax*2 - self.stats.stamina)
         self.setAngle()
         self.checkActions()
         self.animations.update()
         self.weaponCollisions()
+        self.rect.center = self.body.position
         self.light.pos = self.rect.center
         if joystickEnabled:
             self.cursor.update()
 
         
 
-        self.rect.center = self.body.position
         self.particleFx.update()
 
     def get_attack_damage(self):
@@ -278,7 +278,7 @@ class Player(util.Sprite):
     def take_damage(self, damage):
         if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
             self.lastTimeTookDamage = time()
-            self.stats.health -= damage
+            self.stats._health -= damage
             self.lastHit = pygame.time.get_ticks()
             self.lightScale.scale_to_length(self.darkened_size)
             self.game.mixer.playFx('pHit')
@@ -313,7 +313,7 @@ class Player(util.Sprite):
         self.angle += self.spinSpeed
 
     def change_health(self, value):
-        self.stats.health += value
+        self.stats._health += value
         self.healthParts.particle(Vector2(self.rect.center), value, False)
 
     #### Collide checker for player ####

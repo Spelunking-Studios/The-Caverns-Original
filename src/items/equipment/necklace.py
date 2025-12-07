@@ -1,7 +1,6 @@
-
 import pygame
 from src.stgs import *
-from .item import Item
+from src.items import Item
 
 class Necklace(Item):
     kind = "Necklace"
@@ -11,6 +10,9 @@ class Necklace(Item):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['categories'] = self.base_categories + ["wearable", "necklace"]
         self.stats['description'] = "A mysterious Necklace"
+        self.stats["buffs"] = {
+            "healthMax": 10000
+        }
 
 class NecklaceAlerting(Necklace):
     def __init__(self):
@@ -18,9 +20,8 @@ class NecklaceAlerting(Necklace):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['description'] = "An old bronze Necklace with an engraving of a bat on it"
         self.set_image(
-            asset("items", "weapon", "shield.png")
+            asset("items", "equipment", "necklace_of_alerting.png")
         )
-        self.renderable = self._cache.get(self.cache_key, None)
 
     def equip(self, game):
         game.alert_hud.activate()

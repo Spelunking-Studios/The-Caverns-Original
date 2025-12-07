@@ -125,7 +125,7 @@ class InventoryOverlay(Overlay):
             groups=[self.stats_comps]
         )
         Text(
-            "menu1",
+            "menu2",
             "Health: -1",
             colors.white,
             stgs.aalias,
@@ -134,7 +134,7 @@ class InventoryOverlay(Overlay):
             update_hook=lambda: f"Health: {self.game.player.health}"
         )
         Text(
-            "menu1",
+            "menu2",
             "Strength: -1",
             colors.white,
             stgs.aalias,
@@ -143,7 +143,7 @@ class InventoryOverlay(Overlay):
             update_hook=lambda: f"Strength: {self.game.player.stats.strength}"
         )
         Text(
-            "menu1",
+            "menu2",
             "Speed: -1",
             colors.white,
             stgs.aalias,
@@ -152,7 +152,7 @@ class InventoryOverlay(Overlay):
             update_hook=lambda: f"Speed: {self.game.player.stats.speed}"
         )
         Text(
-            "menu1",
+            "menu2",
             "Armor: Placeholder",
             colors.white,
             stgs.aalias,
@@ -160,7 +160,7 @@ class InventoryOverlay(Overlay):
             groups=[self.stats_comps],
         )
         Text(
-            "menu1",
+            "menu2",
             "Critical Hit Chance: +0% (Placeholder)",
             colors.white,
             stgs.aalias,
@@ -289,7 +289,7 @@ class InventoryOverlay(Overlay):
             )
             i.setClickHandler(self.handle_item_click)
 
-            # Create a label if the item is also the player's current wepon
+            # Create a label if the item is also the player's current weapon
             if item_id == player_equipped_weapon:
                 print("Player has", item_id, "equipped.")
                 label = Text(
@@ -301,6 +301,14 @@ class InventoryOverlay(Overlay):
                 )
                 label.pos.x = pos[0] + (self.SLOT_IMG_WIDTH / 2) - (label.image.get_width() / 2)
                 label.setText("Equipped")
+
+            if "wearable" in item.get_categories() and item.stats["equipped"]:
+                if "necklace" in item.get_categories():
+                    self.equipment_comp_bases[0] = item.renderable
+                elif "gloves" in item.get_categories():
+                    self.equipment_comp_bases[1] = item.renderable
+                elif "boots" in item.get_categories():
+                    self.equipment_comp_bases[2] = item.renderable
 
             # Update positioning variables
             if ix + 1 > self.SLOT_WRAP_LIMIT:
@@ -342,13 +350,15 @@ class InventoryOverlay(Overlay):
                 self.render()
             elif "wearable" in entry.get_categories():
                 entry.equip(self.game)
+                # Add to necklace slot
                 if "necklace" in entry.get_categories():
-                    print("nigerian")
                     self.equipment_comp_bases[0] = entry.renderable
 
                 self.regenerate_equipment_comps()
 
-                # Add to necklace slot
+            elif "note" in entry.get_categories():
+                self.game.dialogueScreen.dialogueFromText(entry.get_text())
+
         else:
             print(
                 "\x1b[93Warning:",

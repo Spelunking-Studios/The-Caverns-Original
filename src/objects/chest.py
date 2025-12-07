@@ -17,6 +17,8 @@ class Chest(util.Sprite):
         
         self.id = objT.id
         self.game_id = None
+        # These are arguments passed to the item inside the chest
+        self.argument = None
 
         for k, v in kwargs.items():
             self.__dict__[k] = v
@@ -57,7 +59,10 @@ class Chest(util.Sprite):
             else:
                 name = self.item.kind
                 self.game.dialogueScreen.dialogueFromText(f"You find a {name}")
-                self.game.player.inventory.add_item(self.item())
+                if self.argument:
+                    self.game.player.inventory.add_item(self.item(self.argument))
+                else:
+                    self.game.player.inventory.add_item(self.item())
                 self.game.progress["chests_opened"].append(self.game_id)
                 self.opened = True
                 self.game.toggleInventory()

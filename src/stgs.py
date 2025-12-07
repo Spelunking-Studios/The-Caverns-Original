@@ -17,14 +17,14 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = False# Runs game in Debug environment
+DEBUG = True                    # Runs game in Debug environment
 DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:
     """Defines the game state when running on DEBUG mode"""
-    stats = False               # Lets you choose DEBUG stats or not (OP stats)
+    stats = True                # Lets you choose DEBUG stats or not (OP stats)
     all_items = False           # Lets you use all weapons or saved weapons
-    default_inventory = True    # Doesn't load saved inventory
+    default_inventory = False   # Doesn't load saved inventory
     load_save = True
     room = "room1"              # Lets you decide which room to start in 
 
@@ -122,7 +122,7 @@ winWidth, winHeight = 1024, 768#1280, 720#1920, 1080
 if os.name == "nt":
     winFlags = pygame.OPENGL | pygame.HWSURFACE | pygame.DOUBLEBUF 
 else:
-    winFlags =   pygame.HWSURFACE | pygame.DOUBLEBUF 
+    winFlags =   pygame.OPENGL | pygame.HWSURFACE | pygame.DOUBLEBUF 
 
 iconPath = asset('logo.jpeg')
 
@@ -209,10 +209,12 @@ if __name__ != '__main__':
         'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
         '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
         # Used for inventory stats
-        '3': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 28),
+        '3': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 28),
         'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
         'title2': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 52),
         'title3': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 20),
+        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
+        'menu2': pygame.font.Font(fAsset('Darinia.ttf'), 15),
         # Used in inventory and pause menu
         'caption1': pygame.font.Font(fAsset('Darinia.ttf'), 20),
         'effect1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 18),
@@ -222,7 +224,6 @@ if __name__ != '__main__':
         'hover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 12),
         'gameover': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 60),
         'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
-        'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
         'dialogue': pygame.font.Font(fAsset("gothic-pixel-font.ttf"), 52),
         # 'dialogue': pygame.font.Font(fAsset("PixelderFuthark.ttf"), 52),
         'tooltip': fgen("Darinia.ttf", 12),#fgen("ComicSansMS.ttf", 12)

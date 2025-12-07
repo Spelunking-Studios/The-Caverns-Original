@@ -13,8 +13,8 @@ import random
 import sys
 
 from .stgs import loadSave, saveFile
-loadSave(saveFile)
 from .stgs import *
+loadSave(saveFile)
 from .fx import *
 from .levels import *
 from .menu import *
@@ -84,6 +84,9 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
+        print(globals()["GAME_STATE"])
+        if globals()["SETTINGS"].get("display_mode", False):
+            self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
         self.player = Player(
             self,
             globals()["GAME_STATE"].get("player_inventory", None),
@@ -93,8 +96,6 @@ class Game:
             "chests_opened": [],
             "events_triggered": []
         })
-        if globals()["SETTINGS"].get("display_mode", False):
-            self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
         self.display.set_mode
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
@@ -112,7 +113,7 @@ class Game:
 
     ####  Determines how the run will function ####
     def run(self):
-        loadSave("game.store")
+        # loadSave("game.store")
         if not DEBUG:
             self.menuLoop()
         self.map.loadFloor()

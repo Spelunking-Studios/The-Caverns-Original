@@ -14,7 +14,7 @@ class Display:
         # self.display.convert(32, pygame.RLEACCEL)
         self.fullScreen = False
         self.last_pressed_fullscreen = 0
-        self.light_engine = LightingEngine(self.resolution, self.resolution, (320, 180))
+        self.light_engine = LightingEngine(self.resolution, self.resolution, (160, 90))
         self.light_engine.set_ambient(255, 255, 255)
 
         self.cursor = pygame.image.load(CURSOR) if CURSOR else False
@@ -114,6 +114,6 @@ class Display:
     def set_mode(self, mode):
         print(mode)
         self.resolution = mode
-        # self.display = pygame.display.set_mode(self.resolution, winFlags)
         self.game.win = pygame.Surface(self.resolution)
+        self.light_engine = LightingEngine(self.resolution, self.resolution, (320, 180))
 

@@ -20,10 +20,9 @@ class ThrowingKnives(Weapon):
         }
         self.stats['categories'] = self.base_categories + ["throwing_knives"]
         self.stats['description'] = "A dangerous set of knives waiting to be tossed"
-        if self.cache_key not in self._cache:
-            self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "throwing_knives.png")
-            ).convert_alpha()
+        self.set_image(
+            asset("items", "weapon", "throwing_knives.png")
+        )
         self.renderable = self._cache.get(self.cache_key, None)
         super().make_description()
 

@@ -16,10 +16,12 @@ class Item:
             "use": {
                 "fn": self.action,
                 "last": -1
-            }
+            },
+            "equipped": False,
+            "buffs_active": False,
+            "buffs": {}
         }
         self.renderable = None
-        self.equipped = False
 
     def action(self, user):
         now = time()
@@ -37,6 +39,8 @@ class Item:
             self._cache[self.cache_key] = pygame.image.load(
                 path
             ).convert_alpha()
+
+        self.renderable = self._cache.get(self.cache_key, None)
 
     def deserialize(self, o):
         self.stats = o
@@ -56,7 +60,9 @@ class Item:
         return self.stats["categories"]
 
     def equip(self, *args):
-        self.equipped = True
+        self.stats["equipped"] = True
+        self.stats["buffs_active"] = True
 
     def unequip(self):
-        self.equipped = False
+        self.stats["equipped"] = False
+        self.stats["buffs_active"] = False

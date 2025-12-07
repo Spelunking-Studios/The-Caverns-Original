@@ -19,12 +19,9 @@ class Wand(Weapon):
         }
         self.stats['categories'] = self.base_categories + ["dagger"]
         self.stats['description'] = "Base dagger"
-        if self.cache_key not in self._cache:
-            self._cache[self.cache_key] = pygame.image.load(
-                asset("items", "weapon", "dagger.png")
-            ).convert_alpha()
-        self.renderable = self._cache.get(self.cache_key, None)
-        print("kyle was here")
+        self.set_image(
+            asset("items", "weapon", "dagger.png")
+        )
         super().make_description()
 
     def _attack(self, user):

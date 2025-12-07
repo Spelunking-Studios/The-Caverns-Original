@@ -34,6 +34,31 @@ class Inventory:
         """Retrives all of the itemes in the inventory"""
         return self._registry["items"]
 
+    # I don't foresee slowdowns by calculating the player's buffs
+    # but in case there are here is the outline of a caching 
+    # method to prevent this
+    #
+    # @staticmethod
+    # def cache(func):
+    #      cache_list
+    #     def cached_func(*args):
+    #           if args in cache_list:
+    #               return cache_list[args]
+    #           else:
+    #               cache_list[args].append(blah blaj)
+    #               func()
+    #
+    # @cache
+
+    def get_buffs(self, query):
+        sum = 0
+        for i in self.get_items():
+            item = self.get_item(i)
+            if item.stats["buffs_active"] and query in item.stats["buffs"]:
+                sum += item.stats["buffs"][query]
+
+        return sum
+
     def serialize(self):
         """Serialized the inventory into bytes"""
         return json.dumps(
