@@ -194,7 +194,6 @@ class InventoryOverlay(Overlay):
                 slot_left,
                 (self.height / 2 - 300) + self.SLOT_OFFSET_Y + (self.SLOT_HEIGHT * i)
             )
-            base.fill((0, 0, 0, 0))
             Image(
                 base,
                 self.game,
@@ -327,18 +326,29 @@ class InventoryOverlay(Overlay):
                 print("The player already has '" + item_id + "' equipped.")
                 return
 
-            # Set the player's equipped weapon
-            self.game.player.slot1 = entry
+            if "weapon" in entry.get_categories():
 
-            # Print a message to the console
-            print(
-                "Changed the player's equipped weapon to",
-                "'" + item_id + "'."
-            )
+                # Set the player's equipped weapon
+                self.game.player.slot1 = entry
 
-            # Force a rerender of the overlay
-            self.poll_inventory()
-            self.render()
+                # Print a message to the console
+                print(
+                    "Changed the player's equipped weapon to",
+                    "'" + item_id + "'."
+                )
+
+                # Force a rerender of the overlay
+                self.poll_inventory()
+                self.render()
+            elif "wearable" in entry.get_categories():
+                entry.equip(self.game)
+                if "necklace" in entry.get_categories():
+                    print("nigerian")
+                    self.equipment_comp_bases[0] = entry.renderable
+
+                self.regenerate_equipment_comps()
+
+                # Add to necklace slot
         else:
             print(
                 "\x1b[93Warning:",

@@ -134,11 +134,10 @@ class FlameParticles(GlowParticles):
         self.particles.append([0, 0, 1, random.random()-0.5, random.random()-0.5, util.peach_rose, 3])
 
 class SlowGlowParticles(GlowParticles):
-    light_img = pygame.image.load(asset("objects/light6.png"))
     def __init__(self, game, **kwargs):
-        self.light_img.convert()
         self.last_particle = 0
         self.bright = False
+        self.brightness = 0.8
         self.speed = 2
         super().__init__(game)
         self.particle_size = 5
@@ -165,14 +164,11 @@ class SlowGlowParticles(GlowParticles):
             p[0] += p[3] # Add Velocity X
             p[4] += 0.0  # Add acceleration
             p[5] = util.dark(p[5], 1) # Color
-            x, y = 0, 0#self.position
-            p[6].resize_wh(p[2]*8, p[2]*8)
-            p[6].rect.width = p[2]*8
-            p[6].rect.height = p[2]*8
-            p[6].rect.center = (p[0]+x, p[1]+ y)
+            p[6].power = p[2]*0.15
+            p[6].pos = (p[0], p[1])
             p[7] += 1
             if p[7] > 100 or p[2] <= 0:
-                p[6].kill()
+                # p[6].kill()
                 self.particles.remove(p)
     
     def add_particle(self):
@@ -183,7 +179,7 @@ class SlowGlowParticles(GlowParticles):
                                 (random.random()-0.5)*self.speed,
                                 (random.random()-0.5)*self.speed,
                                 self.color,
-                                objects.LightEffect(self.game, pygame.Rect(0, 0, 10, 10), source_img = self.light_img), 
+                                objects.LightEffect(self.game, pygame.Rect(0, 0, 10, 10), power=self.brightness, radius=50, color=self.color), 
                                 0
                               ])
 

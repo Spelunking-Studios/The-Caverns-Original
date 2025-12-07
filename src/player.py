@@ -6,6 +6,7 @@ import pygame, pymunk
 from pygame import Vector2
 from src.animations import *
 from src.objects import Wall, Chest, Shield
+from src.objects.lights import LightSource
 from src.stgs import *
 from src.overlay import transparent_rect
 from src import fx
@@ -36,7 +37,8 @@ class Player(util.Sprite):
         self.inventory = Inventory()
 
         
-        if DEBUG:
+        if DEBUG and DEBUG_STATE.all_items:
+            # Give the player all items
             self.sword = items.Sword()
             self.great_sword = items.GreatSword()
             self.dagger = items.Dagger()
@@ -50,11 +52,16 @@ class Player(util.Sprite):
             self.slot1 = self.sword
             self.slot2 = items.Shield()#items.Wand()
         else:
+            if DEBUG and DEBUG_STATE.default_inventory:
+                # Empties inventory 
+                saved_inventory = None
+
             if saved_inventory is None:
                 # What you start the game with
                 self.slot1 = items.Dagger()
                 self.inventory.add_item(self.slot1)
             else:
+                # Get saved inventory
                 self.inventory.deserialize(saved_inventory)
 
                 if equipped_weapon:
@@ -62,6 +69,7 @@ class Player(util.Sprite):
                 else:
                     self.slot1 = items.Dagger()
             self.slot2 = None
+
         self.groups = [game.sprites, game.layer2, game.groups.players]
         super().__init__(self.groups)
 
@@ -86,10 +94,9 @@ class Player(util.Sprite):
 
         self.mask = pygame.mask.from_surface(self.image, True)
         self.angle = 0
-        self.lightImg = pygame.image.load(asset('objects', 'light4.png')).convert_alpha()
-        self.lightScale = pygame.Vector2(self.lightImg.get_width(), self.lightImg.get_height())
+        self.lightScale = pygame.Vector2(500, 500)
         self.lightScale.scale_to_length(self.light_size)
-        self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x), int(self.lightScale.y))).convert_alpha()
+        self.light = LightSource(self.game, pygame.Rect(0,0,20,20), groups=[game.sprites])
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
         self.healthParts = fx.CombatParticles(game, self)
@@ -162,6 +169,7 @@ class Player(util.Sprite):
         self.checkActions()
         self.animations.update()
         self.weaponCollisions()
+        self.light.pos = self.rect.center
         if joystickEnabled:
             self.cursor.update()
 
@@ -321,27 +329,10 @@ class Player(util.Sprite):
 
         return returnVal
 
-    def draw_darkness(self, ctx, transform=None):
-        if transform:
-            dark = self.lightScale.length()
-            wobble = math.sin(now()*0.003)*50
-            if dark < 1000:
-                self.lightScale.scale_to_length(dark + self.dark_recovery_speed)
-            self.lightSource = pygame.transform.scale(self.lightImg, (int(self.lightScale.x+wobble), int(self.lightScale.y+wobble)))
-
-            light = self.lightSource
-            lightRect = pygame.Rect(0, 0, light.get_width(), light.get_height())
-            lightRect.center = transform(self.rect).center
-            ctx.blit(light, lightRect)
 
     def kill(self, *args):
         if args:
             super().kill()
-
-    # def draw(self, ctx, transform):
-    #     super().draw(ctx, transform)
-    #     ctx.blit(self.mask.to_surface(), transform(self.rect))
-
 
 class Cursor:
     def __init__(self, xy=(500, 1)):

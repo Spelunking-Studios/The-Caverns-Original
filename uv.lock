@@ -1,5 +1,5 @@
 version = 1
-revision = 2
+revision = 3
 requires-python = ">=3.13"
 resolution-markers = [
     "sys_platform != 'emscripten'",
@@ -218,6 +218,42 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/d7/19/7f9a37b7ff55dc34a8f727b86b89800a1fdb4b1436e601dea66f89764472/pygame_ce-2.5.5-cp313-cp313-manylinux_2_17_x86_64.manylinux2014_x86_64.whl", hash = "sha256:e37bfd4545fb057ce24d06e13d1262989ca0ece3b12010c585130607e3c2bbf8", size = 12463330, upload-time = "2025-06-07T07:32:10.136Z" },
     { url = "https://files.pythonhosted.org/packages/fa/f5/5ad50c34f042bbc135312cd75d86d156bf18f54b72ae8947498acbda8cbd/pygame_ce-2.5.5-cp313-cp313-win32.whl", hash = "sha256:476a1b56b19f5023ddd0512716f11c413c3587b93dfd4aebd40869f261d3b8b7", size = 9799763, upload-time = "2025-06-07T07:32:12.332Z" },
     { url = "https://files.pythonhosted.org/packages/a8/88/89cfcaf55c8ccab5a2d59f206bf7b7d4336c4b27d9b63531a0e274cac817/pygame_ce-2.5.5-cp313-cp313-win_amd64.whl", hash = "sha256:8568fab6d43e23ca209fb860f7d387f2f89bd4047a4fa617ed0951fd9739109c", size = 10376053, upload-time = "2025-06-07T07:32:14.526Z" },
+    { url = "https://files.pythonhosted.org/packages/09/54/351e6cc0b389cfd6ae97c999bf1beee23269823e5c4f2d700a7b507642aa/pygame_ce-2.5.5-cp314-cp314-macosx_10_13_x86_64.whl", hash = "sha256:5fdaba786e3fd77315dcdf240d1d24119c51ce803c31e8d1362cc938cea75570", size = 12374606, upload-time = "2025-07-28T07:48:04.566Z" },
+    { url = "https://files.pythonhosted.org/packages/e7/e5/ba180f96353e0394ac14b6d8549b44cc2bb509b0e71dc42d1800fc605843/pygame_ce-2.5.5-cp314-cp314-macosx_11_0_arm64.whl", hash = "sha256:518768ce311ae56ac43059307f18a07768a106e8fbed365f747e2558dba7a4b4", size = 11624585, upload-time = "2025-07-28T07:48:14.375Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/49/449d7fb46a2fe8cea8d0863c4aec0dc1ad6a38a97e2ae1001c0a0c51dbee/pygame_ce-2.5.5-cp314-cp314-manylinux2014_aarch64.manylinux_2_17_aarch64.whl", hash = "sha256:18b683f1a14d2d537f1c3e7749c156ead905521a3089b4106a7ffb1e5c8f7922", size = 12267397, upload-time = "2025-07-28T07:48:24.171Z" },
+    { url = "https://files.pythonhosted.org/packages/df/df/6d67658f79b9127d6f5750cbaa521372c0f62554e4cf6791ecffd10a1f1e/pygame_ce-2.5.5-cp314-cp314-manylinux2014_i686.manylinux_2_17_i686.whl", hash = "sha256:33a6e579061bd74ce31d23148b631b00cd0ed71eeea06c0a852c8a29552315db", size = 12793784, upload-time = "2025-07-28T07:48:34.4Z" },
+    { url = "https://files.pythonhosted.org/packages/f0/40/e7c47b0e296a181900e2ab24ef87e2e922ec08f141ab35d0433917f7c5b6/pygame_ce-2.5.5-cp314-cp314-manylinux2014_x86_64.manylinux_2_17_x86_64.whl", hash = "sha256:6f50a43ca19e2e060e79ab53f8a9db9c7e3388b39c0015e56e30f17feab6c37f", size = 12436752, upload-time = "2025-07-28T07:48:44.357Z" },
+    { url = "https://files.pythonhosted.org/packages/b6/48/036295f5340261d725e75ccf3851d22d18dcedf9627f8e77856e8ba14ad7/pygame_ce-2.5.5-cp314-cp314-win32.whl", hash = "sha256:2515a5d07a856b61871bc47f5c88d9cbb50d81013de865d7cc3a1d3648b4fef9", size = 9904668, upload-time = "2025-07-28T07:48:52.776Z" },
+    { url = "https://files.pythonhosted.org/packages/fc/51/908716125a12272494953e4c34abd178b54870611e015078b0238531b90c/pygame_ce-2.5.5-cp314-cp314-win_amd64.whl", hash = "sha256:7f3bafbc6007c96d42f305e2ed7b2ad899ed6aa97546b1457bd50c39fd764dbf", size = 10516298, upload-time = "2025-07-28T07:49:00.866Z" },
+]
+
+[[package]]
+name = "pygame-light2d"
+version = "2.1.3"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "moderngl" },
+    { name = "numpy" },
+    { name = "pygame-render" },
+    { name = "pyopengl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/33/7d/59192d8807f2fe84556e915f336b23c7e604a015691d201dffa5b98557d3/pygame_light2d-2.1.3.tar.gz", hash = "sha256:be6c8120f057cab20f3672e100678251c2816f20ac7c5292ffb36b14d806d820", size = 13838, upload-time = "2025-05-15T16:55:51.169Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/24/c7/dc76ecf6708585baaf734c56d0289dfa9ec1ed725471c293e4f3a75ad5c9/pygame_light2d-2.1.3-py3-none-any.whl", hash = "sha256:890806c6290357da30b921f668efe9b6415a4eaba21f46a78a0a7c7e5bb81a0f", size = 17111, upload-time = "2025-05-15T16:55:49.548Z" },
+]
+
+[[package]]
+name = "pygame-render"
+version = "1.4.2"
+source = { registry = "https://pypi.org/simple" }
+dependencies = [
+    { name = "moderngl" },
+    { name = "numpy" },
+    { name = "pyopengl" },
+]
+sdist = { url = "https://files.pythonhosted.org/packages/2e/0d/8060518fe92dae1830b21772f9d379e3824d3f476621d38d123aa43077b3/pygame_render-1.4.2.tar.gz", hash = "sha256:1079fbe3f7e7837ef616845d108e7551a70adec2196abf11193a96fc856c3dd8", size = 18439, upload-time = "2025-08-14T20:04:51.533Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/75/4e/e005666a49950876a1c01df70c35be5508f83baaa55dfad6039ee7bc78e0/pygame_render-1.4.2-py3-none-any.whl", hash = "sha256:992a6c7968a3e49bf7c725714f8b84fdb4121fd7c09a65ecf2d7163691c29841", size = 19682, upload-time = "2025-08-14T20:04:49.473Z" },
 ]
 
 [[package]]
@@ -240,6 +276,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pyopengl"
+version = "3.1.10"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/6f/16/912b7225d56284859cd9a672827f18be43f8012f8b7b932bc4bd959a298e/pyopengl-3.1.10.tar.gz", hash = "sha256:c4a02d6866b54eb119c8e9b3fb04fa835a95ab802dd96607ab4cdb0012df8335", size = 1915580, upload-time = "2025-08-18T02:33:01.76Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/de/e4/1ba6f44e491c4eece978685230dde56b14d51a0365bc1b774ddaa94d14cd/pyopengl-3.1.10-py3-none-any.whl", hash = "sha256:794a943daced39300879e4e47bd94525280685f42dbb5a998d336cfff151d74f", size = 3194996, upload-time = "2025-08-18T02:32:59.902Z" },
+]
+
+[[package]]
 name = "pytmx"
 version = "3.32"
 source = { registry = "https://pypi.org/simple" }
@@ -257,6 +302,7 @@ dependencies = [
     { name = "numpy" },
     { name = "pillow" },
     { name = "pygame-ce" },
+    { name = "pygame-light2d" },
     { name = "pymunk" },
     { name = "pytmx" },
 ]
@@ -275,6 +321,7 @@ requires-dist = [
     { name = "numpy", specifier = ">=2.2.4" },
     { name = "pillow", specifier = ">=11.1.0" },
     { name = "pygame-ce", specifier = "==2.5.5" },
+    { name = "pygame-light2d", specifier = ">=2.1.3" },
     { name = "pymunk", specifier = ">=6.11.1" },
     { name = "pytmx", specifier = ">=3.32" },
 ]

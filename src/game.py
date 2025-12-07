@@ -54,7 +54,9 @@ class Game:
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
         self.display = Display(self)
-        self.win = pygame.Surface(self.display.resolution)
+        self.bg = pygame.Surface(self.display.resolution, pygame.SRCALPHA)
+        # Create a separate render target for the elements not covered by the darkness
+        self.fg = pygame.Surface(self.bg.get_size(), pygame.SRCALPHA)
         self.lastPause = now()
         self.lastReset = now()
         self.lastCamTog = now()
@@ -102,10 +104,11 @@ class Game:
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
+        self.alert_hud = hud.AlertHud(self)
         self.updateT = now()
         self.cam = Cam(self, self.width(), self.height())
 
-        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.win)
+        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.bg)
         self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
 
     ####  Determines how the run will function ####
@@ -132,10 +135,10 @@ class Game:
 
         while not self.end:
             dt = self.clock.tick(FPS)
-            self.refresh()  # asset('objects/shocking.jpg'))
+            self.refresh()  
 
             # Updates Game
-            self.runEvents()
+            self.window_events()
             self.update(dt)
 
     def update(self, dt):
@@ -149,77 +152,84 @@ class Game:
             self.space.step(1/FPS)
             self.sprites.update()
             self.layer3.update()
-            self.checkHits()
+            self.game_events()
         self.overlayer.update()
         self.cam.update()
 
         self.render()
 
-        self.display.update(self.win)
-        if DEBUG:
-            pygame.display.set_caption(TITLE + " " + str(self.currentFps))
+        # if DEBUG:
+        pygame.display.set_caption(TITLE + " " + str(self.currentFps))
 
     def render(self):
-        self.win.blit(self.map.floor.room.image, self.cam.apply(self.map.floor.room))
+
+        self.bg.blit(self.map.floor.room.image, self.cam.apply(self.map.floor.room))
 
         for layer in self.rendLayers:
             for sprite in layer:
                 # if hasattr(sprite, "image"):
                 #     if pygame.Rect(0, 0, winWidth, winHeight).colliderect(self.cam.apply(sprite)):
-                #         self.win.blit(sprite.image, self.cam.apply(sprite))
-                sprite.draw(self.win, self.cam.applyRect)
+                #         self.bg.blit(sprite.image, self.cam.apply(sprite))
+                sprite.draw(self.bg, self.cam.applyRect)
+
 
         for fx in self.fxLayer:
-            self.win.blit(fx.image, fx.rect)
+            self.bg.blit(fx.image, fx.rect)
 
-        self.renderDarkness()
+        # image = pygame.surface.Surface((self.width(), self.height()), pygame.SRCALPHA)
+        # image.fill((100, 0, 0))
+        # image.set_alpha(5)
+        # self.bg.blit(image, (0, 0))
+        
 
+        # self.bg.fill((200, 0, 0, 100))
+
+
+        # Everything beyond here is drawn on a separate target surface
+        # so that the shader library can distinguish what to cover with light and what not to
         for sprite in self.hudLayer:
-            sprite.draw(self.win)
+            sprite.draw(self.fg)
 
         for sprite in self.overlayer:
             if hasattr(sprite, "active"):
                 if sprite.active:
-                    sprite.draw(self.win)
-            # except AttributeError:
-            # self.win.blit(sprite.image, sprite.rect)
+                    sprite.draw(self.fg)
+
         if DEBUG_PHYSICS:
             self.space.debug_draw(self.pymunk_options)
 
         if self.showFps:
             fpsText = fonts['caption1'].render(str(self.currentFps), self.antialiasing, (255, 255, 255))
-            self.win.blit(fpsText, (1100, 5))
+            self.fg.blit(fpsText, (1100, 5))
         
-        if joystickEnabled:
+        if joystickEnabled and DEBUG:
             pos = self.player.cursor.pos
             size = self.player.cursor.size
-            pygame.draw.rect(self.win, (200, 0, 0), (pos.x, pos.y, size.x, size.y))
+            pygame.draw.rect(self.fg, (200, 0, 0), (pos.x, pos.y, size.x, size.y))
 
-        # shader_bloom_effect_array24(self.win, 0, fast_=True)
 
-        # self.win.blit(self.player.getAttackMask(), (0, 0))
+        self.display.update(self.bg, self.fg)
 
     
-    def renderDarkness(self):
-        darkness = pygame.Surface((self.width(), self.height()))
-        darkness.fill((255,255,255))
-        self.player.draw_darkness(darkness, self.cam.applyRect)
-        for sprite in self.groups.lightSources:
-            darkness.blit(sprite.image, self.cam.apply(sprite))
-
-        # print(len(self.groups.lightSources))
-
-        
-        self.win.blit(darkness, (0, 0), special_flags=pygame.BLEND_RGB_SUB)
+    # def renderDarkness(self):
+    #     darkness = pygame.Surface((self.width(), self.height()))
+    #     darkness.fill((255,255,255))
+    #     self.player.draw_darkness(darkness, self.cam.applyRect)
+    #     for sprite in self.groups.lightSources:
+    #         darkness.blit(sprite.image, self.cam.apply(sprite))
+        # self.bg.blit(darkness, (0, 0), special_flags=pygame.BLEND_RGB_SUB)
 
     def count_particles(self):
         print(sum(p.get_batch_size() for p in self.groups.particle_emitters))
 
-    def checkHits(self):
-        # pygame.sprite.groupcollide(self.groups.colliders, self.groups.pProjectiles, False, True)
-        # for e, projs in pygame.sprite.groupcollide(self.groups.enemies, self.groups.pProjectiles, False, False).items():
-        #     for p in projs:
-        #         p.hit(e)
+    def game_events(self):
+        if now() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
+            self.toggleCam()
+            self.lastCamTog = now()
+
+        # Inventory
+        if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
+            self.toggleInventory()
 
         if self.player.stats.isDead():
             self.mixer.playFx('pHit')
@@ -284,15 +294,15 @@ class Game:
 
 
     def width(self):
-        return self.win.get_width()
+        return self.bg.get_width()
 
     def height(self):
-        return self.win.get_height()
+        return self.bg.get_height()
 
     def size(self):
         return self.width(), self.height()
 
-    def runEvents(self):
+    def window_events(self):
         ## Catch all events here
         self.events = pygame.event.get()
         for event in self.events:
@@ -306,13 +316,7 @@ class Game:
                     else:
                         self.toggle_pause()
 
-        if now() - self.lastCamTog >= 400 and checkKey(keySet['toggleCam']):
-            self.toggleCam()
-            self.lastCamTog = now()
 
-        # Inventory
-        if checkKey(keySet["inventory"]) and self.inventoryOverlay.can_activate():
-            self.toggleInventory()
 
     def get_fps(self):
         self.currentFps = round(self.clock.get_fps(), 2)
@@ -391,9 +395,11 @@ class Game:
         If bg is True, the provided image is used, otherwise the solid color black is used
         """
         if bg:
-            self.win.blit(pygame.transform.scale(bg, self.size()), (0, 0))
+            self.bg.blit(pygame.transform.scale(bg, self.size()), (0, 0))
         else:
-            self.win.fill((0, 0, 0))
+            self.bg.fill((0, 0, 0, 0))
+
+        self.fg.fill((0,0,0,0))
 
     def get_prefab(self, name):
         # Look in objects module

@@ -115,6 +115,9 @@ class RockCreature(Beetle):
     def aggravate(self):
         super().aggravate()
         self.animations[0].hide = False
+
+    def splat(self):
+        super().splat(False)
     
     def deal_damage(self):
         super().deal_damage()

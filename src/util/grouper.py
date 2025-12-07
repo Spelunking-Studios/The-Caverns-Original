@@ -13,6 +13,7 @@ class Grouper:
 
         self.players = Group()
         self.enemies = Group()
+        self.bats = Group()
         self.lightSources = Group()
         self.colliders = Group()
         self.interactable = Group()  # Sprites that can be interacted with
