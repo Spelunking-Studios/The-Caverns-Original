@@ -15,8 +15,7 @@ class Display:
         self.fullScreen = False
         self.last_pressed_fullscreen = 0
         self.light_engine = LightingEngine(self.resolution, self.resolution, (320, 180))
-        self.light_engine.set_ambient(10, 10, 10)
-
+        self.light_engine.set_ambient(255, 255, 255)
 
         self.cursor = pygame.image.load(CURSOR) if CURSOR else False
         self.cursor_tex = None
@@ -40,12 +39,17 @@ class Display:
 
         return self.light_engine.graphics.load_shader_from_path(vert, frag)
     
+    # Some helper Functions
     def add_light(self, light):
         self.light_engine.lights.append(light)
 
     def remove_light(self, light):
         self.light_engine.lights.remove(light)
 
+    def set_ambient_lighting(self, color):
+        self.light_engine.set_ambient(*color)
+
+    
     def get_fullscreen(self):
         keys = pygame.key.get_pressed()
         if now() - self.last_pressed_fullscreen > 200 and keys[keySet['fullScreen']]:

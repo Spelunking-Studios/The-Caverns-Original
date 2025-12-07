@@ -17,7 +17,7 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = True                    # Runs game in Debug environment
+DEBUG = False# Runs game in Debug environment
 DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:
@@ -25,7 +25,8 @@ class DEBUG_STATE:
     stats = False               # Lets you choose DEBUG stats or not (OP stats)
     all_items = False           # Lets you use all weapons or saved weapons
     default_inventory = True    # Doesn't load saved inventory
-    room = "room2"              # Lets you decide which room to start in 
+    load_save = True
+    room = "room1"              # Lets you decide which room to start in 
 
 IS_COMPILED = False
 
@@ -246,6 +247,9 @@ def loadSave(file):
     print("Loading save file...")
 
     try:
+        if DEBUG and not DEBUG_STATE.load_save:
+            raise FileNotFoundError
+
         with open(file, 'rb') as f:
             data = pickle.load(f)
             items = list(data.items())

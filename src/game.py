@@ -84,7 +84,6 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
-        print(globals()["GAME_STATE"].get("player_equipped_weapon", None))
         self.player = Player(
             self,
             globals()["GAME_STATE"].get("player_inventory", None),
@@ -132,6 +131,8 @@ class Game:
         # Run pre-first frame loading
         for sprite in self.sprites:
             sprite.start()
+
+        self.display.set_ambient_lighting((10, 10, 10))
 
         while not self.end:
             dt = self.clock.tick(FPS)

@@ -23,7 +23,7 @@ class Menu:
             self.comps.update()
             self.update()
             self.render()
-            self.game.display.update(None, self.game.fg)
+            self.game.display.update(self.game.bg, self.game.fg)
     
     def render(self):
         for s in self.hudlayer:
@@ -333,7 +333,7 @@ def main(game, loadingScreenOn = False):
             #for t in loadingText:
             #    game.fg.blit(t.image, t)
         
-        game.display.update(None, game.fg)
+        game.display.update(game.bg, game.fg)
 
 def gameOver(game):
     restartButton = ImageButton(game, (game.width()/2, game.height()/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
@@ -385,4 +385,4 @@ def victoryLoop(game):
         game.fg.blit(text2, (800, 70))
         game.fg.blit(text1, (game.width()/2 - text1.get_width()/2 ,30))
         
-        game.display.update(None, game.fg)
+        game.display.update(game.bg, game.fg)
