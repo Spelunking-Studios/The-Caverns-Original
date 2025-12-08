@@ -17,7 +17,7 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = True                    # Runs game in Debug environment
+DEBUG = False# Runs game in Debug environment
 DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:

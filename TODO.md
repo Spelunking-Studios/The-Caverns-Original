@@ -19,9 +19,12 @@ simple to easy
 ### Game
    * Add animation
        * Dagger
+       * Shield
+       * Throwing Knives
        * Axe
        * Mace
    * Working stats from equipment
+
 
 ### Code:
    * Tweener system
@@ -31,6 +34,7 @@ simple to easy
 
    Chores:
    * fix "restart game" implementation
+   * fix menus when you switch screen resolution
    * fix delta time implementation
 
 ### Aesthetics:
@@ -40,6 +44,10 @@ simple to easy
    * Menu transitions
    * Improve splats (weird resolution)
 
+   Chores:
+   * Write instructions
+   * Improve Title screen
+   * Organize fonts
 
 Tasks for Ben
    Inventory
