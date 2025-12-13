@@ -29,20 +29,11 @@ class Handler:
         # set up collision handlers here
         # use collision groups in docstring
 
-        player_projectile_hit_walls = self.space.add_collision_handler(1, 3)
-        player_projectile_hit_walls.begin = kill
-
-        enemy_projectile_hit_walls = self.space.add_collision_handler(1, 5)
-        enemy_projectile_hit_walls.begin = kill
-
-        enemy_projectile_hit_walls = self.space.add_collision_handler(5, 6)
-        enemy_projectile_hit_walls.begin = kill
-
-        projectiles_hit_enemies = self.space.add_collision_handler(4, 3)
-        projectiles_hit_enemies.begin = hit_enemy
-
-        projectiles_hit_player = self.space.add_collision_handler(2, 5)
-        projectiles_hit_player.begin = hit_player
+        self.space.on_collision(1, 3, begin=kill)
+        self.space.on_collision(1, 5, begin=kill)
+        self.space.on_collision(5, 6, begin=kill)
+        self.space.on_collision(4, 3, begin=kill)
+        self.space.on_collision(2, 5, begin=kill)
 
     def create_filters(self):
         # Make collision exclude each other here

@@ -36,6 +36,8 @@ try:
     IS_COMPILED = True
 except NameError:
     PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "..")
+finally:
+    PATH = os.path.normpath(PATH)
 
 # Path to the asset folder
 ASSETSPATH = os.path.join(PATH, 'assets')
