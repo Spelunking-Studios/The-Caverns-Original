@@ -12,18 +12,17 @@ class Sword(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
-            "cooldown": 0.3,
+            "cooldown": 0.35,
             "damage": 9,
             "_variance": 2,
             "_weight": 10 
         }
         self.stats["categories"] = self.base_categories + ["sword"]
-        self.stats["description"] = "The sword given to you by your father on your 13th birthday. Your name is engraved upon it"
+        self.stats["description"] = "A well balanced sword inscribed with the name Cormac"
         self.set_image(
             asset("items", "weapon", "sword.png")
         )
         self.renderable = self._cache.get(self.cache_key, None)
-
         super().make_description()
     
     def _player_attack(self, player):

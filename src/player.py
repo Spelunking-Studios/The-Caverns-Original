@@ -6,7 +6,7 @@ import pygame, pymunk
 from pygame import Vector2
 from src.animations import *
 from src.objects import Wall, Chest, Shield
-from src.objects.lights import LightSource
+from src.util import LightSource
 from src.stgs import *
 from src.overlay import transparent_rect
 from src import fx
@@ -29,7 +29,8 @@ class Player(util.Sprite):
                          'run': asset('player', 'player_running.png'), 
                          'hit':asset('player', 'player_hitting.png'), 
                          'hit_mask':asset('player', 'player_hitting_mask.png'), 
-                         'wand':asset('player', 'playerHit1.png')
+                         'hit_dagger':asset('player', 'player_hitting_dagger.png'), 
+                         'hit_mask_dagger':asset('player', 'player_hitting_dagger_mask.png'), 
                          }
         self.width, self.height = 42, 42
         self.health = 50
@@ -93,6 +94,7 @@ class Player(util.Sprite):
         self.dark_recovery_speed = 3
 
         self.mask = pygame.mask.from_surface(self.image, True)
+        self.mask_state = "hit_mask"
         self.angle = 0
         self.lightScale = pygame.Vector2(500, 500)
         self.lightScale.scale_to_length(self.light_size)
@@ -129,6 +131,7 @@ class Player(util.Sprite):
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
 
+
     def player_movement(self, body, gravity, damping, dt):
         speed = self.stats.speed*75
         max_speed = self.stats.speed*100
@@ -153,7 +156,7 @@ class Player(util.Sprite):
             vxy = pymunk.Vec2d(vx, vy)
             vxy = vxy.normalized()*speed*dt
             body.velocity += vxy
-            if not self.animations.mode == "hit":
+            if not self.animations.mode[0:3] == "hit":
                 self.animations.setMode("run")
         body.velocity *= damping
 
@@ -183,6 +186,12 @@ class Player(util.Sprite):
 
     def get_attack_cooldown(self):
         return self.slot1.stats["attack"]["cooldown"]
+
+    def use_stamina(self, value=5):
+        self.stats._stamina -= value
+
+    def has_stamina(self, value=0):
+        return self.stats._stamina > value
 
     def checkActions(self):
         # Get the current time
@@ -218,10 +227,18 @@ class Player(util.Sprite):
 
     def weaponCollisions(self):
         if self.attackState == "attack":
-            self.animations.setMode("hit", 30)
-            self.attackState = None
-            self.game.mixer.playFx("swing")
-        if self.animations.mode == "hit":
+            drain = self.slot1.get_drain()
+            if self.has_stamina(drain):
+                if "dagger" in self.slot1.get_categories():
+                    self.animations.setMode("hit_dagger", 30)
+                    self.mask_state = "hit_mask_dagger"
+                else:
+                    self.animations.setMode("hit", 30)
+                    self.mask_state = "hit_mask"
+                self.attackState = None
+                self.game.mixer.playFx("swing")
+                self.use_stamina(drain)
+        if self.animations.mode[0:3] == "hit":
             if not self.interacted:
                 # Create a list of all close by interactables
                 interactables = self.game.groups.getProximitySprites(
@@ -302,8 +319,8 @@ class Player(util.Sprite):
     def rotCenter(self, angle=False):
         self.image = self.rot_image(self.image, angle)
         self.rect = self.image.get_rect(center = self.rect.center)
-        if self.animations.mode == "hit":
-            self.mask = self.animations.get_mask("hit_mask")
+        if self.animations.mode[0:3] == "hit":
+            self.mask = self.animations.get_mask(self.mask_state)
 
     def rot_image(self, img, angle=None):
         angle = self.angle if not angle else angle
@@ -313,7 +330,7 @@ class Player(util.Sprite):
         self.angle += self.spinSpeed
 
     def change_health(self, value):
-        self.stats._health += value
+        self.stats.change_health(value)
         self.healthParts.particle(Vector2(self.rect.center), value, False)
 
     #### Collide checker for player ####
@@ -329,10 +346,17 @@ class Player(util.Sprite):
 
         return returnVal
 
+    def get_sprites(self):
+        """returns all sprites associated with player
+        
+        Useful for making sure the Player, Light, and Shield aren't deleted
+        """
+        return [self, self.light, self.shield]
 
     def kill(self, *args):
         if args:
             super().kill()
+        # self.light_
 
 class Cursor:
     def __init__(self, xy=(500, 1)):

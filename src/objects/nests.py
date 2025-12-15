@@ -2,7 +2,8 @@ import pygame
 from src.stgs import *
 from src import util
 import random
-from src.enemies import Beetle, SilverBeetle, FireBeetle, RockCreature, BoomBug, Bat, DemonBat
+# from src.enemies import Beetle, SilverBeetle, FireBeetle, RockCreature, BoomBug, Bat, DemonBat
+import src.enemies as enemies
 from src.scripts import get_random_zone_position
 
 class Nest(util.Sprite):
@@ -28,17 +29,17 @@ class Nest(util.Sprite):
         self.dump(kwargs, objT.properties) 
 
         if self.include_standard:
-            self.creatures.append(Beetle)
+            self.creatures.append(enemies.Beetle)
         if self.include_bat:
-            self.creatures.append(Bat)
+            self.creatures.append(enemies.Bat)
         if self.include_demon_bat:
-            self.creatures.append(DemonBat)
+            self.creatures.append(enemies.DemonBat)
         if self.include_silver:
-            self.creatures.append(SilverBeetle)
+            self.creatures.append(enemies.SilverBeetle)
         if self.include_red:
-            self.creatures.append(FireBeetle)
+            self.creatures.append(enemies.FireBeetle)
         if self.include_boom:
-            self.creatures.append(BoomBug)
+            self.creatures.append(enemies.BoomBug)
 
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)

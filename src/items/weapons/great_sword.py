@@ -12,7 +12,7 @@ class GreatSword(Weapon):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats["attack"] = {
-            "cooldown": 3,
+            "cooldown": 8,
             "damage": 210,
             "_variance": 1,
             "_weight": 920

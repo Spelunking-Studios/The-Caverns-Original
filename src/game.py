@@ -15,17 +15,17 @@ import sys
 from .stgs import loadSave, saveFile
 from .stgs import *
 loadSave(saveFile)
-from .fx import *
-from .levels import *
-from .menu import *
-from . import objects
-from . import prefabs
-from .overlay import *
-from .player import *
-from .sfx import *
-from .util import *
-from . import menus
-from . import hud
+from src.levels import GameMap
+from src.menu import *
+from src import objects
+from src import prefabs
+from src.overlay import *
+from src.player import *
+from src.sfx import *
+from src.fx import FadeOut, FadeIn
+from src.util import *
+from src import menus
+from src import hud
 
 
 #### Game object ####
@@ -33,20 +33,9 @@ class Game:
     """Represents an instance of the game"""
 
     def __init__(self):
-        """Initializes the game object"A Very Very Long Description.
-
-        Groups each sprite type to perform targetted tasks
-        All sprites go into the sprites group
+        """Initializes the game object
         Sets up window, font, gravity, and cam
-        Loads data for the game levels and the player   w
         """
-        self.layer1 = Group()
-        self.layer2 = Group()
-        self.layer3 = Group()  # Non-Static Level Objects
-        self.fxLayer = Group()
-        self.hudLayer = Group()
-        self.overlayer = Group()
-        self.rendLayers = [self.layer1, self.layer2, self.layer3]
         self.mixer = getDriver()
         self.mixer.setMusicVolume(musicVolume) # between 0 and 1
         self.mixer.setFxVolume(fxVolume)
@@ -77,6 +66,13 @@ class Game:
         self.points = 0
 
         self.groups = Grouper()
+        self.layer1 = Group()
+        self.layer2 = Group()
+        self.layer3 = Group()  # Non-Static Level Objects
+        self.fxLayer = Group()
+        self.hudLayer = Group()
+        self.overlayer = Group()
+        self.rendLayers = [self.layer1, self.layer2, self.layer3]
         self.handler = Handler(self)
         self.sprites = Group()
         # Pause Sprites
@@ -84,7 +80,6 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
-        print(globals()["GAME_STATE"])
         if globals()["SETTINGS"].get("display_mode", False):
             self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
         self.player = Player(
@@ -93,7 +88,9 @@ class Game:
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
         self.progress = globals()["GAME_STATE"].get("progress", {
+            "save_point": None,
             "chests_opened": [],
+            "notes_collected": [],
             "events_triggered": []
         })
         self.display.set_mode
@@ -116,7 +113,7 @@ class Game:
         # loadSave("game.store")
         if not DEBUG:
             self.menuLoop()
-        self.map.loadFloor()
+        # print("location", self.progress["location"])
         self.mainLoop()
         self.mixer.stop()
         self.player.kill()
@@ -127,7 +124,9 @@ class Game:
 
     #### Main game loop ####
     def mainLoop(self):
-        self.mixer.playMusic(sAsset('Adventure-Piano.mp3'))
+        self.map.loadFloor()
+        self.mixer.playMusic(sAsset('TheCaves.wav'))
+
 
         # Run pre-first frame loading
         for sprite in self.sprites:
@@ -150,6 +149,7 @@ class Game:
             self.pSprites.update()
         elif self.inInventory:
             self.iSprites.update()
+            self.game_events()
         else:
             self.space.step(1/FPS)
             self.sprites.update()
@@ -242,15 +242,19 @@ class Game:
             def cont():
                 print("continuing the game")
                 if True:
-                    self.cam.target = self.player
-                    self.pause = False
-                    for e in self.groups.enemies:
-                        e.kill()
-                    self.map.loadFloor()
-                    self.player.stats.reset()
-                    self.fxLayer.empty()
-                    for s in self.pSprites:
-                        s.kill()
+                    # self.cam.target = self.player
+                    # # All valid items should be specified here
+                    # # All valid items should be specified hereimport import 
+                    # self.pause = False
+                    # for e in self.groups.enemies:
+                    #     e.kill()
+                    # self.map.loadFloor()
+                    # self.player.stats.reset()
+                    # self.fxLayer.empty()
+                    # for s in self.pSprites:
+                    #     s.kill()
+                    self.new()
+                    self.mainLoop()
 
             def died():
                 prefabs.RedButton(self, (400, 400), "Continue", cont)

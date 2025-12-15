@@ -69,7 +69,7 @@ class InventoryOverlay(Overlay):
         """Loads all of the components"""
         self.exit_btn = Button(
             self.game,
-            (self.panel_width+92, 60),
+            (self.get_offset()[0]+self.panel_width-20, 60),
             text="X",
             groups=[self.comps],
             center=True,

@@ -1,6 +1,7 @@
 from src.stgs import *
 from src import util
-from .lights import LightSource
+from src.util import LightSource
+from src.items import Note
 
 class Consumable(util.Sprite):
     def __init__(self, game, objT, **kwargs):
@@ -9,7 +10,7 @@ class Consumable(util.Sprite):
         super().__init__(self.groups)
         
         self.dump(kwargs, objT.properties) 
-        self.lID = objT.id
+        self.id = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
     def interact(self):
@@ -32,3 +33,20 @@ class Fungus(Consumable):
         super().kill()
         self.light.kill()
 
+class NoteConsumable(Consumable):
+    image = pygame.image.load(asset("items/note.png"))
+    def __init__(self, game, objT, **kwargs):
+        self.game_id = None
+        super().__init__(game, objT, **kwargs)
+        self.rect.size = self.image.get_size()
+
+        if not self.game_id:
+            self.game_id = self.game.map.floor.room.get_id() + "/" + str(self.id)
+
+        if self.game_id in self.game.progress["notes_collected"]:
+            self.kill()
+
+    def interact(self):
+        self.game.player.inventory.add_item(Note(self.text))
+        self.game.progress["notes_collected"].append(self.game_id)
+        super().interact()

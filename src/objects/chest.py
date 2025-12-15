@@ -20,10 +20,7 @@ class Chest(util.Sprite):
         # These are arguments passed to the item inside the chest
         self.argument = None
 
-        for k, v in kwargs.items():
-            self.__dict__[k] = v
-        for k, v in objT.properties.items():
-            self.__dict__[k] = v
+        self.dump(kwargs, objT.properties) 
 
         self.objT = objT
         self.rect = pygame.Rect(

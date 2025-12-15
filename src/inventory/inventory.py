@@ -1,6 +1,6 @@
 import json
-from src.items import Item, Weapon, Sword, Dagger, GreatSword, Axe, Mace, ThrowingKnives
-
+import src.items
+from src.items import Item
 
 class Inventory:
     def __init__(self):
@@ -76,7 +76,7 @@ class Inventory:
 
     def deserialize(self, s):
         """Loads the serialized string into the current object"""
-        allowed_items = [Item, Weapon, Sword, GreatSword, Dagger, Axe, Mace, ThrowingKnives]
+        allowed_items = [src.items.__dict__[i] for i in src.items.__all__]
 
         data = json.loads(s)
 

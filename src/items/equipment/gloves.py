@@ -16,8 +16,11 @@ class GlovesStrength(Gloves):
         super().__init__()
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['description'] = "A hefty pair of old leather gloves. You feel stronger wearing them."
+        self.stats["buffs"] = {
+            "strength": 10,
+            "staminaMax": 10,
+        }
         self.set_image(
             asset("items", "equipment", "gloves_of_strength.png")
         )
-        self.renderable = self._cache.get(self.cache_key, None)
 

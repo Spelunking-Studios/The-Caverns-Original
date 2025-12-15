@@ -5,4 +5,17 @@ from .shield import Shield
 from .equipment import NecklaceAlerting, GlovesStrength
 from .note import Note
 
-__all__ = ["Item", "Weapon", "Sword", "Shield", "GreatSword", "Dagger", "Axe", "Wand", "Note"]
+# All valid items should be specified here
+__all__ = ["Item",
+           "Weapon", 
+           "Sword", 
+           "Shield", 
+           "GreatSword", 
+           "Dagger", 
+           "Axe", 
+           "ThrowingKnives",
+           "Wand", 
+           "Note", 
+           "NecklaceAlerting", 
+           "GlovesStrength"
+           ]

@@ -34,7 +34,7 @@ class Bat(SimpleEnemy):
     
     @print_stats
     def set_stats(self):
-        self.health = 8
+        self.health = 5
         self.speed = 20
         self.angle = 0
         self.rot_speed = 0.01

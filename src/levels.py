@@ -12,8 +12,6 @@ class GameMap:
         self.game = game
         self.floors = [
             Floor(game, "Floor1"),
-            # Floor(game, "Floor2"),
-            Floor(game, "Floor3"),
         ]
         self.index = index
         self.floor = self.floors[self.index]    # The floor loading will be based on an index within the floors list 
@@ -23,11 +21,11 @@ class GameMap:
         self.floor = self.floors[num if num else self.index]
         self.floor.load()
     
-    def switchRoom(self, room, startObj):
+    def switchRoom(self, room, startObj="Entrance"):
         for s in self.floor.room.sprites:
             s.kill()
         
-        self.game.groups.killAll()
+        self.game.groups.killAll(self.game.player.get_sprites())
             
         self.floor.enterRoom(room, startObj)
     
@@ -63,11 +61,15 @@ class Floor:
         self.current = 0
 
     def load(self):
-        """Loads the floor (by default in the first room)"""
+        """Loads the floor (by default in the first room or save point)"""
         if DEBUG:
             self.enterRoom(DEBUG_STATE.room)
         else:
-            self.enterRoom("room1")
+            location = self.game.progress["save_point"]
+            if location:
+                self.enterRoom(location)
+            else:
+                self.enterRoom("room1")
 
     def getRoomByName(self, name):
         for r in self.rooms:

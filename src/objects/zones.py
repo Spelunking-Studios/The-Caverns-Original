@@ -2,7 +2,7 @@ from src import util
 import pygame
 import random
 from src.stgs import *
-import src.enemies
+# from src.enemies import GlowTick
 
 class Zone(util.Sprite):
     '''
@@ -19,6 +19,11 @@ class Zone(util.Sprite):
         self.lID = objT.id
         self.rect = pygame.Rect(objT.x, objT.y, objT.width, objT.height)
 
+        # for i in range(100):
+        #     pos = self.random_position()
+        #     GlowTick(game, pos)
+        #     print("yay")
+
     def spawn(self, entity):
         e = entity()
         e.position = self.random_position()
@@ -30,4 +35,3 @@ class Zone(util.Sprite):
     def draw(self, surf, transform):
         if DEBUG_RENDER:
             pygame.draw.rect(surf, (200, 0, 0), transform(self.rect), 6)
-        # pygame.draw.circle(surf, util.white, self.game.cam.applyTuple(self.random_position()), 4)

@@ -201,7 +201,7 @@ class Main(Menu):
 
         self.settingsButton.rect.centerx, self.creditsButton.rect.centerx = game.width() / 2, game.width() / 2
 
-        swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (320, 320))
+        swordImg = pygame.transform.scale(pygame.image.load(asset('screens/part_one.png')), (320, 320))
         swordRect = pygame.Rect(0, 65, swordImg.get_width(), swordImg.get_height())
         swordRect.centerx = game.width()/2
         text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
@@ -256,9 +256,9 @@ def main(game, loadingScreenOn = False):
     comps = pygame.sprite.Group(startButton, instructionsButton) # Stands for components fyi
     for c in comps:
         c.rect.centerx = game.width()/2
-    swordImg = pygame.transform.scale(pygame.image.load(asset('screens/title_sword.png')), (400, 110))
-    swordRect = pygame.Rect(0, 180, swordImg.get_width(), swordImg.get_height())
-    swordRect.centerx = game.width()/2
+    swordImg = pygame.transform.scale(pygame.image.load(asset('screens/part_one.png')), (440, 100))
+    swordRect = pygame.Rect(0, 170, swordImg.get_width(), swordImg.get_height())
+    swordRect.centerx = game.width()/2 + 8
     text1 = Text('subtitle1', 'Press S to Start', colors.orangeRed, game.antialiasing,(30, 30))
     # text2 = Text('main-title1', TITLE, colors.orangeRed, game.antialiasing, (0, 30))
     title = pygame.image.load(asset("objects/TheCaverns2.png"))

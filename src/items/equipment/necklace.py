@@ -10,9 +10,6 @@ class Necklace(Item):
         self.cache_key = "renderable__" + self.__class__.__name__
         self.stats['categories'] = self.base_categories + ["wearable", "necklace"]
         self.stats['description'] = "A mysterious Necklace"
-        self.stats["buffs"] = {
-            "healthMax": 10000
-        }
 
 class NecklaceAlerting(Necklace):
     def __init__(self):
@@ -22,6 +19,9 @@ class NecklaceAlerting(Necklace):
         self.set_image(
             asset("items", "equipment", "necklace_of_alerting.png")
         )
+        self.stats["buffs"] = {
+            "healthMax": 10
+        }
 
     def equip(self, game):
         game.alert_hud.activate()

@@ -78,9 +78,12 @@ class PlayerStats(Stats):
 
         return damage, crit
 
+    def change_health(self, value):
+        self._health = min(self._healthMax, max(0, self._health + value))
+
     # Reset the stats after the player dies and is respawned in
     def reset(self):
-        self.health = self.healthMax
+        self._health = self._healthMax
 
     @property
     def health(self):
@@ -92,7 +95,7 @@ class PlayerStats(Stats):
 
     @property
     def stamina(self):
-        return self._stamina
+        return self._stamina + self.player.inventory.get_buffs("staminaMax")
 
     @property
     def staminaMax(self):

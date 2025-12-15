@@ -3,7 +3,6 @@
 
 ## Notes: 
 
-    
    There was an initial lack of attention given to the game design that resulted in unvaried combat
    and a general aimlessness in the current product of the game which means we gotta supe this boy up!!
 
@@ -14,26 +13,22 @@
    more rewarding
 
 ## Tasks 
-simple to easy 
+simple to difficult
 
 ### Game
    * Add animation
-       * Dagger
        * Shield
        * Throwing Knives
        * Axe
        * Mace
    * Working stats from equipment
 
-
 ### Code:
+   * Multi Saves (Load A B C)
    * Tweener system
-   * Stats system
-   * Working saving system
    * Working states
 
    Chores:
-   * fix "restart game" implementation
    * fix menus when you switch screen resolution
    * fix delta time implementation
 
@@ -53,4 +48,5 @@ Tasks for Ben
    Inventory
        Group different items by kind (neck, gloves, notes, weapons, etc)
    
+   MultiSaves
    Tweeners?

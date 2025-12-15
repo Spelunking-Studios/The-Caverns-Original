@@ -4,7 +4,7 @@ import src.util.colors as colors
 import math
 from src import fx
 from src.stgs import asset, now
-from .lights import LightSource, LightEffect
+from src.util import LightSource, LightEffect
 from src.animations import BasicAnimation
 
 
@@ -21,7 +21,7 @@ class Projectile(util.Sprite):
 
         super().__init__(self.groups)
 
-        self.image = pygame.image.load(asset("player/s1.png"))
+        self.image = pygame.image.load(asset("player/knife.png"))
 
         self.pos = pygame.Vector2(pos)
         self.dir = pygame.Vector2(target).normalize()
@@ -119,7 +119,7 @@ class EnemyFireball(Projectile):
         self.rect.center = self.pos
         self.particles = fx.Particles(self.game, self.rect, tickSpeed=20, size=8)
         self.particles.setParticleKwargs(speed=1.2, shrink=0.4, life=100, color=colors.orangeRed)
-        self.light = LightSource(game, self.rect, source_img=self.light_img, default_size=True)
+        self.light = LightSource(game, self.rect, power=0.6, radius=120, color = (220, 0, 0))
 
         self.create_physics(5, 4, self.fake_move)
 
@@ -128,7 +128,7 @@ class EnemyFireball(Projectile):
 
     def update(self):
         super().update()
-        self.light.rect.center = self.rect.center
+        self.light.pos = self.rect.center
         self.animations.update()
 
     def kill(self):

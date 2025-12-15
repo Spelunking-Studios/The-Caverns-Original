@@ -121,4 +121,3 @@ class RockCreature(Beetle):
     
     def deal_damage(self):
         super().deal_damage()
-        print("yya")

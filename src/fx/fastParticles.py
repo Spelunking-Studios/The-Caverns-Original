@@ -3,7 +3,7 @@ import random
 from pygame import Vector2 as Vec
 from src.stgs import *
 from src import util
-from src import objects
+from src.util import LightEffect
 
 class ParticleController(util.Sprite):
     """A basic class that controls a set of particles designed
@@ -179,7 +179,7 @@ class SlowGlowParticles(GlowParticles):
                                 (random.random()-0.5)*self.speed,
                                 (random.random()-0.5)*self.speed,
                                 self.color,
-                                objects.LightEffect(self.game, pygame.Rect(0, 0, 10, 10), power=self.brightness, radius=50, color=self.color), 
+                                LightEffect(self.game, pygame.Rect(0, 0, 10, 10), power=self.brightness, radius=50, color=self.color), 
                                 0
                               ])
 
@@ -203,4 +203,3 @@ class SlowGlowParticles(GlowParticles):
                          special_flags = pygame.BLEND_RGB_ADD
                         )
 
-            

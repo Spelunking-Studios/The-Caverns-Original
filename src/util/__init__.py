@@ -11,6 +11,7 @@ from .sprite import Sprite
 from .colors import *
 from .spritesheet import Spritesheet
 from .physics import Chain, Ball
+from .lights import LightEffect, LightSource
 
 
 class ObjT:

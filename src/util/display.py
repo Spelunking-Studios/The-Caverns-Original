@@ -25,9 +25,7 @@ class Display:
 
         if DEBUG:
             print(
-                pygame.display.get_wm_info(),
-                self.resolution,
-                pygame.display.get_desktop_sizes()
+                f"Game running at {self.resolution} with possible resolutions {pygame.display.get_desktop_sizes()}",
             )
 
 
@@ -100,7 +98,6 @@ class Display:
         return self.resolution
 
     def get_offset(self):
-        # offset =  pygame.Vector2((self.get_size()[0]-self.game.width())/2, (self.get_size()[1]-self.game.height())/2)
         offset = (0, 0)
         return offset
 

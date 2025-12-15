@@ -42,3 +42,6 @@ class Weapon(Item):
 
     def get_attack_damage(self, user):
         return self.stats["attack"]["damage"], randint(0, 5) == 0
+
+    def get_drain(self):
+        return self.stats["attack"].get("_drain", 4)

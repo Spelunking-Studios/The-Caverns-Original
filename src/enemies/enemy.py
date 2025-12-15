@@ -1,7 +1,6 @@
 import math
 import random
 from time import time
-from src import fx
 import pygame
 from src import util
 from src.animations import *
@@ -14,9 +13,7 @@ class SimpleEnemy(util.Sprite):
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = game.sprites, game.groups.enemies, game.layer2
-        self.objT = objT
-        self.lID = objT.id
-        self.pos = pygame.Vector2(objT.x, objT.y)
+
         self.particles = None
         self.collision_type = 4
 
@@ -25,7 +22,13 @@ class SimpleEnemy(util.Sprite):
         self.health = 40
         self.damage = 4
 
-        self.dump(kwargs, objT.properties)
+        if objT:
+            self.objT = objT
+            self.lID = objT.id
+            self.pos = pygame.Vector2(objT.x, objT.y)
+            self.dump(kwargs, objT.properties)
+        else:
+            self.dump(kwargs)
         super().__init__(self.groups)
 
     def take_damage(self, dmg):

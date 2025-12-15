@@ -131,7 +131,7 @@
   <object id="43" name="Door" x="2104" y="46" width="148" height="23">
    <properties>
     <property name="targetObj" value="Entrance"/>
-    <property name="targetRoom" value="room6"/>
+    <property name="targetRoom" value="room7"/>
    </properties>
   </object>
  </objectgroup>
