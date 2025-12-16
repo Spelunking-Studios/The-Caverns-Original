@@ -17,7 +17,6 @@ class Item:
                 "fn": self.action,
                 "last": -1
             },
-            "equipped": False,
             "buffs_active": False,
             "buffs": {}
         }
@@ -59,10 +58,3 @@ class Item:
     def get_categories(self):
         return self.stats["categories"]
 
-    def equip(self, *args):
-        self.stats["equipped"] = True
-        self.stats["buffs_active"] = True
-
-    def unequip(self):
-        self.stats["equipped"] = False
-        self.stats["buffs_active"] = False

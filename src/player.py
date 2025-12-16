@@ -33,7 +33,6 @@ class Player(util.Sprite):
                          'hit_mask_dagger':asset('player', 'player_hitting_dagger_mask.png'), 
                          }
         self.width, self.height = 42, 42
-        self.health = 50
         self.healthAccumulator = 0
         self.inventory = Inventory()
 
@@ -127,6 +126,11 @@ class Player(util.Sprite):
         # self.body.mass = 30000
         
         #self.imgSrc = pygame.transform.scale(self.imgSrc, (int(self.image.get_width()*2), int(self.image.get_height()*2)))
+        for item in self.inventory.get_items():
+            item = self.inventory.get_item(item)
+            if item.stats.get("equipped", False):
+                # Run equip hooks on equipped items
+                item.equip(game)
 
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)

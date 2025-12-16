@@ -58,7 +58,7 @@ class GrabPlant(SimpleEnemy):
         self.points = [Vec(0, self.segment_length*i) for i in range(self.length+1)]
         
         self.rect = self.head_open.get_rect()
-        self.create_physics(0, self.chomp_dist, self.move_physics_body)
+        self.create_physics(2, self.chomp_dist, self.move_physics_body)
     
     def update(self):
         super().update()

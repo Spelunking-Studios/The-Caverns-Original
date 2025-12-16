@@ -17,7 +17,7 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = True# Runs game in Debug environment
+DEBUG = False# Runs game in Debug environment
 DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:
@@ -290,6 +290,7 @@ def saveData(file, game):
     saveDict["GAME_STATE"]["player_inventory"] = player_inventory
     saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
     saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)
+    saveDict["GAME_STATE"]["player_equipped_equipment"] = getattr(player.slot2, "id", None)
 
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)

@@ -1,4 +1,5 @@
 from .item import Item
+from .wearable import Wearable
 from .weapon import Weapon
 from .weapons import Dagger, Sword, GreatSword, Wand, Axe, Mace, ThrowingKnives 
 from .shield import Shield

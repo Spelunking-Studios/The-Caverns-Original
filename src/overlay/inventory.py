@@ -69,7 +69,7 @@ class InventoryOverlay(Overlay):
         """Loads all of the components"""
         self.exit_btn = Button(
             self.game,
-            (self.get_offset()[0]+self.panel_width-20, 60),
+            (self.get_offset()[0]+self.panel_width-20, self.get_offset()[1]-20),
             text="X",
             groups=[self.comps],
             center=True,
@@ -80,7 +80,7 @@ class InventoryOverlay(Overlay):
         )
         self.items_btn = Button(
             self.game,
-            (self.get_offset()[0], 60),
+            (self.get_offset()[0], self.get_offset()[1]-20),
             center=True,
             text="Items",
             groups=[self.comps],
@@ -94,7 +94,7 @@ class InventoryOverlay(Overlay):
         )
         self.stats_btn = Button(
             self.game,
-            (self.get_offset()[0]+80, 60),
+            (self.get_offset()[0]+80, self.get_offset()[1]-20),
             center=True,
             text="Stats",
             groups=[self.comps],
@@ -131,7 +131,7 @@ class InventoryOverlay(Overlay):
             stgs.aalias,
             pos=(500, 150),
             groups=[self.stats_comps],
-            update_hook=lambda: f"Health: {self.game.player.health}"
+            update_hook=lambda: f"Health: {self.game.player.stats.health}"
         )
         Text(
             "menu2",
@@ -319,6 +319,7 @@ class InventoryOverlay(Overlay):
 
         # Regenerate the base image with the new items
         self.render_base()
+        self.regenerate_equipment_comps()
 
     def handle_item_click(self, caller, type=0):
         # Load info about the item

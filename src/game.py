@@ -52,9 +52,6 @@ class Game:
         self.currentFps = 0
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
-        self.clock = pygame.time.Clock()
-        self.space = pymunk.Space()
-        self.space.damping = 0.0002
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
         self.new()
 
@@ -64,6 +61,10 @@ class Game:
         self.pause = False
         self.inInventory = False
         self.points = 0
+
+        self.clock = pygame.time.Clock()
+        self.space = pymunk.Space()
+        self.space.damping = 0.0002
 
         self.groups = Grouper()
         self.layer1 = Group()
@@ -80,6 +81,7 @@ class Game:
         # Inventory Sprites
         self.iSprites = Group()
         self.map = GameMap(self)
+        self.alert_hud = hud.AlertHud(self)
         if globals()["SETTINGS"].get("display_mode", False):
             self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
         self.player = Player(
@@ -101,7 +103,6 @@ class Game:
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
-        self.alert_hud = hud.AlertHud(self)
         self.updateT = now()
         self.cam = Cam(self, self.width(), self.height())
 

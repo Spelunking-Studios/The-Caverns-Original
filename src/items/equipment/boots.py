@@ -1,8 +1,8 @@
 import pygame
 from src.stgs import *
-from src.items import Item
+from src.items import Wearable
 
-class Boots(Item):
+class Boots(Wearable):
     kind = "Gloves"
 
     def __init__(self):

@@ -1,8 +1,8 @@
 import pygame
 from src.stgs import *
-from src.items import Item
+from src.items import Wearable
 
-class Necklace(Item):
+class Necklace(Wearable):
     kind = "Necklace"
 
     def __init__(self):
@@ -24,6 +24,7 @@ class NecklaceAlerting(Necklace):
         }
 
     def equip(self, game):
+        print(self.stats)
         game.alert_hud.activate()
         super().equip()
 

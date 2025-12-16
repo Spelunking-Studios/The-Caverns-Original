@@ -60,6 +60,7 @@ class PlayerStats(Stats):
                     )
         self.player = player
         self.inventory = player.inventory
+        self.reset()
 
     def attack(self, weapon = None): # The index here just means which hotbar number the action is
         if self.player.last_action == 1:
@@ -83,7 +84,8 @@ class PlayerStats(Stats):
 
     # Reset the stats after the player dies and is respawned in
     def reset(self):
-        self._health = self._healthMax
+        self._health = self.healthMax
+        self._stamina = self.stamina
 
     @property
     def health(self):
