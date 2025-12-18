@@ -12,8 +12,11 @@ class Shield(Item):
             "defense": 2,
             "_weight": 25
         }
-        self.stats['categories'] = self.base_categories + ["axe"]
-        self.stats['description'] = "Axe"
+        self.stats["buffs"] = {
+            "speed": -30
+        }
+        self.stats['categories'] = self.base_categories + ["shield"]
+        self.stats['description'] = "A sturdy shield"
         if self.cache_key not in self._cache:
             self._cache[self.cache_key] = pygame.image.load(
                 asset("items", "weapon", "shield.png")
@@ -24,6 +27,8 @@ class Shield(Item):
     def action(self, user):
         super().action(user)
         user.shield.activate()
+        self.stats["buffs_active"] = True
 
     def unaction(self, user):
         user.shield.deactivate()
+        self.stats["buffs_active"] = False

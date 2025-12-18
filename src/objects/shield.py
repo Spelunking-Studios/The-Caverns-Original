@@ -17,6 +17,7 @@ class Shield(util.Sprite):
         self.distance_from_player = 30 # from center of player
         self.padding = 10 # adds a little thickness to the shield
         self.speed_penalty = 0.5
+        self.item = None
 
         
         self.dump(kwargs) 
@@ -34,6 +35,7 @@ class Shield(util.Sprite):
 
     def update(self):
         player = self.game.player
+        self.item = player.slot2
 
         if self.active:
             offset = Vec(0, -self.distance_from_player).rotate(-1*player.angle)
@@ -46,13 +48,11 @@ class Shield(util.Sprite):
         if not self.active:
             self.game.space.add(self.body, self.shape)
             self.active = True
-            self.game.player.stats.speed *= self.speed_penalty
 
     def deactivate(self):
         if self.active:
             self.game.space.remove(self.body, self.shape)
             self.active = False
-            self.game.player.stats.speed /= self.speed_penalty
 
     def rotate(self, angle = 0):
         self.image = pygame.transform.rotate(self.src_image, angle)

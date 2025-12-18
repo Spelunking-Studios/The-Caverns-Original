@@ -1,6 +1,6 @@
 # http://www.andreasaristidou.com/publications/papers/FABRIK.pdf
 def fabrik(positions, target):
-    tolerance = 0.5
+    tolerance = 1.5
     last = len(positions)-1
 
     distances = []

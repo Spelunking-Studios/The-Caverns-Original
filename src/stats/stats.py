@@ -109,7 +109,7 @@ class PlayerStats(Stats):
 
     @property
     def speed(self):
-        return self._speed
+        return self._speed + self.player.inventory.get_buffs("speed")
 
     @property
     def attack_variance(self):

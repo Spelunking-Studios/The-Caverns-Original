@@ -26,6 +26,8 @@ class Nest(util.Sprite):
         self.include_boom = False
         self.include_rock = False
 
+        self.max_silver = 5 # Silver Beetles destroy FPS
+
         self.dump(kwargs, objT.properties) 
 
         if self.include_standard:
@@ -54,8 +56,13 @@ class Nest(util.Sprite):
     
     def spawn(self):
         total = self.challenge_rating
+        total_silver = 0
         while total > 0:
             creature = random.choice(self.creatures) 
+            if creature == enemies.SilverBeetle:
+                total_silver += 1
+                if total_silver == self.max_silver:
+                    self.creatures.remove(enemies.SilverBeetle)
             x, y = get_random_zone_position(self.game)
             c = creature(self.game, util.ObjT(x=x, y=y))
             c.start()

@@ -139,7 +139,7 @@
    <polygon points="0,0 30,9 39,32 17,53 -3,53 -12,44 -18,24 -13,7"/>
   </object>
  </objectgroup>
- <objectgroup id="8" name="doors" visible="0">
+ <objectgroup id="8" name="doors">
   <object id="47" name="Door" x="161" y="1452" width="55" height="174">
    <properties>
     <property name="targetObj" value="Entrance2"/>
@@ -157,7 +157,7 @@
   </object>
   <object id="55" name="Door" x="2304" y="1189" width="47" height="50">
    <properties>
-    <property name="targetObj" value="Entrance"/>
+    <property name="targetObj" value="Entrance2"/>
     <property name="targetRoom" value="room8"/>
    </properties>
   </object>

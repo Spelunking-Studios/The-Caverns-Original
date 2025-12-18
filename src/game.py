@@ -43,6 +43,7 @@ class Game:
 
         #pygame.display.set_icon(pygame.image.load(iconPath))
         self.display = Display(self)
+        self.clock = pygame.time.Clock()
         self.bg = pygame.Surface(self.display.resolution, pygame.SRCALPHA)
         # Create a separate render target for the elements not covered by the darkness
         self.fg = pygame.Surface(self.bg.get_size(), pygame.SRCALPHA)
@@ -53,7 +54,6 @@ class Game:
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
-        self.new()
 
     def new(self):
         self.won = False
@@ -62,7 +62,6 @@ class Game:
         self.inInventory = False
         self.points = 0
 
-        self.clock = pygame.time.Clock()
         self.space = pymunk.Space()
         self.space.damping = 0.0002
 
@@ -115,6 +114,8 @@ class Game:
         if not DEBUG:
             self.menuLoop()
         # print("location", self.progress["location"])
+        menus.SaveContinueMenu(self) 
+        self.new()
         self.mainLoop()
         self.mixer.stop()
         self.player.kill()
@@ -296,9 +297,14 @@ class Game:
         pygame.quit()
         sys.exit()
 
-    def save(self):
-        saveData(saveFile, self)
+    def save(self, wipe=False):
+        saveData(saveFile, self, wipe)
 
+    def wipe_save(self):
+        globals()["GAME_STATE"] = {}
+
+    def load(self):
+        loadSave(saveFile)
 
     def width(self):
         return self.bg.get_width()

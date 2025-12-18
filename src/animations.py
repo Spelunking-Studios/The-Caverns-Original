@@ -29,6 +29,7 @@ class PlayerAnimation:
                 self.framex = 0
                 if self.mode != "default":
                     self.setMode()
+                    self.sprite.mask.clear()
         self.sprite.image = self.imgSheet[self.mode].get_image(self.framex, 0, self.tileSize, self.tileSize)
         if self.scalex != 1 or self.scaley != 1:
             self.sprite.image = pygame.transform.scale(self.sprite.image, (self.tileSize*self.scalex, self.tileSize*self.scaley))
@@ -62,7 +63,7 @@ class PlayerAnimation:
             if mode in self.imgSheet:
                 self.mode = mode
             else:
-                print(f"mode {mode} does not exist for this sprite")
+                print(f"mode {mode} does not exist for this sprite", self.sprite.__class__)
             self.tileSize = self.imgSheet[self.mode].height
             self.framex = 0
             self.delay = delay
@@ -84,7 +85,6 @@ class BasicAnimation:
         if type(sprite) in self.cache:
             self.imgSheet = self.cache[type(sprite)]
         else:
-            print("caching imgSheet")
             for k, v in self.imgSheet.items():
                 self.imgSheet[k] = Spritesheet(v)
             self.cache[type(sprite)] = self.imgSheet
@@ -128,7 +128,7 @@ class BasicAnimation:
         if mode in self.imgSheet:
             self.mode = mode
         else:
-            print(f"mode {mode} does not exist for this sprite")
+            print(f"mode {mode} does not exist for this sprite", self.sprite.__class__)
         self.tileSize = self.imgSheet[self.mode].height
 
     def rotate_center(self):

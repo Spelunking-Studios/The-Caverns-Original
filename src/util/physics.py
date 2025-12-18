@@ -27,12 +27,12 @@ class Chain(Sprite):
     Creates a chain of balls. Acts as a controller and accepts
     an optional velocity function for the first chain link
     """
-    def __init__(self, game, owner, length, pos, radius, link_distance, controller=None, **kwargs):
+    def __init__(self, game, owner, length, pos, ball_radius, link_distance, controller=None, **kwargs):
         self.game = game
         self.owner = owner
         self.length = length
         self.pos = pos
-        self.ball_radius = radius
+        self.ball_radius = ball_radius
         self.link_distance = link_distance
         self.chain_angles = [0 for i in range(self.length)]
         self.controller = controller

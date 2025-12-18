@@ -13,7 +13,7 @@ class Menu:
         self.running = True
         
         self.bg = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
-        # self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
+        self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
 
     def run(self):
         while self.running:
@@ -38,8 +38,8 @@ class CompendiumMenu(Menu):
         
         #MenuItem(game, (x, y), asset(''), desc='', text=''),
         self.returnButton = ImageButton(game, (game.width()-240, 70), text="Return", center = True, groups = [self.comps, self.hudlayer])
-        self.comps.add([Text('description1', "descText", colors.yellow, game.antialiasing, (game.width()- 1200,game.height() - 340), True)])
-        self.comps.add([Text('main-title1', TITLE,  colors.yellow, game.antialiasing, (30,game.height() - 70), False)])
+        self.comps.add([Text('instruction-text', "use your mouse to aim the player \nClick to attack\n WASD to move\nTAB for inventory\nP for pause menu\nSPACE to end dialogue", colors.orangeRed, game.antialiasing, (80, 160), True)])
+        self.comps.add([Text('main-title1', TITLE,  colors.orangeRed, game.antialiasing, (30,game.height() - 70), False)])
         self.hudlayer.add([c for c in self.comps if c not in self.hudlayer])
         self.run()
     
@@ -48,7 +48,6 @@ class CompendiumMenu(Menu):
             self.running = False
 
         if checkKey(keySet['start']):
-            self.game.map.loadFloor()
             self.running = False
 
 class SettingsMenu(Menu):
@@ -164,16 +163,52 @@ class SettingsMenu(Menu):
         #    self.game.map.loadFloor()
         #    self.running = False
 
+class SaveContinueMenu(Menu):
+    def __init__(self, game):
+        super().__init__(game)
+        
+        #MenuItem(game, (x, y), asset(''), desc='', text=''),
+        self.continue_btn = ImageButton(game, (0, 340), text="Continue", center = True, colors = (colors.rgba(colors.yellow, 255), colors.white), wh=(300, 60), rounded = True)
+        self.new_game_btn = ImageButton(game, (0, 460), text="New Game", center=True, colors = (colors.yellow, colors.white), wh=(250, 60))
+        self.comps.add([
+            self.continue_btn,
+            self.new_game_btn
+        ])
+        for c in self.comps:
+            c.rect.centerx = game.width()/2
+        self.hudlayer.add([c for c in self.comps if c not in self.hudlayer])
+        self.title = pygame.image.load(asset("objects/TheCaverns2.png"))
+        self.title.set_colorkey((255,255,255))
+        self.title_rect = pygame.Rect(0, -80, self.title.get_width(), self.title.get_height())
+        self.title_rect.centerx = game.width()/2
+        self.swordImg = pygame.transform.scale(pygame.image.load(asset('screens/part_one.png')), (440, 100))
+        self.swordRect = pygame.Rect(0, 170, self.swordImg.get_width(), self.swordImg.get_height())
+        self.swordRect.centerx = game.width()/2 + 8
+        self.run()
+    
+    def update(self):
+        if self.continue_btn.clicked:
+            self.running = False
+
+        if self.new_game_btn.clicked:
+            self.game.wipe_save()
+            self.running = False
+
+    def render(self):
+        super().render()
+        self.game.fg.blit(self.title, self.title_rect)
+        self.game.fg.blit(self.swordImg, self.swordRect)
+        
+
+
 class CreditsMenu(Menu):
     def __init__(self, game):
         super().__init__(game)
         self.returnButton = ImageButton(game, (0, game.height() - 100), text="Return", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.hudlayer])
-        menuItems = [ Text("title1", "Credits", colors.orangeRed, game.antialiasing, (0, 50)),
-            Text("subtitle1", "~~~ Graphics ~~~", colors.orangeRed, game.antialiasing, (0, 150)),
-            Text("3", "Matthew Hosier", colors.orangeRed, game.antialiasing, (0, 225)),
-            Text("subtitle1", "~~~ Code ~~~", colors.orangeRed, game.antialiasing, (0, 275)),
-            Text("3", "Luke Gonsalves", colors.orangeRed, game.antialiasing, (0, 350)),
-            Text("3", "Ben Landon", colors.orangeRed, game.antialiasing, (0, 425))
+        menuItems = [ Text("title1", "─────Credits─────", colors.orangeRed, game.antialiasing, (0, 50)),
+            Text("credits-names", "Benjamin Landon                                             Code", colors.orangeRed, game.antialiasing, (0, 225)),
+            Text("credits-names", "Luke Gonsalves        Code, Design, Graphics", colors.orangeRed, game.antialiasing, (0, 300)),
+            Text("credits-names", "Matthew Hosier                     Design, Graphics", colors.orangeRed, game.antialiasing, (0, 375)),
         ]
         # Pre-calculate half of the windows width because division is slow
         halfWinWidth = game.width() / 2
@@ -188,13 +223,12 @@ class CreditsMenu(Menu):
             self.running = False
 
         if checkKey(keySet['start']):
-            self.game.map.loadFloor()
             self.running = False
 
 class Main(Menu):
     def __init__(self, game):
         super().__init__(game)
-        self.startButton = ImageButton(game, (0, 340), text="Start", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), groups = [self.comps, self.hudlayer])
+        self.startButton = ImageButton(game, (0, 340), text="Play", center = True, colors = (colors.yellow, colors.white), wh=(300, 60), groups = [self.comps, self.hudlayer])
         self.settingsButton = ImageButton(game, (0, 580), text="Settings", center=True, colors = (colors.yellow, colors.white), groups = [self.comps, self.hudlayer])
         self.instructionsButton = ImageButton(game, (0, 460), text="Instructions", center=True, colors = (colors.yellow, colors.white), wh=(250, 60), groups = [self.comps, self.hudlayer])
         self.creditsButton = ImageButton(game, (200, 580), text="Credits", center = True, colors = (colors.yellow, colors.white), groups = [self.comps, self.hudlayer])
@@ -295,7 +329,6 @@ def main(game, loadingScreenOn = False):
             game.fg.blit(settingsButton.image, settingsButton.rect)
 
             if startButton.clicked:
-                game.map.loadFloor()
                 break
             
             if settingsButton.clicked:
@@ -317,7 +350,6 @@ def main(game, loadingScreenOn = False):
             keys = pygame.key.get_pressed()
 
             if keys[keySet['start']]:
-                game.map.loadFloor() 
                 break
         else:
             for i in range(int(loadingLinesShowed)):
@@ -353,7 +385,7 @@ def gameOver(game):
             break
         
         
-        text1 = fonts['gameover'].render('Game Over', game.antialiasing, colors.dark(colors.red, 20))
+        text1 = fonts['gameover'].render('Game Over', game.antialiasing, colors.dark(colors.orangeRed, 20))
         text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.fg.blit(text1, (50,50))
@@ -362,8 +394,8 @@ def gameOver(game):
         game.display.update(None, game.fg)
 
 def victoryLoop(game):
-    menuButton = ImageButton(game, (game.width()/2, game.height()/2), text="Back to Menu", center = True, colors = (colors.yellow, colors.white))
-    buttons = pygame.sprite.Group(menuButton)
+    text1 = fonts['victory'].render('You Win', game.antialiasing, colors.yellow, 20)
+    text2 = fonts['title1'].render("To be continued...", game.antialiasing, (colors.yellow))
     game.mixer.playFx('yay')
     while True:
         game.clock.tick(FPS)
@@ -371,16 +403,6 @@ def victoryLoop(game):
         game.window_events()
         game.refresh()
 
-        buttons.update()
-        for btn in buttons:
-            game.fg.blit(btn.image, btn.rect)
-
-        if menuButton.clicked:
-            game.reset()
-            break
-        
-        text1 = fonts['victory'].render('Victory', game.antialiasing, colors.yellow, 20)
-        text2 = fonts['title1'].render("Score: " + str(game.points), game.antialiasing, (colors.yellow))
         
         game.fg.blit(text2, (800, 70))
         game.fg.blit(text1, (game.width()/2 - text1.get_width()/2 ,30))

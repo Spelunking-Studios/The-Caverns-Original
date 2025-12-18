@@ -30,16 +30,24 @@ class Ankheg(Beetle):
             super().head_movement(body, gravity, damping, dt)
         else:
             super().head_movement(body, gravity, damping, dt)
+
     def __init__(self, game, objT):
         super().__init__(game, objT)
+        # Start independently because nest does not trigger start frame
+        self.start()
+
+    def start(self):
+        super().start()
+        print("ankheg starting", self.wander_destination)
     
     def set_stats(self):
         self.health = 500
         
         self.vel = Vec(2,0)
-        self.speed = 1400
+        self.speed = 1900
         self.rot_speed = 0.03
         self.damage = 4
+        self.collision_radius = 30
 
         self.attack_range = 62500
         self.aggro_range = 75000
@@ -49,7 +57,7 @@ class Ankheg(Beetle):
     def make_body(self):
         self.angle = -135
         # self.chain = SimpleChain(game, self, 3, [15, 18])
-        self.chain = util.Chain(self.game, self, 4, (self.objT.x, self.objT.y), 20, 27, self.head_movement)
+        self.chain = util.Chain(self.game, self, 4, (self.objT.x, self.objT.y), 20, 40, self.head_movement)
         self.chain.pos = self.pos
         self.last_ouch = 0
         # self.particles = fx.SlowGlowParticles(self.game)
@@ -71,17 +79,17 @@ class Ankheg(Beetle):
         self.leg_mounts = [0 for i in range(8)]
         self.feet = [0 for i in range(8)]
         self.feet_dist_x = 1
-        self.feet_dist_y = 20
+        self.feet_dist_y = 30
         # self.legs = [Leg((0,0), (15,0)) for i in range(6)]
-        self.leg_length = 22
-        self.legs = [Leg(self.leg_length) if i % 2 else Leg(-self.leg_length) for i in range(8)]
+        self.leg_length = 32
+        self.legs = [Leg(self.leg_length, 10, 36) if i % 2 else Leg(-self.leg_length, 10, 36) for i in range(8)]
         for l in self.legs:
             l.color = util.sage_green
             l.speed = self.speed/300
         self.offset = Vec(-35, 0)
         self.phase_offset = 15
         self.phases = [True, False, False, True, True, False, False, True]
-        self.travel = 3.2
+        self.travel = 5.2
  
     def get_state(self):
         pos = self.chain.balls[0].body.position
@@ -109,4 +117,3 @@ class Ankheg(Beetle):
                     self.last_attack = now()
                 else:
                     self.animations[0].set_mode("static")
-

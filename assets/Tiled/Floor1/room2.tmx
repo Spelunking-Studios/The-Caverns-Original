@@ -105,7 +105,7 @@
    <point/>
   </object>
  </objectgroup>
- <objectgroup id="6" name="walls">
+ <objectgroup id="6" name="walls" visible="0">
   <object id="3" name="Wall" x="1696" y="1528">
    <polygon points="0,0 30,4 44,-16 65,-4 130,-10 147,-1 163,-15 237,9 256,2 257,-119 1,-119"/>
   </object>

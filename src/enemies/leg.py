@@ -9,10 +9,10 @@ class Leg:
     """A spider leg driven by inverse kinematics
     """
 
-    def __init__(self, length):
+    def __init__(self, length, width=3, leg_range=22):
         self.length = length 
         self.speed = 2
-        self.range = 22
+        self.range = leg_range
         self.start = Vec(0, 0)
         self.target = Vec(0, 0)
         self.focus = Vec(150, -200)
@@ -20,6 +20,7 @@ class Leg:
         self.phase = 0
         self.reset = True
         self.color = (255,255,255)
+        self.width = width    # How thick the legs are
         self.built = False
         self.points = [Vec(0, 0) for i in range(3)]
 
@@ -67,7 +68,7 @@ class Leg:
         for i in range(1, len(self.points)):
             prev = pygame.Rect(*self.points[i-1], 1, 1)
             cur = pygame.Rect(*self.points[i], 1, 1)
-            pygame.draw.line(surf, self.color, transform(prev).topleft, transform(cur).topleft, 3)
+            pygame.draw.line(surf, self.color, transform(prev).topleft, transform(cur).topleft, self.width)
 
 class ImageLeg(Leg):
 

@@ -51,6 +51,7 @@ class Player(util.Sprite):
             self.inventory.add_item(items.ThrowingKnives())
             self.slot1 = self.sword
             self.slot2 = items.Shield()#items.Wand()
+            self.inventory.add_item(self.slot2)
         else:
             if DEBUG and DEBUG_STATE.default_inventory:
                 # Empties inventory 
@@ -91,18 +92,15 @@ class Player(util.Sprite):
         self.light_size = 1000
         self.darkened_size = 500
         self.dark_recovery_speed = 3
-
         self.mask = pygame.mask.from_surface(self.image, True)
         self.mask_state = "hit_mask"
         self.angle = 0
         self.lightScale = pygame.Vector2(500, 500)
         self.lightScale.scale_to_length(self.light_size)
-        self.light = LightSource(game, pygame.Rect(0,0,20,20))
         self.particleFx = fx.PlayerParticles(self.game, self)
         self.combatParts = fx.CombatParticles(game, self)
         self.healthParts = fx.CombatParticles(game, self)
         self.healthParts.partColor = util.green
-        self.shield = Shield(game)
 
         self.attackState = None
         # Checks whether player used right or left click last 
@@ -131,6 +129,12 @@ class Player(util.Sprite):
             if item.stats.get("equipped", False):
                 # Run equip hooks on equipped items
                 item.equip(game)
+
+    def start(self):
+        # First frame dependent stuff goes here
+        self.light = LightSource(self.game, pygame.Rect(0,0,20,20))
+        self.shield = Shield(self.game)
+        
 
     def loadAnimations(self):
         self.animations = PlayerAnimation(self)
@@ -361,6 +365,10 @@ class Player(util.Sprite):
         if args:
             super().kill()
         # self.light_
+
+    def draw(self, ctx, transform):
+        # ctx.blit(self.mask.to_surface(), transform(self.rect))
+        super().draw(ctx, transform)
 
 class Cursor:
     def __init__(self, xy=(500, 1)):

@@ -32,7 +32,10 @@ class Beetle(SimpleEnemy):
         #
         self.state = "searching"
         self.last_attack = 0
+        self.make_mask = False
+        self.mask_buffer_time = 4
         self.pause = 0
+        self.collision_radius = 14
         self.set_stats() 
         self.make_legs()
         self.make_body()
@@ -42,6 +45,7 @@ class Beetle(SimpleEnemy):
         self.splat_power = 0.7
         
         self.wander_destination = None
+        self.image = pygame.Surface((64,64))
 
     def start(self):
         if self.wander_destination == None:
@@ -69,7 +73,6 @@ class Beetle(SimpleEnemy):
         self.attack_range *= multiplier
         self.alert_radius *= multiplier
         self.attack_delay /= multiplier
-
 
 
     def make_body(self):
@@ -235,55 +238,48 @@ class Beetle(SimpleEnemy):
         return self.chain.get_colliders(type)
 
     def draw(self, surf, transform=None):
-        for l in self.legs:
-            l.draw(surf, transform)
-
         chain_points = self.chain.get_points()
-        rects = []
-        imgs = []
-        for i in range(len(self.animations)):
-            if not self.animations[i].hide:
-                angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
-                image = pygame.transform.rotate(self.animations[i].get_image(), angle)
-                rect = image.get_rect(center = chain_points[i])
+        p1 = self.game.cam.applyVec(chain_points[0])
+        # Only draw them if they on the screen
+        if p1.x < -200 or p1.x > self.game.width() + 200 or p1.y < -200 or p1.y > self.game.height() + 200:
+            pass
+        else:
+            for l in self.legs:
+                l.draw(surf, transform)
 
-                surf.blit(image, transform(rect))
-                
-                rects.append(rect)
-                imgs.append(image)
+            rects = []
+            for i in range(len(self.animations)):
+                if not self.animations[i].hide:
+                    angle = -self.chain.chain_angles[i] + 90 if i > 0 else -self.angle - 90
+                    image = pygame.transform.rotate(self.animations[i].get_image(), angle)
+                    rect = image.get_rect(center = chain_points[i])
 
-        # The draw function is quite intensive because as well as finding the screen position
-        # It needs to create an image for the sprite because the game relies on mask 
-        # Collision. Right here we adjust the position of the elements in the chain to 
-        # Calculate where to put the mask
-        min_x, min_y, max_x, max_y = *rects[0].topleft,0,0
-        for r in rects:
-            min_x = min(min_x, r.topleft[0])
-            min_y = min(min_y, r.topleft[1])
-            max_x = max(max_x, r.bottomright[0])
-            max_y = max(max_y, r.bottomright[1])
-        size = (max_x - min_x, max_y - min_y)
-        self.rect = pygame.Rect(min_x, min_y, *size) 
-        self.image = pygame.Surface(size)
+                    surf.blit(image, transform(rect))
+                    # if self.make_mask == self.mask_buffer_time:
+                    rects.append(rect)
 
-        for i in range(len(imgs)):
-            self.image.blit(imgs[i], Vec(rects[i].topleft) - rects[0].topleft)
-        
-        if DEBUG_RENDER:
-            if hasattr(self, "feet") and not isinstance(self.feet[0], int):
-                for f in self.feet:
-                    f = pygame.Rect(*f, 1, 1)
-                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
+            # The draw function is quite intensive because as well as finding the screen position
+            # It needs to create an image for the sprite because the game relies on mask 
+            # Collision. Right here we adjust the position of the elements in the chain to 
+            # Calculate where to put the mask
+            min_x, min_y, max_x, max_y = rects[0].x, rects[0].y,0,0
+            ref_rect = None
+            for r in rects:
+                min_x = min(min_x, r.x)
+                min_y = min(min_y, r.y)
+                max_x = max(max_x, r.right)
+                max_y = max(max_y, r.bottom)
+            size = (max_x - min_x, max_y - min_y)
+            self.rect = pygame.Rect(min_x, min_y, size[0], size[1]) 
+            self.image = pygame.Surface(size)
+            self.image.set_colorkey((0,0,0))
 
-                for f in self.leg_mounts:
-                    f = pygame.Rect(*f, 1, 1)
-                    pygame.draw.circle(surf, util.white, transform(f).center, 2)
-
-            if self.debug_render:
-                a = self.game.cam.applyVec(self.debug_render[0])
-                b = self.game.cam.applyVec(self.debug_render[1])
-
-                pygame.draw.line(surf, util.white, a, b)
+            for rect in rects:
+                # self.image.blit(imgs[i], Vec(rects[i].topleft) - (min_x, min_y))
+                x = rect.centerx - min_x
+                y = rect.centery - min_y
+                pygame.draw.circle(self.image, util.white, (x, y), self.collision_radius)
+            
 
     def aggravate(self):
         if not self.state == "aggro":

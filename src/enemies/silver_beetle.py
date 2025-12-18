@@ -106,7 +106,7 @@ class SilverBeetle(Beetle):
                 self.pause -= 1
             case "attack":
                 if now() - self.last_attack > self.attack_delay:
-                    self.animations[0].set_mode("attack")
+                    # self.animations[0].set_mode("attack")
                     self.game.get_prefab("EnemyDart")(self.game, pos, self.game.player.rect.center-pos)
                     self.last_attack = now()
                 else:

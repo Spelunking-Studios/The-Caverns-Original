@@ -144,7 +144,7 @@ class PlayerParticles(Particles):
     def __init__(self, game, entity):
         self.entity = entity
         super().__init__(game, entity, size = 6, dirRange=(140, 220), tickSpeed=80)
-        self.setParticleKwargs(color=colors.rgba(colors.grey, 120), speed=0, size=(15,15), shrink=0.5, life=200)
+        self.setParticleKwargs(color=colors.rgba(colors.grey, 220), speed=0, size=(15,15), shrink=0.5, life=200)
         self.step = 90
 
     def update(self):

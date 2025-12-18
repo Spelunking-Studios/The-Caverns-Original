@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="68" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="30">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="68" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="33">
  <tileset firstgid="1" source="../tilesets/floor1-features.tsx"/>
  <tileset firstgid="4097" source="../Caverns Floor 1.tsx"/>
  <layer id="2" name="floor" width="80" height="68">
@@ -100,6 +100,15 @@
   </object>
   <object id="29" name="Entrance2" x="268" y="261">
    <point/>
+  </object>
+  <object id="30" name="Entrance3" x="1543" y="1077">
+   <point/>
+  </object>
+  <object id="32" name="Door" x="1631" y="1058" width="35" height="50">
+   <properties>
+    <property name="targetObj" value="Entrance"/>
+    <property name="targetRoom" value="room9"/>
+   </properties>
   </object>
  </objectgroup>
  <objectgroup id="6" name="zones">

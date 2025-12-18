@@ -22,11 +22,11 @@ DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:
     """Defines the game state when running on DEBUG mode"""
-    stats = False    # Lets you choose DEBUG stats or not (OP stats)
-    all_items = False           # Lets you use all weapons or saved weapons
+    stats = True# Lets you choose DEBUG stats or not (OP stats)
+    all_items = True# Lets you use all weapons or saved weapons
     default_inventory = False    # Doesn't load saved inventory
     load_save = True
-    room = "room4"              # Lets you decide which room to start in 
+    room = "room7"              # Lets you decide which room to start in 
 
 IS_COMPILED = False
 
@@ -210,9 +210,10 @@ if __name__ != '__main__':
         'main-title1': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 68),
         'subtitle1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 37),
         '2': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 25),
+        'credits-names': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 32),
+        'instruction-text': pygame.font.Font(fAsset('Darinia.ttf'), 42),
         # Used for inventory stats
         '3': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 28),
-        'description1': pygame.font.Font(fAsset('PottaOne-Regular.ttf'), 24),
         'title2': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 52),
         'title3': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 20),
         'menu1': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 15),
@@ -225,10 +226,10 @@ if __name__ != '__main__':
         # Used for enemy name with mouse hover
         'hover': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 12),
         'gameover': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 60),
-        'victory': pygame.font.Font(fAsset('YuseiMagic-Regular.ttf'), 72),
+        'victory': pygame.font.Font(fAsset('gothic-pixel-font.ttf'), 72),
         'dialogue': pygame.font.Font(fAsset("gothic-pixel-font.ttf"), 52),
         # 'dialogue': pygame.font.Font(fAsset("PixelderFuthark.ttf"), 52),
-        'tooltip': fgen("Darinia.ttf", 12),#fgen("ComicSansMS.ttf", 12)
+        'tooltip': fgen("Darinia.ttf", 12),
         'label': fgen("Darinia.ttf", 12),
         'label+': fgen("Darinia.ttf", 14)
     }
@@ -267,7 +268,7 @@ def loadSave(file):
         globals()["SETTINGS"] = {}
 
 
-def saveData(file, game):
+def saveData(file, game, wipe=False):
     '''Save game settings
 
     STILL IN BETA TESTING
@@ -283,14 +284,17 @@ def saveData(file, game):
         "SETTINGS": {'display_mode': game.display.get_mode()}
     }
 
-    # Serialize the player's inventory
-    player = game.player
-    player_inventory = player.inventory.serialize()
-    saveDict["GAME_STATE"]["progress"] = game.progress
-    saveDict["GAME_STATE"]["player_inventory"] = player_inventory
-    saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
-    saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)
-    saveDict["GAME_STATE"]["player_equipped_equipment"] = getattr(player.slot2, "id", None)
+    if not wipe:
+        # Serialize the player's inventory
+        player = game.player
+        player_inventory = player.inventory.serialize()
+        saveDict["GAME_STATE"]["progress"] = game.progress
+        saveDict["GAME_STATE"]["player_inventory"] = player_inventory
+        saveDict["GAME_STATE"]["player_equipped_weapon"] = getattr(player.slot1, "id", None)
+        saveDict["GAME_STATE"]["player_equipped_weapon2"] = getattr(player.slot2, "id", None)
+        saveDict["GAME_STATE"]["player_equipped_equipment"] = getattr(player.slot2, "id", None)
+    else:
+        print("wiping the save")
 
     with open(file, 'wb') as f:
         pickle.dump(saveDict, f)
