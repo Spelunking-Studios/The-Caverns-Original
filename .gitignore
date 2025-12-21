@@ -27,5 +27,9 @@
 !README.md
 !.python-version
 !.gitmodules
+!packaging/
+!packaging/**/*
+!flake.nix
+!flake.lock
 
 tests/
