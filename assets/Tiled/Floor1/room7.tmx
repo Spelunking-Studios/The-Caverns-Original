@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="68" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="33">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="80" height="68" tilewidth="32" tileheight="32" infinite="0" nextlayerid="7" nextobjectid="34">
  <tileset firstgid="1" source="../tilesets/floor1-features.tsx"/>
  <tileset firstgid="4097" source="../Caverns Floor 1.tsx"/>
  <layer id="2" name="floor" width="80" height="68">
@@ -119,6 +119,9 @@
     <property name="include_fire" type="bool" value="true"/>
     <property name="include_silver" type="bool" value="true"/>
    </properties>
+   <point/>
+  </object>
+  <object id="33" name="BoomBug" x="1290" y="427">
    <point/>
   </object>
  </objectgroup>

@@ -1,11 +1,21 @@
 import pygame, pymunk
-import math
+import math, random
 from src.stgs import asset, now
 from src import util
 from src.util import LightSource
 from src.fx import SlowGlowParticles
 
 class SavePoint(util.Sprite):
+    quotes = [
+        "You light the abandon campfire. Its iridescence feels your soul with determination",
+        "You light the abandon campfire. You conclude need a better sword",
+        "Sigh...",
+        "You stand weary at the hearth and stare at the holes in your armor",
+        "You feel a sense of sadness as you read a note given to you by your father",
+        "You spot at a drawing on the cave wall but quickly realize it is a figment of your imagination",
+        "You make a sketch of last kill in your notebook",
+        "You miss the sunlight"
+    ]
     def __init__(self, game, objT, **kwargs):
         self.game = game
         self.groups = [
@@ -37,10 +47,7 @@ class SavePoint(util.Sprite):
         self.location = "save-room1"
 
     def get_save_quotes(self):
-        quotes = [
-            "You light the abandon campfire. Its iridescence feels your soul with determination"
-        ]
-        return quotes[0]
+        return random.choices(self.quotes)
 
     def update(self):
         if self.light:
@@ -54,6 +61,8 @@ class SavePoint(util.Sprite):
             else:
                 self.game.dialogueScreen.dialogueFromText("You saved the game")
                 self.game.progress["save_point"] = self.location
+                self.game.save()
+                self.game.load_save()
                 self.light = LightSource(self.game, self.objT, power=self.light_base_power, color = util.colors.amber, radius=800)
                 self.smoke_particles = SlowGlowParticles(
                     self.game, 

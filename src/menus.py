@@ -1,4 +1,4 @@
-from src import util
+from src import util, fx
 import pygame
 from src.overlay import *
 from src.menu import *
@@ -177,6 +177,7 @@ class SaveContinueMenu(Menu):
         for c in self.comps:
             c.rect.centerx = game.width()/2
         self.hudlayer.add([c for c in self.comps if c not in self.hudlayer])
+        self.game.pSprites = pygame.sprite.Group()
         self.title = pygame.image.load(asset("objects/TheCaverns2.png"))
         self.title.set_colorkey((255,255,255))
         self.title_rect = pygame.Rect(0, -80, self.title.get_width(), self.title.get_height())
@@ -184,20 +185,29 @@ class SaveContinueMenu(Menu):
         self.swordImg = pygame.transform.scale(pygame.image.load(asset('screens/part_one.png')), (440, 100))
         self.swordRect = pygame.Rect(0, 170, self.swordImg.get_width(), self.swordImg.get_height())
         self.swordRect.centerx = game.width()/2 + 8
+        self.fx = pygame.sprite.Group()
         self.run()
     
     def update(self):
         if self.continue_btn.clicked:
-            self.running = False
+            fx.FadeOut(self.game, onEnd=self.turnoff, groups = self.fx, noKill=True)
 
         if self.new_game_btn.clicked:
             self.game.wipe_save()
-            self.running = False
+            fx.FadeOut(self.game, onEnd=self.turnoff, groups = self.fx, noKill=True)
+
+        for f in self.fx:
+            f.update()
+
+    def turnoff(self):
+        self.running = False
 
     def render(self):
         super().render()
         self.game.fg.blit(self.title, self.title_rect)
         self.game.fg.blit(self.swordImg, self.swordRect)
+        for fx in self.fx:
+            fx.draw(self.game.fg, None)
         
 
 

@@ -303,7 +303,7 @@ class Game:
     def wipe_save(self):
         globals()["GAME_STATE"] = {}
 
-    def load(self):
+    def load_save(self):
         loadSave(saveFile)
 
     def width(self):

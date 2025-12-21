@@ -41,7 +41,7 @@ class SimpleEnemy(util.Sprite):
 
     def update(self):
         if self.health <= 0:
-            self.kill()
+            self.death()
 
     def take_knockback(self, other):
         pass
@@ -52,11 +52,11 @@ class SimpleEnemy(util.Sprite):
 
         self.game.map.floor.room.blit(img, pos)
 
-    def kill(self):
+    def death(self):
+        # to use instead of kill because changing levels kills enemies
         if hasattr(self, "challenge_rating"):
             self.game.points += 10*self.challenge_rating
         else:
             self.game.points += 5
-        super().kill()
-        # Will eventually implement a blood splatter effect when killing enemies
-        # sef.game.blood_splatter()
+        self.kill()
+

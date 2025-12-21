@@ -31,11 +31,15 @@ class Bat(SimpleEnemy):
 
         self.pos = Vec(self.rect.center)
         self.vel = Vec(0, 0)
+        self.direction = 1
+        self.change_direction_time = 1000
+        self.last_change_direction = now()
     
     @print_stats
     def set_stats(self):
         self.health = 5
-        self.speed = 20
+        self.speed = 30 
+        self.speed += random.randint(-5,5)
         self.angle = 0
         self.rot_speed = 0.01
         self.charge_range = 800
@@ -69,13 +73,16 @@ class Bat(SimpleEnemy):
         
     def fake_move(self, body, *args):
         body.position = tuple(self.pos)
+
     def move(self):
         dt = self.game.dt()
         old_vel = self.vel.copy()
         if util.distance(tuple(self.pos), self.game.player.rect.center) <  self.charge_range:
             self.vel = (self.game.player.rect.center - self.pos).normalize()*self.speed
             self.vel = old_vel.lerp(self.vel, self.rot_speed)
-            self.vel.scale_to_length(min(self.vel.length(), self.speed*dt*1000))
+            if self.change_direction():
+                self.vel.rotate_ip(5*self.direction)
+            self.vel.scale_to_length(self.speed*dt*10)
             self.charging = True
         else:
             self.charging = False
@@ -90,15 +97,28 @@ class Bat(SimpleEnemy):
         return image
         # self.mask = pygame.mask.from_surface(self.image, True)
 
+    def change_direction(self):
+        # Decide if the bat should randomly change directions
+        if now() - self.last_change_direction >= self.change_direction_time:
+            if now() - self.last_change_direction >= self.change_direction_time + 160:
+                self.direction = -1 + 2*random.randint(0,1)
+                self.change_direction_time = random.randint(400, 1400)
+                self.last_change_direction = now()
+            return True
+        else: 
+            return False
+
+        
+
     def kill(self):
         super().kill()
 
 class DemonBat(Bat):
     def set_stats(self):
         self.health = 8
-        self.speed = 20
-        self.speed_norm = 20
-        self.speed_zoom= 20 + random.random()*20
+        self.speed = 50
+        self.speed_norm = 30
+        self.speed_zoom= 40 + random.random()*20
         self.angle = 0
         self.rot_speed = 0.01
         self.rot_speed_norm = 0.02

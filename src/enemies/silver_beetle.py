@@ -39,13 +39,14 @@ class SilverBeetle(Beetle):
         self.speed = 1400
         self.rot_speed = 0.03
         self.damage = 4
+        self.collision_radius = 18
 
         # The ranges are distances squared3
         # For ranged creatures, attack range means when they fire
         self.attack_range = 870000
         self.attack_range_sqrt = 265
         self.aggro_range = 100000
-        self.attack_delay = 1800
+        self.attack_delay = 1500
         self.debug_render = []
     
     def make_body(self):

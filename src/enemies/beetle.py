@@ -307,10 +307,12 @@ class Beetle(SimpleEnemy):
         if light:
             util.LightSource(self.game, self.rect, radius=self.splat_radius, power=self.splat_power)
 
+    def death(self):
+        self.splat()
+        super().death()
 
     def kill(self):
         super().kill()
-        self.splat()
         self.chain.kill()
         if self.particles:
             self.particles.kill()

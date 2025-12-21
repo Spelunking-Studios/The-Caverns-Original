@@ -14,18 +14,20 @@ class FadeOut(util.Sprite):
     fadeBack = False
     def __init__(self, game, **kwargs):
         self.game = game
+        self.groups = []
         self.onEnd = False
         self.noKill = False
         self.ended = False
         self.color = (0, 0, 0)
         self.startDelay = 0
+
         for k, v in kwargs.items():
             self.__dict__[k] = v
-
-        if self.onEnd:
-            self.groups = game.pSprites, game.fxLayer
-        else:
-            self.groups = game.sprites, game.fxLayer
+        if self.groups == []:
+            if self.onEnd:
+                self.groups = game.pSprites, game.fxLayer
+            else:
+                self.groups = game.sprites, game.fxLayer
         pygame.sprite.Sprite.__init__(self, self.groups)
 
         self.rect = pygame.Rect(0, 0, self.game.width(), self.game.height())

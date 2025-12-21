@@ -45,27 +45,13 @@ class DialogueEvent(Event):
         self.game.dialogueScreen.dialogueFromText(self.text)
         super().trigger()
 
-class SavePoint(Event):
-    fun_quotes = [
-        "and conclude need a better sword",
-        "and conclude you are done with this shit",
-        "Sigh...",
-        "as you stare at the holes in your armor",
-        "as you read a note given to you by your father",
-        "as you spot at a drawing on the cave wall but quickly realize it is a figment of your insanity",
-    ]
 
+class VictoryEvent(Event):
     def __init__(self, game, objT, **kwargs):
         super().__init__(game, objT, **kwargs)
         self.repeatable = True
 
     def trigger(self):
-        quote = self.fun_quotes( random.randint(len(self.fun_quotes)) )
-
-        self.game.dialogueScreen.dialogueFromText("You think solemnly to yourself")
-        self.game.dialogueScreen.dialogueFromText(quote)
-        super().trigger()
-        self.game.save()
-        self.game.dialogueScreen.dialogueFromText("Progress saved")
-
+        if self.game.won:
+            self.game.end = True
 

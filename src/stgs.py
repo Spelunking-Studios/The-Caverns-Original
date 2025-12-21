@@ -17,16 +17,16 @@ LOADING_TEXT = [
     "There is now only the remains of their dark and dusty halls..."
 ]
 LOADING_SCREEN_SHOWN_BEFORE = False
-DEBUG = False# Runs game in Debug environment
+DEBUG = True# Runs game in Debug environment
 DEBUG_PHYSICS = False           # Tool for viewing physics engine interactions
 DEBUG_RENDER = False            # 
 class DEBUG_STATE:
     """Defines the game state when running on DEBUG mode"""
     stats = True# Lets you choose DEBUG stats or not (OP stats)
-    all_items = True# Lets you use all weapons or saved weapons
+    all_items = False# Lets you use all weapons or saved weapons
     default_inventory = False    # Doesn't load saved inventory
     load_save = True
-    room = "room7"              # Lets you decide which room to start in 
+    room = "room4"              # Lets you decide which room to start in 
 
 IS_COMPILED = False
 

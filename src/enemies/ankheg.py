@@ -117,3 +117,7 @@ class Ankheg(Beetle):
                     self.last_attack = now()
                 else:
                     self.animations[0].set_mode("static")
+
+    def death(self):
+        self.game.won = True
+        super().death()
