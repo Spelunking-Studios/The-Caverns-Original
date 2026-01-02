@@ -362,15 +362,11 @@ wheels = [
 [[package]]
 name = "pygame-render"
 version = "1.4.2"
-source = { registry = "https://pypi.org/simple" }
+source = { git = "https://github.com/MarkelZ/pygame-render.git#0feb4c7525ecc8341205877d4a55cf5d6afa0a1f" }
 dependencies = [
     { name = "moderngl" },
     { name = "numpy" },
     { name = "pyopengl" },
-]
-sdist = { url = "https://files.pythonhosted.org/packages/2e/0d/8060518fe92dae1830b21772f9d379e3824d3f476621d38d123aa43077b3/pygame_render-1.4.2.tar.gz", hash = "sha256:1079fbe3f7e7837ef616845d108e7551a70adec2196abf11193a96fc856c3dd8", size = 18439, upload-time = "2025-08-14T20:04:51.533Z" }
-wheels = [
-    { url = "https://files.pythonhosted.org/packages/75/4e/e005666a49950876a1c01df70c35be5508f83baaa55dfad6039ee7bc78e0/pygame_render-1.4.2-py3-none-any.whl", hash = "sha256:992a6c7968a3e49bf7c725714f8b84fdb4121fd7c09a65ecf2d7163691c29841", size = 19682, upload-time = "2025-08-14T20:04:49.473Z" },
 ]
 
 [[package]]
@@ -489,6 +485,7 @@ dependencies = [
     { name = "pillow" },
     { name = "pygame-ce" },
     { name = "pygame-light2d" },
+    { name = "pygame-render" },
     { name = "pymunk" },
     { name = "pytmx" },
 ]
@@ -509,6 +506,7 @@ requires-dist = [
     { name = "pillow", specifier = ">=11.1.0" },
     { name = "pygame-ce", specifier = "==2.5.5" },
     { name = "pygame-light2d", specifier = ">=2.1.3" },
+    { name = "pygame-render", git = "https://github.com/MarkelZ/pygame-render.git" },
     { name = "pymunk", specifier = ">=6.11.1" },
     { name = "pytmx", specifier = ">=3.32" },
 ]

@@ -10,6 +10,7 @@ dependencies = [
     "pillow>=11.1.0",
     "pygame-ce==2.5.5",
     "pygame-light2d>=2.1.3",
+    "pygame-render @ https://github.com/MarkelZ/pygame-render.git",
     "pymunk>=6.11.1",
     "pytmx>=3.32",
 ]
