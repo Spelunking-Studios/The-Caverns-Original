@@ -106,6 +106,10 @@ class Display:
 
     def get_mode(self):
         return self.resolution
+    
+    def set_ambient(self, *args):
+        self.light_engine.set_ambient(*args)
+
 
     def set_mode(self, mode):
         self.resolution = mode

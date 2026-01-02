@@ -1,5 +1,6 @@
 from src import util, fx
 import pygame
+import math
 from src.overlay import *
 from src.menu import *
 from src.stgs import *
@@ -11,12 +12,17 @@ class Menu:
         self.comps = pygame.sprite.Group()
         self.hudlayer = pygame.sprite.Group()
         self.running = True
+        self.color_transition_speed = 0.001
         
         self.bg = pygame.image.load(asset("loading screen (blur+noise).jpeg")).convert_alpha()
         self.bg.fill((50, 50, 50), special_flags=pygame.BLEND_RGBA_MIN)
 
     def run(self):
         while self.running:
+            self.game.display.set_ambient(220, 
+                200+30*math.sin(now()*self.color_transition_speed),
+                200+30*math.sin(now()*self.color_transition_speed+1.5)
+            )
             self.game.clock.tick(FPS)
             self.game.window_events()
             self.game.refresh(self.bg)
@@ -313,6 +319,7 @@ def main(game, loadingScreenOn = False):
     #text3.rect.centerx = game.width()/2
 
     #tv = 0
+    color_transition_speed = 0.001
     while True:
         game.clock.tick(FPS)
         #pygame.time.delay(50)
@@ -333,6 +340,10 @@ def main(game, loadingScreenOn = False):
         iloadingLinesEloadingTextLen = int(loadingLinesShowed) == len(loadingText)
 
         if toMainMenuButton.clicked:
+            game.display.set_ambient(220, 
+                200+30*math.sin(now()*color_transition_speed),
+                200+30*math.sin(now()*color_transition_speed+1.5)
+            )
             for comp in comps:
                 game.fg.blit(comp.image, comp.rect)
             game.fg.blit(creditsButton.image, creditsButton.rect)
