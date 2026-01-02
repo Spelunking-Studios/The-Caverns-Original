@@ -78,6 +78,9 @@ class SlotsHud(Hud):
         self.staminaHud.rect.right = self.game.width() - 10
         self.staminaHud.rect.bottom = self.game.height() - 25
         self.healthHud.rect.bottom = self.staminaHud.rect.top - 20
+        self.slot1.rect.bottom = self.game.height() - 60
+        self.slot2.rect.bottom = self.game.height() - 60
+
         # Add the slots
         self.slots.add(self.slot1, self.slot2)
 
