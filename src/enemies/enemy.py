@@ -18,6 +18,8 @@ class SimpleEnemy(util.Sprite):
         self.collision_type = 4
 
         self.last_hit = 0
+        self.last_hit_dealt = 0
+        self.time_between_hits = 800
         
         self.health = 40
         self.damage = 4
@@ -37,7 +39,9 @@ class SimpleEnemy(util.Sprite):
         self.game.mixer.playFx('hit1')
 
     def deal_damage(self):
-        self.game.player.take_damage(self.damage)
+        if now() - self.last_hit_dealt > self.time_between_hits:
+            self.last_hit_dealt = now()
+            self.game.player.take_damage(self.damage)
 
     def update(self):
         if self.health <= 0:

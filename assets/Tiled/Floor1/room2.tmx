@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="83">
+<map version="1.10" tiledversion="1.11.2" orientation="orthogonal" renderorder="right-down" width="100" height="100" tilewidth="32" tileheight="32" infinite="0" nextlayerid="8" nextobjectid="84">
  <tileset firstgid="1" source="../tilesets/floor1-features.tsx"/>
  <tileset firstgid="4097" source="../Caverns Floor 1.tsx"/>
  <layer id="2" name="floor" width="100" height="100">
@@ -18,18 +18,18 @@
   </data>
  </layer>
  <objectgroup id="7" name="objects">
-  <object id="73" name="Chest" x="1284" y="437">
-   <properties>
-    <property name="item" value="Sword"/>
-   </properties>
-   <point/>
-  </object>
   <object id="80" name="Fungus" x="613" y="2967">
    <point/>
   </object>
-  <object id="81" name="NoteConsumable" x="1227" y="426">
+  <object id="81" name="NoteConsumable" x="730" y="354">
    <properties>
     <property name="text" value="By the fury of Cailleach it is freezing. If only Lorcan would set up camp more often "/>
+   </properties>
+   <point/>
+  </object>
+  <object id="83" name="Chest" x="1303" y="448">
+   <properties>
+    <property name="item" value="NecklaceAlerting"/>
    </properties>
    <point/>
   </object>

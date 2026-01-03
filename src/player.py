@@ -14,7 +14,6 @@ from src import stats
 from src.inventory import Inventory
 from src import items
 
-
 #### Player object ####
 class Player(util.Sprite):
     '''The Player Object'''
@@ -85,7 +84,6 @@ class Player(util.Sprite):
         # Timing variables
         self.lastHit = 0
         self.lastAttack = 0
-        self.lastTimeTookDamage = 0
         self.using_stamina = False
         self.interacted = False
         self.healDelay = 3
@@ -301,10 +299,9 @@ class Player(util.Sprite):
             self.interacted = False
 
     def take_damage(self, damage):
-        if pygame.time.get_ticks() - self.lastHit >= self.hitCooldown:
-            self.lastTimeTookDamage = time()
+        if now() - self.lastHit >= self.hitCooldown:
             self.stats._health -= damage
-            self.lastHit = pygame.time.get_ticks()
+            self.lastHit = now()
             self.lightScale.scale_to_length(self.darkened_size)
             self.game.mixer.playFx('pHit')
             self.animations.fx(HurtFx())

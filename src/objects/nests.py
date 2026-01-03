@@ -67,6 +67,3 @@ class Nest(util.Sprite):
             c = creature(self.game, util.ObjT(x=x, y=y))
             c.start()
             total -= creature.challenge_rating
-
-
-

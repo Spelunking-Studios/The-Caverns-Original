@@ -121,7 +121,7 @@ class InventoryOverlay(Overlay):
             "Statistics",
             colors.white,
             stgs.aalias,
-            pos=(535, 100),
+            pos=(100, 100),
             groups=[self.stats_comps]
         )
         Text(
@@ -129,7 +129,7 @@ class InventoryOverlay(Overlay):
             "Health: -1",
             colors.white,
             stgs.aalias,
-            pos=(500, 150),
+            pos=(100, 150),
             groups=[self.stats_comps],
             update_hook=lambda: f"Health: {self.game.player.stats.health}"
         )
@@ -138,7 +138,7 @@ class InventoryOverlay(Overlay):
             "Strength: -1",
             colors.white,
             stgs.aalias,
-            pos=(500, 175),
+            pos=(100, 175),
             groups=[self.stats_comps],
             update_hook=lambda: f"Strength: {self.game.player.stats.strength}"
         )
@@ -147,7 +147,7 @@ class InventoryOverlay(Overlay):
             "Speed: -1",
             colors.white,
             stgs.aalias,
-            pos=(500, 200),
+            pos=(100, 200),
             groups=[self.stats_comps],
             update_hook=lambda: f"Speed: {self.game.player.stats.speed}"
         )
@@ -156,7 +156,7 @@ class InventoryOverlay(Overlay):
             "Armor: Placeholder",
             colors.white,
             stgs.aalias,
-            pos=(500, 225),
+            pos=(100, 225),
             groups=[self.stats_comps],
         )
         Text(
@@ -164,7 +164,7 @@ class InventoryOverlay(Overlay):
             "Critical Hit Chance: +0% (Placeholder)",
             colors.white,
             stgs.aalias,
-            pos=(500, 250),
+            pos=(100, 250),
             groups=[self.stats_comps],
             # update_hook=lambda: f"Critical Hit Chance: {self.game.player.stats.crit}%"
         )
@@ -494,7 +494,7 @@ class InventoryOverlay(Overlay):
                 self.base_image.blit(eq_slot.image, eq_slot.rect)
         elif self.current_tab == self.STATS_TAB:
             for component in self.stats_comps:
-                self.base_image.blit(component.image, component.rect)
+                self.base_image.blit(component.image, component.rect.move(self.get_offset()))
 
     def get_offset(self):
         """Get the position of the upper left corner of the overlay

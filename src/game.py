@@ -54,6 +54,8 @@ class Game:
         self.showFps = SHOWFPS
         self.joystickDisabled = joystickDisabled
         self.loadingScreenShownBefore = LOADING_SCREEN_SHOWN_BEFORE
+        if globals()["SETTINGS"].get("display_mode", False):
+            self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
 
     def new(self):
         self.won = False
@@ -81,8 +83,6 @@ class Game:
         self.iSprites = Group()
         self.map = GameMap(self)
         self.alert_hud = hud.AlertHud(self)
-        if globals()["SETTINGS"].get("display_mode", False):
-            self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
         self.player = Player(
             self,
             globals()["GAME_STATE"].get("player_inventory", None),
@@ -244,17 +244,6 @@ class Game:
             def cont():
                 print("continuing the game")
                 if True:
-                    # self.cam.target = self.player
-                    # # All valid items should be specified here
-                    # # All valid items should be specified hereimport import 
-                    # self.pause = False
-                    # for e in self.groups.enemies:
-                    #     e.kill()
-                    # self.map.loadFloor()
-                    # self.player.stats.reset()
-                    # self.fxLayer.empty()
-                    # for s in self.pSprites:
-                    #     s.kill()
                     self.new()
                     self.mainLoop()
 
