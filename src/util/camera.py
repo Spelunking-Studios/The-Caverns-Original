@@ -1,7 +1,7 @@
 import pygame
 from src.stgs import *
 
-class Cam:
+class Camera:
 
     def __init__(self, game, width, height):
         self.camera = pygame.Rect(0, 0, width, height)

@@ -425,7 +425,7 @@ def victoryLoop(game):
         game.refresh()
 
         
-        game.fg.blit(text2, (800, 70))
+        game.fg.blit(text2, (800, 370))
         game.fg.blit(text1, (game.width()/2 - text1.get_width()/2 ,30))
         
         game.display.update(game.bg, game.fg)

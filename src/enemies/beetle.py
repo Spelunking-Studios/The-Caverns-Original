@@ -37,6 +37,8 @@ class Beetle(SimpleEnemy):
         self.pause = 0
         self.collision_radius = 14
         self.set_stats() 
+        if self.game.hard_mode:
+            self.upgrade_stats()
         self.make_legs()
         self.make_body()
         
@@ -54,7 +56,7 @@ class Beetle(SimpleEnemy):
     
     @print_stats        
     def set_stats(self):
-        self.health = 100
+        self.health = 60
         
         self.vel = Vec(2,0)
         self.speed = 1700

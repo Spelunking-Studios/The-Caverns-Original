@@ -42,6 +42,9 @@ class Display:
 
     def remove_light(self, light):
         self.light_engine.lights.remove(light)
+    
+    def empty_lights(self):
+        self.light_engine.lights.clear()
 
     def set_ambient_lighting(self, color):
         self.light_engine.set_ambient(*color)

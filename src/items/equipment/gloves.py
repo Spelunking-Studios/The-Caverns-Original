@@ -18,7 +18,8 @@ class GlovesStrength(Gloves):
         self.stats['description'] = "A hefty pair of old leather gloves. You feel stronger wearing them."
         self.stats["buffs"] = {
             "strength": 10,
-            "staminaMax": 10,
+            "staminaMax": 20,
+            "healthMax": 10
         }
         self.set_image(
             asset("items", "equipment", "gloves_of_strength.png")

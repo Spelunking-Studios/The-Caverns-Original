@@ -20,6 +20,7 @@ fx = {
     'menu3': [sAsset('misc_menu_3.wav'), 0.1],
     'yay': [sAsset('yay.wav'), 0.1],
     'swing':[sAsset('swing.wav'), 0],
+    'bat_squeak':[sAsset('bat_squeak.ogg'), 0.8]
 }
 
 def getDriver():

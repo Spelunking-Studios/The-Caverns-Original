@@ -38,7 +38,8 @@ class Victory(Door):
         self.game.pause = True
         def func():
             self.game.unPause()
-            self.game.end = True 
+            self.game.end = True
+            self.game.won = True
             fx.FadeIn(self.game)
         fx.FadeOut(self.game, onEnd=func)
 

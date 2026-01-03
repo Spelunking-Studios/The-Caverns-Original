@@ -1,7 +1,7 @@
 import pygame, pymunk, random
 import os
 
-from .camera import Cam
+from .camera import Camera
 from .display import Display
 from .fabrik import fabrik
 from .grouper import Grouper

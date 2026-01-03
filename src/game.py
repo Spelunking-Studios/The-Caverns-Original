@@ -58,15 +58,22 @@ class Game:
             self.display.set_mode(globals()["SETTINGS"].get("display_mode", None))
 
     def new(self):
+        # Global Game Variables
         self.won = False
         self.end = False
         self.pause = False
         self.inInventory = False
+        self.hard_mode = False
         self.points = 0
 
+        # Physics Engine
         self.space = pymunk.Space()
         self.space.damping = 0.0002
-
+        self.handler = Handler(self)
+        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.bg)
+        self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
+        
+        # Sprite Groups
         self.groups = Grouper()
         self.layer1 = Group()
         self.layer2 = Group()
@@ -75,12 +82,12 @@ class Game:
         self.hudLayer = Group()
         self.overlayer = Group()
         self.rendLayers = [self.layer1, self.layer2, self.layer3]
-        self.handler = Handler(self)
         self.sprites = Group()
-        # Pause Sprites
-        self.pSprites = Group()
-        # Inventory Sprites
-        self.iSprites = Group()
+        self.pSprites = Group() # Pause Sprites
+        self.iSprites = Group() # Inventory Sprites
+        self.display.empty_lights() # Removes any lights from previous game
+
+        # Game entities
         self.map = GameMap(self)
         self.alert_hud = hud.AlertHud(self)
         self.player = Player(
@@ -88,32 +95,27 @@ class Game:
             globals()["GAME_STATE"].get("player_inventory", None),
             globals()["GAME_STATE"].get("player_equipped_weapon", None),
         )
+        self.cam = Camera(self, self.width(), self.height())
         self.progress = globals()["GAME_STATE"].get("progress", {
             "save_point": None,
             "chests_opened": [],
             "notes_collected": [],
             "events_triggered": []
         })
-        self.display.set_mode
         self.inventoryOverlay = InventoryOverlay(self)
         self.pauseScreen = PauseOverlay(self)
         self.hoverOverlay = HoverOverlay(self)
-        # self.mapScreen = MapOverlay(self)
         self.dialogueScreen = DialogueOverlay(self)
         self.statsInfo = hud.StatHud(self, border = asset("objects/dialog-frame.png")) 
         self.slots = hud.SlotsHud(self)
         self.updateT = now()
-        self.cam = Cam(self, self.width(), self.height())
-
-        self.pymunk_options = pymunk.pygame_util.DrawOptions(self.bg)
-        self.pymunk_options.transform = pymunk.Transform.translation(0, 0)
-
+        
+        
     ####  Determines how the run will function ####
     def run(self):
         # loadSave("game.store")
         if not DEBUG:
             self.menuLoop()
-        # print("location", self.progress["location"])
         menus.SaveContinueMenu(self) 
         self.new()
         self.mainLoop()
@@ -127,7 +129,7 @@ class Game:
     #### Main game loop ####
     def mainLoop(self):
         self.map.loadFloor()
-        self.mixer.playMusic(sAsset('TheCaves.wav'))
+        self.mixer.playMusic(sAsset('Adventure-Piano.mp3'))
 
 
         # Run pre-first frame loading
@@ -244,6 +246,10 @@ class Game:
             def cont():
                 print("continuing the game")
                 if True:
+                    # Save data
+                    player_inventory = self.player.inventory.serialize()
+                    globals()["GAME_STATE"]["player_inventory"] = player_inventory
+                    globals()["GAME_STATE"]["progress"] = self.progress
                     self.new()
                     self.mainLoop()
 
@@ -274,12 +280,6 @@ class Game:
         self.groups.killAll()
         self.new()
         self.run()
-
-    # def died(self):
-        # Button(self, (400, 400), groups = [self.pSprites, self.overlayer], text = "Continue", onClick=self.cont, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
-        # def end():
-        #     self.end = True
-        # Button(self, (400, 500), groups = [self.pSprites, self.overlayer], text = "Return to menu", onClick=end, instaKill = True, center = True, colors = (colors.orangeRed, colors.white))
 
     def quit(self):
         self.save()

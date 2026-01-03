@@ -28,6 +28,7 @@ class Bat(SimpleEnemy):
         self.create_body()
         self.create_physics(10, 5, self.fake_move, self.rect.center, self.collision_type)
         self.charging = False
+        self.sound_played = False
 
         self.pos = Vec(self.rect.center)
         self.vel = Vec(0, 0)
@@ -64,6 +65,10 @@ class Bat(SimpleEnemy):
         if now() - self.last_attack > self.attack_delay:
             if util.distance(self.rect.center, self.game.player.rect.center) <= self.attack_range:
                 self.attack()
+        
+        if not self.sound_played and self.charging:
+            self.game.mixer.playFx("bat_squeak")
+            self.sound_played = True
 
         self.animations.update()
         self.image = self.animations.get_image()

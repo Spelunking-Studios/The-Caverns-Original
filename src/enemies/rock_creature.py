@@ -23,7 +23,7 @@ class RockCreature(Beetle):
     
     @print_stats
     def set_stats(self):
-        self.health = 75
+        self.health = 25
         
         self.vel = Vec(2,0)
         self.speed = 1500

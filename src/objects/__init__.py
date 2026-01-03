@@ -1,4 +1,4 @@
-from .doors import Entrance, Entrance2, Entrance3, Entrance4, Door, Teleporter
+from .doors import Entrance, Entrance2, Entrance3, Entrance4, Door, Teleporter, Victory
 from .walls import Wall
 from .chest import Chest
 from .projectiles import Fireball, ThrowingKnife, EnemyFireball, EnemyDart

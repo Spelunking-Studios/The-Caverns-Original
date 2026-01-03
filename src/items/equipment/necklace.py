@@ -24,7 +24,6 @@ class NecklaceAlerting(Necklace):
         }
 
     def equip(self, game):
-        print(self.stats)
         game.alert_hud.activate()
         super().equip()
 

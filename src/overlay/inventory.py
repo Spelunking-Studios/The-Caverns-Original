@@ -131,7 +131,7 @@ class InventoryOverlay(Overlay):
             stgs.aalias,
             pos=(100, 150),
             groups=[self.stats_comps],
-            update_hook=lambda: f"Health: {self.game.player.stats.health}"
+            update_hook=lambda: f"Health: {self.game.player.stats.health} / {self.game.player.stats.healthMax}"
         )
         Text(
             "menu2",
@@ -354,6 +354,8 @@ class InventoryOverlay(Overlay):
                 # Add to necklace slot
                 if "necklace" in entry.get_categories():
                     self.equipment_comp_bases[0] = entry.renderable
+                if "gloves" in entry.get_categories():
+                    self.equipment_comp_bases[1] = entry.renderable
 
                 self.regenerate_equipment_comps()
 

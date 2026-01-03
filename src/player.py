@@ -197,7 +197,7 @@ class Player(util.Sprite):
         self.stats._stamina -= value
 
     def has_stamina(self, value=0):
-        return self.stats._stamina > value
+        return self.stats.stamina > value
 
     def checkActions(self):
         # Get the current time
