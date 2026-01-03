@@ -22,12 +22,26 @@ class Door(util.Sprite):
     
     def update(self):
         if self.rect.colliderect(self.game.player.rect):
-            self.game.pause = True
-            def func():
-                self.game.unPause()
-                self.game.map.switchRoom(self.targetRoom, self.targetObj)
-                fx.FadeIn(self.game)
-            fx.FadeOut(self.game, onEnd=func)
+            self.on_collide()
+            
+    def on_collide(self):
+        self.game.pause = True
+        def func():
+            self.game.unPause()
+            self.game.map.switchRoom(self.targetRoom, self.targetObj)
+            fx.FadeIn(self.game)
+        fx.FadeOut(self.game, onEnd=func)
+
+class Victory(Door):
+    def on_collide(self):
+        # Can add a condition here for defeating the final boss
+        self.game.pause = True
+        def func():
+            self.game.unPause()
+            self.game.end = True 
+            fx.FadeIn(self.game)
+        fx.FadeOut(self.game, onEnd=func)
+
 
 class Entrance(util.Sprite):
     color = (255, 255, 255)

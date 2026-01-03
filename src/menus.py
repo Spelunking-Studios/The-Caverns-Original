@@ -20,8 +20,8 @@ class Menu:
     def run(self):
         while self.running:
             self.game.display.set_ambient(220, 
-                200+30*math.sin(now()*self.color_transition_speed),
-                200+30*math.sin(now()*self.color_transition_speed+1.5)
+                200+40*math.sin(now()*self.color_transition_speed),
+                200+40*math.sin(now()*self.color_transition_speed+1.5)
             )
             self.game.clock.tick(FPS)
             self.game.window_events()
@@ -44,7 +44,7 @@ class CompendiumMenu(Menu):
         
         #MenuItem(game, (x, y), asset(''), desc='', text=''),
         self.returnButton = ImageButton(game, (game.width()-240, 70), text="Return", center = True, groups = [self.comps, self.hudlayer])
-        self.comps.add([Text('instruction-text', "use your mouse to aim the player \nClick to attack\n WASD to move\nTAB for inventory\nP for pause menu\nSPACE to end dialogue", colors.orangeRed, game.antialiasing, (80, 160), True)])
+        self.comps.add([Text('instruction-text', "use your mouse to aim the player \nClick to attack\n WASD to move\nTAB for inventory\nP for pause menu\nSPACE to end dialogue\nF for fullscreen", colors.orangeRed, game.antialiasing, (80, 160), True)])
         self.comps.add([Text('main-title1', TITLE,  colors.orangeRed, game.antialiasing, (30,game.height() - 70), False)])
         self.hudlayer.add([c for c in self.comps if c not in self.hudlayer])
         self.run()
@@ -339,11 +339,11 @@ def main(game, loadingScreenOn = False):
 
         iloadingLinesEloadingTextLen = int(loadingLinesShowed) == len(loadingText)
 
+        game.display.set_ambient(220, 
+            200+40*math.sin(now()*color_transition_speed),
+            200+40*math.sin(now()*color_transition_speed+1.5)
+        )
         if toMainMenuButton.clicked:
-            game.display.set_ambient(220, 
-                200+30*math.sin(now()*color_transition_speed),
-                200+30*math.sin(now()*color_transition_speed+1.5)
-            )
             for comp in comps:
                 game.fg.blit(comp.image, comp.rect)
             game.fg.blit(creditsButton.image, creditsButton.rect)

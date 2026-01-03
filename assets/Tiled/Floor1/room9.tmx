@@ -45,7 +45,7 @@
    </properties>
    <point/>
   </object>
-  <object id="45" name="VictoryEvent" x="1843" y="1335" width="28" height="72"/>
+  <object id="45" name="Victory" x="1843" y="1335" width="28" height="72"/>
  </objectgroup>
  <objectgroup id="3" name="Walls">
   <object id="1" name="Wall" x="704" y="1223">

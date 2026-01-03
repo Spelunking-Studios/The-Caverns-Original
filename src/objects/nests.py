@@ -19,8 +19,8 @@ class Nest(util.Sprite):
         self.creatures = []
         self.challenge_rating = 10
         self.include_standard = True
-        self.include_bat = False
-        self.include_demon_bat = True
+        self.include_bat = True
+        self.include_demon_bat = False
         self.include_silver = False
         self.include_red = False
         self.include_boom = False
