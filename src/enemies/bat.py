@@ -44,7 +44,7 @@ class Bat(SimpleEnemy):
         self.angle = 0
         self.rot_speed = 0.01
         self.charge_range = 800
-        self.attack_range = 40
+        self.attack_range = 20
         self.boom_range = 50
         self.damage = 3
 

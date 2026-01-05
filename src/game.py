@@ -250,6 +250,7 @@ class Game:
                     player_inventory = self.player.inventory.serialize()
                     globals()["GAME_STATE"]["player_inventory"] = player_inventory
                     globals()["GAME_STATE"]["progress"] = self.progress
+                    globals()["GAME_STATE"]["player_equipped_weapon"] = getattr(self.player.slot1, "id", None)
                     self.new()
                     self.mainLoop()
 

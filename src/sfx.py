@@ -18,9 +18,9 @@ fx = {
     'menu1':[sAsset('switch10.wav'), 0],
     'menu2': [sAsset('mouseclick1.wav'), 0],
     'menu3': [sAsset('misc_menu_3.wav'), 0.1],
-    'yay': [sAsset('yay.wav'), 0.1],
+    'yay': [sAsset('yay.wav'), 0.6],
     'swing':[sAsset('swing.wav'), 0],
-    'bat_squeak':[sAsset('bat_squeak.ogg'), 0.8]
+    'bat_squeak':[sAsset('bat_squeak.ogg'), 0.2]
 }
 
 def getDriver():
@@ -78,7 +78,7 @@ class GameMixer:
             try:
                 sound = pygame.mixer.Sound(self.fx[key][0])
                 if self.fx[key][1] > 0:
-                    sound.set_volume(min(self.fxVolume + self.fx[key][1], 1))
+                    sound.set_volume(min(self.fxVolume*self.fx[key][1], 1))
                 else:
                     sound.set_volume(max(self.fxVolume + self.fx[key][1], 0))
                 sound.play()
